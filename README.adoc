@@ -10,10 +10,11 @@ needed.
 
 = Building instructions
 
-TODO: initial setup
-- Go setup
-- Istio API compilation including modification to build using https://github.com/costinm/googleapis/ instead of github.com/googleapis/googleapis/
-- ...
+=== TODO:
+  - initial setup
+  - Go setup
+  - Istio API compilation including modification to build using https://github.com/costinm/googleapis/ instead of github.com/googleapis/googleapis/
+  - ...
 
 Run `make`. This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
 `istio-model/src/main/resources/schema/istio-schema.json` (*TODO*: should maybe be put in `generated-sources`?). A Maven build
