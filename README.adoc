@@ -1,0 +1,21 @@
+= istio-java-api
+
+A project to generate a Java API for https://istio.io[Istio]'s domain allowing, in particular, the generation of Istio deployment
+descriptors. This project is inspired by https://github.com/fabric8io/kubernetes-model[Fabric8's kubernetes-model] and relies on
+the same approach: a Go program uses Go reflection to generate a http://json-schema.org[JSON Schema] which is then used by
+https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] to generate Java classes, enriched by annotations
+(https://github.com/fasterxml/jackson[Jackson] and https://jcp.org/en/jsr/detail?id=380[Bean Validation - JSR 380] notably,
+though custom annotations can also be used). Jackson is then used to output JSON or YAML representation of the Java objects when
+needed.
+
+= Building instructions
+
+TODO: initial setup
+- Go setup
+- Istio API compilation including modification to build using https://github.com/costinm/googleapis/ instead of github.com/googleapis/googleapis/
+- ...
+
+Run `make`. This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
+`istio-model/src/main/resources/schema/istio-schema.json` (*TODO*: should maybe be put in `generated-sources`?). A Maven build
+is then issued using the `jsonschema2pojo` Maven plugin to generate Java classes in `istio-model/target/generated-sources` and
+generate a Jar file containing the compiled version of these classes along with the JSON schema, ready to be used.
