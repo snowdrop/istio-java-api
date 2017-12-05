@@ -133,7 +133,7 @@
     
     <jackson2.version>2.9.2</jackson2.version>
     <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
-    <validation-api.version>1.1.0.Final</validation-api.version>
+    <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>1.1.2</kubernetes-model.version>
   </properties>
 
