@@ -47,6 +47,15 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -63,6 +72,7 @@
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
           <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+          <customAnnotator>me.snowdrop.istio.annotator.IstioTypeAnnotator</customAnnotator>
           <annotationStyle>none</annotationStyle>
         </configuration>
         <executions>
@@ -72,6 +82,13 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>me.snowdrop</groupId>
+            <artifactId>istio-model-annotator</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
