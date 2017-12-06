@@ -28,7 +28,7 @@
   <artifactId>istio-model</artifactId>
   <packaging>jar</packaging>
 
-  <name>Snowdrop :: Istio Java API</name>
+  <name>Snowdrop :: Istio Java API :: Model</name>
 
   <properties>
     <schema.dir>${basedir}/src/main/resources/schema</schema.dir>

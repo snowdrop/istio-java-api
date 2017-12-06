@@ -25,7 +25,7 @@
   <packaging>pom</packaging>
 
 
-  <name>Snowdrop :: Istio Java API parent</name>
+  <name>Snowdrop :: Istio Java API :: Parent</name>
   <description>An Istio Java API generated from the Go API</description>
   <url>http://www.snowdrop.me</url>
 
@@ -135,9 +135,12 @@
     <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>1.1.2</kubernetes-model.version>
+    <sundrio.version>0.7.2</sundrio.version>
+    <lombok.version>1.16.18</lombok.version>
   </properties>
 
   <modules>
+    <module>istio-model-annotator</module>
     <module>istio-model</module>
   </modules>
 
@@ -157,6 +160,16 @@
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model</artifactId>
         <version>${kubernetes-model.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.sundr</groupId>
+        <artifactId>builder-annotations</artifactId>
+        <version>${sundrio.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
