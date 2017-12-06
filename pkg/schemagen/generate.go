@@ -165,7 +165,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "String"
 			}
 			if name == "BoolValue"{
-				return "Boolean"
+				return "java.lang.Boolean"
 			}
 			if len(name) == 0 && t.NumField() == 0 {
 				return "Object"
