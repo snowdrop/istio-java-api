@@ -18,12 +18,12 @@ SHELL := /bin/bash
 
 all: build
 
-build: gobuild
-	mvn clean install
+clean:
+	rm -rf istio-model/schema/
+	mvn clean
 
-gobuild:
+build:
 	CGO_ENABLED=0 GO15VENDOREXPERIMENT=1 go build -a ./cmd/generate/generate.go
-	./generate > istio-model/src/main/resources/schema/istio-schema.json
-
-vendoring:
-	hack/glide-update.sh
+	mkdir -p istio-model/schema
+	./generate > istio-model/schema/istio-schema.json
+	mvn clean install

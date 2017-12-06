@@ -29,11 +29,7 @@
   <packaging>jar</packaging>
 
   <name>Snowdrop :: Istio Java API :: Model</name>
-
-  <properties>
-    <schema.dir>${basedir}/src/main/resources/schema</schema.dir>
-  </properties>
-
+  
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -65,13 +61,13 @@
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <version>${jsonschema2pojo.version}</version>
         <configuration>
-          <sourceDirectory>${schema.dir}</sourceDirectory>
+          <sourceDirectory>${project.basedir}/schema</sourceDirectory>
           <targetPackage>me.snowdrop.istio.api.model</targetPackage>
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>true</includeJsr303Annotations>
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
           <customAnnotator>me.snowdrop.istio.annotator.IstioTypeAnnotator</customAnnotator>
           <annotationStyle>none</annotationStyle>
         </configuration>
