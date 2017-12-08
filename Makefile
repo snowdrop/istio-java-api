@@ -16,14 +16,16 @@
 
 SHELL := /bin/bash
 
+SCHEMA_DIR=istio-model/src/main/resources/schema
+
 all: build
 
 clean:
-	rm -rf istio-model/schema/
+	rm -rf $(SCHEMA_DIR)
 	mvn clean
 
 build:
 	CGO_ENABLED=0 GO15VENDOREXPERIMENT=1 go build -a ./cmd/generate/generate.go
-	mkdir -p istio-model/schema
-	./generate > istio-model/schema/istio-schema.json
+	mkdir -p $(SCHEMA_DIR)
+	./generate > $(SCHEMA_DIR)/istio-schema.json
 	mvn clean install

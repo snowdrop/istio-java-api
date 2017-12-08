@@ -31,6 +31,10 @@
 
   <name>Snowdrop :: Istio Java API :: Model</name>
 
+  <properties>
+    <schema.dir>${basedir}/src/main/resources/schema</schema.dir>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -63,7 +67,7 @@
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <version>${jsonschema2pojo.version}</version>
         <configuration>
-          <sourceDirectory>${project.basedir}/schema</sourceDirectory>
+          <sourceDirectory>${schema.dir}</sourceDirectory>
           <targetPackage>me.snowdrop.istio.api.model</targetPackage>
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>true</includeJsr303Annotations>
@@ -87,6 +91,29 @@
             <version>${project.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${schema.dir}/istio-schema.json</file>
+                  <type>json</type>
+                  <classifier>schema</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
