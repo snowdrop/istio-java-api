@@ -91,6 +91,7 @@
           <includeJsr303Annotations>true</includeJsr303Annotations>
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+          <inclusionLevel>NON_EMPTY</inclusionLevel>
           <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
           <customAnnotator>me.snowdrop.istio.annotator.IstioTypeAnnotator</customAnnotator>
           <annotationStyle>none</annotationStyle>
