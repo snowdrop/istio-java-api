@@ -7,20 +7,12 @@
 package me.snowdrop.istio.annotator;
 
 import java.util.Iterator;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JAnnotationUse;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JFieldVar;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.GenerationConfig;
@@ -36,8 +28,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     @Override
     public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
-        /*JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
-
+        JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
         annotationValue.param("apiVersion");
         annotationValue.param("kind");
         annotationValue.param("metadata");
@@ -46,7 +37,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             if (!next.equals("apiVersion") && !next.equals("kind") && !next.equals("metadata")) {
                 annotationValue.param(next);
             }
-        }*/
+        }
 
         //We just want to make sure we avoid infinite loops
 //        clazz.annotate(JsonDeserialize.class)
