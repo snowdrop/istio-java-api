@@ -1,5 +1,4 @@
 /generate
-istio-schema.json
 target/
 .idea/
 *.iml

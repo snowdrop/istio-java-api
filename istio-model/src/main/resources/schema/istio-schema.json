@@ -1,0 +1,1459 @@
+{
+  "id": "http://snowdrop.me/istio/v1/Schema#",
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "github_com_golang_protobuf_ptypes_wrappers_BoolValue": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "value": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "java.lang.Boolean",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_broker_CatalogEntry": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "id": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogEntry",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_broker_CatalogPlan": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "id": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogPlan",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_broker_Deployment": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "instance": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.Deployment",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_broker_ServiceClass": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "deployment": {
+          "$ref": "#/definitions/istio_broker_Deployment",
+          "javaType": "me.snowdrop.istio.api.model.v1.broker.Deployment"
+        },
+        "entry": {
+          "$ref": "#/definitions/istio_broker_CatalogEntry",
+          "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogEntry"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServiceClass",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_broker_ServicePlan": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "plan": {
+          "$ref": "#/definitions/istio_broker_CatalogPlan",
+          "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogPlan"
+        },
+        "services": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServicePlan",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mesh_MeshConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "access_log_file": {
+          "type": "string",
+          "description": ""
+        },
+        "auth_policy": {
+          "type": "integer",
+          "description": ""
+        },
+        "connect_timeout": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "default_config": {
+          "$ref": "#/definitions/istio_mesh_ProxyConfig",
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.ProxyConfig"
+        },
+        "disable_policy_checks": {
+          "type": "boolean",
+          "description": ""
+        },
+        "egress_proxy_address": {
+          "type": "string",
+          "description": ""
+        },
+        "enable_tracing": {
+          "type": "boolean",
+          "description": ""
+        },
+        "ingress_class": {
+          "type": "string",
+          "description": ""
+        },
+        "ingress_controller_mode": {
+          "type": "integer",
+          "description": ""
+        },
+        "ingress_service": {
+          "type": "string",
+          "description": ""
+        },
+        "mixer_address": {
+          "type": "string",
+          "description": ""
+        },
+        "mtls_excluded_services": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "proxy_http_port": {
+          "type": "integer",
+          "description": ""
+        },
+        "proxy_listen_port": {
+          "type": "integer",
+          "description": ""
+        },
+        "rds_refresh_delay": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mesh.MeshConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mesh_ProxyConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "availability_zone": {
+          "type": "string",
+          "description": ""
+        },
+        "binary_path": {
+          "type": "string",
+          "description": ""
+        },
+        "config_path": {
+          "type": "string",
+          "description": ""
+        },
+        "connect_timeout": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "control_plane_auth_policy": {
+          "type": "integer",
+          "description": ""
+        },
+        "custom_config_file": {
+          "type": "string",
+          "description": ""
+        },
+        "discovery_address": {
+          "type": "string",
+          "description": ""
+        },
+        "discovery_refresh_delay": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "drain_duration": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "parent_shutdown_duration": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "proxy_admin_port": {
+          "type": "integer",
+          "description": ""
+        },
+        "service_cluster": {
+          "type": "string",
+          "description": ""
+        },
+        "stat_name_length": {
+          "type": "integer",
+          "description": ""
+        },
+        "statsd_udp_address": {
+          "type": "string",
+          "description": ""
+        },
+        "zipkin_address": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mesh.ProxyConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_Attributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_Attributes_AttributeValue": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "Value": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_CheckRequest": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attributes": {
+          "$ref": "#/definitions/istio_mixer_CompressedAttributes",
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.CompressedAttributes"
+        },
+        "deduplication_id": {
+          "type": "string",
+          "description": ""
+        },
+        "global_word_count": {
+          "type": "integer",
+          "description": ""
+        },
+        "quotas": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_mixer_CheckRequest_QuotaParams",
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_CheckRequest_QuotaParams": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "best_effort": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_CheckResponse": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "precondition": {
+          "$ref": "#/definitions/istio_mixer_CheckResponse_PreconditionResult",
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_PreconditionResult"
+        },
+        "quotas": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_mixer_CheckResponse_QuotaResult",
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_CheckResponse_PreconditionResult": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attributes": {
+          "$ref": "#/definitions/istio_mixer_CompressedAttributes",
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.CompressedAttributes"
+        },
+        "referenced_attributes": {
+          "$ref": "#/definitions/istio_mixer_ReferencedAttributes",
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes"
+        },
+        "status": {
+          "$ref": "#/definitions/protobuf_status_Status",
+          "javaType": "me.snowdrop.istio.api.model.Status"
+        },
+        "valid_duration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "valid_use_count": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_PreconditionResult",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_CheckResponse_QuotaResult": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "granted_amount": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "referenced_attributes": {
+          "$ref": "#/definitions/istio_mixer_ReferencedAttributes",
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes"
+        },
+        "valid_duration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_CompressedAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bools": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "boolean",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,Boolean\u003e"
+        },
+        "bytes": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "doubles": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "number",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,Double\u003e"
+        },
+        "durations": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "integer",
+            "description": "",
+            "javaType": "Long"
+          },
+          "javaType": "java.util.Map\u003cString,Long\u003e"
+        },
+        "int64s": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "integer",
+            "description": "",
+            "javaType": "Long"
+          },
+          "javaType": "java.util.Map\u003cString,Long\u003e"
+        },
+        "string_maps": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_mixer_StringMap",
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.StringMap"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.StringMap\u003e"
+        },
+        "strings": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "integer",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,Integer\u003e"
+        },
+        "timestamps": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "words": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CompressedAttributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_ReferencedAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attribute_matches": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_mixer_ReferencedAttributes_AttributeMatch",
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes_AttributeMatch"
+          }
+        },
+        "words": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_ReferencedAttributes_AttributeMatch": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "condition": {
+          "type": "integer",
+          "description": ""
+        },
+        "map_key": {
+          "type": "integer",
+          "description": ""
+        },
+        "name": {
+          "type": "integer",
+          "description": ""
+        },
+        "regex": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes_AttributeMatch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_ReportRequest": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attributes": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_mixer_CompressedAttributes",
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.CompressedAttributes"
+          }
+        },
+        "default_words": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "global_word_count": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReportRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_ReportResponse": {
+      "type": "object",
+      "description": "",
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReportResponse",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_mixer_StringMap": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "entries": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "integer",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,Integer\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.StringMap",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_CircuitBreaker": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "CbPolicy": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.CircuitBreaker",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_CorsPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "allow_credentials": {
+          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_wrappers_BoolValue",
+          "javaType": "java.lang.Boolean"
+        },
+        "allow_headers": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "allow_methods": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "allow_origin": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "expose_headers": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "max_age": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.CorsPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_DestinationPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "circuit_breaker": {
+          "$ref": "#/definitions/istio_routing_CircuitBreaker",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.CircuitBreaker"
+        },
+        "custom": {
+          "$ref": "#/definitions/protobuf_any_Any",
+          "javaType": "me.snowdrop.istio.api.model.Any"
+        },
+        "destination": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "load_balancing": {
+          "$ref": "#/definitions/istio_routing_LoadBalancing",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.LoadBalancing"
+        },
+        "source": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_DestinationWeight": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destination": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "labels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "weight": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationWeight",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_EgressRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destination": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "ports": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_routing_EgressRule_Port",
+            "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule_Port"
+          }
+        },
+        "use_egress_proxy": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_EgressRule_Port": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "port": {
+          "type": "integer",
+          "description": ""
+        },
+        "protocol": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule_Port",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPFaultInjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "abort": {
+          "$ref": "#/definitions/istio_routing_HTTPFaultInjection_Abort",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Abort"
+        },
+        "delay": {
+          "$ref": "#/definitions/istio_routing_HTTPFaultInjection_Delay",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Delay"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPFaultInjection_Abort": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "ErrorType": {},
+        "override_header_name": {
+          "type": "string",
+          "description": ""
+        },
+        "percent": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Abort",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPFaultInjection_Delay": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "HttpDelayType": {},
+        "override_header_name": {
+          "type": "string",
+          "description": ""
+        },
+        "percent": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Delay",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPRedirect": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authority": {
+          "type": "string",
+          "description": ""
+        },
+        "uri": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRedirect",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPRetry": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "RetryPolicy": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRetry",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPRewrite": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authority": {
+          "type": "string",
+          "description": ""
+        },
+        "uri": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRewrite",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_HTTPTimeout": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "TimeoutPolicy": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPTimeout",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_IngressRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "DestinationServicePort": {},
+        "destination": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "match": {
+          "$ref": "#/definitions/istio_routing_MatchCondition",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchCondition"
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
+        },
+        "precedence": {
+          "type": "integer",
+          "description": ""
+        },
+        "tls_secret": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.IngressRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_IstioService": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": ""
+        },
+        "labels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "service": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_L4FaultInjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "terminate": {
+          "$ref": "#/definitions/istio_routing_L4FaultInjection_Terminate",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Terminate"
+        },
+        "throttle": {
+          "$ref": "#/definitions/istio_routing_L4FaultInjection_Throttle",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Throttle"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_L4FaultInjection_Terminate": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "percent": {
+          "type": "number",
+          "description": ""
+        },
+        "terminate_after_period": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Terminate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_L4FaultInjection_Throttle": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "ThrottleAfter": {},
+        "downstream_limit_bps": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "percent": {
+          "type": "number",
+          "description": ""
+        },
+        "throttle_for_period": {
+          "$ref": "#/definitions/protobuf_duration_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "upstream_limit_bps": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Throttle",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_L4MatchAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destination_subnet": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "source_subnet": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4MatchAttributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_LoadBalancing": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "LbPolicy": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.LoadBalancing",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_MatchCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/istio_routing_MatchRequest",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchRequest"
+        },
+        "source": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "tcp": {
+          "$ref": "#/definitions/istio_routing_L4MatchAttributes",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4MatchAttributes"
+        },
+        "udp": {
+          "$ref": "#/definitions/istio_routing_L4MatchAttributes",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4MatchAttributes"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_MatchRequest": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "headers": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_routing_StringMatch",
+            "javaType": "me.snowdrop.istio.api.model.v1.routing.StringMatch"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.routing.StringMatch\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_RouteRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "append_headers": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "cors_policy": {
+          "$ref": "#/definitions/istio_routing_CorsPolicy",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.CorsPolicy"
+        },
+        "destination": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "http_fault": {
+          "$ref": "#/definitions/istio_routing_HTTPFaultInjection",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection"
+        },
+        "http_req_retries": {
+          "$ref": "#/definitions/istio_routing_HTTPRetry",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRetry"
+        },
+        "http_req_timeout": {
+          "$ref": "#/definitions/istio_routing_HTTPTimeout",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPTimeout"
+        },
+        "l4_fault": {
+          "$ref": "#/definitions/istio_routing_L4FaultInjection",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection"
+        },
+        "match": {
+          "$ref": "#/definitions/istio_routing_MatchCondition",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchCondition"
+        },
+        "mirror": {
+          "$ref": "#/definitions/istio_routing_IstioService",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+        },
+        "precedence": {
+          "type": "integer",
+          "description": ""
+        },
+        "redirect": {
+          "$ref": "#/definitions/istio_routing_HTTPRedirect",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRedirect"
+        },
+        "rewrite": {
+          "$ref": "#/definitions/istio_routing_HTTPRewrite",
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRewrite"
+        },
+        "route": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_routing_DestinationWeight",
+            "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationWeight"
+          }
+        },
+        "websocket_upgrade": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.RouteRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "istio_routing_StringMatch": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "MatchType": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.StringMatch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "protobuf_any_Any": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "type_url": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.Any",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "protobuf_duration_Duration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "nanos": {
+          "type": "integer",
+          "description": ""
+        },
+        "seconds": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.Duration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "protobuf_status_Status": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": ""
+        },
+        "details": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/protobuf_any_Any",
+            "javaType": "me.snowdrop.istio.api.model.Any"
+          }
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.Status",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "AttributeValue": {
+      "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue"
+    },
+    "Attributes": {
+      "$ref": "#/definitions/istio_mixer_Attributes",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes"
+    },
+    "CatalogEntry": {
+      "$ref": "#/definitions/istio_broker_CatalogEntry",
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogEntry"
+    },
+    "CatalogPlan": {
+      "$ref": "#/definitions/istio_broker_CatalogPlan",
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogPlan"
+    },
+    "CheckRequest": {
+      "$ref": "#/definitions/istio_mixer_CheckRequest",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest"
+    },
+    "CheckResponse": {
+      "$ref": "#/definitions/istio_mixer_CheckResponse",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse"
+    },
+    "CircuitBreaker": {
+      "$ref": "#/definitions/istio_routing_CircuitBreaker",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.CircuitBreaker"
+    },
+    "CompressedAttributes": {
+      "$ref": "#/definitions/istio_mixer_CompressedAttributes",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CompressedAttributes"
+    },
+    "CorsPolicy": {
+      "$ref": "#/definitions/istio_routing_CorsPolicy",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.CorsPolicy"
+    },
+    "Deployment": {
+      "$ref": "#/definitions/istio_broker_Deployment",
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.Deployment"
+    },
+    "DestinationPolicy": {
+      "$ref": "#/definitions/istio_routing_DestinationPolicy",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationPolicy"
+    },
+    "DestinationWeight": {
+      "$ref": "#/definitions/istio_routing_DestinationWeight",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationWeight"
+    },
+    "EgressRule": {
+      "$ref": "#/definitions/istio_routing_EgressRule",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule"
+    },
+    "HTTPFaultInjection": {
+      "$ref": "#/definitions/istio_routing_HTTPFaultInjection",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection"
+    },
+    "HTTPRedirect": {
+      "$ref": "#/definitions/istio_routing_HTTPRedirect",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRedirect"
+    },
+    "HTTPRetry": {
+      "$ref": "#/definitions/istio_routing_HTTPRetry",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRetry"
+    },
+    "HTTPRewrite": {
+      "$ref": "#/definitions/istio_routing_HTTPRewrite",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRewrite"
+    },
+    "HTTPTimeout": {
+      "$ref": "#/definitions/istio_routing_HTTPTimeout",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPTimeout"
+    },
+    "IngressRule": {
+      "$ref": "#/definitions/istio_routing_IngressRule",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.IngressRule"
+    },
+    "IstioService": {
+      "$ref": "#/definitions/istio_routing_IstioService",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
+    },
+    "L4FaultInjection": {
+      "$ref": "#/definitions/istio_routing_L4FaultInjection",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection"
+    },
+    "L4MatchAttributes": {
+      "$ref": "#/definitions/istio_routing_L4MatchAttributes",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4MatchAttributes"
+    },
+    "LoadBalancing": {
+      "$ref": "#/definitions/istio_routing_LoadBalancing",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.LoadBalancing"
+    },
+    "MatchCondition": {
+      "$ref": "#/definitions/istio_routing_MatchCondition",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchCondition"
+    },
+    "MatchRequest": {
+      "$ref": "#/definitions/istio_routing_MatchRequest",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchRequest"
+    },
+    "MeshConfig": {
+      "$ref": "#/definitions/istio_mesh_MeshConfig",
+      "javaType": "me.snowdrop.istio.api.model.v1.mesh.MeshConfig"
+    },
+    "ProxyConfig": {
+      "$ref": "#/definitions/istio_mesh_ProxyConfig",
+      "javaType": "me.snowdrop.istio.api.model.v1.mesh.ProxyConfig"
+    },
+    "QuotaParams": {
+      "$ref": "#/definitions/istio_mixer_CheckRequest_QuotaParams",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams"
+    },
+    "QuotaResult": {
+      "$ref": "#/definitions/istio_mixer_CheckResponse_QuotaResult",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult"
+    },
+    "ReferencedAttributes": {
+      "$ref": "#/definitions/istio_mixer_ReferencedAttributes",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes"
+    },
+    "ReportRequest": {
+      "$ref": "#/definitions/istio_mixer_ReportRequest",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReportRequest"
+    },
+    "ReportResponse": {
+      "$ref": "#/definitions/istio_mixer_ReportResponse",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReportResponse"
+    },
+    "RouteRule": {
+      "$ref": "#/definitions/istio_routing_RouteRule",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.RouteRule"
+    },
+    "ServiceClass": {
+      "$ref": "#/definitions/istio_broker_ServiceClass",
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServiceClass"
+    },
+    "ServicePlan": {
+      "$ref": "#/definitions/istio_broker_ServicePlan",
+      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServicePlan"
+    },
+    "StringMap": {
+      "$ref": "#/definitions/istio_mixer_StringMap",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.StringMap"
+    },
+    "StringMatch": {
+      "$ref": "#/definitions/istio_routing_StringMatch",
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.StringMatch"
+    }
+  },
+  "additionalProperties": true
+}
