@@ -56,9 +56,38 @@ func getFieldName(f reflect.StructField) string {
 	json := f.Tag.Get("json")
 	if len(json) > 0 {
 		parts := strings.Split(json, ",")
-		return parts[0]
+		name := parts[0]
+		return toCamel(name)
 	}
 	return f.Name
+}
+
+func toCamel(s string) string {
+	// based on https://github.com/iancoleman/strcase
+	s = strings.Trim(s, " ")
+	n := ""
+	capNext := false
+	for _, v := range s {
+		if v >= 'A' && v <= 'Z' {
+			n += string(v)
+		}
+		if v >= '0' && v <= '9' {
+			n += string(v)
+		}
+		if v >= 'a' && v <= 'z' {
+			if capNext {
+				n += strings.ToUpper(string(v))
+			} else {
+				n += string(v)
+			}
+		}
+		if v == '_' || v == ' ' || v == '-' {
+			capNext = true
+		} else {
+			capNext = false
+		}
+	}
+	return n
 }
 
 func getFieldDescription(f reflect.StructField) string {
@@ -216,9 +245,9 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					JavaType: g.javaType(k),
 				},
-				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
+				/*JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 					JavaInterfaces: g.javaInterfaces(k),
-				},
+				},*/
 			}
 			s.Definitions[name] = value
 			s.Resources[resource] = v
