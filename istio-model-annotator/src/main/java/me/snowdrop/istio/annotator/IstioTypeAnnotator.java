@@ -22,6 +22,9 @@ import org.jsonschema2pojo.Jackson2Annotator;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class IstioTypeAnnotator extends Jackson2Annotator {
+
+    private static final String BUILDER_PACKAGE = "me.snowdrop.istio.api.builder";
+
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
     }
@@ -48,6 +51,6 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 .param("editableEnabled", false)
                 .param("validationEnabled", true)
                 .param("generateBuilderPackage", true)
-                .param("builderPackage", "me.snowdrop.istio.api.builder");
+                .param("builderPackage", BUILDER_PACKAGE);
     }
 }
