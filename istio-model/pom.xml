@@ -37,6 +37,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.9.9</version>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-jaxb-annotations</artifactId>
     </dependency>
@@ -110,6 +115,29 @@
             <version>${project.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <echo>removing the duplicate generated classes</echo>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true"/>
+                <delete verbose="true">
+                  <fileset dir="${basedir}/target/generated-sources">
+                    <include name="*.java"/>
+                  </fileset>
+                </delete>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

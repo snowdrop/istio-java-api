@@ -196,6 +196,9 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			if name == "BoolValue"{
 				return "java.lang.Boolean"
 			}
+			if name == "Duration" {
+				return "me.snowdrop.istio.api.model.Duration"
+			}
 			if len(name) == 0 && t.NumField() == 0 {
 				return "Object"
 			}
