@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.joda.time.Period;
@@ -60,7 +61,8 @@ public class Duration implements Serializable {
     public Duration() {
     }
 
-    public Duration(int nanos, long seconds) {
+    @Buildable(generateBuilderPackage = true, builderPackage = "me.snowdrop.istio.api.builder", editableEnabled = false, validationEnabled = true)
+    public Duration(Integer nanos, Long seconds) {
         this.nanos = nanos;
         this.seconds = seconds;
     }
@@ -90,7 +92,7 @@ public class Duration implements Serializable {
             ObjectCodec oc = parser.getCodec();
             JsonNode node = oc.readTree(parser);
             final Period period = FORMATTER.parsePeriod(node.asText());
-            return new Duration(0, period.toStandardSeconds().getSeconds());
+            return new Duration(0, (long) period.toStandardSeconds().getSeconds());
         }
     }
 
