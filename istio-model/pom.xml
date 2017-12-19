@@ -95,6 +95,8 @@
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>true</includeJsr303Annotations>
           <includeToString>false</includeToString>
+          <serializable>true</serializable>
+          <targetVersion>1.8</targetVersion>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
           <inclusionLevel>NON_EMPTY</inclusionLevel>
           <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
