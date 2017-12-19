@@ -268,9 +268,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue"
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.AttributeValue\u003e"
         }
       },
       "additionalProperties": true,
@@ -283,7 +283,7 @@
         "Value": {}
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
     },
     "istio_mixer_CheckRequest": {
       "type": "object",
@@ -306,9 +306,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_mixer_CheckRequest_QuotaParams",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams"
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.QuotaParams"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.QuotaParams\u003e"
         }
       },
       "additionalProperties": true,
@@ -329,7 +329,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.QuotaParams"
     },
     "istio_mixer_CheckResponse": {
       "type": "object",
@@ -337,16 +337,16 @@
       "properties": {
         "precondition": {
           "$ref": "#/definitions/istio_mixer_CheckResponse_PreconditionResult",
-          "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_PreconditionResult"
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.PreconditionResult"
         },
         "quotas": {
           "type": "object",
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_mixer_CheckResponse_QuotaResult",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult"
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.QuotaResult"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.QuotaResult\u003e"
         }
       },
       "additionalProperties": true,
@@ -379,7 +379,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_PreconditionResult"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.PreconditionResult"
     },
     "istio_mixer_CheckResponse_QuotaResult": {
       "type": "object",
@@ -401,7 +401,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.QuotaResult"
     },
     "istio_mixer_CompressedAttributes": {
       "type": "object",
@@ -502,7 +502,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/istio_mixer_ReferencedAttributes_AttributeMatch",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes_AttributeMatch"
+            "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeMatch"
           }
         },
         "words": {
@@ -539,7 +539,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes_AttributeMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeMatch"
     },
     "istio_mixer_ReportRequest": {
       "type": "object",
@@ -715,7 +715,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/istio_routing_EgressRule_Port",
-            "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule_Port"
+            "javaType": "me.snowdrop.istio.api.model.v1.routing.Port"
           }
         },
         "useEgressProxy": {
@@ -740,7 +740,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule_Port"
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.Port"
     },
     "istio_routing_HTTPFaultInjection": {
       "type": "object",
@@ -748,11 +748,11 @@
       "properties": {
         "abort": {
           "$ref": "#/definitions/istio_routing_HTTPFaultInjection_Abort",
-          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Abort"
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.Abort"
         },
         "delay": {
           "$ref": "#/definitions/istio_routing_HTTPFaultInjection_Delay",
-          "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Delay"
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.Delay"
         }
       },
       "additionalProperties": true,
@@ -773,7 +773,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Abort"
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.Abort"
     },
     "istio_routing_HTTPFaultInjection_Delay": {
       "type": "object",
@@ -790,7 +790,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection_Delay"
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.Delay"
     },
     "istio_routing_HTTPRedirect": {
       "type": "object",
@@ -910,11 +910,11 @@
       "properties": {
         "terminate": {
           "$ref": "#/definitions/istio_routing_L4FaultInjection_Terminate",
-          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Terminate"
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.Terminate"
         },
         "throttle": {
           "$ref": "#/definitions/istio_routing_L4FaultInjection_Throttle",
-          "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Throttle"
+          "javaType": "me.snowdrop.istio.api.model.v1.routing.Throttle"
         }
       },
       "additionalProperties": true,
@@ -934,7 +934,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Terminate"
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.Terminate"
     },
     "istio_routing_L4FaultInjection_Throttle": {
       "type": "object",
@@ -961,7 +961,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection_Throttle"
+      "javaType": "me.snowdrop.istio.api.model.v1.routing.Throttle"
     },
     "istio_routing_L4MatchAttributes": {
       "type": "object",
@@ -1164,7 +1164,7 @@
   "properties": {
     "AttributeValue": {
       "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes_AttributeValue"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
     },
     "Attributes": {
       "$ref": "#/definitions/istio_mixer_Attributes",
@@ -1272,11 +1272,11 @@
     },
     "QuotaParams": {
       "$ref": "#/definitions/istio_mixer_CheckRequest_QuotaParams",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest_QuotaParams"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.QuotaParams"
     },
     "QuotaResult": {
       "$ref": "#/definitions/istio_mixer_CheckResponse_QuotaResult",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse_QuotaResult"
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.QuotaResult"
     },
     "ReferencedAttributes": {
       "$ref": "#/definitions/istio_mixer_ReferencedAttributes",
