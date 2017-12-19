@@ -123,19 +123,19 @@
       </build>
     </profile>
   </profiles>
-  
+
   <properties>
     <compiler.plugin.version>3.5.1</compiler.plugin.version>
     <maven.compiler.argument.target>${maven.compiler.target}</maven.compiler.argument.target>
     <maven.compiler.argument.source>${maven.compiler.source}</maven.compiler.argument.source>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    
+
     <jackson2.version>2.9.2</jackson2.version>
     <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>2.0.4</kubernetes-model.version>
-    <sundrio.version>0.7.2</sundrio.version>
+    <sundrio.version>0.7.4</sundrio.version>
     <lombok.version>1.16.18</lombok.version>
   </properties>
 
