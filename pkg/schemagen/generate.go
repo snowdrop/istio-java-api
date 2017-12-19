@@ -157,6 +157,13 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		t = t.Elem()
 	}
 	name := t.Name()
+
+	// deal with "inner" structs
+	underscore := strings.IndexRune(name, '_')
+	if underscore >= 0 {
+		name = name[underscore + 1:]
+	}
+
 	path := pkgPath(t)
 	pkgDesc, ok := g.packages[path]
 	if t.Kind() == reflect.Struct && ok {
