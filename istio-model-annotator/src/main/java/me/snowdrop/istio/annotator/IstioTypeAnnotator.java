@@ -11,8 +11,11 @@ import java.util.Iterator;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.GenerationConfig;
@@ -47,10 +50,18 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 //                .param("using", JsonDeserializer.None.class);
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
-        clazz.annotate(Buildable.class)
-                .param("editableEnabled", false)
-                .param("validationEnabled", true)
-                .param("generateBuilderPackage", true)
-                .param("builderPackage", BUILDER_PACKAGE);
+        try {
+            clazz.annotate(Buildable.class)
+                    .param("editableEnabled", false)
+                    .param("validationEnabled", true)
+                    .param("generateBuilderPackage", true)
+                    .param("builderPackage", BUILDER_PACKAGE)
+                    .annotationParam("inline", Inline.class)
+                    .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
+                    .param("prefix", "Doneable")
+                    .param("value", "done");
+        } catch (JClassAlreadyExistsException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
