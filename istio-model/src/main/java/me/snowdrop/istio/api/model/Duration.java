@@ -40,7 +40,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 @ToString
 @EqualsAndHashCode
 public class Duration implements Serializable {
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
     private Integer nanos;
     private Long seconds;
     final static PeriodFormatter FORMATTER = new PeriodFormatterBuilder()
