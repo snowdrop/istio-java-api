@@ -73,4 +73,25 @@ spec:
         assertEquals(100, route.get("weight"));
         assertEquals("v1", ((Map) route.get("labels")).get("version"));
     }
+
+    @Test
+    public void roundtripBasicRouteShouldWork() throws Exception {
+        RouteRule routeRule = new RouteRuleBuilder()
+                .withMetadata(new ObjectMetaBuilder().withName("my-rule").build())
+                .withNewDestination()
+                .withName("reviews")
+                .withNamespace("my-namespace")
+                .endDestination()
+                .addNewRoute()
+                .addToLabels("version", "v1")
+                .withWeight(100)
+                .endRoute()
+                .build();
+
+        final String output = mapper.writeValueAsString(routeRule);
+
+        RouteRule reloaded = mapper.readValue(output, RouteRule.class);
+
+        assertEquals(routeRule, reloaded);
+    }
 }

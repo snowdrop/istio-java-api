@@ -8,10 +8,13 @@ package me.snowdrop.istio.api.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import me.snowdrop.istio.api.internal.IstioDeserializer;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
+@JsonDeserialize(using = IstioDeserializer.class)
 public interface IstioResource extends HasMetadata, Serializable {
 }

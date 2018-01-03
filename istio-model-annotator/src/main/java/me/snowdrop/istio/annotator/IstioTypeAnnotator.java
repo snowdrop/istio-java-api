@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -58,7 +60,10 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         } catch (JClassAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
-        
+
+        //We just want to make sure we avoid infinite loops
+        clazz.annotate(JsonDeserialize.class)
+                .param("using", JsonDeserializer.None.class);
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
         try {
