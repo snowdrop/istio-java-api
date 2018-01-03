@@ -9,6 +9,7 @@ package me.snowdrop.istio.api.model.v1.routing;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -39,6 +40,7 @@ spec:
     @Test
     public void checkBasicRoute() throws Exception {
         RouteRule routeRule = new RouteRuleBuilder()
+                .withMetadata(new ObjectMetaBuilder().withName("my-rule").build())
                 .withNewDestination()
                 .withName("reviews")
                 .withNamespace("my-namespace")
@@ -52,6 +54,12 @@ spec:
         final String output = mapper.writeValueAsString(routeRule);
         Yaml parser = new Yaml();
         final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+
+        assertEquals("RouteRule", reloaded.get("kind"));
+
+        final Map metadata = reloaded.get("metadata");
+        assertNotNull(metadata);
+        assertEquals("my-rule", metadata.get("name"));
 
         final Map<String, Map> destination = reloaded.get("destination");
         assertNotNull(destination);

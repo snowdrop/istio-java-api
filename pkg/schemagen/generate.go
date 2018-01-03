@@ -215,16 +215,12 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
-	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && ok {
-		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
+	name := t.Name()
+	if name == "MeshConfig" || name == "ProxyConfig" {
+		return []string{}
+	} else {
+		return []string{"me.snowdrop.istio.api.model.IstioResource"}
 	}
-
-	_, hasItems := t.FieldByName("Items")
-	_, hasListMeta := t.FieldByName("ListMeta")
-	if hasItems && hasListMeta {
-		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", "io.fabric8.kubernetes.api.model.KubernetesResourceList"}
-	}
-	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
 }
 
 func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
@@ -255,9 +251,9 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					JavaType: g.javaType(k),
 				},
-				/*JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
+				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 					JavaInterfaces: g.javaInterfaces(k),
-				},*/
+				},
 			}
 			s.Definitions[name] = value
 			s.Resources[resource] = v

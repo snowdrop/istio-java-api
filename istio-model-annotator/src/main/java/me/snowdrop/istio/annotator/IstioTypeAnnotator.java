@@ -6,7 +6,10 @@
  */
 package me.snowdrop.istio.annotator;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +30,9 @@ import org.jsonschema2pojo.Jackson2Annotator;
 public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String BUILDER_PACKAGE = "me.snowdrop.istio.api.builder";
+    private static final Set<String> CLASSES_WITHOUT_METADATA = new HashSet<>(
+            Arrays.asList("MeshConfig", "ProxyConfig")
+    );
 
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
@@ -45,9 +51,14 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             }
         }
 
-        //We just want to make sure we avoid infinite loops
-//        clazz.annotate(JsonDeserialize.class)
-//                .param("using", JsonDeserializer.None.class);
+        try {
+            if (!CLASSES_WITHOUT_METADATA.contains(clazz.name())) {
+                clazz._extends(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioBaseResource"));
+            }
+        } catch (JClassAlreadyExistsException e) {
+            throw new RuntimeException(e);
+        }
+        
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
         try {
