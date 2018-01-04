@@ -24,8 +24,10 @@ clean:
 	rm -rf $(SCHEMA_DIR)
 	mvn clean
 
-build:
+schema:
 	CGO_ENABLED=0 GO15VENDOREXPERIMENT=1 go build -a ./cmd/generate/generate.go
 	mkdir -p $(SCHEMA_DIR)
 	./generate > $(SCHEMA_DIR)/istio-schema.json
+
+build: schema
 	mvn clean install
