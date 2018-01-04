@@ -81,10 +81,10 @@ func main() {
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
-		//{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
+		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
+		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
 		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},
-		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_any_"},
-		{"github.com/costinm/googleapis/google/rpc", "me.snowdrop.istio.api.model", "protobuf_status_"},
+		{"istio.io/gogo-genproto/googleapis/google/rpc", "me.snowdrop.istio.api.model", "google_rpc_"},
 	}
 
 	typeMap := map[reflect.Type]reflect.Type{

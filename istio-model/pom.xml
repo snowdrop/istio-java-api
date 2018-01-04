@@ -127,11 +127,6 @@
               <target>
                 <echo>removing the duplicate generated classes</echo>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true" />
-                <delete verbose="true">
-                  <fileset dir="${basedir}/target/generated-sources">
-                    <include name="*.java" />
-                  </fileset>
-                </delete>
               </target>
             </configuration>
             <goals>
