@@ -469,5 +469,5 @@ func (g *schemaGenerator) addConstraints(objectName string, propName string, pro
 
 func pkgPath(t reflect.Type) string {
 	path := t.PkgPath()
-	return strings.TrimPrefix(path, "github.com/fabric8io/kubernetes-model/vendor/")
+	return strings.TrimPrefix(path, "istio.io/api/vendor/")
 }
