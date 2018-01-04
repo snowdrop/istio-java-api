@@ -2,26 +2,6 @@
   "id": "http://snowdrop.me/istio/v1/Schema#",
   "$schema": "http://json-schema.org/schema#",
   "definitions": {
-    "github_com_golang_protobuf_ptypes_duration_Duration": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "nanos": {
-          "type": "integer",
-          "description": ""
-        },
-        "seconds": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Duration",
-      "javaInterfaces": [
-        "me.snowdrop.istio.api.model.IstioResource"
-      ]
-    },
     "github_com_golang_protobuf_ptypes_wrappers_BoolValue": {
       "type": "object",
       "description": "",
@@ -33,6 +13,33 @@
       },
       "additionalProperties": true,
       "javaType": "java.lang.Boolean",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.IstioResource"
+      ]
+    },
+    "google_rpc_Status": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": ""
+        },
+        "details": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/protobuf_types_Any",
+            "javaType": "me.snowdrop.istio.api.model.Any"
+          }
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.Status",
       "javaInterfaces": [
         "me.snowdrop.istio.api.model.IstioResource"
       ]
@@ -153,7 +160,7 @@
           "description": ""
         },
         "connectTimeout": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "defaultConfig": {
@@ -205,7 +212,7 @@
           "description": ""
         },
         "rdsRefreshDelay": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         }
       },
@@ -229,7 +236,7 @@
           "description": ""
         },
         "connectTimeout": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "controlPlaneAuthPolicy": {
@@ -245,15 +252,15 @@
           "description": ""
         },
         "discoveryRefreshDelay": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "drainDuration": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "parentShutdownDuration": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "proxyAdminPort": {
@@ -401,7 +408,7 @@
           "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReferencedAttributes"
         },
         "status": {
-          "$ref": "#/definitions/protobuf_status_Status",
+          "$ref": "#/definitions/google_rpc_Status",
           "javaType": "me.snowdrop.istio.api.model.Status"
         },
         "validDuration": {
@@ -705,7 +712,7 @@
           }
         },
         "maxAge": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         }
       },
@@ -1037,7 +1044,7 @@
           "description": ""
         },
         "terminateAfterPeriod": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         }
       },
@@ -1062,7 +1069,7 @@
           "description": ""
         },
         "throttleForPeriod": {
-          "$ref": "#/definitions/github_com_golang_protobuf_ptypes_duration_Duration",
+          "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "upstreamLimitBps": {
@@ -1270,29 +1277,41 @@
         "me.snowdrop.istio.api.model.IstioResource"
       ]
     },
-    "protobuf_status_Status": {
+    "protobuf_duration_Duration": {
       "type": "object",
       "description": "",
       "properties": {
-        "code": {
+        "nanos": {
           "type": "integer",
           "description": ""
         },
-        "details": {
-          "type": "array",
+        "seconds": {
+          "type": "integer",
           "description": "",
-          "items": {
-            "$ref": "#/definitions/protobuf_any_Any",
-            "javaType": "me.snowdrop.istio.api.model.Any"
-          }
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.Duration",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.IstioResource"
+      ]
+    },
+    "protobuf_types_Any": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "typeUrl": {
+          "type": "string",
+          "description": ""
         },
-        "message": {
+        "value": {
           "type": "string",
           "description": ""
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Status",
+      "javaType": "me.snowdrop.istio.api.model.Any",
       "javaInterfaces": [
         "me.snowdrop.istio.api.model.IstioResource"
       ]
