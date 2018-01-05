@@ -8,11 +8,12 @@ package me.snowdrop.istio.api.model;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-@Buildable(builderPackage = "me.snowdrop.istio.api.builder", generateBuilderPackage = true)
+@Buildable(builderPackage = "me.snowdrop.istio.api.builder", generateBuilderPackage = true, editableEnabled = false, refs = {@BuildableReference(ObjectMeta.class)})
 public class IstioBaseResource implements IstioResource {
     private ObjectMeta metadata;
     private final String kind = getClass().getSimpleName();
