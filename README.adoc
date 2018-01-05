@@ -10,13 +10,24 @@ needed.
 
 = Building instructions
 
-=== TODO:
-  - initial setup
-  - Go setup
-  - Istio API compilation including modification to build using https://github.com/costinm/googleapis/ instead of github.com/googleapis/googleapis/
-  - ...
+If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to re-generate the classes from a newer version of the API, please see below.
+
+== Initial setup
+
+You will need to set up your environment for Go programming (`GOPATH` setup with the proper directory hierarchy):
+
+  . cd $GOPATH/src
+  . git clone git@github.com:istio/api.git istio.io/api
+  . cd istio.io/api
+  . ./scripts/generate-protos.sh
+
+These steps put the API code in the proper spot with the proper https://github.com/istio/api/blob/master/BUILD#L2[organization prefix]. The `generate-protos.sh` script will re-generate the Go files base on the protobuf definitions if needed but also make sure that you have all the required dependencies.
+
+== Building the Java API
 
 Run `make`. This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
-`istio-model/src/main/resources/schema/istio-schema.json` (*TODO*: should maybe be put in `generated-sources`?). A Maven build
+`istio-model/src/main/resources/schema/istio-schema.json`. A Maven build
 is then issued using the `jsonschema2pojo` Maven plugin to generate Java classes in `istio-model/target/generated-sources` and
 generate a Jar file containing the compiled version of these classes along with the JSON schema, ready to be used.
+
+You can clean everything using `make clean`, only generate the schema using `make schema` or only generate the Java classes (assuming a schema already exists) using `mvn clean install`.
