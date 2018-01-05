@@ -446,7 +446,8 @@ func (g *schemaGenerator) generateObjectDescriptor(t reflect.Type) *JSONObjectDe
 }
 
 func (g *schemaGenerator) addConstraints(objectName string, propName string, prop *JSONPropertyDescriptor) {
-	switch objectName {
+	// no constraints for now, keeping the method for when we need to add some
+	/*switch objectName {
 	case "ObjectMeta":
 		switch propName {
 		case "namespace":
@@ -464,7 +465,7 @@ func (g *schemaGenerator) addConstraints(objectName string, propName string, pro
 			prop.Pattern = `^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`
 			prop.MaxLength = 63
 		}
-	}
+	}*/
 }
 
 func pkgPath(t reflect.Type) string {
