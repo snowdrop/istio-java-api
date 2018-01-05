@@ -161,7 +161,7 @@
     <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>2.0.4</kubernetes-model.version>
-    <sundrio.version>0.7.4</sundrio.version>
+    <sundrio.version>0.7.6</sundrio.version>
     <lombok.version>1.16.18</lombok.version>
   </properties>
 
