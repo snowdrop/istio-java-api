@@ -32,8 +32,8 @@ import org.jsonschema2pojo.Jackson2Annotator;
 public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String BUILDER_PACKAGE = "me.snowdrop.istio.api.builder";
-    private static final Set<String> CLASSES_WITHOUT_METADATA = new HashSet<>(
-            Arrays.asList("MeshConfig", "ProxyConfig")
+    private static final Set<String> ISTIO_CUSTOM_RESOURCES = new HashSet<>(
+            Arrays.asList("DestinationPolicy", "EgressRule", "RouteRule")
     );
 
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
@@ -54,7 +54,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         }
 
         try {
-            if (!CLASSES_WITHOUT_METADATA.contains(clazz.name())) {
+            if (ISTIO_CUSTOM_RESOURCES.contains(clazz.name())) {
                 clazz._extends(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioBaseResource"));
             }
         } catch (JClassAlreadyExistsException e) {

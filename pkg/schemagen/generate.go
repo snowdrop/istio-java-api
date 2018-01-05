@@ -214,15 +214,6 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 }
 
-func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
-	name := t.Name()
-	if name == "MeshConfig" || name == "ProxyConfig" {
-		return []string{}
-	} else {
-		return []string{"me.snowdrop.istio.api.model.IstioResource"}
-	}
-}
-
 func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	if t.Kind() != reflect.Struct {
 		return nil, fmt.Errorf("Only struct types can be converted.")
@@ -250,9 +241,6 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 				JSONObjectDescriptor: v,
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					JavaType: g.javaType(k),
-				},
-				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
-					JavaInterfaces: g.javaInterfaces(k),
 				},
 			}
 			s.Definitions[name] = value
