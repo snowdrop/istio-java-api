@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
-	"os"
+	"errors"
 )
 
 type PackageDescriptor struct {
@@ -30,10 +30,11 @@ type PackageDescriptor struct {
 }
 
 type schemaGenerator struct {
-	types    map[reflect.Type]*JSONObjectDescriptor
-	packages map[string]PackageDescriptor
-	enumMap  map[string]string
-	typeMap  map[reflect.Type]reflect.Type
+	types        map[reflect.Type]*JSONObjectDescriptor
+	packages     map[string]PackageDescriptor
+	enumMap      map[string]string
+	typeMap      map[reflect.Type]reflect.Type
+	unknownEnums []string
 }
 
 func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, error) {
@@ -130,11 +131,10 @@ func (g *schemaGenerator) generateReference(t reflect.Type) string {
 	return g.generateReferenceFrom(g.qualifiedName(t))
 }
 
-func (g *schemaGenerator) generateEnumReferenceAndType(t string) (string, string) {
+func (g *schemaGenerator) generateEnumTypeAccumulatingUnknown(t string) (string, string) {
 	enum, ok := g.enumMap[t]
 	if !ok {
-		println("Unknown enum: " + t)
-		os.Exit(-1)
+		g.unknownEnums = append(g.unknownEnums, t)
 	}
 
 	return g.generateReferenceFrom(escapedQualifiedName(enum)), enum
@@ -181,7 +181,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	// deal with "inner" structs
 	underscore := strings.IndexRune(name, '_')
 	if underscore >= 0 {
-		name = name[underscore + 1:]
+		name = name[underscore+1:]
 	}
 
 	path := pkgPath(t)
@@ -220,7 +220,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			if name == "Time" {
 				return "String"
 			}
-			if name == "BoolValue"{
+			if name == "BoolValue" {
 				return "java.lang.Boolean"
 			}
 			if name == "Duration" {
@@ -268,7 +268,11 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 		}
 	}
 
-	return &s, nil
+	if len(g.unknownEnums) > 0 {
+		return &s, errors.New("Unknown enums: " + strings.Join(g.unknownEnums, ","))
+	} else {
+		return &s, nil
+	}
 }
 
 func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string) JSONPropertyDescriptor {
@@ -397,7 +401,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		enum := getFieldEnum(field)
 		var prop JSONPropertyDescriptor
 		if len(enum) > 0 {
-			_, javaType := g.generateEnumReferenceAndType(enum)
+			_, javaType := g.generateEnumTypeAccumulatingUnknown(enum)
 			prop = JSONPropertyDescriptor{
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					JavaType: javaType,
