@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
+	"os"
 )
 
 type PackageDescriptor struct {
@@ -31,15 +32,16 @@ type PackageDescriptor struct {
 type schemaGenerator struct {
 	types    map[reflect.Type]*JSONObjectDescriptor
 	packages map[string]PackageDescriptor
+	enumMap  map[string]string
 	typeMap  map[reflect.Type]reflect.Type
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, typeMap, enumMap)
 	return g.generate(t)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
@@ -48,46 +50,44 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 		types:    make(map[reflect.Type]*JSONObjectDescriptor),
 		packages: pkgMap,
 		typeMap:  typeMap,
+		enumMap:  enumMap,
 	}
 	return &g
 }
 
 func getFieldName(f reflect.StructField) string {
-	json := f.Tag.Get("json")
-	if len(json) > 0 {
-		parts := strings.Split(json, ",")
-		name := parts[0]
-		return toCamel(name)
+	field := getSubTag(f, "protobuf", "json")
+	if len(field) > 0 {
+		return field
+	} else {
+		// we don't always have a json field in protobuf so use name field when available
+		field = getSubTag(f, "protobuf", "name")
+		if len(field) > 0 {
+			return field
+		} else {
+			return f.Name
+		}
 	}
-	return f.Name
 }
 
-func toCamel(s string) string {
-	// based on https://github.com/iancoleman/strcase
-	s = strings.Trim(s, " ")
-	n := ""
-	capNext := false
-	for _, v := range s {
-		if v >= 'A' && v <= 'Z' {
-			n += string(v)
-		}
-		if v >= '0' && v <= '9' {
-			n += string(v)
-		}
-		if v >= 'a' && v <= 'z' {
-			if capNext {
-				n += strings.ToUpper(string(v))
-			} else {
-				n += string(v)
+func getFieldEnum(f reflect.StructField) string {
+	return getSubTag(f, "protobuf", "enum")
+}
+
+func getSubTag(f reflect.StructField, main string, sub string) string {
+	tag := f.Tag.Get(main)
+	if len(tag) > 0 {
+		parts := strings.Split(tag, ",")
+		for _, part := range parts {
+			initial := part
+			part = strings.TrimPrefix(part, sub+"=")
+			if initial != part {
+				return part
 			}
 		}
-		if v == '_' || v == ' ' || v == '-' {
-			capNext = true
-		} else {
-			capNext = false
-		}
 	}
-	return n
+
+	return ""
 }
 
 func getFieldDescription(f reflect.StructField) string {
@@ -100,15 +100,21 @@ func getFieldDescription(f reflect.StructField) string {
 }
 
 func (g *schemaGenerator) qualifiedName(t reflect.Type) string {
-	pkgDesc, ok := g.packages[pkgPath(t)]
+	path := pkgPath(t)
+	pkgDesc, ok := g.packages[path]
+	name := t.Name()
 	if !ok {
-		prefix := strings.Replace(pkgPath(t), "/", "_", -1)
-		prefix = strings.Replace(prefix, ".", "_", -1)
-		prefix = strings.Replace(prefix, "-", "_", -1)
-		return prefix + "_" + t.Name()
+		return escapedQualifiedName(path) + "_" + name
 	} else {
-		return pkgDesc.Prefix + t.Name()
+		return pkgDesc.Prefix + name
 	}
+}
+
+func escapedQualifiedName(path string) string {
+	prefix := strings.Replace(path, "/", "_", -1)
+	prefix = strings.Replace(prefix, ".", "_", -1)
+	prefix = strings.Replace(prefix, "-", "_", -1)
+	return prefix
 }
 
 func (g *schemaGenerator) resourceDetails(t reflect.Type) string {
@@ -116,8 +122,22 @@ func (g *schemaGenerator) resourceDetails(t reflect.Type) string {
 	return name
 }
 
+func (g *schemaGenerator) generateReferenceFrom(typeName string) string {
+	return "#/definitions/" + typeName
+}
+
 func (g *schemaGenerator) generateReference(t reflect.Type) string {
-	return "#/definitions/" + g.qualifiedName(t)
+	return g.generateReferenceFrom(g.qualifiedName(t))
+}
+
+func (g *schemaGenerator) generateEnumReferenceAndType(t string) (string, string) {
+	enum, ok := g.enumMap[t]
+	if !ok {
+		println("Unknown enum: " + t)
+		os.Exit(-1)
+	}
+
+	return g.generateReferenceFrom(escapedQualifiedName(enum)), enum
 }
 
 func (g *schemaGenerator) javaTypeArrayList(t reflect.Type) string {
@@ -366,6 +386,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		if name == "-" {
 			continue
 		}
+
 		// Skip dockerImageMetadata field
 		path := pkgPath(t)
 		if path == "github.com/openshift/origin/pkg/image/api/v1" && t.Name() == "Image" && name == "dockerImageMetadata" {
@@ -373,7 +394,18 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		}
 
 		desc := getFieldDescription(field)
-		prop := g.getPropertyDescriptor(field.Type, desc)
+		enum := getFieldEnum(field)
+		var prop JSONPropertyDescriptor
+		if len(enum) > 0 {
+			_, javaType := g.generateEnumReferenceAndType(enum)
+			prop = JSONPropertyDescriptor{
+				JavaTypeDescriptor: &JavaTypeDescriptor{
+					JavaType: javaType,
+				},
+			}
+		} else {
+			prop = g.getPropertyDescriptor(field.Type, desc)
+		}
 		if field.Anonymous && field.Type.Kind() == reflect.Struct && len(name) == 0 {
 			var newProps map[string]JSONPropertyDescriptor
 			if prop.JSONReferenceDescriptor != nil {

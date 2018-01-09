@@ -135,8 +135,7 @@
           "description": ""
         },
         "authPolicy": {
-          "type": "integer",
-          "description": ""
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy"
         },
         "connectTimeout": {
           "$ref": "#/definitions/protobuf_duration_Duration",
@@ -163,8 +162,7 @@
           "description": ""
         },
         "ingressControllerMode": {
-          "type": "integer",
-          "description": ""
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode"
         },
         "ingressService": {
           "type": "string",
@@ -219,8 +217,7 @@
           "javaType": "me.snowdrop.istio.api.model.Duration"
         },
         "controlPlaneAuthPolicy": {
-          "type": "integer",
-          "description": ""
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy"
         },
         "customConfigFile": {
           "type": "string",
@@ -529,8 +526,7 @@
       "description": "",
       "properties": {
         "condition": {
-          "type": "integer",
-          "description": ""
+          "javaType": "me.snowdrop.istio.api.model.v1.mixer.Condition"
         },
         "mapKey": {
           "type": "integer",

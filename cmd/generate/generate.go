@@ -24,11 +24,10 @@ import (
 	"strings"
 	"time"
 
-	broker  "istio.io/api/broker/v1/config"
-	mesh    "istio.io/api/mesh/v1alpha1"
-	mixer   "istio.io/api/mixer/v1"
+	broker "istio.io/api/broker/v1/config"
+	mesh "istio.io/api/mesh/v1alpha1"
+	mixer "istio.io/api/mixer/v1"
 	routing "istio.io/api/routing/v1alpha1"
-
 
 	"../../pkg/schemagen"
 	//"os"
@@ -36,43 +35,43 @@ import (
 )
 
 type Schema struct {
-	CatalogPlan             broker.CatalogPlan
-	CatalogEntry            broker.CatalogEntry
-	Deployment              broker.Deployment
-	ServiceClass            broker.ServiceClass
-	ServicePlan             broker.ServicePlan
-	MeshConfig              mesh.MeshConfig
-	ProxyConfig             mesh.ProxyConfig
-	Attributes              mixer.Attributes
-	AttributeValue          mixer.Attributes_AttributeValue
-	CheckRequest            mixer.CheckRequest
-	QuotaParams             mixer.CheckRequest_QuotaParams
-	CheckResponse           mixer.CheckResponse
-	QuotaResult             mixer.CheckResponse_QuotaResult
-	CompressedAttributes    mixer.CompressedAttributes
-	ReferencedAttributes    mixer.ReferencedAttributes
-	ReportRequest           mixer.ReportRequest
-	ReportResponse          mixer.ReportResponse
-	StringMap               mixer.StringMap
-	CircuitBreaker          routing.CircuitBreaker
-	CorsPolicy              routing.CorsPolicy
-	DestinationPolicy       routing.DestinationPolicy
-	DestinationWeight       routing.DestinationWeight
-	EgressRule              routing.EgressRule
-	HTTPFaultInjection      routing.HTTPFaultInjection
-	HTTPRedirect            routing.HTTPRedirect
-	HTTPRetry               routing.HTTPRetry
-	HTTPRewrite             routing.HTTPRewrite
-	HTTPTimeout             routing.HTTPTimeout
-	IngressRule             routing.IngressRule
-	IstioService            routing.IstioService
-	L4FaultInjection        routing.L4FaultInjection
-	L4MatchAttributes       routing.L4MatchAttributes
-	LoadBalancing           routing.LoadBalancing
-	MatchCondition          routing.MatchCondition
-	MatchRequest            routing.MatchRequest
-	RouteRule               routing.RouteRule
-	StringMatch             routing.StringMatch
+	CatalogPlan          broker.CatalogPlan
+	CatalogEntry         broker.CatalogEntry
+	Deployment           broker.Deployment
+	ServiceClass         broker.ServiceClass
+	ServicePlan          broker.ServicePlan
+	MeshConfig           mesh.MeshConfig
+	ProxyConfig          mesh.ProxyConfig
+	Attributes           mixer.Attributes
+	AttributeValue       mixer.Attributes_AttributeValue
+	CheckRequest         mixer.CheckRequest
+	QuotaParams          mixer.CheckRequest_QuotaParams
+	CheckResponse        mixer.CheckResponse
+	QuotaResult          mixer.CheckResponse_QuotaResult
+	CompressedAttributes mixer.CompressedAttributes
+	ReferencedAttributes mixer.ReferencedAttributes
+	ReportRequest        mixer.ReportRequest
+	ReportResponse       mixer.ReportResponse
+	StringMap            mixer.StringMap
+	CircuitBreaker       routing.CircuitBreaker
+	CorsPolicy           routing.CorsPolicy
+	DestinationPolicy    routing.DestinationPolicy
+	DestinationWeight    routing.DestinationWeight
+	EgressRule           routing.EgressRule
+	HTTPFaultInjection   routing.HTTPFaultInjection
+	HTTPRedirect         routing.HTTPRedirect
+	HTTPRetry            routing.HTTPRetry
+	HTTPRewrite          routing.HTTPRewrite
+	HTTPTimeout          routing.HTTPTimeout
+	IngressRule          routing.IngressRule
+	IstioService         routing.IstioService
+	L4FaultInjection     routing.L4FaultInjection
+	L4MatchAttributes    routing.L4MatchAttributes
+	LoadBalancing        routing.LoadBalancing
+	MatchCondition       routing.MatchCondition
+	MatchRequest         routing.MatchRequest
+	RouteRule            routing.RouteRule
+	StringMatch          routing.StringMatch
 }
 
 func main() {
@@ -91,7 +90,15 @@ func main() {
 		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
 		reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
 	}
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap)
+
+	enumMap := map[string]string{
+		"istio.mesh.v1apha1.MeshConfig_IngressControllerMode": "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
+		"istio.mesh.v1apha1.MeshConfig_AuthPolicy":            "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1apha1.AuthenticationPolicy":             "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mixer.v1.ReferencedAttributes_Condition":       "me.snowdrop.istio.api.model.v1.mixer.Condition",
+	}
+
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
 	if err != nil {
 		fmt.Errorf("An error occurred: %v", err)
 		return

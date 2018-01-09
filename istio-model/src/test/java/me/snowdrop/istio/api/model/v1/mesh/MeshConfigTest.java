@@ -18,74 +18,25 @@ import static org.junit.Assert.assertNull;
  */
 public class MeshConfigTest extends BaseIstioTest {
     @Test
-    public void checkMeshConfig() throws Exception {
-        String configString = "# Uncomment the following line to enable mutual TLS between proxies\n" +
-                "# authPolicy: MUTUAL_TLS\n" +
-                "#\n" +
-                "# Edit this list to avoid using mTLS to connect to these services.\n" +
-                "# Typically, these are control services (e.g kubernetes API server) that don't have Istio sidecar\n" +
-                "# to transparently terminate mTLS authentication.\n" +
-                "mtlsExcludedServices: [\"kubernetes.default.svc.cluster.local\"]\n" +
-                "\n" +
-                "# Set the following variable to true to disable policy checks by the Mixer.\n" +
-                "# Note that metrics will still be reported to the Mixer.\n" +
+    public void checkDefaultMeshConfig() throws Exception {
+        String configString = "mtlsExcludedServices: [\"kubernetes.default.svc.cluster.local\"]\n" +
                 "disablePolicyChecks: false\n" +
-                "# Set enableTracing to false to disable request tracing.\n" +
                 "enableTracing: true\n" +
-                "#\n" +
-                "# To disable the mixer completely (including metrics), comment out\n" +
-                "# the following line\n" +
                 "mixerAddress: istio-mixer.istio-system:15004\n" +
-                "# This is the ingress service name, update if you used a different name\n" +
                 "ingressService: istio-ingress\n" +
-                "#\n" +
-                "# Along with discoveryRefreshDelay, this setting determines how\n" +
-                "# frequently should Envoy fetch and update its internal configuration\n" +
-                "# from Istio Pilot. Lower refresh delay results in higher CPU\n" +
-                "# utilization and potential performance loss in exchange for faster\n" +
-                "# convergence. Tweak this value according to your setup.\n" +
                 "rdsRefreshDelay: 1s\n" +
-                "#\n" +
                 "defaultConfig:\n" +
-                "  # NOTE: If you change any values in this section, make sure to make\n" +
-                "  # the same changes in start up args in istio-ingress pods.\n" +
-                "  # See rdsRefreshDelay for explanation about this setting.\n" +
                 "  discoveryRefreshDelay: 1s\n" +
-                "  #\n" +
-                "  # TCP connection timeout between Envoy & the application, and between Envoys.\n" +
                 "  connectTimeout: 10s\n" +
-                "  #\n" +
-                "  ### ADVANCED SETTINGS #############\n" +
-                "  # Where should envoy's configuration be stored in the istio-proxy container\n" +
                 "  configPath: \"/etc/istio/proxy\"\n" +
                 "  binaryPath: \"/usr/local/bin/envoy\"\n" +
-                "  # The pseudo service name used for Envoy.\n" +
                 "  serviceCluster: istio-proxy\n" +
-                "  # These settings that determine how long an old Envoy\n" +
-                "  # process should be kept alive after an occasional reload.\n" +
                 "  drainDuration: 45s\n" +
                 "  parentShutdownDuration: 1m0s\n" +
-                "  #\n" +
-                "  # Port where Envoy listens (on local host) for admin commands\n" +
-                "  # You can exec into the istio-proxy container in a pod and\n" +
-                "  # curl the admin port (curl http://localhost:15000/) to obtain\n" +
-                "  # diagnostic information from Envoy. See\n" +
-                "  # https://lyft.github.io/envoy/docs/operations/admin.html\n" +
-                "  # for more details\n" +
                 "  proxyAdminPort: 15000\n" +
-                "  #\n" +
-                "  # Address where Istio Pilot service is running\n" +
                 "  discoveryAddress: istio-pilot.istio-system:15003\n" +
-                "  #\n" +
-                "  # Zipkin trace collector\n" +
                 "  zipkinAddress: zipkin.istio-system:9411\n" +
-                "  #\n" +
-                "  # Statsd metrics collector. Istio mixer exposes a UDP endpoint\n" +
-                "  # to collect and convert statsd metrics into Prometheus metrics.\n" +
-                "  statsdUdpAddress: istio-mixer.istio-system:9125\n" +
-                "  # Uncomment the following line to enable mutual TLS authentication between\n" +
-                "  # sidecars and istio control plane.\n" +
-                "  # controlPlaneAuthPolicy: MUTUAL_TLS";
+                "  statsdUdpAddress: istio-mixer.istio-system:9125\n";
         MeshConfig meshConfig = mapper.readValue(configString, MeshConfig.class);
         assertNotNull(meshConfig);
 
@@ -95,5 +46,36 @@ public class MeshConfigTest extends BaseIstioTest {
         assertEquals("istio-pilot.istio-system:15003", config.getDiscoveryAddress());
         assertEquals("zipkin.istio-system:9411", config.getZipkinAddress());
         assertEquals("istio-mixer.istio-system:9125", config.getStatsdUdpAddress());
+    }
+
+    @Test
+    public void checkAuthMeshConfig() throws Exception {
+        String configString = "authPolicy: MUTUAL_TLS\n" +
+                "mtlsExcludedServices: [\"kubernetes.default.svc.cluster.local\"]\n" +
+                "enableTracing: true\n" +
+                "mixerAddress: istio-mixer.istio-system:15004\n" +
+                "ingressService: istio-ingress\n" +
+                "ingressControllerMode: DEFAULT\n" +
+                "rdsRefreshDelay: 1s\n" +
+                "defaultConfig:\n" +
+                "  discoveryRefreshDelay: 1s\n" +
+                "  connectTimeout: 10s\n" +
+                "  configPath: \"/etc/istio/proxy\"\n" +
+                "  binaryPath: \"/usr/local/bin/envoy\"\n" +
+                "  serviceCluster: istio-proxy\n" +
+                "  drainDuration: 45s\n" +
+                "  parentShutdownDuration: 1m0s\n" +
+                "  proxyAdminPort: 15000\n" +
+                "  discoveryAddress: istio-pilot.istio-system:15003\n" +
+                "  zipkinAddress: zipkin.istio-system:9411\n" +
+                "  statsdUdpAddress: istio-mixer.istio-system:9125\n" +
+                "  controlPlaneAuthPolicy: MUTUAL_TLS";
+        MeshConfig meshConfig = mapper.readValue(configString, MeshConfig.class);
+        assertNotNull(meshConfig);
+
+        assertEquals(AuthenticationPolicy.MUTUAL_TLS, meshConfig.getAuthPolicy());
+        assertEquals(IngressControllerMode.DEFAULT, meshConfig.getIngressControllerMode());
+        assertEquals(AuthenticationPolicy.MUTUAL_TLS, meshConfig.getDefaultConfig().getControlPlaneAuthPolicy());
+
     }
 }
