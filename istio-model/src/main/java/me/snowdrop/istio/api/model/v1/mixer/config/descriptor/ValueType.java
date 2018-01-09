@@ -61,7 +61,7 @@ public enum ValueType {
      */
     DURATION,
     /**
-     * A map string -> string, typically used by headers.
+     * A map string - string, typically used by headers.
      */
     STRING_MAP
 }
