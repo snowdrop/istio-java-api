@@ -45,6 +45,11 @@ public class IstioExecutor {
         return knownResources.get(kind);
     }
 
+    public static <T extends IstioResource> Applier<T> getApplierFor(Class<T> resourceClass) {
+        // simple logic should work for now but might not handle trickier cases
+        return resourceClass == null ? null : getApplierFor(resourceClass.getSimpleName());
+    }
+
     public Optional<IstioResource> registerCustomResource(final String resource) {
         try {
             final Map<String, Object> resourceYaml = objectMapper.readValue(resource, Map.class);

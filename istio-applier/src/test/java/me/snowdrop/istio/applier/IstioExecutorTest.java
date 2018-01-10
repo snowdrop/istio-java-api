@@ -34,14 +34,14 @@ public class IstioExecutorTest {
                 .getResourceAsStream("route-rule.yaml");
 
         // When
-        when(adapter.createCustomResource(any(RouteRule.class), eq(IstioExecutor.getApplierFor(IstioExecutor.ROUTE_RULE_CRD_NAME))))
+        when(adapter.createCustomResource(any(RouteRule.class), eq(IstioExecutor.getApplierFor(RouteRule.class))))
                 .thenReturn(new RouteRule());
 
         // Then
         final Optional<IstioResource> istioResource = istioExecutor.registerCustomResource(routeRule);
 
         assertThat(istioResource).isPresent();
-        verify(adapter, times(1)).createCustomResource(any(RouteRule.class), eq(IstioExecutor.getApplierFor(IstioExecutor.ROUTE_RULE_CRD_NAME)));
+        verify(adapter, times(1)).createCustomResource(any(RouteRule.class), eq(IstioExecutor.getApplierFor(RouteRule.class)));
 
     }
 
@@ -54,14 +54,14 @@ public class IstioExecutorTest {
                 .getResourceAsStream("destination-policy.yaml");
 
         // When
-        when(adapter.createCustomResource(any(DestinationPolicy.class), eq(IstioExecutor.getApplierFor(IstioExecutor.DESTINATION_POLICY_CRD_NAME))))
+        when(adapter.createCustomResource(any(DestinationPolicy.class), eq(IstioExecutor.getApplierFor(DestinationPolicy.class))))
                 .thenReturn(new DestinationPolicy());
 
         // Then
         final Optional<IstioResource> istioResource = istioExecutor.registerCustomResource(destinationPolicy);
 
         assertThat(istioResource).isPresent();
-        verify(adapter, times(1)).createCustomResource(any(DestinationPolicy.class), eq(IstioExecutor.getApplierFor(IstioExecutor.DESTINATION_POLICY_CRD_NAME)));
+        verify(adapter, times(1)).createCustomResource(any(DestinationPolicy.class), eq(IstioExecutor.getApplierFor(DestinationPolicy.class)));
 
     }
 
@@ -74,13 +74,13 @@ public class IstioExecutorTest {
                 .getResourceAsStream("egress-rule.yaml");
 
         // When
-        when(adapter.createCustomResource(any(EgressRule.class), eq(IstioExecutor.getApplierFor(IstioExecutor.EGRESS_RULE_CRD_NAME)))).thenReturn(new EgressRule());
+        when(adapter.createCustomResource(any(EgressRule.class), eq(IstioExecutor.getApplierFor(EgressRule.class)))).thenReturn(new EgressRule());
 
         // Then
         final Optional<IstioResource> istioResource = istioExecutor.registerCustomResource(routeRule);
 
         assertThat(istioResource).isPresent();
-        verify(adapter, times(1)).createCustomResource(any(EgressRule.class), eq(IstioExecutor.getApplierFor(IstioExecutor.EGRESS_RULE_CRD_NAME)));
+        verify(adapter, times(1)).createCustomResource(any(EgressRule.class), eq(IstioExecutor.getApplierFor(EgressRule.class)));
 
     }
 
