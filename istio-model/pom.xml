@@ -122,12 +122,29 @@
         <version>1.7</version>
         <executions>
           <execution>
+            <id>remove-classes-pre-generation</id>
             <phase>generate-sources</phase>
             <configuration>
               <target>
                 <echo>removing the duplicate / useless generated classes</echo>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true" />
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/IstioSchema.java" verbose="true" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>remove-duplicated-builders-post-generation</id>
+            <phase>generate-test-sources</phase>
+            <configuration>
+              <target>
+                <echo>removing duplicated builder classes</echo>
+                <delete verbose="true">
+                  <fileset dir="${basedir}/target/generated-sources/annotations/io"/>
+                  <fileset dir="${basedir}/target/classes/io"/>
+                </delete>
               </target>
             </configuration>
             <goals>
