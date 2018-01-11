@@ -40,7 +40,9 @@ spec:
     @Test
     public void checkBasicRoute() throws Exception {
         RouteRule routeRule = new RouteRuleBuilder()
-                .withMetadata(new ObjectMetaBuilder().withName("my-rule").build())
+                .withNewMetadata()
+                .withName("my-rule")
+                .endMetadata()
                 .withNewDestination()
                 .withName("reviews")
                 .withNamespace("my-namespace")
