@@ -9,7 +9,9 @@ package me.snowdrop.istio.api.model.v1.routing;
 import java.util.List;
 import java.util.Map;
 
-import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import me.snowdrop.istio.api.model.IstioBaseResource;
+import me.snowdrop.istio.api.model.IstioBaseResourceBuilder;
+import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -39,10 +41,11 @@ spec:
      */
     @Test
     public void checkBasicRoute() throws Exception {
-        RouteRule routeRule = new RouteRuleBuilder()
+        final IstioBaseResource routeRule = new IstioBaseResourceBuilder()
                 .withNewMetadata()
                 .withName("my-rule")
                 .endMetadata()
+                .withNewRouteRuleSpec()
                 .withNewDestination()
                 .withName("reviews")
                 .withNamespace("my-namespace")
@@ -51,6 +54,7 @@ spec:
                 .addToLabels("version", "v1")
                 .withWeight(100)
                 .endRoute()
+                .endRouteRuleSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(routeRule);
@@ -63,12 +67,15 @@ spec:
         assertNotNull(metadata);
         assertEquals("my-rule", metadata.get("name"));
 
-        final Map<String, Map> destination = reloaded.get("destination");
+        final Map<String, Map> spec = reloaded.get("spec");
+        assertNotNull(spec);
+
+        final Map<String, Map> destination = spec.get("destination");
         assertNotNull(destination);
         assertEquals("reviews", destination.get("name"));
         assertEquals("my-namespace", destination.get("namespace"));
 
-        final List<Map> routes = (List) reloaded.get("route");
+        final List<Map> routes = (List) spec.get("route");
         assertNotNull(routes);
         final Map route = routes.get(0);
         assertNotNull(route);
@@ -78,23 +85,25 @@ spec:
 
     @Test
     public void roundtripBasicRouteShouldWork() throws Exception {
-        RouteRule routeRule = new RouteRuleBuilder()
+        final IstioBaseResource routeRule = new IstioBaseResourceBuilder()
                 .withNewMetadata()
-                .withName("my-rule")
+                .withGenerateName("my-rule")
                 .endMetadata()
+                .withNewRouteRuleSpec()
                 .withNewDestination()
                 .withName("reviews")
-                .withNamespace("my-namespace")
+                .withNamespace("namespace")
                 .endDestination()
                 .addNewRoute()
-                .addToLabels("version", "v1")
                 .withWeight(100)
+                .addToLabels("version", "v1")
                 .endRoute()
+                .endRouteRuleSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(routeRule);
 
-        RouteRule reloaded = mapper.readValue(output, RouteRule.class);
+        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
 
         assertEquals(routeRule, reloaded);
     }

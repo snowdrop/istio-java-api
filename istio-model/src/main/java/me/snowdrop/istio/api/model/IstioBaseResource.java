@@ -6,20 +6,45 @@
  */
 package me.snowdrop.istio.api.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.builder.annotations.Inline;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-@Buildable(builderPackage = "me.snowdrop.istio.api.builder", generateBuilderPackage = true, editableEnabled = false, refs = {@BuildableReference(ObjectMeta.class)})
+@JsonDeserialize
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonPropertyOrder({
+        "apiVersion",
+        "kind",
+        "metadata",
+        "spec"
+})
+@ToString
+@EqualsAndHashCode
+@Buildable(builderPackage = "me.snowdrop.istio.api.builder", generateBuilderPackage = true, editableEnabled = false, refs = {@BuildableReference(ObjectMeta.class)}, inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class IstioBaseResource implements IstioResource {
     private ObjectMeta metadata;
-    private final String kind = getClass().getSimpleName();
+    private String kind;
     private String apiVersion = "config.istio.io/v1alpha2";
+    private IstioSpec spec;
 
     public IstioBaseResource() {
+    }
+
+    public IstioBaseResource(String apiVersion, String kind, ObjectMeta metadata, IstioSpec spec) {
+        this.metadata = metadata;
+        this.kind = kind;
+        this.apiVersion = apiVersion;
+        this.spec = spec;
     }
 
     @Override
@@ -34,6 +59,10 @@ public class IstioBaseResource implements IstioResource {
 
     @Override
     public String getKind() {
+        if (kind == null && spec != null) {
+            kind = spec.getKind();
+        }
+        
         return kind;
     }
 
@@ -45,5 +74,13 @@ public class IstioBaseResource implements IstioResource {
     @Override
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    public IstioSpec getSpec() {
+        return spec;
+    }
+
+    public void setSpec(IstioSpec spec) {
+        this.spec = spec;
     }
 }

@@ -55,7 +55,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
         try {
             if (ISTIO_CUSTOM_RESOURCES.contains(clazz.name())) {
-                clazz._extends(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioBaseResource"));
+                clazz._implements(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioSpec"));
             }
         } catch (JClassAlreadyExistsException e) {
             throw new RuntimeException(e);

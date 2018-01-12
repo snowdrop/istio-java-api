@@ -16,7 +16,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import me.snowdrop.istio.api.model.IstioBaseResource;
 import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.IstioSpec;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -24,7 +27,7 @@ import me.snowdrop.istio.api.model.IstioResource;
 public class IstioDeserializer extends JsonDeserializer<IstioResource> {
     private static final String KIND = "kind";
 
-    private static final Map<String, Class<? extends IstioResource>> MAP = new HashMap<>();
+    private static final Map<String, Class<? extends IstioSpec>> MAP = new HashMap<>();
 
     private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.api.model.";
     private static final String ISTIO_VERSION = "v1";
@@ -37,17 +40,31 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
     @Override
     public IstioResource deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectNode node = p.readValueAsTree();
-        JsonNode kind = node.get(KIND);
-        if (kind != null) {
-            String value = kind.textValue();
-            Class<? extends IstioResource> resourceType = getTypeForName(value);
-            if (resourceType == null) {
-                throw ctxt.mappingException("No resource type found for kind:" + value);
-            } else {
-                return p.getCodec().treeToValue(node, resourceType);
+
+        JsonNode kindNode = node.get(KIND);
+        if (kindNode != null) {
+            final String kind = kindNode.textValue();
+
+            // find the associated spec class
+            Class<? extends IstioSpec> specType = getTypeForName(kind);
+            if (specType == null) {
+                throw ctxt.mappingException(String.format("No resource type found for kind:%s", kind));
             }
+
+            final String apiVersion = node.get("apiVersion").textValue();
+
+            // deserialize metadata
+            final JsonNode metadataNode = node.get("metadata");
+            final ObjectMeta metadata = p.getCodec().treeToValue(metadataNode, ObjectMeta.class);
+
+            // deserialize spec
+            final JsonNode specNode = node.get("spec");
+            final IstioSpec spec = p.getCodec().treeToValue(specNode, specType);
+
+
+            return new IstioBaseResource(apiVersion, kind, metadata, spec);
         }
-        return null;
+        throw new IllegalArgumentException("Cannot process resources without a 'kind' field");
     }
 
     private static Class getTypeForName(String name) {
