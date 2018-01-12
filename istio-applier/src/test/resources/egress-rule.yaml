@@ -1,0 +1,11 @@
+kind: EgressRule
+metadata:
+  name: foo-egress-rule
+spec:
+  destination:
+    service: www.foo.com
+  ports:
+    - port: 80
+      protocol: http
+    - port: 443
+      protocol: https

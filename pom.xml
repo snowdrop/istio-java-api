@@ -161,6 +161,10 @@
     <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>2.0.4</kubernetes-model.version>
+    <kubernetes-client.version>3.1.7</kubernetes-client.version>
+    <junit.version>4.12</junit.version>
+    <mockito.version>2.13.0</mockito.version>
+    <assertj.version>3.9.0</assertj.version>
     <sundrio.version>0.7.6</sundrio.version>
     <lombok.version>1.16.18</lombok.version>
   </properties>
@@ -168,6 +172,7 @@
   <modules>
     <module>istio-model-annotator</module>
     <module>istio-model</module>
+    <module>istio-applier</module>
   </modules>
 
   <dependencyManagement>
@@ -188,6 +193,19 @@
         <version>${kubernetes-model.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-client</artifactId>
+        <version>${kubernetes-client.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-openshift-uberjar</artifactId>
+        <version>${kubernetes-client.version}</version>
+        <scope>provided</scope>
+        <classifier>versioned</classifier>
+      </dependency>
+      <dependency>
         <groupId>io.sundr</groupId>
         <artifactId>builder-annotations</artifactId>
         <version>${sundrio.version}</version>
@@ -196,6 +214,24 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
