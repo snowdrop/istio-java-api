@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
-import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -31,8 +30,7 @@ public class TypedValueMapDeserializer extends JsonDeserializer<Map<String, Type
         final int size = root.size();
         if (size > 0) {
             final Map<String, TypedValue> values = new HashMap<>(size);
-            // todo: parse expression and determine type instead of hardcoding ValueType.STRING
-            root.fields().forEachRemaining(field -> values.put(field.getKey(), new TypedValue(ValueType.STRING, field.getValue().textValue())));
+            root.fields().forEachRemaining(field -> values.put(field.getKey(), TypedValue.from(field.getValue().textValue(), field.getKey())));
             return values;
         } else {
             return null;
