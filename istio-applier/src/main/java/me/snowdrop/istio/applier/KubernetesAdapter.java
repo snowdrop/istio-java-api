@@ -24,6 +24,8 @@ public class KubernetesAdapter implements Adapter {
                     crdName, client.getMasterUrl()));
         }
 
-        return client.customResources(customResourceDefinition, IstioBaseResource.class, KubernetesResourceList.class, DoneableIstioBaseResource.class).create(resource);
+        return client.customResources(customResourceDefinition, IstioBaseResource.class, KubernetesResourceList.class, DoneableIstioBaseResource.class).
+                inNamespace("istio-system")
+                .create(resource);
     }
 }
