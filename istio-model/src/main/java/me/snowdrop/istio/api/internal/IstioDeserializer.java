@@ -43,7 +43,9 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
         KIND_TO_CLASSNAME.put("checknothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "CheckNothing");
         KIND_TO_CLASSNAME.put("listentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ListEntry");
         KIND_TO_CLASSNAME.put("logentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "LogEntry");
+        KIND_TO_CLASSNAME.put("metric", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Metric");
         KIND_TO_CLASSNAME.put("quota", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Quota");
+        KIND_TO_CLASSNAME.put("reportnothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ReportNothing");
     }
 
 
