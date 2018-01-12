@@ -21,7 +21,7 @@
 
   <groupId>me.snowdrop</groupId>
   <artifactId>istio-java-api</artifactId>
-  <version>0.4</version>
+  <version>0.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
 
@@ -62,7 +62,7 @@
     <url>https://github.com/snowdrop/istio-java-api</url>
     <connection>scm:git:https://github.com/snowdrop/istio-java-api.git</connection>
     <developerConnection>scm:git:git@github.com:snowdrop/istio-java-api.git</developerConnection>
-    <tag>0.4</tag>
+    <tag>HEAD</tag>
   </scm>
 
 
