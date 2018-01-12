@@ -63,6 +63,16 @@ public class IstioExecutor {
         }
     }
 
+    public Optional<IstioResource> registerCustomResource(final IstioBaseResource resource) {
+        final String kind = resource.getKind();
+        final String crdName = getCRDNameFor(kind);
+        if (crdName != null) {
+            return Optional.of(client.createCustomResource(crdName, resource));
+        } else {
+            throw new IllegalArgumentException(String.format("%s is not a known Istio resource.", kind));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private Optional<IstioResource> apply(Map<String, Object> resourceYaml) {
         if (resourceYaml.containsKey(KIND)) {
