@@ -68,7 +68,7 @@ spec:
     /**
      * Optional. An expression to compute the type of the monitored resource this log entry is being recorded on. If the logging backend supports monitored resources, these fields are used to populate that resource. Otherwise these fields will be ignored by the adapter.
      */
-    private String monitoreResourceType;
+    private String monitoredResourceType;
     /**
      * Optional. A set of expressions that will form the dimensions of the monitored resource this log entry is being recorded on. If the logging backend supports monitored resources, these fields are used to populate that resource. Otherwise these fields will be ignored by the adapter.
      */
@@ -105,12 +105,12 @@ spec:
         this.severity = severity;
     }
 
-    public String getMonitoreResourceType() {
-        return monitoreResourceType;
+    public String getMonitoredResourceType() {
+        return monitoredResourceType;
     }
 
-    public void setMonitoreResourceType(String monitoreResourceType) {
-        this.monitoreResourceType = monitoreResourceType;
+    public void setMonitoredResourceType(String monitoredResourceType) {
+        this.monitoredResourceType = monitoredResourceType;
     }
 
     public Map<String, TypedValue> getMonitoredResourceDimensions() {
