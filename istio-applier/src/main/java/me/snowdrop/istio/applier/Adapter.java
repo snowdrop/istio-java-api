@@ -1,7 +1,7 @@
 package me.snowdrop.istio.applier;
 
-import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.IstioBaseResource;
 
 public interface Adapter {
-    <T extends IstioResource> T createCustomResource(T resource, Applier<T> applier);
+    IstioBaseResource createCustomResource(String crdName, IstioBaseResource resource);
 }

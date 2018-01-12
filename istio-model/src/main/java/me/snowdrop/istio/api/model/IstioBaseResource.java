@@ -16,11 +16,11 @@ import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.internal.IstioDeserializer;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-@JsonDeserialize
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({
         "apiVersion",
@@ -31,6 +31,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Buildable(builderPackage = "me.snowdrop.istio.api.builder", generateBuilderPackage = true, editableEnabled = false, refs = {@BuildableReference(ObjectMeta.class)}, inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@JsonDeserialize(using = IstioDeserializer.class)
 public class IstioBaseResource implements IstioResource {
     private ObjectMeta metadata;
     private String kind;

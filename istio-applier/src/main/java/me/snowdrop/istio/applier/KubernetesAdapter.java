@@ -3,7 +3,8 @@ package me.snowdrop.istio.applier;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.DoneableIstioBaseResource;
+import me.snowdrop.istio.api.model.IstioBaseResource;
 
 public class KubernetesAdapter implements Adapter {
 
@@ -15,8 +16,7 @@ public class KubernetesAdapter implements Adapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends IstioResource> T createCustomResource(T resource, Applier<T> applier) {
-        final String crdName = applier.getCustomResourceDefinitionName();
+    public IstioBaseResource createCustomResource(String crdName, IstioBaseResource resource) {
 
         final CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().withName(crdName).get();
         if (customResourceDefinition == null) {
@@ -24,6 +24,6 @@ public class KubernetesAdapter implements Adapter {
                     crdName, client.getMasterUrl()));
         }
 
-        return client.customResources(customResourceDefinition, applier.getResourceClass(), KubernetesResourceList.class, applier.getDoneableClass()).create(resource);
+        return client.customResources(customResourceDefinition, IstioBaseResource.class, KubernetesResourceList.class, DoneableIstioBaseResource.class).create(resource);
     }
 }

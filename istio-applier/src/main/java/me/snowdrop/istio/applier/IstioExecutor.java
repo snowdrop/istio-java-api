@@ -6,48 +6,43 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.snowdrop.istio.api.model.v1.routing.DestinationPolicy;
-import me.snowdrop.istio.api.model.v1.routing.DoneableDestinationPolicy;
-import me.snowdrop.istio.api.model.v1.routing.EgressRule;
-import me.snowdrop.istio.api.model.v1.routing.DoneableEgressRule;
-import me.snowdrop.istio.api.model.v1.routing.RouteRule;
-import me.snowdrop.istio.api.model.v1.routing.DoneableRouteRule;
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import me.snowdrop.istio.api.internal.IstioDeserializer;
+import me.snowdrop.istio.api.model.IstioBaseResource;
 import me.snowdrop.istio.api.model.IstioResource;
 
 public class IstioExecutor {
-    public static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
     public static final String DESTINATION_POLICY_CRD_NAME = "destinationpolicies.config.istio.io";
     public static final String EGRESS_RULE_CRD_NAME = "egressrules.config.istio.io";
+    public static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
 
     private final static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+
+    static {
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(IstioBaseResource.class, new IstioDeserializer());
+        objectMapper.registerModule(module);
+    }
+
     private static final String KIND = "kind";
-    private static final Map<String, Applier<? extends IstioResource>> knownResources = new ConcurrentHashMap<>();
+    private static final Map<String, String> kindToCRD = new ConcurrentHashMap<>();
+
+    static {
+        kindToCRD.put("DestinationPolicy", DESTINATION_POLICY_CRD_NAME);
+        kindToCRD.put("EgressRule", EGRESS_RULE_CRD_NAME);
+        kindToCRD.put("RouteRule", ROUTE_RULE_CRD_NAME);
+    }
+
     private final Adapter client;
 
     public IstioExecutor(Adapter client) {
         this.client = client;
-
-        final Applier<RouteRule> routeRuleApplier = new GenericApplier<>("RouteRule", ROUTE_RULE_CRD_NAME, RouteRule.class, DoneableRouteRule.class);
-        final Applier<DestinationPolicy> destinationPolicyApplier = new GenericApplier<>("DestinationPolicy", DESTINATION_POLICY_CRD_NAME, DestinationPolicy.class, DoneableDestinationPolicy.class);
-        final Applier<EgressRule> egressRuleApplier = new GenericApplier<>("EgressRule", EGRESS_RULE_CRD_NAME, EgressRule.class, DoneableEgressRule.class);
-
-
-        knownResources.put(routeRuleApplier.getKind(), routeRuleApplier);
-        knownResources.put(destinationPolicyApplier.getKind(), destinationPolicyApplier);
-        knownResources.put(egressRuleApplier.getKind(), egressRuleApplier);
     }
 
-    public static Applier getApplierFor(String kind) {
-        return knownResources.get(kind);
-    }
-
-    public static <T extends IstioResource> Applier<T> getApplierFor(Class<T> resourceClass) {
-        // simple logic should work for now but might not handle trickier cases
-        return resourceClass == null ? null : getApplierFor(resourceClass.getSimpleName());
+    public static String getCRDNameFor(String kind) {
+        return kindToCRD.get(kind);
     }
 
     public Optional<IstioResource> registerCustomResource(final String resource) {
@@ -71,14 +66,12 @@ public class IstioExecutor {
     @SuppressWarnings("unchecked")
     private Optional<IstioResource> apply(Map<String, Object> resourceYaml) {
         if (resourceYaml.containsKey(KIND)) {
-
             final String kind = (String) resourceYaml.get(KIND);
-            final Applier<? extends IstioResource> applier = knownResources.get(kind);
+            final String crdName = getCRDNameFor(kind);
+            if (crdName != null) {
+                final IstioBaseResource resource = objectMapper.convertValue(resourceYaml, IstioBaseResource.class);
 
-            if (applier != null) {
-                final IstioResource resource = objectMapper.convertValue(resourceYaml, applier.getResourceClass());
-
-                return Optional.of(client.createCustomResource(resource, (Applier<IstioResource>) applier));
+                return Optional.of(client.createCustomResource(crdName, resource));
             } else {
                 throw new IllegalArgumentException(String.format("%s is not a known Istio resource.", kind));
             }
