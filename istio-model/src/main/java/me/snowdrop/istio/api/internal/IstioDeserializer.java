@@ -26,15 +26,25 @@ import me.snowdrop.istio.api.model.IstioSpec;
  */
 public class IstioDeserializer extends JsonDeserializer<IstioResource> {
     private static final String KIND = "kind";
-
-    private static final Map<String, Class<? extends IstioSpec>> MAP = new HashMap<>();
-
     private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.api.model.";
-    private static final String ISTIO_VERSION = "v1";
-    private static final String ISTIO_BROKER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + ".broker.";
-    private static final String ISTIO_MESH_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + ".mesh.";
-    private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + ".mixer.";
-    private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + ".routing.";
+    private static final String ISTIO_VERSION = "v1.";
+    private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
+    private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
+    private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
+
+
+    private static final Map<String, Class<? extends IstioSpec>> KIND_TO_TYPE = new HashMap<>();
+    private static final Map<String, String> KIND_TO_CLASSNAME = new HashMap<>();
+
+    static {
+        KIND_TO_CLASSNAME.put("RouteRule", ISTIO_ROUTING_PACKAGE_PREFIX + "RouteRule");
+        KIND_TO_CLASSNAME.put("DestinationPolicy", ISTIO_ROUTING_PACKAGE_PREFIX + "DestinationPolicy");
+        KIND_TO_CLASSNAME.put("EgressRule", ISTIO_ROUTING_PACKAGE_PREFIX + "EgressRule");
+        KIND_TO_CLASSNAME.put("checknothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "CheckNothing");
+        KIND_TO_CLASSNAME.put("listentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ListEntry");
+        KIND_TO_CLASSNAME.put("logentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "LogEntry");
+        KIND_TO_CLASSNAME.put("quota", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Quota");
+    }
 
 
     @Override
@@ -48,7 +58,7 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
             // find the associated spec class
             Class<? extends IstioSpec> specType = getTypeForName(kind);
             if (specType == null) {
-                throw ctxt.mappingException(String.format("No resource type found for kind:%s", kind));
+                throw ctxt.mappingException(String.format("No resource type found for kind: %s", kind));
             }
 
             final String apiVersion = node.get("apiVersion").textValue();
@@ -68,26 +78,15 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
     }
 
     private static Class getTypeForName(String name) {
-        Class result = MAP.get(name);
+        Class result = KIND_TO_TYPE.get(name);
         if (result == null) {
-            result = loadClassIfExists(ISTIO_PACKAGE_PREFIX + name);
-            if (result == null) {
-                result = loadClassIfExists(ISTIO_ROUTING_PACKAGE_PREFIX + name);
-                if (result == null) {
-                    result = loadClassIfExists(ISTIO_BROKER_PACKAGE_PREFIX + name);
-                    if (result == null) {
-                        result = loadClassIfExists(ISTIO_MIXER_PACKAGE_PREFIX + name);
-                        if (result == null) {
-                            result = loadClassIfExists(ISTIO_MESH_PACKAGE_PREFIX + name);
-                        }
-                    }
-                }
+            final String className = KIND_TO_CLASSNAME.get(name);
+            if (className != null) {
+                result = loadClassIfExists(className);
+                KIND_TO_TYPE.put(name, result);
             }
         }
 
-        if (result != null) {
-            MAP.put(name, result);
-        }
         return result;
     }
 
@@ -95,7 +94,7 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
         try {
             return IstioDeserializer.class.getClassLoader().loadClass(className);
         } catch (Throwable t) {
-            return null;
+            throw new IllegalArgumentException(String.format("Cannot load class: %s", className), t);
         }
     }
 }
