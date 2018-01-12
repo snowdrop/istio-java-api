@@ -27,8 +27,6 @@ import (
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	mixer_config "istio.io/api/mixer/v1/config"
-	mixer_config_client "istio.io/api/mixer/v1/config/client"
-	mixer_config_descriptor "istio.io/api/mixer/v1/config/descriptor"
 	routing "istio.io/api/routing/v1alpha1"
 
 	"../../pkg/schemagen"
@@ -56,44 +54,11 @@ type Schema struct {
 	ReportResponse                           mixer.ReportResponse
 	StringMap                                mixer.StringMap
 	Action                                   mixer_config.Action
-	Adapter                                  mixer_config.Adapter
-	Aspect                                   mixer_config.Aspect
-	AspectRule                               mixer_config.AspectRule
 	AttributeManifest                        mixer_config.AttributeManifest
 	AttributeInfo                            mixer_config.AttributeManifest_AttributeInfo
-	DnsName                                  mixer_config.DnsName
-	EmailAddress                             mixer_config.EmailAddress
-	GlobalConfig                             mixer_config.GlobalConfig
 	Handler                                  mixer_config.Handler
 	Instance                                 mixer_config.Instance
-	IpAddress                                mixer_config.IpAddress
 	Rule                                     mixer_config.Rule
-	ServiceConfig                            mixer_config.ServiceConfig
-	Uri                                      mixer_config.Uri
-	APIKey                                   mixer_config_client.APIKey
-	AttributeMatch                           mixer_config_client.AttributeMatch
-	EndUserAuthenticationPolicySpec          mixer_config_client.EndUserAuthenticationPolicySpec
-	EndUserAuthenticationPolicySpecBinding   mixer_config_client.EndUserAuthenticationPolicySpecBinding
-	EndUserAuthenticationPolicySpecReference mixer_config_client.EndUserAuthenticationPolicySpecReference
-	HTTPAPISpec                              mixer_config_client.HTTPAPISpec
-	HTTPAPISpecBinding                       mixer_config_client.HTTPAPISpecBinding
-	HTTPAPISpecPattern                       mixer_config_client.HTTPAPISpecPattern
-	HTTPAPISpecReference                     mixer_config_client.HTTPAPISpecReference
-	HttpClientConfig                         mixer_config_client.HttpClientConfig
-	JWT                                      mixer_config_client.JWT
-	Quota                                    mixer_config_client.Quota
-	QuotaRule                                mixer_config_client.QuotaRule
-	QuotaSpec                                mixer_config_client.QuotaSpec
-	QuotaSpecBinding                         mixer_config_client.QuotaSpecBinding
-	ServiceConfig2                           mixer_config_client.ServiceConfig
-	StringMatch2                             mixer_config_client.StringMatch
-	TcpClientConfig                          mixer_config_client.TcpClientConfig
-	TransportConfig                          mixer_config_client.TransportConfig
-	LogEntryDescriptor                       mixer_config_descriptor.LogEntryDescriptor
-	MetricDescriptor                         mixer_config_descriptor.MetricDescriptor
-	MonitoredResourceDescriptor              mixer_config_descriptor.MonitoredResourceDescriptor
-	PrincipalDescriptor                      mixer_config_descriptor.PrincipalDescriptor
-	QuotaDescriptor                          mixer_config_descriptor.QuotaDescriptor
 	CircuitBreaker                           routing.CircuitBreaker
 	CorsPolicy                               routing.CorsPolicy
 	DestinationPolicy                        routing.DestinationPolicy
@@ -121,8 +86,6 @@ func main() {
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/mixer/v1/config", "me.snowdrop.istio.api.model.v1.mixer.config", "istio_mixer_config_"},
-		{"istio.io/api/mixer/v1/config/client", "me.snowdrop.istio.api.model.v1.mixer.config.client", "istio_mixer_config_client_"},
-		{"istio.io/api/mixer/v1/config/descriptor", "me.snowdrop.istio.api.model.v1.mixer.config.descriptor", "istio_mixer_config_descriptor_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
@@ -141,9 +104,6 @@ func main() {
 		"istio.mesh.v1apha1.AuthenticationPolicy":                           "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
 		"istio.mixer.v1.ReferencedAttributes_Condition":                     "me.snowdrop.istio.api.model.v1.mixer.Condition",
 		"istio.mixer.v1.config.descriptor.ValueType":                        "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
-		"istio.mixer.v1.config.descriptor.LogEntryDescriptor_PayloadFormat": "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.PayloadFormat",
-		"istio.mixer.v1.config.descriptor.MetricDescriptor_MetricKind":      "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.MetricKind",
-		"istio.mixer.v1.config.client.TransportConfig_NetworkFailPolicy":    "me.snowdrop.istio.api.model.v1.mixer.config.client.NetworkFailPolicy",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
