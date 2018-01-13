@@ -7,9 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import me.snowdrop.istio.api.internal.IstioDeserializer;
 import me.snowdrop.istio.api.model.IstioResource;
 
 public class IstioExecutor {
@@ -18,12 +16,6 @@ public class IstioExecutor {
     public static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
 
     private final static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-
-    static {
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(IstioResource.class, new IstioDeserializer());
-        objectMapper.registerModule(module);
-    }
 
     private static final String KIND = "kind";
     private static final Map<String, String> kindToCRD = new ConcurrentHashMap<>();
