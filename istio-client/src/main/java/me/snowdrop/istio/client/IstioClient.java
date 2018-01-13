@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import me.snowdrop.istio.api.model.IstioResource;
 
-public class IstioExecutor {
+public class IstioClient {
     public static final String DESTINATION_POLICY_CRD_NAME = "destinationpolicies.config.istio.io";
     public static final String EGRESS_RULE_CRD_NAME = "egressrules.config.istio.io";
     public static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
@@ -28,7 +28,7 @@ public class IstioExecutor {
 
     private final Adapter client;
 
-    public IstioExecutor(Adapter client) {
+    public IstioClient(Adapter client) {
         this.client = client;
     }
 
