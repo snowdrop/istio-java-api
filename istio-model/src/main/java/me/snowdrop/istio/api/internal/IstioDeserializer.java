@@ -17,13 +17,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import me.snowdrop.istio.api.model.IstioBaseResource;
+import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class IstioDeserializer extends JsonDeserializer<IstioBaseResource> {
+public class IstioDeserializer extends JsonDeserializer<IstioResource> {
     private static final String KIND = "kind";
     private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.api.model.";
     private static final String ISTIO_VERSION = "v1.";
@@ -49,7 +49,7 @@ public class IstioDeserializer extends JsonDeserializer<IstioBaseResource> {
 
 
     @Override
-    public IstioBaseResource deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public IstioResource deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectNode node = p.readValueAsTree();
 
         JsonNode kindNode = node.get(KIND);
@@ -73,7 +73,7 @@ public class IstioDeserializer extends JsonDeserializer<IstioBaseResource> {
             final IstioSpec spec = p.getCodec().treeToValue(specNode, specType);
 
 
-            return new IstioBaseResource(apiVersion, kind, metadata, spec);
+            return new IstioResource(apiVersion, kind, metadata, spec);
         }
         throw new IllegalArgumentException("Cannot process resources without a 'kind' field");
     }

@@ -9,9 +9,8 @@ package me.snowdrop.istio.api.model.v1.routing;
 import java.util.List;
 import java.util.Map;
 
-import me.snowdrop.istio.api.model.IstioBaseResource;
-import me.snowdrop.istio.api.model.IstioBaseResourceBuilder;
 import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.IstioResourceBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -41,7 +40,7 @@ spec:
      */
     @Test
     public void checkBasicRoute() throws Exception {
-        final IstioBaseResource routeRule = new IstioBaseResourceBuilder()
+        final IstioResource routeRule = new IstioResourceBuilder()
                 .withNewMetadata()
                 .withName("my-rule")
                 .endMetadata()
@@ -85,7 +84,7 @@ spec:
 
     @Test
     public void roundtripBasicRouteShouldWork() throws Exception {
-        final IstioBaseResource routeRule = new IstioBaseResourceBuilder()
+        final IstioResource routeRule = new IstioResourceBuilder()
                 .withNewMetadata()
                 .withGenerateName("my-rule")
                 .endMetadata()

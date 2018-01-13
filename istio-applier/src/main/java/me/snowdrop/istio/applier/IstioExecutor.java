@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import me.snowdrop.istio.api.internal.IstioDeserializer;
-import me.snowdrop.istio.api.model.IstioBaseResource;
 import me.snowdrop.istio.api.model.IstioResource;
 
 public class IstioExecutor {
@@ -22,7 +21,7 @@ public class IstioExecutor {
 
     static {
         SimpleModule module = new SimpleModule();
-        module.addDeserializer(IstioBaseResource.class, new IstioDeserializer());
+        module.addDeserializer(IstioResource.class, new IstioDeserializer());
         objectMapper.registerModule(module);
     }
 
@@ -63,7 +62,7 @@ public class IstioExecutor {
         }
     }
 
-    public Optional<IstioResource> registerCustomResource(final IstioBaseResource resource) {
+    public Optional<IstioResource> registerCustomResource(final IstioResource resource) {
         final String kind = resource.getKind();
         final String crdName = getCRDNameFor(kind);
         if (crdName != null) {
@@ -79,7 +78,7 @@ public class IstioExecutor {
             final String kind = (String) resourceYaml.get(KIND);
             final String crdName = getCRDNameFor(kind);
             if (crdName != null) {
-                final IstioBaseResource resource = objectMapper.convertValue(resourceYaml, IstioBaseResource.class);
+                final IstioResource resource = objectMapper.convertValue(resourceYaml, IstioResource.class);
 
                 return Optional.of(client.createCustomResource(crdName, resource));
             } else {

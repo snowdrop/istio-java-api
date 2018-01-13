@@ -6,8 +6,8 @@
  */
 package me.snowdrop.istio.api.model.v1.mixer.template;
 
-import me.snowdrop.istio.api.model.IstioBaseResourceBuilder;
 import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.IstioResourceBuilder;
 import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
 import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
 import me.snowdrop.istio.tests.BaseIstioTest;
@@ -36,7 +36,7 @@ spec:
     destinationVersion: destination.labels["version"] | "unknown"
          */
 
-        IstioResource quota = new IstioBaseResourceBuilder()
+        IstioResource quota = new IstioResourceBuilder()
                 .withNewMetadata()
                 .withName("requestcount")
                 .withNamespace("istio-config-default")
