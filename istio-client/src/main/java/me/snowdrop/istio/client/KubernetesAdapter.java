@@ -1,4 +1,4 @@
-package me.snowdrop.istio.applier;
+package me.snowdrop.istio.client;
 
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;

@@ -1,4 +1,4 @@
-package me.snowdrop.istio.applier;
+package me.snowdrop.istio.client;
 
 import me.snowdrop.istio.api.model.IstioResource;
 

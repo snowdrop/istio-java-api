@@ -1,4 +1,4 @@
-package me.snowdrop.istio.applier;
+package me.snowdrop.istio.client;
 
 import java.io.InputStream;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package me.snowdrop.istio.applier;
+package me.snowdrop.istio.client;
 
 import java.io.IOException;
 import java.io.InputStream;

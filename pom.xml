@@ -172,7 +172,7 @@
   <modules>
     <module>istio-model-annotator</module>
     <module>istio-model</module>
-    <module>istio-applier</module>
+    <module>istio-client</module>
   </modules>
 
   <dependencyManagement>

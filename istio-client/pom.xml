@@ -25,10 +25,10 @@
     <version>0.5-SNAPSHOT</version>
   </parent>
 
-  <artifactId>istio-applier</artifactId>
+  <artifactId>istio-client</artifactId>
   <packaging>jar</packaging>
 
-  <name>Snowdrop :: Istio Java API :: Applier</name>
+  <name>Snowdrop :: Istio Java API :: Client</name>
 
   <dependencies>
     <dependency>
