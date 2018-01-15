@@ -4,36 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import me.snowdrop.istio.api.model.IstioResource;
 
+import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDNameFor;
+
 public class IstioClient {
-    public static final String DESTINATION_POLICY_CRD_NAME = "destinationpolicies.config.istio.io";
-    public static final String EGRESS_RULE_CRD_NAME = "egressrules.config.istio.io";
-    public static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
 
     private final static ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 
     private static final String KIND = "kind";
-    private static final Map<String, String> kindToCRD = new ConcurrentHashMap<>();
-
-    static {
-        kindToCRD.put("DestinationPolicy", DESTINATION_POLICY_CRD_NAME);
-        kindToCRD.put("EgressRule", EGRESS_RULE_CRD_NAME);
-        kindToCRD.put("RouteRule", ROUTE_RULE_CRD_NAME);
-    }
 
     private final Adapter client;
 
     public IstioClient(Adapter client) {
         this.client = client;
-    }
-
-    public static String getCRDNameFor(String kind) {
-        return kindToCRD.get(kind);
     }
 
     public Optional<IstioResource> registerCustomResource(final String resource) {

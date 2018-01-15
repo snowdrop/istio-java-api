@@ -9,6 +9,7 @@ package me.snowdrop.istio.api.internal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import me.snowdrop.istio.api.model.IstioSpec;
 
@@ -22,10 +23,14 @@ public class IstioSpecRegistry {
     private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
     private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
 
-
     private static final Map<String, Class<? extends IstioSpec>> KIND_TO_TYPE = new HashMap<>();
     private static final Map<String, String> KIND_TO_CLASSNAME = new HashMap<>();
 
+    private static final String DESTINATION_POLICY_CRD_NAME = "destinationpolicies.config.istio.io";
+    private static final String EGRESS_RULE_CRD_NAME = "egressrules.config.istio.io";
+    private static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
+    private static final Map<String, String> kindToCRD = new ConcurrentHashMap<>();
+    
     static {
         KIND_TO_CLASSNAME.put("RouteRule", ISTIO_ROUTING_PACKAGE_PREFIX + "RouteRule");
         KIND_TO_CLASSNAME.put("DestinationPolicy", ISTIO_ROUTING_PACKAGE_PREFIX + "DestinationPolicy");
@@ -36,6 +41,10 @@ public class IstioSpecRegistry {
         KIND_TO_CLASSNAME.put("metric", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Metric");
         KIND_TO_CLASSNAME.put("quota", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Quota");
         KIND_TO_CLASSNAME.put("reportnothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ReportNothing");
+
+        kindToCRD.put("DestinationPolicy", DESTINATION_POLICY_CRD_NAME);
+        kindToCRD.put("EgressRule", EGRESS_RULE_CRD_NAME);
+        kindToCRD.put("RouteRule", ROUTE_RULE_CRD_NAME);
     }
 
     public static Class<? extends IstioSpec> resolveIstioSpecForKind(String name) {
@@ -55,6 +64,10 @@ public class IstioSpecRegistry {
         // this relies on the fact that currently generated IstioSpec classes use their simple names as kind… This assumption
         // might turn out wrong at some point in the future
         return KIND_TO_CLASSNAME.containsKey(simpleClassName);
+    }
+
+    public static String getCRDNameFor(String kind) {
+        return kindToCRD.get(kind);
     }
 
     private static Class<? extends IstioSpec> loadClassIfExists(String className) {
