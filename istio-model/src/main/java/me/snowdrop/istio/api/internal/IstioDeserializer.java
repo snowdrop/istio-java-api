@@ -18,7 +18,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
 
-import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getTypeForName;
+import static me.snowdrop.istio.api.internal.IstioSpecRegistry.resolveIstioSpecForKind;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -36,7 +36,7 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
             final String kind = kindNode.textValue();
 
             // find the associated spec class
-            Class<? extends IstioSpec> specType = getTypeForName(kind);
+            Class<? extends IstioSpec> specType = resolveIstioSpecForKind(kind);
             if (specType == null) {
                 throw ctxt.mappingException(String.format("No resource type found for kind: %s", kind));
             }

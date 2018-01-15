@@ -38,7 +38,7 @@ public class IstioSpecRegistry {
         KIND_TO_CLASSNAME.put("reportnothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ReportNothing");
     }
 
-    public static Class<? extends IstioSpec> getTypeForName(String name) {
+    public static Class<? extends IstioSpec> resolveIstioSpecForKind(String name) {
         Class<? extends IstioSpec> result = KIND_TO_TYPE.get(name);
         if (result == null) {
             final String className = KIND_TO_CLASSNAME.get(name);
