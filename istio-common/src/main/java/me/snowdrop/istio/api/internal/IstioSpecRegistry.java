@@ -51,6 +51,12 @@ public class IstioSpecRegistry {
         return result;
     }
 
+    public static boolean isIstioSpec(String simpleClassName) {
+        // this relies on the fact that currently generated IstioSpec classes use their simple names as kind… This assumption
+        // might turn out wrong at some point in the future
+        return KIND_TO_CLASSNAME.containsKey(simpleClassName);
+    }
+
     private static Class<? extends IstioSpec> loadClassIfExists(String className) {
         try {
             final Class<?> loaded = IstioSpecRegistry.class.getClassLoader().loadClass(className);

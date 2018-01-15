@@ -6,10 +6,7 @@
  */
 package me.snowdrop.istio.annotator;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -23,6 +20,7 @@ import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
@@ -32,9 +30,6 @@ import org.jsonschema2pojo.Jackson2Annotator;
 public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String BUILDER_PACKAGE = "me.snowdrop.istio.api.builder";
-    private static final Set<String> ISTIO_CUSTOM_RESOURCES = new HashSet<>(
-            Arrays.asList("DestinationPolicy", "EgressRule", "RouteRule")
-    );
 
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
@@ -54,7 +49,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         }
 
         try {
-            if (ISTIO_CUSTOM_RESOURCES.contains(clazz.name())) {
+            if (IstioSpecRegistry.isIstioSpec(clazz.name())) {
                 clazz._implements(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioSpec"));
             }
         } catch (JClassAlreadyExistsException e) {
