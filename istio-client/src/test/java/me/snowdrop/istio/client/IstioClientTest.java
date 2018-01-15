@@ -23,7 +23,7 @@ public class IstioClientTest {
     Adapter adapter;
 
     @Test
-    public void should_apply_route_rule_istio_resource() {
+    public void shouldApplyRouteRuleIstioResource() {
 
         // Given
         final IstioClient istioExecutor = new IstioClient(adapter);
@@ -43,7 +43,7 @@ public class IstioClientTest {
     }
 
     @Test
-    public void should_apply_destination_policy_istio_resource() {
+    public void shouldApplyDestinationPolicyIstioResource() {
 
         // Given
         final IstioClient istioExecutor = new IstioClient(adapter);
@@ -63,7 +63,7 @@ public class IstioClientTest {
     }
 
     @Test
-    public void should_apply_egress_rule_istio_resource() {
+    public void shouldApplyEgressRuleIstioResource() {
 
         // Given
         final IstioClient istioExecutor = new IstioClient(adapter);
