@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -35,6 +36,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>me.snowdrop</groupId>
+      <artifactId>istio-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
@@ -127,8 +133,8 @@
             <configuration>
               <target>
                 <echo>removing the duplicate / useless generated classes</echo>
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/IstioSchema.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true"/>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/IstioSchema.java" verbose="true"/>
               </target>
             </configuration>
             <goals>
@@ -142,8 +148,8 @@
               <target>
                 <echo>removing duplicated builder classes</echo>
                 <delete verbose="true">
-                  <fileset dir="${basedir}/target/generated-sources/annotations/io" />
-                  <fileset dir="${basedir}/target/classes/io" />
+                  <fileset dir="${basedir}/target/generated-sources/annotations/io"/>
+                  <fileset dir="${basedir}/target/classes/io"/>
                 </delete>
               </target>
             </configuration>

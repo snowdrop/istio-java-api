@@ -7,8 +7,6 @@
 package me.snowdrop.istio.api.internal;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,32 +18,13 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
 
+import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getTypeForName;
+
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class IstioDeserializer extends JsonDeserializer<IstioResource> {
     private static final String KIND = "kind";
-    private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.api.model.";
-    private static final String ISTIO_VERSION = "v1.";
-    private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
-    private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
-    private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
-
-
-    private static final Map<String, Class<? extends IstioSpec>> KIND_TO_TYPE = new HashMap<>();
-    private static final Map<String, String> KIND_TO_CLASSNAME = new HashMap<>();
-
-    static {
-        KIND_TO_CLASSNAME.put("RouteRule", ISTIO_ROUTING_PACKAGE_PREFIX + "RouteRule");
-        KIND_TO_CLASSNAME.put("DestinationPolicy", ISTIO_ROUTING_PACKAGE_PREFIX + "DestinationPolicy");
-        KIND_TO_CLASSNAME.put("EgressRule", ISTIO_ROUTING_PACKAGE_PREFIX + "EgressRule");
-        KIND_TO_CLASSNAME.put("checknothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "CheckNothing");
-        KIND_TO_CLASSNAME.put("listentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ListEntry");
-        KIND_TO_CLASSNAME.put("logentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "LogEntry");
-        KIND_TO_CLASSNAME.put("metric", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Metric");
-        KIND_TO_CLASSNAME.put("quota", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Quota");
-        KIND_TO_CLASSNAME.put("reportnothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ReportNothing");
-    }
 
 
     @Override
@@ -76,26 +55,5 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
             return new IstioResource(apiVersion, kind, metadata, spec);
         }
         throw new IllegalArgumentException("Cannot process resources without a 'kind' field");
-    }
-
-    private static Class getTypeForName(String name) {
-        Class result = KIND_TO_TYPE.get(name);
-        if (result == null) {
-            final String className = KIND_TO_CLASSNAME.get(name);
-            if (className != null) {
-                result = loadClassIfExists(className);
-                KIND_TO_TYPE.put(name, result);
-            }
-        }
-
-        return result;
-    }
-
-    private static Class loadClassIfExists(String className) {
-        try {
-            return IstioDeserializer.class.getClassLoader().loadClass(className);
-        } catch (Throwable t) {
-            throw new IllegalArgumentException(String.format("Cannot load class: %s", className), t);
-        }
     }
 }
