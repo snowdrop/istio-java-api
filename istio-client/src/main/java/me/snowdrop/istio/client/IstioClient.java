@@ -63,7 +63,7 @@ public class IstioClient {
             case 1:
                 return client.createCustomResources(results.get(0));
             default:
-                return client.createCustomResources(results.toArray(new IstioResource[documents.length]));
+                return client.createCustomResources(results.toArray(new IstioResource[results.size()]));
         }
     }
 
