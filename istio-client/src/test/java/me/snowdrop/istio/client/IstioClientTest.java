@@ -1,18 +1,26 @@
 package me.snowdrop.istio.client;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import me.snowdrop.istio.api.model.IstioResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDNameFor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyIterable;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,14 +41,13 @@ public class IstioClientTest {
                 .getResourceAsStream("route-rule.yaml");
 
         // When
-        when(adapter.createCustomResource(eq(getCRDNameFor("RouteRule")), any(IstioResource.class)))
-                .thenReturn(new IstioResource());
+        when(adapter.createCustomResources(any(IstioResource.class))).thenReturn(Collections.singletonList(new IstioResource()));
 
         // Then
-        final Optional<IstioResource> istioResource = istioExecutor.registerCustomResource(routeRule);
-
-        assertThat(istioResource).isPresent();
-        verify(adapter, times(1)).createCustomResource(eq(getCRDNameFor("RouteRule")), any(IstioResource.class));
+        final List<IstioResource> istioResource = istioExecutor.registerCustomResources(routeRule);
+        assertThat(istioResource).isNotEmpty();
+        assertThat(istioResource.size()).isEqualTo(1);
+        verify(adapter, times(1)).createCustomResources(any(IstioResource.class));
 
     }
 
@@ -53,14 +60,13 @@ public class IstioClientTest {
                 .getResourceAsStream("destination-policy.yaml");
 
         // When
-        when(adapter.createCustomResource(eq(getCRDNameFor("DestinationPolicy")), any(IstioResource.class)))
-                .thenReturn(new IstioResource());
+        when(adapter.createCustomResources(any(IstioResource.class))).thenReturn(Collections.singletonList(new IstioResource()));
 
         // Then
-        final Optional<IstioResource> istioResource = istioExecutor.registerCustomResource(destinationPolicy);
-
-        assertThat(istioResource).isPresent();
-        verify(adapter, times(1)).createCustomResource(eq(getCRDNameFor("DestinationPolicy")), any(IstioResource.class));
+        final List<IstioResource> istioResource = istioExecutor.registerCustomResources(destinationPolicy);
+        assertThat(istioResource).isNotEmpty();
+        assertThat(istioResource.size()).isEqualTo(1);
+        verify(adapter, times(1)).createCustomResources(any(IstioResource.class));
 
     }
 
@@ -69,18 +75,17 @@ public class IstioClientTest {
 
         // Given
         final IstioClient istioExecutor = new IstioClient(adapter);
-        final InputStream routeRule = Thread.currentThread().getContextClassLoader()
+        final InputStream egressRule = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream("egress-rule.yaml");
 
         // When
-        when(adapter.createCustomResource(eq(getCRDNameFor("EgressRule")), any(IstioResource.class)))
-                .thenReturn(new IstioResource());
+        when(adapter.createCustomResources(any(IstioResource.class))).thenReturn(Collections.singletonList(new IstioResource()));
 
         // Then
-        final Optional<IstioResource> istioResource = istioExecutor.registerCustomResource(routeRule);
-
-        assertThat(istioResource).isPresent();
-        verify(adapter, times(1)).createCustomResource(eq(getCRDNameFor("EgressRule")), any(IstioResource.class));
+        final List<IstioResource> istioResource = istioExecutor.registerCustomResources(egressRule);
+        assertThat(istioResource).isNotEmpty();
+        assertThat(istioResource.size()).isEqualTo(1);
+        verify(adapter, times(1)).createCustomResources(any(IstioResource.class));
 
     }
 

@@ -1,7 +1,9 @@
 package me.snowdrop.istio.client;
 
+import java.util.List;
+
 import me.snowdrop.istio.api.model.IstioResource;
 
 public interface Adapter {
-    IstioResource createCustomResource(String crdName, IstioResource resource);
+    List<IstioResource> createCustomResources(IstioResource... resources);
 }
