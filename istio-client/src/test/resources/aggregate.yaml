@@ -1,0 +1,36 @@
+---
+apiVersion: config.istio.io/v1beta1
+kind: DestinationPolicy
+metadata:
+  name: reviews-random
+spec:
+  destination:
+    name: reviews
+  loadBalancing:
+    name: RANDOM
+---
+apiVersion: config.istio.io/v1alpha2
+kind: EgressRule
+metadata:
+  name: foo-egress-rule
+spec:
+  destination:
+    service: www.foo.com
+  ports:
+    - port: 80
+      protocol: http
+    - port: 443
+      protocol: https
+---
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: reviews-default
+spec:
+  destination:
+    name: reviews
+  precedence: 1
+  route:
+  - labels:
+      version: v3
+    weight: 100
