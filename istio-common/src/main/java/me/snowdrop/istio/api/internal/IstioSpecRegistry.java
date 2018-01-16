@@ -60,6 +60,14 @@ public class IstioSpecRegistry {
         return result;
     }
 
+    public static String getKindFor(Class<? extends IstioSpec> spec) {
+        try {
+            return spec.newInstance().getKind();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public static boolean isIstioSpec(String simpleClassName) {
         // this relies on the fact that currently generated IstioSpec classes use their simple names as kind… This assumption
         // might turn out wrong at some point in the future
