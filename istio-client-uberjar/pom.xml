@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>istio-java-api</artifactId>
+    <groupId>me.snowdrop</groupId>
+    <version>0.6-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>istio-client-uberjar</artifactId>
+
+  <name>Snowdrop :: Istio Java API :: Client uberjar</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>me.snowdrop</groupId>
+      <artifactId>istio-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>relocation</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>versioned</shadedClassifierName>
+              <artifactSet>
+                <includes>
+                  <include>io.fabric8:kubernetes-model</include>
+                  <include>io.fabric8:kubernetes-client</include>
+                  <include>me.snowdrop:istio-client</include>
+                  <include>me.snowdrop:istio-common</include>
+                  <include>me.snowdrop:istio-model</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <!--
+                  Let's relocate all user facing packages under:
+                    - io.fabric8.kubernetes.api.model.vMAJOR_MINOR
+                    - io.fabric8.kubernetes.client/vMAJOR_MINOR
+                -->
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.v${k8s-client.majorVersion}_${k8s-client.minorVersion}
+                  </shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.builder</pattern>
+                  <shadedPattern>
+                    io.fabric8.kubernetes.api.builder.v${k8s-client.majorVersion}_${k8s-client.minorVersion}
+                  </shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.openshift.api.model</pattern>
+                  <shadedPattern>io.fabric8.openshift.api.model.v${k8s-client.majorVersion}_${k8s-client.minorVersion}
+                  </shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.client</pattern>
+                  <!-- workaround for the duplicate relocation -->
+                  <shadedPattern>io.fabric8.kubernetes.clnt.v${k8s-client.majorVersion}_${k8s-client.minorVersion}
+                  </shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.openshift.client</pattern>
+                  <!-- workaround for the duplicate relocation -->
+                  <shadedPattern>io.fabric8.openshift.clnt.v${k8s-client.majorVersion}_${k8s-client.minorVersion}
+                  </shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.internal</pattern>
+                  <shadedPattern>
+                    io.fabric8.kubernetes.clnt.v${k8s-client.majorVersion}_${k8s-client.minorVersion}.internal
+                  </shadedPattern>
+                </relocation>
+              </relocations>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
