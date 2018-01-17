@@ -32,6 +32,7 @@ public class KubernetesAdapter implements Adapter {
                 }
 
                 final IstioResource result = client.customResources(customResourceDefinition, IstioResource.class, KubernetesResourceList.class, DoneableIstioResource.class)
+                        .inNamespace(client.getNamespace())
                         .create(resource);
                 results.add(result);
             }
