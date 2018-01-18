@@ -42,4 +42,9 @@ public class KubernetesAdapter implements Adapter {
 
         return Collections.emptyList();
     }
+
+    @Override
+    public KubernetesClient getKubernetesClient() {
+        return client;
+    }
 }

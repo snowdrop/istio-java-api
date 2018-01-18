@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import me.snowdrop.istio.api.model.IstioResource;
 
 import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDNameFor;
@@ -87,5 +88,9 @@ public class IstioClient {
         } catch (IOException e) {
             throw new RuntimeException("Unable to read InputStream." + e);
         }
+    }
+
+    public KubernetesClient getKubernetesClient() {
+        return client.getKubernetesClient();
     }
 }
