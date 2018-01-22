@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>${jackson2.version}</version>
+      <version>${jackson.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

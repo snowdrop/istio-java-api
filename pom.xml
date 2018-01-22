@@ -157,7 +157,9 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <jackson2.version>2.9.3</jackson2.version>
+    <jackson.majorVersion>2</jackson.majorVersion>
+    <jackson.minorVersion>9</jackson.minorVersion>
+    <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.3</jackson.version>
     <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>2.0.4</kubernetes-model.version>
@@ -184,7 +186,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-jaxb-annotations</artifactId>
-        <version>${jackson2.version}</version>
+        <version>${jackson.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.validation</groupId>
