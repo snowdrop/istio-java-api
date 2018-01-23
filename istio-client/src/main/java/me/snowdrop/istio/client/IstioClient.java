@@ -75,6 +75,10 @@ public class IstioClient {
         return client.createCustomResources(resource).get(0);
     }
 
+    public Adapter getClient() {
+        return client;
+    }
+
     private static String readSpecFileFromInputStream(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
