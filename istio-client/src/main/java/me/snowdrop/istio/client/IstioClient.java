@@ -76,6 +76,10 @@ public class IstioClient {
         return client.createCustomResources(resource).get(0);
     }
 
+    public Boolean unregisterCustomResource(final IstioResource istioResource) {
+        return client.deleteCustomResources(istioResource);
+    }
+
     private static String readSpecFileFromInputStream(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
