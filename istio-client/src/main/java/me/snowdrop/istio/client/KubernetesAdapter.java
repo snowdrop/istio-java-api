@@ -23,12 +23,7 @@ public class KubernetesAdapter implements Adapter {
             List<IstioResource> results = new ArrayList<>(resources.length);
 
             for (IstioResource resource : resources) {
-                final String crdName = IstioSpecRegistry.getCRDNameFor(resource.getKind());
-                final CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().withName(crdName).get();
-                if (customResourceDefinition == null) {
-                    throw new IllegalArgumentException(String.format("Custom Resource Definition %s is not found in cluster %s",
-                            crdName, client.getMasterUrl()));
-                }
+                final CustomResourceDefinition customResourceDefinition = getCustomResourceDefinition(resource);
 
                 final IstioResource result = client.customResources(customResourceDefinition, IstioResource.class, KubernetesResourceList.class, DoneableIstioResource.class)
                         .inNamespace(client.getNamespace())
@@ -45,14 +40,8 @@ public class KubernetesAdapter implements Adapter {
     public Boolean deleteCustomResources(IstioResource resource) {
 
         if (resource != null) {
-            final String crdName = IstioSpecRegistry.getCRDNameFor(resource.getKind());
             final CustomResourceDefinition customResourceDefinition =
-                client.customResourceDefinitions().withName(crdName).get();
-            if (customResourceDefinition == null) {
-                throw new IllegalArgumentException(
-                    String.format("Custom Resource Definition %s is not found in cluster %s",
-                        crdName, client.getMasterUrl()));
-            }
+                getCustomResourceDefinition(resource);
 
             return
                 client.customResources(customResourceDefinition, IstioResource.class, KubernetesResourceList.class,
@@ -62,6 +51,16 @@ public class KubernetesAdapter implements Adapter {
         }
 
         return false;
+    }
+
+    private CustomResourceDefinition getCustomResourceDefinition(IstioResource resource) {
+        final String crdName = IstioSpecRegistry.getCRDNameFor(resource.getKind());
+        final CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().withName(crdName).get();
+        if (customResourceDefinition == null) {
+            throw new IllegalArgumentException(String.format("Custom Resource Definition %s is not found in cluster %s",
+                crdName, client.getMasterUrl()));
+        }
+        return customResourceDefinition;
     }
 
     @Override
