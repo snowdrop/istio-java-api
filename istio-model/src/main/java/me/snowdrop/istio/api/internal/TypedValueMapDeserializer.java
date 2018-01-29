@@ -30,7 +30,7 @@ public class TypedValueMapDeserializer extends JsonDeserializer<Map<String, Type
         final int size = root.size();
         if (size > 0) {
             final Map<String, TypedValue> values = new HashMap<>(size);
-            root.fields().forEachRemaining(field -> values.put(field.getKey(), TypedValue.from(field.getValue().textValue(), field.getKey())));
+            root.fields().forEachRemaining(field -> values.put(field.getKey(), TypedValue.from(field.getValue().textValue())));
             return values;
         } else {
             return null;

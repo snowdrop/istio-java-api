@@ -56,6 +56,11 @@ public class TypedValue {
     public static TypedValue from(String value, String attributeName) {
         // todo: check that evaluated value is of proper type based on attribute name as defined in attribute vocabulary
         AttributeVocabulary.AttributeInfo info = AttributeVocabulary.getInfoFor(attributeName);
+
+        if(info == null) {
+            throw new IllegalArgumentException(String.format("Unknown attribute name: '%s'", attributeName));
+        }
+
         final TypedValue evaluated = from(value);
 
         if (!info.type.equals(evaluated.type)) {
