@@ -6,7 +6,9 @@
  */
 package me.snowdrop.istio.api.model.v1.cexl;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
@@ -15,6 +17,8 @@ import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class AttributeVocabulary {
+    private static final Map<String, AttributeInfo> ATTRIBUTE_INFO_MAP = new ConcurrentHashMap<>();
+
     public static AttributeInfo getInfoFor(String attributeName) {
         return ATTRIBUTE_INFO_MAP.get(attributeName);
     }
@@ -51,7 +55,9 @@ public class AttributeVocabulary {
         }
     }
 
-    private static final Map<String, AttributeInfo> ATTRIBUTE_INFO_MAP = new ConcurrentHashMap<>();
+    public static Set<String> getKnownAttributes() {
+        return Collections.unmodifiableSet(ATTRIBUTE_INFO_MAP.keySet());
+    }
 
 
     /**
@@ -128,7 +134,7 @@ public class AttributeVocabulary {
     public static final String source_labels = "source.labels";
 
     static {
-        ATTRIBUTE_INFO_MAP.put(source_labels, new AttributeInfo(source_labels, "map[string, string]", "A map of key-value pairs attached to the client instance.", "version => v1"));
+        ATTRIBUTE_INFO_MAP.put(source_labels, new AttributeInfo(source_labels, ValueType.STRING_MAP.name(), "A map of key-value pairs attached to the client instance.", "version => v1"));
     }
 
     /**
@@ -227,7 +233,7 @@ public class AttributeVocabulary {
     public static final String destination_labels = "destination.labels";
 
     static {
-        ATTRIBUTE_INFO_MAP.put(destination_labels, new AttributeInfo(destination_labels, "map[string, string]", "A map of key-value pairs attached to the server instance.", "version => v2"));
+        ATTRIBUTE_INFO_MAP.put(destination_labels, new AttributeInfo(destination_labels, ValueType.STRING_MAP.name(), "A map of key-value pairs attached to the server instance.", "version => v2"));
     }
 
     /**
@@ -249,7 +255,7 @@ public class AttributeVocabulary {
     public static final String request_headers = "request.headers";
 
     static {
-        ATTRIBUTE_INFO_MAP.put(request_headers, new AttributeInfo(request_headers, "map[string, string]", "HTTP request headers. For gRPC, its metadata will be here.", ""));
+        ATTRIBUTE_INFO_MAP.put(request_headers, new AttributeInfo(request_headers, ValueType.STRING_MAP.name(), "HTTP request headers. For gRPC, its metadata will be here.", ""));
     }
 
     /**
@@ -370,7 +376,7 @@ public class AttributeVocabulary {
     public static final String response_headers = "response.headers";
 
     static {
-        ATTRIBUTE_INFO_MAP.put(response_headers, new AttributeInfo(response_headers, "map[string, string]", "HTTP response headers.", ""));
+        ATTRIBUTE_INFO_MAP.put(response_headers, new AttributeInfo(response_headers, ValueType.STRING_MAP.name(), "HTTP response headers.", ""));
     }
 
     /**
