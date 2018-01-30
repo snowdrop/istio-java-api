@@ -15,10 +15,10 @@ expression
     : primaryExpr
     | expression ('||' | '&&' | '==' | '!=') expression
     | '(' expression ')'
-    | defaultOpExpr
+    | firstNonEmptyExpr
     ;
 
-defaultOpExpr
+firstNonEmptyExpr
     : primaryExpr '|' primaryExpr ( '|' primaryExpr )*
     ;
 
