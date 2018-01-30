@@ -14,9 +14,11 @@ package me.snowdrop.istio.api.model.v1.cexl.parser;
 expression
     : primaryExpr
     | expression ('||' | '&&' | '==' | '!=') expression
-    | '(' expression ')'
+    | parenExpr
     | firstNonEmptyExpr
     ;
+
+parenExpr: '(' expression ')';
 
 firstNonEmptyExpr
     : primaryExpr '|' primaryExpr ( '|' primaryExpr )*
