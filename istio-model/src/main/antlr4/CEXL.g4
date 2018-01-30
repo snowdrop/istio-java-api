@@ -106,7 +106,7 @@ fragment IP_FRAG_LIT
     ;
 
 INT_LIT
-    : [1-9] DECIMAL_DIGIT*
+    : DECIMAL_DIGIT+
     ;
 
 
