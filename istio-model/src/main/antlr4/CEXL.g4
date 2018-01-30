@@ -45,7 +45,7 @@ operand
 
 primaryExpr
     : operand
-    | primaryExpr index
+    | indexExpr
     | matchExpr
     | ipExpr
     | timestampExpr
@@ -54,8 +54,8 @@ primaryExpr
     | endsWithExpr
     ;
 
-index
-    : '["' STRING_LIT '"]'
+indexExpr
+    : IDENTIFIER '["' STRING_LIT '"]'
     ;
 
 matchExpr
