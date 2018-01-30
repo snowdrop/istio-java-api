@@ -9,16 +9,28 @@ package me.snowdrop.istio.api.model.v1.cexl.parser;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Operands
+// Expressions
 
-//Operand     = BasicLit | OperandName | "(" Expression ")" .
+//Expression = Expression binary_op Expression .
+
+expression
+    : primaryExpr
+    | expression ('||' | '&&' | '==' | '!=') expression
+    | '(' expression ')'
+    | defaultOpExpr
+    ;
+
+defaultOpExpr
+    : primaryExpr '|' primaryExpr ( '|' primaryExpr )*
+    ;
+
+//Operand     = BasicLit | OperandName .
 //BasicLit    = int_lit | ip_lit | string_lit .
 //OperandName = identifier | QualifiedIdent.
 
 operand
     : basicLit
     | operandName
-    | '(' expression ')'
     ;
 
 basicLit
@@ -88,14 +100,6 @@ startsWithExpr
 endsWithExpr
     : qualifiedIdent '.endsWith("' STRING_LIT '")'
     ;
-
-//Expression = Expression binary_op Expression .
-
-expression
-    : primaryExpr
-    | expression ('||' | '&&' | '==' | '!=' | '|') expression
-    ;
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
