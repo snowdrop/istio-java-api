@@ -55,11 +55,11 @@ primaryExpr
     ;
 
 indexExpr
-    : IDENTIFIER '["' STRING_LIT '"]'
+    : IDENTIFIER '[' STRING_LIT ']'
     ;
 
 matchExpr
-    : 'match(' IDENTIFIER ', "' STRING_LIT '")'
+    : 'match(' IDENTIFIER ', ' STRING_LIT ')'
     ;
 
 ipExpr
@@ -67,19 +67,19 @@ ipExpr
     ;
 
 timestampExpr
-    : 'timestamp("' STRING_LIT '")'
+    : 'timestamp(' STRING_LIT ')'
     ;
 
 matchesExpr
-    : '"' STRING_LIT '".matches(' IDENTIFIER ')'
+    : STRING_LIT '.matches(' IDENTIFIER ')'
     ;
 
 startsWithExpr
-    : IDENTIFIER '.startsWith("' STRING_LIT '")'
+    : IDENTIFIER '.startsWith(' STRING_LIT ')'
     ;
 
 endsWithExpr
-    : IDENTIFIER '.endsWith("' STRING_LIT '")'
+    : IDENTIFIER '.endsWith(' STRING_LIT ')'
     ;
 
 
