@@ -91,7 +91,7 @@ endsWithExpr
 
 // Identifiers
 IDENTIFIER
-    : UNICODE_CHAR ( UNICODE_CHAR | DECIMAL_DIGIT | '.' )*
+    : [a-zA-Z] ( [a-zA-Z] | DECIMAL_DIGIT | '.' )*
     ;
 
 // IP
