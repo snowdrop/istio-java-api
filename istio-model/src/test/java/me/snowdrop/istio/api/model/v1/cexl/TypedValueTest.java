@@ -26,9 +26,10 @@ public class TypedValueTest extends BaseIstioTest {
     @Test
     public void expressionsShouldReturnProperType() {
         assertThat(TypedValue.from("request.size| 200").getType()).isEqualTo(ValueType.INT64);
-        /*assertThat(TypedValue.from("request.header[\"X-FORWARDED-HOST\"]==\"myhost\"").getType()).isEqualTo(ValueType.BOOL);
-        assertThat(TypedValue.from("request.header[\"X-FORWARDED-HOST\"] == \"myhost\"").getType()).isEqualTo(ValueType.BOOL);
-        assertThat(TypedValue.from("(request.header[\"x-user-group\"] == \"admin\") || (request.user == \"admin\")").getType()).isEqualTo(ValueType.BOOL);
+        assertThat(TypedValue.from("request.size | 0").getType()).isEqualTo(ValueType.INT64);
+        assertThat(TypedValue.from("request.headers[\"X-FORWARDED-HOST\"]==\"myhost\"").getType()).isEqualTo(ValueType.BOOL);
+        assertThat(TypedValue.from("request.headers[\"X-FORWARDED-HOST\"] == \"myhost\"").getType()).isEqualTo(ValueType.BOOL);
+        /*assertThat(TypedValue.from("(request.headers[\"x-user-group\"] == \"admin\") || (request.user == \"admin\")").getType()).isEqualTo(ValueType.BOOL);
         assertThat(TypedValue.from("(request.user | \"nobody\" ) == \"user1\"").getType()).isEqualTo(ValueType.BOOL);
         assertThat(TypedValue.from("source.labels[\"app\"]==\"reviews\" && source.labels[\"version\"]==\"v3\"").getType()).isEqualTo(ValueType.BOOL);*/
     }

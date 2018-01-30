@@ -8,6 +8,7 @@ package me.snowdrop.istio.api.model.v1.cexl;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,8 +20,8 @@ import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
 public class AttributeVocabulary {
     private static final Map<String, AttributeInfo> ATTRIBUTE_INFO_MAP = new ConcurrentHashMap<>();
 
-    public static AttributeInfo getInfoFor(String attributeName) {
-        return ATTRIBUTE_INFO_MAP.get(attributeName);
+    public static Optional<AttributeInfo> getInfoFor(String attributeName) {
+        return Optional.ofNullable(ATTRIBUTE_INFO_MAP.get(attributeName));
     }
 
     public static class AttributeInfo {

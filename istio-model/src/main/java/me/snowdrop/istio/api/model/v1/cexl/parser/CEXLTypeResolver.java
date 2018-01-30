@@ -14,65 +14,130 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class CEXLTypeResolver extends CEXLBaseListener {
-
-    protected static final String DEFAULT_OPERATOR = "|";
-    private final ValueType[] currentlyInferredType = new ValueType[1];
-
+    
+    private static final String DEFAULT_OPERATOR = "|";
+    //    private final ValueType[] currentlyInferredType = new ValueType[1];
+    private ValueType currentlyInferredType;
+    
     public ValueType getExpressionType() {
-        return currentlyInferredType[0];
+        return currentlyInferredType;
     }
-
+    
     @Override
-    public void exitFirstNonEmptyExpr(CEXLParser.FirstNonEmptyExprContext ctx) {
-        ctx.children
-                .stream()
-                .filter(child -> !child.getText().equals(DEFAULT_OPERATOR))
-                .forEach(child -> {
-                    System.out.println("child class = " + child.getClass().getSimpleName());
-                    if (child instanceof CEXLParser.PrimaryExprContext) {
-                        CEXLParser.PrimaryExprContext primaryExpr = (CEXLParser.PrimaryExprContext) child;
-                        final CEXLParser.OperandContext operandExp = primaryExpr.operand();
-                        if (operandExp != null) {
-
-                            final TerminalNode identifier = operandExp.IDENTIFIER();
-                            if (identifier != null) {
-                                // check if attribute is a known attribute
-                                final String attribute = identifier.getText();
-                                final AttributeVocabulary.AttributeInfo info = AttributeVocabulary.getInfoFor(attribute);
-                                if (info != null) {
-                                    checkEvaluatedTypeAgainstCurrentlyInferred(attribute, info.type);
-                                } else {
-                                    System.out.println("Unknown attribute = " + attribute);
-                                }
-                            } else {
-                                // we must have a literal then
-                                final CEXLParser.LiteralContext literal = operandExp.literal();
-                                checkLiteral(literal.INT_LIT(), ValueType.INT64);
-                                checkLiteral(literal.IP_LIT(), ValueType.IP_ADDRESS);
-                                checkLiteral(literal.STRING_LIT(), ValueType.STRING);
-                            }
-                        }
-                    }
-                });
+    public void exitExpression(CEXLParser.ExpressionContext ctx) {
+        currentlyInferredType = evaluate(ctx);
     }
-
-    private void checkLiteral(TerminalNode terminal, ValueType evaluatedType) {
-        if (terminal != null) {
-            checkEvaluatedTypeAgainstCurrentlyInferred(terminal.getText(), evaluatedType);
+    
+    private ValueType evaluate(CEXLParser.ExpressionContext ctx) {
+        if (ctx.parenExpr() != null) {
+            return evaluate(ctx.expression(1));
         }
+        
+        final CEXLParser.FirstNonEmptyExprContext firstNonEmptyExprContext = ctx.firstNonEmptyExpr();
+        if (firstNonEmptyExprContext != null) {
+            return evaluate(firstNonEmptyExprContext);
+        }
+        
+        final CEXLParser.PrimaryExprContext primaryExprContext = ctx.primaryExpr();
+        if (primaryExprContext != null) {
+            return evaluate(primaryExprContext);
+        }
+        
+        // we have a binary expression so check both sides
+        final CEXLParser.ExpressionContext left = ctx.expression(0);
+        final CEXLParser.ExpressionContext right = ctx.expression(1);
+        
+        final ValueType leftEvaluation = evaluate(left);
+        final ValueType rightEvaluation = evaluate(right);
+        if (leftEvaluation != rightEvaluation) {
+            throw new IllegalArgumentException(String.format("Both sides of expression don't evaluate to same type. Left side '%s' evaluates to '%s', while right side '%s' evaluates to '%s'",
+                left.getText(), leftEvaluation.name(), right.getText(), rightEvaluation.name()));
+        }
+        currentlyInferredType = ValueType.BOOL;
+        
+        return currentlyInferredType;
+    }
+    
+    private ValueType evaluate(CEXLParser.FirstNonEmptyExprContext ctx) {
+        final ValueType evaluated = ctx.primaryExpr()
+            .stream()
+            .filter(child -> !child.getText().equals(DEFAULT_OPERATOR))
+            .map(primaryExprContext -> evaluate(primaryExprContext))
+            .reduce(ValueType.VALUE_TYPE_UNSPECIFIED, (valueType, valueType2) -> {
+                if (valueType == ValueType.VALUE_TYPE_UNSPECIFIED || valueType == valueType2) {
+                    return valueType2;
+                } else {
+                    throw new IllegalArgumentException(String.format("Expression '%s' doesn't evaluate to a consistent type", ctx.getText()));
+                }
+            });
+        
+        return checkEvaluatedTypeAgainstCurrentlyInferred(ctx.getText(), evaluated);
+    }
+    
+    private ValueType evaluate(CEXLParser.PrimaryExprContext ctx) {
+        final CEXLParser.OperandContext operandExp = ctx.operand();
+        if (operandExp != null) {
+            return evaluate(operandExp);
+        }
+    
+        final CEXLParser.IndexExprContext indexExpr = ctx.indexExpr();
+        if(indexExpr != null) {
+            final TerminalNode identifier = indexExpr.IDENTIFIER();
+            if (identifier != null) {
+                AttributeVocabulary.getInfoFor(identifier.getText())
+                    .filter(it -> it.type == ValueType.STRING_MAP)
+                    .orElseThrow(() ->
+                        new IllegalArgumentException(
+                            String.format("Indexed expression '%s' doesn't start with a valid identifier or is not of type '%s'",
+                                indexExpr.getText(),
+                                ValueType.STRING_MAP)
+                        )
+                    );
+                return checkEvaluatedTypeAgainstCurrentlyInferred(indexExpr.getText(), ValueType.STRING);
+            }
+        }
+        
+        return ValueType.VALUE_TYPE_UNSPECIFIED;
+    }
+    
+    private ValueType evaluate(CEXLParser.OperandContext operandExp) {
+        final TerminalNode identifier = operandExp.IDENTIFIER();
+        if (identifier != null) {
+            // check if attribute is a known attribute
+            final String attribute = identifier.getText();
+            return AttributeVocabulary.getInfoFor(attribute)
+                .map(info -> checkEvaluatedTypeAgainstCurrentlyInferred(attribute, info.type))
+                .orElseThrow(() -> new IllegalArgumentException("Unknown attribute " + attribute));
+        } else {
+            // we must have a literal then
+            final CEXLParser.LiteralContext literal = operandExp.literal();
+            TerminalNode intLit = literal.INT_LIT();
+            if (intLit != null) {
+                return checkEvaluatedTypeAgainstCurrentlyInferred(intLit.getText(), ValueType.INT64);
+            }
+            TerminalNode ipLit = literal.IP_LIT();
+            if (ipLit != null) {
+                return checkEvaluatedTypeAgainstCurrentlyInferred(ipLit.getText(), ValueType.IP_ADDRESS);
+            }
+            TerminalNode stringLit = literal.STRING_LIT();
+            if (stringLit != null) {
+                return checkEvaluatedTypeAgainstCurrentlyInferred(stringLit.getText(), ValueType.STRING);
+            }
+        }
+        
+        return ValueType.VALUE_TYPE_UNSPECIFIED;
     }
     
     private ValueType checkEvaluatedTypeAgainstCurrentlyInferred(String value, ValueType evaluatedType) {
-        final ValueType current = currentlyInferredType[0];
-        if (current != null) {
-            if (evaluatedType != current) {
-                throw new IllegalArgumentException(String.format("Operand '%s' has incompatible type with currently inferred ('%s')", value, current.name()));
+        if (currentlyInferredType != null) {
+            if (evaluatedType != currentlyInferredType) {
+                throw new IllegalArgumentException(String.format("Operand '%s' has incompatible type with currently inferred ('%s')", value, currentlyInferredType.name()));
             }
         } else {
-            currentlyInferredType[0] = evaluatedType;
+            currentlyInferredType = evaluatedType;
         }
         
-        return currentlyInferredType[0];
+        return currentlyInferredType;
     }
 }
 
