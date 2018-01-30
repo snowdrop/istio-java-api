@@ -23,7 +23,7 @@ public class AttributeVocabulary {
         return ATTRIBUTE_INFO_MAP.get(attributeName);
     }
 
-    static class AttributeInfo {
+    public static class AttributeInfo {
         public final String name;
         public final ValueType type;
         public final String description;
