@@ -32,6 +32,7 @@
 
   <properties>
     <schema.dir>${basedir}/src/main/resources/schema</schema.dir>
+    <antlr4.version>4.7.1</antlr4.version>
   </properties>
 
   <dependencies>
@@ -56,7 +57,7 @@
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-runtime</artifactId>
-      <version>4.7.1</version>
+      <version>${antlr4.version}</version>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
@@ -98,7 +99,7 @@
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.3</version>
+        <version>${antlr4.version}</version>
         <executions>
           <execution>
             <id>antlr</id>
