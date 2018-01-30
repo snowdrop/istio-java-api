@@ -24,10 +24,10 @@ firstNonEmptyExpr
 
 operand
     : IDENTIFIER
-    | INT_LIT
-    | IP_LIT
-    | STRING_LIT
+    | literal
     ;
+
+literal : INT_LIT | IP_LIT | STRING_LIT;
 
 
 //PrimaryExpr =
