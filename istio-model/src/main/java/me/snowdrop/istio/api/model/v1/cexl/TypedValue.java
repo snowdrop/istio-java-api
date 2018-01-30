@@ -21,7 +21,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.model.v1.cexl.parser.CEXLLexer;
+import me.snowdrop.istio.api.model.v1.cexl.parser.CEXLParser;
+import me.snowdrop.istio.api.model.v1.cexl.parser.CEXLTypeResolver;
 import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -57,7 +63,7 @@ public class TypedValue {
         // todo: check that evaluated value is of proper type based on attribute name as defined in attribute vocabulary
         AttributeVocabulary.AttributeInfo info = AttributeVocabulary.getInfoFor(attributeName);
 
-        if(info == null) {
+        if (info == null) {
             throw new IllegalArgumentException(String.format("Unknown attribute name: '%s'", attributeName));
         }
 
@@ -68,13 +74,29 @@ public class TypedValue {
                     String.format("'%s' attribute is supposed to be of type '%s' but given value '%s' evaluates as a '%s' type",
                             attributeName, info.type, value, evaluated.type));
         }
-        
+
         return evaluated;
     }
 
     public static TypedValue from(String value) {
-        // todo: parse expression and determine type instead of hardcoding ValueType.STRING
-        return new TypedValue(ValueType.STRING, value);
+        // Get our lexer
+        CEXLLexer lexer = new CEXLLexer(CharStreams.fromString(value));
+
+        // Get a list of matched tokens
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        // Pass the tokens to the parser
+        CEXLParser parser = new CEXLParser(tokens);
+
+        // Specify our entry point
+        final CEXLParser.ExpressionContext context = parser.expression();
+
+        // Walk it and attach our listener
+        ParseTreeWalker walker = new ParseTreeWalker();
+        final CEXLTypeResolver resolver = new CEXLTypeResolver();
+        walker.walk(resolver, context);
+
+        return new TypedValue(resolver.getExpressionType(), value);
     }
 
     static class TypedValueSerializer extends JsonSerializer<TypedValue> {
