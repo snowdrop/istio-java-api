@@ -61,8 +61,8 @@ public class CEXLTypeResolver extends CEXLBaseListener {
             checkEvaluatedTypeAgainstCurrentlyInferred(terminal.getText(), evaluatedType);
         }
     }
-
-    private void checkEvaluatedTypeAgainstCurrentlyInferred(String value, ValueType evaluatedType) {
+    
+    private ValueType checkEvaluatedTypeAgainstCurrentlyInferred(String value, ValueType evaluatedType) {
         final ValueType current = currentlyInferredType[0];
         if (current != null) {
             if (evaluatedType != current) {
@@ -71,6 +71,8 @@ public class CEXLTypeResolver extends CEXLBaseListener {
         } else {
             currentlyInferredType[0] = evaluatedType;
         }
+        
+        return currentlyInferredType[0];
     }
 }
 
