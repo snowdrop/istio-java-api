@@ -59,25 +59,6 @@ public class TypedValue {
         this.expression = expression;
     }
 
-    public static TypedValue from(String value, String attributeName) {
-        // todo: check that evaluated value is of proper type based on attribute name as defined in attribute vocabulary
-        AttributeVocabulary.AttributeInfo info = AttributeVocabulary.getInfoFor(attributeName);
-
-        if (info == null) {
-            throw new IllegalArgumentException(String.format("Unknown attribute name: '%s'", attributeName));
-        }
-
-        final TypedValue evaluated = from(value);
-
-        if (!info.type.equals(evaluated.type)) {
-            throw new IllegalArgumentException(
-                    String.format("'%s' attribute is supposed to be of type '%s' but given value '%s' evaluates as a '%s' type",
-                            attributeName, info.type, value, evaluated.type));
-        }
-
-        return evaluated;
-    }
-
     public static TypedValue from(String value) {
         // Get our lexer
         CEXLLexer lexer = new CEXLLexer(CharStreams.fromString(value));
