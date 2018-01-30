@@ -109,7 +109,7 @@ INT_LIT
 
 
 STRING_LIT
-    : '"' (UNICODE_CHAR)* '"'
+    : '"' [a-zA-Z.\-_]* '"'
     ;
 
 
