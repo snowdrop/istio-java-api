@@ -31,6 +31,6 @@ public class TypedValueTest extends BaseIstioTest {
         assertThat(TypedValue.from("request.headers[\"X-FORWARDED-HOST\"] == \"myhost\"").getType()).isEqualTo(ValueType.BOOL);
         assertThat(TypedValue.from("(request.headers[\"x-user-group\"] == \"admin\") || (request.auth.principal == \"admin\")").getType()).isEqualTo(ValueType.BOOL);
         assertThat(TypedValue.from("(request.auth.principal | \"nobody\" ) == \"user1\" ").getType()).isEqualTo(ValueType.BOOL);
-//        assertThat(TypedValue.from("source.labels[\"app\"]==\"reviews\" && source.labels[\"version\"]==\"v3\"").getType()).isEqualTo(ValueType.BOOL);
+        assertThat(TypedValue.from("(source.labels[\"app\"]==\"reviews\") && (source.labels[\"version\"]==\"v3\")").getType()).isEqualTo(ValueType.BOOL);
     }
 }
