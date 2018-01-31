@@ -24,14 +24,6 @@ firstNonEmptyExpr
     : primaryExpr '|' primaryExpr ( '|' primaryExpr )*
     ;
 
-operand
-    : IDENTIFIER
-    | literal
-    ;
-
-literal : INT_LIT | IP_LIT | STRING_LIT;
-
-
 //PrimaryExpr =
 //	Operand |
 //	PrimaryExpr Index |
@@ -55,6 +47,13 @@ primaryExpr
     | startsWithExpr
     | endsWithExpr
     ;
+
+operand
+    : IDENTIFIER
+    | literal
+    ;
+
+literal : INT_LIT | IP_LIT | STRING_LIT;
 
 indexExpr
     : IDENTIFIER '[' STRING_LIT ']'
