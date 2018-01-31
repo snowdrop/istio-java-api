@@ -54,13 +54,12 @@ public class CEXLTypeResolver extends CEXLBaseListener {
             throw new IllegalArgumentException(String.format("Both sides of expression don't evaluate to same type. Left side '%s' evaluates to '%s', while right side '%s' evaluates to '%s'",
                 left.getText(), leftEvaluation.name(), right.getText(), rightEvaluation.name()));
         }
-        currentlyInferredType = ValueType.BOOL;
         
-        return currentlyInferredType;
+        return ValueType.BOOL;
     }
     
     private ValueType evaluate(CEXLParser.FirstNonEmptyExprContext ctx) {
-        final ValueType evaluated = ctx.primaryExpr()
+        return ctx.primaryExpr()
             .stream()
             .filter(child -> !child.getText().equals(DEFAULT_OPERATOR))
             .map(primaryExprContext -> evaluate(primaryExprContext))
@@ -71,8 +70,6 @@ public class CEXLTypeResolver extends CEXLBaseListener {
                     throw new IllegalArgumentException(String.format("Expression '%s' doesn't evaluate to a consistent type", ctx.getText()));
                 }
             });
-        
-        return checkEvaluatedTypeAgainstCurrentlyInferred(ctx.getText(), evaluated);
     }
     
     private ValueType evaluate(CEXLParser.PrimaryExprContext ctx) {
@@ -94,7 +91,7 @@ public class CEXLTypeResolver extends CEXLBaseListener {
                                 ValueType.STRING_MAP)
                         )
                     );
-                return checkEvaluatedTypeAgainstCurrentlyInferred(indexExpr.getText(), ValueType.STRING);
+                return ValueType.STRING;
             }
         }
         
@@ -107,22 +104,22 @@ public class CEXLTypeResolver extends CEXLBaseListener {
             // check if attribute is a known attribute
             final String attribute = identifier.getText();
             return AttributeVocabulary.getInfoFor(attribute)
-                .map(info -> checkEvaluatedTypeAgainstCurrentlyInferred(attribute, info.type))
+                .map(info -> info.type)
                 .orElseThrow(() -> new IllegalArgumentException("Unknown attribute " + attribute));
         } else {
             // we must have a literal then
             final CEXLParser.LiteralContext literal = operandExp.literal();
             TerminalNode intLit = literal.INT_LIT();
             if (intLit != null) {
-                return checkEvaluatedTypeAgainstCurrentlyInferred(intLit.getText(), ValueType.INT64);
+                return ValueType.INT64;
             }
             TerminalNode ipLit = literal.IP_LIT();
             if (ipLit != null) {
-                return checkEvaluatedTypeAgainstCurrentlyInferred(ipLit.getText(), ValueType.IP_ADDRESS);
+                return ValueType.IP_ADDRESS;
             }
             TerminalNode stringLit = literal.STRING_LIT();
             if (stringLit != null) {
-                return checkEvaluatedTypeAgainstCurrentlyInferred(stringLit.getText(), ValueType.STRING);
+                return ValueType.STRING;
             }
         }
         
