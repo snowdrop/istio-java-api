@@ -11,21 +11,22 @@ import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
+ * A "simple" CEXL expression validator. Operator precedence is not implemented so you need to use parentheses to combine expressions.
+ *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class CEXLTypeResolver extends CEXLBaseListener {
     
     private static final String DEFAULT_OPERATOR = "|";
-    //    private final ValueType[] currentlyInferredType = new ValueType[1];
-    private ValueType currentlyInferredType;
+    private ValueType expressionType;
     
     public ValueType getExpressionType() {
-        return currentlyInferredType;
+        return expressionType;
     }
     
     @Override
     public void exitExpression(CEXLParser.ExpressionContext ctx) {
-        currentlyInferredType = evaluate(ctx);
+        expressionType = evaluate(ctx);
     }
     
     private ValueType evaluate(CEXLParser.ExpressionContext ctx) {
@@ -79,7 +80,7 @@ public class CEXLTypeResolver extends CEXLBaseListener {
         }
     
         final CEXLParser.IndexExprContext indexExpr = ctx.indexExpr();
-        if(indexExpr != null) {
+        if (indexExpr != null) {
             final TerminalNode identifier = indexExpr.IDENTIFIER();
             if (identifier != null) {
                 AttributeVocabulary.getInfoFor(identifier.getText())
@@ -124,18 +125,6 @@ public class CEXLTypeResolver extends CEXLBaseListener {
         }
         
         return ValueType.VALUE_TYPE_UNSPECIFIED;
-    }
-    
-    private ValueType checkEvaluatedTypeAgainstCurrentlyInferred(String value, ValueType evaluatedType) {
-        if (currentlyInferredType != null) {
-            if (evaluatedType != currentlyInferredType) {
-                throw new IllegalArgumentException(String.format("Operand '%s' has incompatible type with currently inferred ('%s')", value, currentlyInferredType.name()));
-            }
-        } else {
-            currentlyInferredType = evaluatedType;
-        }
-        
-        return currentlyInferredType;
     }
 }
 
