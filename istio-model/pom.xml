@@ -107,6 +107,10 @@
             <goals>
               <goal>antlr4</goal>
             </goals>
+            <!-- If we want to put the generated ANTLR classes in the proper package with other sources -->
+            <!--<configuration>
+              <outputDirectory>${project.build.sourceDirectory}/me/snowdrop/istio/api/model/v1/cexl/parser</outputDirectory>
+            </configuration>-->
           </execution>
         </executions>
       </plugin>
