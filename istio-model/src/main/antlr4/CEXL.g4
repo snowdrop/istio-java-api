@@ -100,7 +100,7 @@ endsWithExpr
 
 // Identifiers
 ATTRIBUTE_NAME
-    : [a-zA-Z] ( [a-zA-Z] | DECIMAL_DIGIT | '.' )*
+    : [a-zA-Z] ( [a-zA-Z] | DECIMAL_DIGIT | '.' | '_' )*
     ;
 
 // IP
