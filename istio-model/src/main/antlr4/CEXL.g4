@@ -18,6 +18,14 @@ expression
     | firstNonEmptyExpr
     ;
 
+/*
+// for operator precedence?
+binaryExpr: comparisonExpr ( ('==' | '!=') comparisonExpr)* ;
+comparisonExpr: andExpr ('&&' andExpr)* ;
+andExpr: orExpr ('||' orExpr)* ;
+orExpr: primaryExpr | parenExpr;
+*/
+
 parenExpr: '(' expression ')';
 
 firstNonEmptyExpr
