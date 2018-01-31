@@ -57,18 +57,18 @@ primaryExpr
     ;
 
 operand
-    : IDENTIFIER
+    : ATTRIBUTE_NAME
     | literal
     ;
 
 literal : INT_LIT | IP_LIT | STRING_LIT;
 
 indexExpr
-    : IDENTIFIER '[' STRING_LIT ']'
+    : ATTRIBUTE_NAME '[' STRING_LIT ']'
     ;
 
 matchExpr
-    : 'match(' IDENTIFIER ', ' STRING_LIT ')'
+    : 'match(' ATTRIBUTE_NAME ', ' STRING_LIT ')'
     ;
 
 ipExpr
@@ -80,15 +80,15 @@ timestampExpr
     ;
 
 matchesExpr
-    : STRING_LIT '.matches(' IDENTIFIER ')'
+    : STRING_LIT '.matches(' ATTRIBUTE_NAME ')'
     ;
 
 startsWithExpr
-    : IDENTIFIER '.startsWith(' STRING_LIT ')'
+    : ATTRIBUTE_NAME '.startsWith(' STRING_LIT ')'
     ;
 
 endsWithExpr
-    : IDENTIFIER '.endsWith(' STRING_LIT ')'
+    : ATTRIBUTE_NAME '.endsWith(' STRING_LIT ')'
     ;
 
 
@@ -99,7 +99,7 @@ endsWithExpr
 
 
 // Identifiers
-IDENTIFIER
+ATTRIBUTE_NAME
     : [a-zA-Z] ( [a-zA-Z] | DECIMAL_DIGIT | '.' )*
     ;
 

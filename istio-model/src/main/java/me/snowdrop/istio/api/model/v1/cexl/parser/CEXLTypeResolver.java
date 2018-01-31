@@ -81,7 +81,7 @@ public class CEXLTypeResolver extends CEXLBaseListener {
     
         final CEXLParser.IndexExprContext indexExpr = ctx.indexExpr();
         if (indexExpr != null) {
-            final TerminalNode identifier = indexExpr.IDENTIFIER();
+            final TerminalNode identifier = indexExpr.ATTRIBUTE_NAME();
             if (identifier != null) {
                 AttributeVocabulary.getInfoFor(identifier.getText())
                     .filter(it -> it.type == ValueType.STRING_MAP)
@@ -100,7 +100,7 @@ public class CEXLTypeResolver extends CEXLBaseListener {
     }
     
     private ValueType evaluate(CEXLParser.OperandContext operandExp) {
-        final TerminalNode identifier = operandExp.IDENTIFIER();
+        final TerminalNode identifier = operandExp.ATTRIBUTE_NAME();
         if (identifier != null) {
             // check if attribute is a known attribute
             final String attribute = identifier.getText();
