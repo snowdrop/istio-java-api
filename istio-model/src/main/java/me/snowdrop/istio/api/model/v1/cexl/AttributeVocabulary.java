@@ -130,7 +130,7 @@ public class AttributeVocabulary {
     /**
      * source.labels attribute with expected type: map[string, string]
      * A map of key-value pairs attached to the client instance.
-     * Example: version => v1
+     * Example: version =&gt; v1
      */
     public static final String source_labels = "source.labels";
 
@@ -229,7 +229,7 @@ public class AttributeVocabulary {
     /**
      * destination.labels attribute with expected type: map[string, string]
      * A map of key-value pairs attached to the server instance.
-     * Example: version => v2
+     * Example: version =&gt; v2
      */
     public static final String destination_labels = "destination.labels";
 
@@ -536,7 +536,8 @@ public class AttributeVocabulary {
 
     /**
      * api.operation attribute with expected type: string
-     * Unique string used to identify the operation. The id is unique among all operations described in a specific <service, version>.
+     * Unique string used to identify the operation. The id is unique among all operations described in a specific
+     * &lt;service, version&gt;.
      * Example: getPetsById
      */
     public static final String api_operation = "api.operation";
