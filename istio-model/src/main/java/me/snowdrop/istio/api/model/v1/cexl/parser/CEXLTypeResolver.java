@@ -29,8 +29,9 @@ public class CEXLTypeResolver extends CEXLBaseListener {
     }
     
     private ValueType evaluate(CEXLParser.ExpressionContext ctx) {
-        if (ctx.parenExpr() != null) {
-            return evaluate(ctx.expression(1));
+        final CEXLParser.ParenExprContext parenExprContext = ctx.parenExpr();
+        if (parenExprContext != null) {
+            return evaluate(parenExprContext.expression());
         }
         
         final CEXLParser.FirstNonEmptyExprContext firstNonEmptyExprContext = ctx.firstNonEmptyExpr();
