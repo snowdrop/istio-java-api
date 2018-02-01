@@ -93,9 +93,9 @@ func main() {
 	}
 
 	enumMap := map[string]string{
-		"istio.mesh.v1apha1.MeshConfig_IngressControllerMode":               "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
-		"istio.mesh.v1apha1.MeshConfig_AuthPolicy":                          "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
-		"istio.mesh.v1apha1.AuthenticationPolicy":                           "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":               "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
+		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                          "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.AuthenticationPolicy":                           "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
 		"istio.mixer.v1.ReferencedAttributes_Condition":                     "me.snowdrop.istio.api.model.v1.mixer.Condition",
 		"istio.mixer.v1.config.descriptor.ValueType":                        "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
 	}
