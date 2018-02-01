@@ -23,7 +23,6 @@ import (
 	"reflect"
 	"strings"
 	"time"
-	broker "istio.io/api/broker/v1/config"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	mixer_config "istio.io/api/mixer/v1/config"
@@ -35,11 +34,6 @@ import (
 )
 
 type Schema struct {
-	CatalogPlan                              broker.CatalogPlan
-	CatalogEntry                             broker.CatalogEntry
-	Deployment                               broker.Deployment
-	ServiceClass                             broker.ServiceClass
-	ServicePlan                              broker.ServicePlan
 	MeshConfig                               mesh.MeshConfig
 	ProxyConfig                              mesh.ProxyConfig
 	Attributes                               mixer.Attributes
