@@ -38,94 +38,6 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.Status"
     },
-    "istio_broker_CatalogEntry": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "description": {
-          "type": "string",
-          "description": ""
-        },
-        "id": {
-          "type": "string",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogEntry"
-    },
-    "istio_broker_CatalogPlan": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "description": {
-          "type": "string",
-          "description": ""
-        },
-        "id": {
-          "type": "string",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogPlan"
-    },
-    "istio_broker_Deployment": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "instance": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.Deployment"
-    },
-    "istio_broker_ServiceClass": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "deployment": {
-          "$ref": "#/definitions/istio_broker_Deployment",
-          "javaType": "me.snowdrop.istio.api.model.v1.broker.Deployment"
-        },
-        "entry": {
-          "$ref": "#/definitions/istio_broker_CatalogEntry",
-          "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogEntry"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServiceClass"
-    },
-    "istio_broker_ServicePlan": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "plan": {
-          "$ref": "#/definitions/istio_broker_CatalogPlan",
-          "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogPlan"
-        },
-        "services": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServicePlan"
-    },
     "istio_mesh_MeshConfig": {
       "type": "object",
       "description": "",
@@ -1308,14 +1220,6 @@
       "$ref": "#/definitions/istio_mixer_Attributes",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.Attributes"
     },
-    "CatalogEntry": {
-      "$ref": "#/definitions/istio_broker_CatalogEntry",
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogEntry"
-    },
-    "CatalogPlan": {
-      "$ref": "#/definitions/istio_broker_CatalogPlan",
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.CatalogPlan"
-    },
     "CheckRequest": {
       "$ref": "#/definitions/istio_mixer_CheckRequest",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckRequest"
@@ -1335,10 +1239,6 @@
     "CorsPolicy": {
       "$ref": "#/definitions/istio_routing_CorsPolicy",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.CorsPolicy"
-    },
-    "Deployment": {
-      "$ref": "#/definitions/istio_broker_Deployment",
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.Deployment"
     },
     "DestinationPolicy": {
       "$ref": "#/definitions/istio_routing_DestinationPolicy",
@@ -1443,14 +1343,6 @@
     "Rule": {
       "$ref": "#/definitions/istio_mixer_config_Rule",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Rule"
-    },
-    "ServiceClass": {
-      "$ref": "#/definitions/istio_broker_ServiceClass",
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServiceClass"
-    },
-    "ServicePlan": {
-      "$ref": "#/definitions/istio_broker_ServicePlan",
-      "javaType": "me.snowdrop.istio.api.model.v1.broker.ServicePlan"
     },
     "StringMap": {
       "$ref": "#/definitions/istio_mixer_StringMap",
