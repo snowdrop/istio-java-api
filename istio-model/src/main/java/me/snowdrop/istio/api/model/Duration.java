@@ -61,7 +61,7 @@ public class Duration implements Serializable {
     public Duration() {
     }
 
-    @Buildable(generateBuilderPackage = true, builderPackage = "me.snowdrop.istio.api.builder", editableEnabled = false, validationEnabled = true)
+    @Buildable(generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, validationEnabled = true)
     public Duration(Integer nanos, Long seconds) {
         this.nanos = nanos;
         this.seconds = seconds;

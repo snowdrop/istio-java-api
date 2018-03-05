@@ -33,7 +33,7 @@ import me.snowdrop.istio.api.internal.IstioDeserializer;
 })
 @ToString
 @EqualsAndHashCode
-@Buildable(builderPackage = "me.snowdrop.istio.api.builder", generateBuilderPackage = true, editableEnabled = false, refs = {@BuildableReference(ObjectMeta.class)}, inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", generateBuilderPackage = true, editableEnabled = false, refs = {@BuildableReference(ObjectMeta.class)}, inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 @JsonDeserialize(using = IstioDeserializer.class)
 public class IstioResource implements HasMetadata, Serializable {
     private ObjectMeta metadata;

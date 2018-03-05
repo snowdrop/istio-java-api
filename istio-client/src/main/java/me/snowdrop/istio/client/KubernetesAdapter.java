@@ -37,6 +37,25 @@ public class KubernetesAdapter implements Adapter {
         return Collections.emptyList();
     }
 
+    public List<IstioResource> createOrReplaceCustomResources(IstioResource... resources) {
+        if(resources != null) {
+            List<IstioResource> results = new ArrayList<>(resources.length);
+
+            for (IstioResource resource : resources) {
+                final CustomResourceDefinition customResourceDefinition = getCustomResourceDefinition(resource);
+
+                final IstioResource result = client.customResources(customResourceDefinition, IstioResource.class, KubernetesResourceList.class, DoneableIstioResource.class)
+                        .inNamespace(client.getNamespace())
+                        .createOrReplace(resource);
+                results.add(result);
+            }
+
+            return results;
+        }
+
+        return Collections.emptyList();
+    }
+
     public Boolean deleteCustomResources(IstioResource resource) {
 
         if (resource != null) {
