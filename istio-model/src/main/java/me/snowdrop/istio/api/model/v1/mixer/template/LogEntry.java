@@ -27,7 +27,7 @@ import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
 @JsonDeserialize
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "me.snowdrop.istio.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class LogEntry extends IstioBaseSpec {
     /*
     apiVersion: "config.istio.io/v1alpha2"

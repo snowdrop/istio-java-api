@@ -22,7 +22,7 @@ import me.snowdrop.istio.api.model.IstioBaseSpec;
 @JsonDeserialize
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "me.snowdrop.istio.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class ListEntry extends IstioBaseSpec {
     private String value;
 

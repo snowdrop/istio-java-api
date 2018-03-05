@@ -72,8 +72,13 @@ public class IstioClient {
         return registerCustomResources(readSpecFileFromInputStream(resource));
     }
 
+
     public IstioResource registerCustomResource(final IstioResource resource) {
         return client.createCustomResources(resource).get(0);
+    }
+
+    public IstioResource registerOrUpdateCustomResource(final IstioResource resource) {
+        return client.createOrReplaceCustomResources(resource).get(0);
     }
 
     public Boolean unregisterCustomResource(final IstioResource istioResource) {
