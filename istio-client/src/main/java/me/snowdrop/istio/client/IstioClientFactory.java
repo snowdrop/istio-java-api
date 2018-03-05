@@ -15,7 +15,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 public class IstioClientFactory {
     public static IstioClient defaultClient(Config config) {
-        KubernetesClient client = new DefaultKubernetesClient(config);
+        KubernetesClient client = new KubernetesIstioClient(config);
 
         KubernetesAdapter adapter = new KubernetesAdapter(client);
         return new IstioClient(adapter);
