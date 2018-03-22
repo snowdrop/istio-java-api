@@ -74,7 +74,7 @@ func main() {
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
 		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},
-		{"istio.io/gogo-genproto/googleapis/google/rpc", "me.snowdrop.istio.api.model", "google_rpc_"},
+		{"github.com/gogo/googleapis/google/rpc", "me.snowdrop.istio.api.model", "google_rpc_"},
 	}
 
 	typeMap := map[reflect.Type]reflect.Type{
