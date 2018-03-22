@@ -25,7 +25,6 @@ import (
 	"time"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
-	mixer_config "istio.io/api/mixer/v1/config"
 	routing "istio.io/api/routing/v1alpha1"
 
 	"../../pkg/schemagen"
@@ -47,12 +46,6 @@ type Schema struct {
 	ReportRequest                            mixer.ReportRequest
 	ReportResponse                           mixer.ReportResponse
 	StringMap                                mixer.StringMap
-	Action                                   mixer_config.Action
-	AttributeManifest                        mixer_config.AttributeManifest
-	AttributeInfo                            mixer_config.AttributeManifest_AttributeInfo
-	Handler                                  mixer_config.Handler
-	Instance                                 mixer_config.Instance
-	Rule                                     mixer_config.Rule
 	CircuitBreaker                           routing.CircuitBreaker
 	CorsPolicy                               routing.CorsPolicy
 	DestinationPolicy                        routing.DestinationPolicy
@@ -79,7 +72,6 @@ func main() {
 		{"istio.io/api/broker/v1/config", "me.snowdrop.istio.api.model.v1.broker", "istio_broker_"},
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
-		{"istio.io/api/mixer/v1/config", "me.snowdrop.istio.api.model.v1.mixer.config", "istio_mixer_config_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
