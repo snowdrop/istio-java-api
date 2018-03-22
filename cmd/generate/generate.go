@@ -28,7 +28,6 @@ import (
 	routing "istio.io/api/routing/v1alpha1"
 
 	"../../pkg/schemagen"
-	//"os"
 	"os"
 )
 
@@ -69,7 +68,6 @@ type Schema struct {
 
 func main() {
 	packages := []schemagen.PackageDescriptor{
-		{"istio.io/api/broker/v1/config", "me.snowdrop.istio.api.model.v1.broker", "istio_broker_"},
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
