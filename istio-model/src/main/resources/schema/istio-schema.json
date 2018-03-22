@@ -61,10 +61,6 @@
           "type": "boolean",
           "description": ""
         },
-        "egressProxyAddress": {
-          "type": "string",
-          "description": ""
-        },
         "enableTracing": {
           "type": "boolean",
           "description": ""
@@ -81,6 +77,14 @@
           "description": ""
         },
         "mixerAddress": {
+          "type": "string",
+          "description": ""
+        },
+        "mixerCheckServer": {
+          "type": "string",
+          "description": ""
+        },
+        "mixerReportServer": {
           "type": "string",
           "description": ""
         },
@@ -120,6 +124,10 @@
           "type": "string",
           "description": ""
         },
+        "concurrency": {
+          "type": "integer",
+          "description": ""
+        },
         "configPath": {
           "type": "string",
           "description": ""
@@ -153,6 +161,10 @@
         },
         "proxyAdminPort": {
           "type": "integer",
+          "description": ""
+        },
+        "proxyBootstrapTemplatePath": {
+          "type": "string",
           "description": ""
         },
         "serviceCluster": {
@@ -506,120 +518,6 @@
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.StringMap"
-    },
-    "istio_mixer_config_Action": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "handler": {
-          "type": "string",
-          "description": ""
-        },
-        "instances": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Action"
-    },
-    "istio_mixer_config_AttributeManifest": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "attributes": {
-          "type": "object",
-          "description": "",
-          "additionalProperties": {
-            "$ref": "#/definitions/istio_mixer_config_AttributeManifest_AttributeInfo",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.AttributeInfo"
-          },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.config.AttributeInfo\u003e"
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        },
-        "revision": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.AttributeManifest"
-    },
-    "istio_mixer_config_AttributeManifest_AttributeInfo": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "description": {
-          "type": "string",
-          "description": ""
-        },
-        "valueType": {
-          "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.AttributeInfo"
-    },
-    "istio_mixer_config_Handler": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "adapter": {
-          "type": "string",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        },
-        "params": {}
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Handler"
-    },
-    "istio_mixer_config_Instance": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": ""
-        },
-        "params": {},
-        "template": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Instance"
-    },
-    "istio_mixer_config_Rule": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "actions": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/istio_mixer_config_Action",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Action"
-          }
-        },
-        "match": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Rule"
     },
     "istio_routing_CircuitBreaker": {
       "type": "object",
@@ -1200,18 +1098,6 @@
   },
   "type": "object",
   "properties": {
-    "Action": {
-      "$ref": "#/definitions/istio_mixer_config_Action",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Action"
-    },
-    "AttributeInfo": {
-      "$ref": "#/definitions/istio_mixer_config_AttributeManifest_AttributeInfo",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.AttributeInfo"
-    },
-    "AttributeManifest": {
-      "$ref": "#/definitions/istio_mixer_config_AttributeManifest",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.AttributeManifest"
-    },
     "AttributeValue": {
       "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
@@ -1272,17 +1158,9 @@
       "$ref": "#/definitions/istio_routing_HTTPTimeout",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPTimeout"
     },
-    "Handler": {
-      "$ref": "#/definitions/istio_mixer_config_Handler",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Handler"
-    },
     "IngressRule": {
       "$ref": "#/definitions/istio_routing_IngressRule",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.IngressRule"
-    },
-    "Instance": {
-      "$ref": "#/definitions/istio_mixer_config_Instance",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Instance"
     },
     "IstioService": {
       "$ref": "#/definitions/istio_routing_IstioService",
@@ -1339,10 +1217,6 @@
     "RouteRule": {
       "$ref": "#/definitions/istio_routing_RouteRule",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.RouteRule"
-    },
-    "Rule": {
-      "$ref": "#/definitions/istio_mixer_config_Rule",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.config.Rule"
     },
     "StringMap": {
       "$ref": "#/definitions/istio_mixer_StringMap",
