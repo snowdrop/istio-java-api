@@ -7,6 +7,7 @@ import java.util.List;
 
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.model.v1.mixer.template.Metric;
 import me.snowdrop.istio.api.model.v1.routing.DestinationPolicy;
 import me.snowdrop.istio.api.model.v1.routing.EgressRule;
 import me.snowdrop.istio.api.model.v1.routing.RouteRule;
@@ -41,6 +42,11 @@ public class IstioClientTest {
     @Test
     public void shouldApplyEgressRuleIstioResource() {
         checkInput("egress-rule.yaml", EgressRule.class);
+    }
+
+    @Test
+    public void shouldApplyMetricIstioResource() {
+        checkInput("metric.yaml", Metric.class);
     }
 
     private void checkInput(String inputFileName, Class<? extends IstioSpec> expectedSpecClass) {
