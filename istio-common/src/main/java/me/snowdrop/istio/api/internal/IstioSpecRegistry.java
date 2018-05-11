@@ -9,6 +9,7 @@ package me.snowdrop.istio.api.internal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.snowdrop.istio.api.model.IstioSpec;
@@ -144,7 +145,16 @@ virtualservices.networking.istio.io                       26d
      * @return {@code true} if the class is considered as an Istio spec class, {@code false} otherwise
      */
     public static boolean isIstioSpec(String simpleClassName) {
-        return KIND_TO_CLASSNAME.containsKey(simpleClassName) || KIND_TO_CLASSNAME.containsKey(simpleClassName.toLowerCase());
+        return getIstioKind(simpleClassName).isPresent();
+    }
+
+    public static Optional<String> getIstioKind(String simpleClassName) {
+        if (KIND_TO_CLASSNAME.containsKey(simpleClassName)) {
+            return Optional.of(simpleClassName);
+        } else {
+            final String lowerSimpleClassName = simpleClassName.toLowerCase();
+            return KIND_TO_CLASSNAME.containsKey(lowerSimpleClassName) ? Optional.of(lowerSimpleClassName) : Optional.empty();
+        }
     }
 
     public static String getCRDNameFor(String kind) {

@@ -7,6 +7,7 @@
 package me.snowdrop.istio.annotator;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -20,6 +21,7 @@ import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
@@ -49,8 +51,10 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         }
 
         try {
-            if (IstioSpecRegistry.isIstioSpec(clazz.name())) {
+            final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
+            if (kind.isPresent()) {
                 clazz._implements(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioSpec"));
+                clazz.annotate(IstioKind.class).param("name", kind.get());
             }
         } catch (JClassAlreadyExistsException e) {
             throw new RuntimeException(e);
