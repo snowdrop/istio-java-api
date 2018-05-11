@@ -26,44 +26,46 @@ import (
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	routing "istio.io/api/routing/v1alpha1"
+	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
 
 	"../../pkg/schemagen"
 	"os"
 )
 
 type Schema struct {
-	MeshConfig                               mesh.MeshConfig
-	ProxyConfig                              mesh.ProxyConfig
-	Attributes                               mixer.Attributes
-	AttributeValue                           mixer.Attributes_AttributeValue
-	CheckRequest                             mixer.CheckRequest
-	QuotaParams                              mixer.CheckRequest_QuotaParams
-	CheckResponse                            mixer.CheckResponse
-	QuotaResult                              mixer.CheckResponse_QuotaResult
-	CompressedAttributes                     mixer.CompressedAttributes
-	ReferencedAttributes                     mixer.ReferencedAttributes
-	ReportRequest                            mixer.ReportRequest
-	ReportResponse                           mixer.ReportResponse
-	StringMap                                mixer.StringMap
-	CircuitBreaker                           routing.CircuitBreaker
-	CorsPolicy                               routing.CorsPolicy
-	DestinationPolicy                        routing.DestinationPolicy
-	DestinationWeight                        routing.DestinationWeight
-	EgressRule                               routing.EgressRule
-	HTTPFaultInjection                       routing.HTTPFaultInjection
-	HTTPRedirect                             routing.HTTPRedirect
-	HTTPRetry                                routing.HTTPRetry
-	HTTPRewrite                              routing.HTTPRewrite
-	HTTPTimeout                              routing.HTTPTimeout
-	IngressRule                              routing.IngressRule
-	IstioService                             routing.IstioService
-	L4FaultInjection                         routing.L4FaultInjection
-	L4MatchAttributes                        routing.L4MatchAttributes
-	LoadBalancing                            routing.LoadBalancing
-	MatchCondition                           routing.MatchCondition
-	MatchRequest                             routing.MatchRequest
-	RouteRule                                routing.RouteRule
-	StringMatch                              routing.StringMatch
+	MeshConfig           mesh.MeshConfig
+	ProxyConfig          mesh.ProxyConfig
+	Attributes           mixer.Attributes
+	AttributeValue       mixer.Attributes_AttributeValue
+	CheckRequest         mixer.CheckRequest
+	QuotaParams          mixer.CheckRequest_QuotaParams
+	CheckResponse        mixer.CheckResponse
+	QuotaResult          mixer.CheckResponse_QuotaResult
+	CompressedAttributes mixer.CompressedAttributes
+	ReferencedAttributes mixer.ReferencedAttributes
+	ReportRequest        mixer.ReportRequest
+	ReportResponse       mixer.ReportResponse
+	StringMap            mixer.StringMap
+	CircuitBreaker       routing.CircuitBreaker
+	CorsPolicy           routing.CorsPolicy
+	DestinationPolicy    routing.DestinationPolicy
+	DestinationWeight    routing.DestinationWeight
+	EgressRule           routing.EgressRule
+	HTTPFaultInjection   routing.HTTPFaultInjection
+	HTTPRedirect         routing.HTTPRedirect
+	HTTPRetry            routing.HTTPRetry
+	HTTPRewrite          routing.HTTPRewrite
+	HTTPTimeout          routing.HTTPTimeout
+	IngressRule          routing.IngressRule
+	IstioService         routing.IstioService
+	L4FaultInjection     routing.L4FaultInjection
+	L4MatchAttributes    routing.L4MatchAttributes
+	LoadBalancing        routing.LoadBalancing
+	MatchCondition       routing.MatchCondition
+	MatchRequest         routing.MatchRequest
+	RouteRule            routing.RouteRule
+	StringMatch          routing.StringMatch
+	Prometheus           prometheus.Params
 }
 
 func main() {
@@ -71,6 +73,7 @@ func main() {
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
+		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
 		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},
@@ -83,11 +86,14 @@ func main() {
 	}
 
 	enumMap := map[string]string{
-		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":               "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
-		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                          "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
-		"istio.mesh.v1alpha1.AuthenticationPolicy":                           "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
-		"istio.mixer.v1.ReferencedAttributes_Condition":                     "me.snowdrop.istio.api.model.v1.mixer.Condition",
-		"istio.mixer.v1.config.descriptor.ValueType":                        "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
+		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":      "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
+		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                 "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.AuthenticationPolicy":                  "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":   "me.snowdrop.istio.api.model.v1.mesh.InboundInterceptionMode",
+		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode": "me.snowdrop.istio.api.model.v1.mesh.Mode",
+		"istio.mixer.v1.ReferencedAttributes_Condition":             "me.snowdrop.istio.api.model.v1.mixer.Condition",
+		"istio.mixer.v1.config.descriptor.ValueType":                "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
+		"adapter.prometheus.config.Params_MetricInfo_Kind":          "me.snowdrop.istio.adapter.prometheus.Kind",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)

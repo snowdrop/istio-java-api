@@ -185,6 +185,18 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 
 	path := pkgPath(t)
+
+	// deal with mixer adapters
+	adapterIndex := strings.Index(path, "adapter")
+	if adapterIndex >= 0 && strings.Compare("Params", name) == 0 {
+		// entry point to configuration is Params struct, which needs to be renamed to the name of the adapter
+		// extract adapter name
+		adapterName := path[adapterIndex+len("adapter/"):]
+		adapterName = adapterName[:strings.IndexRune(adapterName, '/')]
+		name = strings.Title(adapterName)
+	}
+
+
 	pkgDesc, ok := g.packages[path]
 	if t.Kind() == reflect.Struct && ok {
 		switch name {

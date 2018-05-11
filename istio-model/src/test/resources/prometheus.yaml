@@ -1,0 +1,15 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: prometheus
+metadata:
+  name: recommendationrequestcounthandler
+  namespace: istio-system
+spec:
+  metrics:
+  - name: recommendation_request_count
+    instance_name: recommendationrequestcount.metric.istio-system
+    kind: COUNTER
+    label_names:
+    - source
+    - destination
+    - user_agent
+    - version
