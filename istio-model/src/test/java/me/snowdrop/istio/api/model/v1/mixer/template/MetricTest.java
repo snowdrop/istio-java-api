@@ -6,13 +6,18 @@
  */
 package me.snowdrop.istio.api.model.v1.mixer.template;
 
+import java.io.InputStream;
+import java.util.Map;
+
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioResourceBuilder;
+import me.snowdrop.istio.api.model.IstioSpec;
 import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -58,5 +63,27 @@ spec:
         IstioResource reloaded = mapper.readValue(output, IstioResource.class);
 
         assertEquals(resource, reloaded);
+    }
+
+    @Test
+    public void loadingFromYAMLShouldWork() throws Exception {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("metric.yaml");
+        final IstioResource metricRes = mapper.readValue(is, IstioResource.class);
+
+        assertEquals(metricRes.getKind(), "metric");
+
+        final IstioSpec spec = metricRes.getSpec();
+        assertTrue(spec instanceof Metric);
+
+        final Metric metric = (Metric) spec;
+        assertEquals("1", metric.getValue().getExpression());
+        final Map<String, TypedValue> dimensions = metric.getDimensions();
+        assertEquals(4, dimensions.size());
+        assertTrue(dimensions.containsKey("source"));
+        assertEquals("source.service | \"unknown\"", dimensions.get("source").getExpression());
+        assertTrue(dimensions.containsKey("destination"));
+        assertTrue(dimensions.containsKey("version"));
+        assertTrue(dimensions.containsKey("user_agent"));
     }
 }
