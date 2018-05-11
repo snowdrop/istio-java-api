@@ -9,6 +9,7 @@ package me.snowdrop.istio.api.model;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import me.snowdrop.istio.api.internal.IstioKind;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -16,6 +17,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public interface IstioSpec extends Serializable {
     @JsonIgnore
     default String getKind() {
-        return getClass().getSimpleName();
+        final IstioKind kind = getClass().getAnnotation(IstioKind.class);
+        if (kind != null) {
+            return kind.name();
+        }
+        throw new IllegalStateException(getClass().getName() + " should have been annotated with @IstioKind!");
     }
 }
