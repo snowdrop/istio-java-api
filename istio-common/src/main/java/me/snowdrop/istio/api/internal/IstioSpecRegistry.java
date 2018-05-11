@@ -17,11 +17,13 @@ import me.snowdrop.istio.api.model.IstioSpec;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class IstioSpecRegistry {
-    private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.api.model.";
+    private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.";
+    private static final String ISTIO_API_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "api.model.";
     private static final String ISTIO_VERSION = "v1.";
-    private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
+    private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
     private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
-    private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
+    private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
+    private static final String ISTIO_ADAPTER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "adapter.";
 
     private static final Map<String, Class<? extends IstioSpec>> KIND_TO_TYPE = new HashMap<>();
     private static final Map<String, String> KIND_TO_CLASSNAME = new HashMap<>();
@@ -35,6 +37,7 @@ public class IstioSpecRegistry {
     private static final String METRIC_CRD_NAME = "metrics.config.istio.io";
     private static final String QUOTA_CRD_NAME = "quotas.config.istio.io";
     private static final String REPORT_NOTHING_CRD_NAME = "reportnothings.config.istio.io";
+    private static final String PROMETHEUS_CRD_NAME = "prometheuses.config.istio.io";
     // todo: add support for all CRDs reported by oc get customresourcedefinitions | grep istio.io
     /*
     apikeys.config.istio.io                                   26d
@@ -97,6 +100,7 @@ virtualservices.networking.istio.io                       26d
         KIND_TO_CLASSNAME.put("metric", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Metric");
         KIND_TO_CLASSNAME.put("quota", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Quota");
         KIND_TO_CLASSNAME.put("reportnothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ReportNothing");
+        KIND_TO_CLASSNAME.put("prometheus", ISTIO_ADAPTER_PACKAGE_PREFIX + "prometheus.Prometheus");
 
         KIND_TO_CRD.put("DestinationPolicy", DESTINATION_POLICY_CRD_NAME);
         KIND_TO_CRD.put("EgressRule", EGRESS_RULE_CRD_NAME);
@@ -107,6 +111,7 @@ virtualservices.networking.istio.io                       26d
         KIND_TO_CRD.put("metric", METRIC_CRD_NAME);
         KIND_TO_CRD.put("quota", QUOTA_CRD_NAME);
         KIND_TO_CRD.put("reportnothing", REPORT_NOTHING_CRD_NAME);
+        KIND_TO_CRD.put("prometheus", PROMETHEUS_CRD_NAME);
     }
 
     public static Class<? extends IstioSpec> resolveIstioSpecForKind(String name) {
@@ -130,10 +135,16 @@ virtualservices.networking.istio.io                       26d
         }
     }
 
+    /**
+     * Determines if the class with the specified simple class name (as returned by {@link Class#getSimpleName()}) should be
+     * considered as the basis for an Istio {@code spec} i.e. able to provide the {@code spec} part of a Kubernetes Custom
+     * Resource Definition.
+     *
+     * @param simpleClassName the simple name of the class to consider for spec status
+     * @return {@code true} if the class is considered as an Istio spec class, {@code false} otherwise
+     */
     public static boolean isIstioSpec(String simpleClassName) {
-        // this relies on the fact that currently generated IstioSpec classes use their simple names as kind… This assumption
-        // might turn out wrong at some point in the future
-        return KIND_TO_CLASSNAME.containsKey(simpleClassName);
+        return KIND_TO_CLASSNAME.containsKey(simpleClassName) || KIND_TO_CLASSNAME.containsKey(simpleClassName.toLowerCase());
     }
 
     public static String getCRDNameFor(String kind) {
