@@ -6,9 +6,9 @@ metadata:
 spec:
   metrics:
   - name: recommendation_request_count
-    instance_name: recommendationrequestcount.metric.istio-system
+    instanceName: recommendationrequestcount.metric.istio-system
     kind: COUNTER
-    label_names:
+    labelNames:
     - source
     - destination
     - user_agent

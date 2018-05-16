@@ -9,7 +9,6 @@ package me.snowdrop.istio.api.model.v1.mixer.template;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.sundr.builder.annotations.Buildable;
@@ -42,12 +41,10 @@ public class Metric extends IstioBaseSpec {
     /**
      * Optional. An expression to compute the type of the monitored resource this log entry is being recorded on. If the logging backend supports monitored resources, these fields are used to populate that resource. Otherwise these fields will be ignored by the adapter.
      */
-    @JsonProperty(value = "monitored_resource_type")
     private String monitoredResourceType;
     /**
      * Optional. A set of expressions that will form the dimensions of the monitored resource this log entry is being recorded on. If the logging backend supports monitored resources, these fields are used to populate that resource. Otherwise these fields will be ignored by the adapter.
      */
-    @JsonProperty(value = "monitored_resource_dimensions")
     @JsonDeserialize(using = TypedValueMapDeserializer.class)
     private Map<String, TypedValue> monitoredResourceDimensions;
 
