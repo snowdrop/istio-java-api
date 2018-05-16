@@ -10,4 +10,4 @@ spec:
     destination: destination.service | "unknown"
     version: destination.labels["version"] | "unknown"
     user_agent: request.headers["user-agent"] | "unknown"
-  monitored_resource_type: '"UNSPECIFIED"'
+  monitoredResourceType: '"UNSPECIFIED"'
