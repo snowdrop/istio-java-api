@@ -295,14 +295,8 @@ func newHTTP2Client(connectCtx, ctx context.Context, addr TargetInfo, opts Conne
 	t.framer.writer.Flush()
 	go func() {
 		t.loopy = newLoopyWriter(clientSide, t.framer, t.controlBuf, t.bdpEst)
-		err := t.loopy.run()
-		errorf("transport: loopyWriter.run returning. Err: %v", err)
-		// If it's a connection error, let reader goroutine handle it
-		// since there might be data in the buffers.
-
-		if _, ok := err.(net.Error); !ok {
-			t.conn.Close()
-		}
+		t.loopy.run()
+		t.conn.Close()
 		close(t.writerDone)
 	}()
 	if t.kp.Time != infinity {
