@@ -27,7 +27,7 @@ import (
 	mixer "istio.io/api/mixer/v1"
 	routing "istio.io/api/routing/v1alpha1"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
-	//"istio.io/istio/mixer/template/metric"
+	"istio.io/istio/mixer/template/metric"
 
 	"../../pkg/schemagen"
 	"os"
@@ -67,7 +67,7 @@ type Schema struct {
 	RouteRule            routing.RouteRule
 	StringMatch          routing.StringMatch
 	Prometheus           prometheus.Params
-	//Metric               metric.InstanceParam
+	Metric               metric.InstanceParam
 }
 
 func main() {
@@ -76,7 +76,7 @@ func main() {
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
 		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
-		//{"istio.io/istio/mixer/template/metric", "me.snowdrop.istio.v1.mixer.template", "istio_mixer_metric_"},
+		{"istio.io/istio/mixer/template/metric", "me.snowdrop.istio.v1.mixer.template", "istio_mixer_metric_"},
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
 		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},
