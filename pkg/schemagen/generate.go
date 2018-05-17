@@ -506,5 +506,5 @@ func (g *schemaGenerator) addConstraints(objectName string, propName string, pro
 
 func pkgPath(t reflect.Type) string {
 	path := t.PkgPath()
-	return strings.TrimPrefix(path, "istio.io/api/vendor/")
+	return strings.TrimPrefix(path, "github.com/snowdrop/istio-java-api/vendor/")
 }
