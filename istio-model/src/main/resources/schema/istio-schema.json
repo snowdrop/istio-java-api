@@ -6,6 +6,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "value": {
           "type": "boolean",
           "description": ""
@@ -38,10 +50,91 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.Status"
     },
+    "istio_adapter_prometheus_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "metrics": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo",
+            "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.Prometheus"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "buckets": {
+          "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition",
+          "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo_BucketsDefinition"
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "instanceName": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "javaType": "me.snowdrop.istio.adapter.prometheus.Kind"
+        },
+        "labelNames": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "Definition": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo_BucketsDefinition"
+    },
+    "istio_io_api_mixer_adapter_model_v1beta1_Value": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "Value": {}
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+    },
     "istio_mesh_MeshConfig": {
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "accessLogFile": {
           "type": "string",
           "description": ""
@@ -96,6 +189,10 @@
             "description": ""
           }
         },
+        "outboundTrafficPolicy": {
+          "$ref": "#/definitions/istio_mesh_MeshConfig_OutboundTrafficPolicy",
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.OutboundTrafficPolicy"
+        },
         "proxyHttpPort": {
           "type": "integer",
           "description": ""
@@ -112,10 +209,45 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.mesh.MeshConfig"
     },
+    "istio_mesh_MeshConfig_OutboundTrafficPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
+        "mode": {
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.Mode"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mesh.OutboundTrafficPolicy"
+    },
     "istio_mesh_ProxyConfig": {
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "availabilityZone": {
           "type": "string",
           "description": ""
@@ -154,6 +286,9 @@
         "drainDuration": {
           "$ref": "#/definitions/protobuf_duration_Duration",
           "javaType": "me.snowdrop.istio.api.model.Duration"
+        },
+        "interceptionMode": {
+          "javaType": "me.snowdrop.istio.api.model.v1.mesh.InboundInterceptionMode"
         },
         "parentShutdownDuration": {
           "$ref": "#/definitions/protobuf_duration_Duration",
@@ -519,11 +654,61 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.StringMap"
     },
+    "istio_mixer_metric_InstanceMsg": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "dimensions": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_io_api_mixer_adapter_model_v1beta1_Value",
+            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+        },
+        "monitoredResourceDimensions": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_io_api_mixer_adapter_model_v1beta1_Value",
+            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+        },
+        "monitoredResourceType": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "$ref": "#/definitions/istio_io_api_mixer_adapter_model_v1beta1_Value",
+          "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.template.Metric"
+    },
     "istio_routing_CircuitBreaker": {
       "type": "object",
       "description": "",
       "properties": {
-        "CbPolicy": {}
+        "CbPolicy": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.routing.CircuitBreaker"
@@ -532,6 +717,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "allowCredentials": {
           "$ref": "#/definitions/github_com_golang_protobuf_ptypes_wrappers_BoolValue",
           "javaType": "java.lang.Boolean"
@@ -580,6 +777,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "circuitBreaker": {
           "$ref": "#/definitions/istio_routing_CircuitBreaker",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.CircuitBreaker"
@@ -608,6 +817,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "destination": {
           "$ref": "#/definitions/istio_routing_IstioService",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
@@ -633,6 +854,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "destination": {
           "$ref": "#/definitions/istio_routing_IstioService",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
@@ -657,6 +890,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "port": {
           "type": "integer",
           "description": ""
@@ -673,6 +918,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "abort": {
           "$ref": "#/definitions/istio_routing_HTTPFaultInjection_Abort",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.Abort"
@@ -690,6 +947,18 @@
       "description": "",
       "properties": {
         "ErrorType": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "overrideHeaderName": {
           "type": "string",
           "description": ""
@@ -707,6 +976,18 @@
       "description": "",
       "properties": {
         "HttpDelayType": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "overrideHeaderName": {
           "type": "string",
           "description": ""
@@ -723,6 +1004,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "authority": {
           "type": "string",
           "description": ""
@@ -739,7 +1032,19 @@
       "type": "object",
       "description": "",
       "properties": {
-        "RetryPolicy": {}
+        "RetryPolicy": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPRetry"
@@ -748,6 +1053,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "authority": {
           "type": "string",
           "description": ""
@@ -764,7 +1081,19 @@
       "type": "object",
       "description": "",
       "properties": {
-        "TimeoutPolicy": {}
+        "TimeoutPolicy": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPTimeout"
@@ -774,6 +1103,18 @@
       "description": "",
       "properties": {
         "DestinationServicePort": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "destination": {
           "$ref": "#/definitions/istio_routing_IstioService",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
@@ -802,6 +1143,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "domain": {
           "type": "string",
           "description": ""
@@ -835,6 +1188,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "terminate": {
           "$ref": "#/definitions/istio_routing_L4FaultInjection_Terminate",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.Terminate"
@@ -851,6 +1216,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "percent": {
           "type": "number",
           "description": ""
@@ -868,6 +1245,18 @@
       "description": "",
       "properties": {
         "ThrottleAfter": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "downstreamLimitBps": {
           "type": "integer",
           "description": "",
@@ -894,6 +1283,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "destinationSubnet": {
           "type": "array",
           "description": "",
@@ -918,7 +1319,19 @@
       "type": "object",
       "description": "",
       "properties": {
-        "LbPolicy": {}
+        "LbPolicy": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.routing.LoadBalancing"
@@ -927,6 +1340,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "request": {
           "$ref": "#/definitions/istio_routing_MatchRequest",
           "javaType": "me.snowdrop.istio.api.model.v1.routing.MatchRequest"
@@ -951,6 +1376,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "headers": {
           "type": "object",
           "description": "",
@@ -968,6 +1405,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "appendHeaders": {
           "type": "object",
           "description": "",
@@ -1041,7 +1490,19 @@
       "type": "object",
       "description": "",
       "properties": {
-        "MatchType": {}
+        "MatchType": {},
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.routing.StringMatch"
@@ -1050,6 +1511,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "typeUrl": {
           "type": "string",
           "description": ""
@@ -1066,6 +1539,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "nanos": {
           "type": "integer",
           "description": ""
@@ -1189,6 +1674,14 @@
     "MeshConfig": {
       "$ref": "#/definitions/istio_mesh_MeshConfig",
       "javaType": "me.snowdrop.istio.api.model.v1.mesh.MeshConfig"
+    },
+    "Metric": {
+      "$ref": "#/definitions/istio_mixer_metric_InstanceMsg",
+      "javaType": "me.snowdrop.istio.api.model.v1.mixer.template.Metric"
+    },
+    "Prometheus": {
+      "$ref": "#/definitions/istio_adapter_prometheus_Params",
+      "javaType": "me.snowdrop.istio.adapter.prometheus.Prometheus"
     },
     "ProxyConfig": {
       "$ref": "#/definitions/istio_mesh_ProxyConfig",

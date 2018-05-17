@@ -186,16 +186,30 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	path := pkgPath(t)
 
-	// deal with mixer adapters
-	adapterIndex := strings.Index(path, "adapter")
-	if adapterIndex >= 0 && strings.Compare("Params", name) == 0 {
-		// entry point to configuration is Params struct, which needs to be renamed to the name of the adapter
-		// extract adapter name
-		adapterName := path[adapterIndex+len("adapter/"):]
-		adapterName = adapterName[:strings.IndexRune(adapterName, '/')]
-		name = strings.Title(adapterName)
+	// transforms the type name if the path matches specific parts identifying a type kind and the name matches the specified typeName
+	// this is used to process templates and adapters automatically which use a fixed entry point struct name
+	nameTransformer := func(kind, typeName string) (string, bool) {
+		kindIndex := strings.Index(path, kind)
+		if kindIndex >= 0 && strings.Compare(typeName, name) == 0 {
+			// extract specific type name from path
+			extractedTypeName := path[kindIndex+len(kind)+1:]
+			slashIndex := strings.IndexRune(extractedTypeName, '/')
+			if slashIndex >= 0 {
+				// we have a sub-package after the type we want to extract (this is the case for adapters)
+				extractedTypeName = extractedTypeName[:slashIndex]
+			}
+			name = strings.Title(extractedTypeName)
+			return name, true
+		}
+
+		return name, false
 	}
 
+	// transform type name if needed
+	name, processed := nameTransformer("adapter", "Params")
+	if !processed {
+		name, _ = nameTransformer("template", "InstanceMsg")
+	}
 
 	pkgDesc, ok := g.packages[path]
 	if t.Kind() == reflect.Struct && ok {
@@ -237,6 +251,9 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			}
 			if name == "Duration" {
 				return "me.snowdrop.istio.api.model.Duration"
+			}
+			if name == "Value" {
+				return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
 			}
 			if len(name) == 0 && t.NumField() == 0 {
 				return "Object"
