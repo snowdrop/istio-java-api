@@ -54,19 +54,19 @@ type Schema struct {
 	HTTPFaultInjection   routing.HTTPFaultInjection
 	HTTPRedirect         routing.HTTPRedirect
 	HTTPRetry            routing.HTTPRetry
-	HTTPRewrite          routing.HTTPRewrite
-	HTTPTimeout          routing.HTTPTimeout
-	IngressRule          routing.IngressRule
-	IstioService         routing.IstioService
-	L4FaultInjection     routing.L4FaultInjection
-	L4MatchAttributes    routing.L4MatchAttributes
-	LoadBalancing        routing.LoadBalancing
-	MatchCondition       routing.MatchCondition
-	MatchRequest         routing.MatchRequest
-	RouteRule            routing.RouteRule
-	StringMatch          routing.StringMatch
-	Prometheus           prometheus.Params
-	Metric               metric.InstanceParam
+	HTTPRewrite       routing.HTTPRewrite
+	HTTPTimeout       routing.HTTPTimeout
+	IngressRule       routing.IngressRule
+	IstioService      routing.IstioService
+	L4FaultInjection  routing.L4FaultInjection
+	L4MatchAttributes routing.L4MatchAttributes
+	LoadBalancing     routing.LoadBalancing
+	MatchCondition    routing.MatchCondition
+	MatchRequest      routing.MatchRequest
+	RouteRule         routing.RouteRule
+	StringMatch       routing.StringMatch
+	Prometheus        prometheus.Params
+	Metric            metric.InstanceMsg
 }
 
 func main() {
@@ -75,7 +75,7 @@ func main() {
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
 		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
-		{"istio.io/istio/mixer/template/metric", "me.snowdrop.istio.v1.mixer.template", "istio_mixer_metric_"},
+		{"istio.io/istio/mixer/template/metric", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_metric_"},
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
 		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},
