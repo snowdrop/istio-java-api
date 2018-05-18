@@ -137,7 +137,15 @@
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
     "mixer/pkg/status",
-    "mixer/template/metric"
+    "mixer/template/apikey",
+    "mixer/template/authorization",
+    "mixer/template/checknothing",
+    "mixer/template/listentry",
+    "mixer/template/logentry",
+    "mixer/template/metric",
+    "mixer/template/quota",
+    "mixer/template/reportnothing",
+    "mixer/template/tracespan"
   ]
   revision = "62110d4f0373a7613e57b8a4d559ded9cb6a1cc8"
   version = "0.7.1"
@@ -145,6 +153,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "bef8c86d6fc57945138441b302247d31f0fa74475f096ac1519e9fca2e96c0a3"
+  inputs-digest = "7ba63ee02aa5c33e479322413ef55e97c632057f804b5575275d84eba2efe6e7"
   solver-name = "gps-cdcl"
   solver-version = 1

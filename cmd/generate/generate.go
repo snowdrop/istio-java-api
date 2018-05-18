@@ -30,6 +30,14 @@ import (
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
 	"github.com/snowdrop/istio-java-api/pkg/schemagen"
 	"istio.io/istio/mixer/template/metric"
+	"istio.io/istio/mixer/template/checknothing"
+	"istio.io/istio/mixer/template/listentry"
+	"istio.io/istio/mixer/template/logentry"
+	"istio.io/istio/mixer/template/apikey"
+	"istio.io/istio/mixer/template/authorization"
+	"istio.io/istio/mixer/template/quota"
+	"istio.io/istio/mixer/template/reportnothing"
+	"istio.io/istio/mixer/template/tracespan"
 )
 
 type Schema struct {
@@ -54,19 +62,27 @@ type Schema struct {
 	HTTPFaultInjection   routing.HTTPFaultInjection
 	HTTPRedirect         routing.HTTPRedirect
 	HTTPRetry            routing.HTTPRetry
-	HTTPRewrite       routing.HTTPRewrite
-	HTTPTimeout       routing.HTTPTimeout
-	IngressRule       routing.IngressRule
-	IstioService      routing.IstioService
-	L4FaultInjection  routing.L4FaultInjection
-	L4MatchAttributes routing.L4MatchAttributes
-	LoadBalancing     routing.LoadBalancing
-	MatchCondition    routing.MatchCondition
-	MatchRequest      routing.MatchRequest
-	RouteRule         routing.RouteRule
-	StringMatch       routing.StringMatch
-	Prometheus        prometheus.Params
-	Metric            metric.InstanceMsg
+	HTTPRewrite          routing.HTTPRewrite
+	HTTPTimeout          routing.HTTPTimeout
+	IngressRule          routing.IngressRule
+	IstioService         routing.IstioService
+	L4FaultInjection     routing.L4FaultInjection
+	L4MatchAttributes    routing.L4MatchAttributes
+	LoadBalancing        routing.LoadBalancing
+	MatchCondition       routing.MatchCondition
+	MatchRequest         routing.MatchRequest
+	RouteRule            routing.RouteRule
+	StringMatch          routing.StringMatch
+	Prometheus           prometheus.Params
+	APIKey               apikey.InstanceMsg
+	Authorization        authorization.InstanceMsg
+	CheckNothing         checknothing.InstanceMsg
+	ListEntry            listentry.InstanceMsg
+	LogEntry             logentry.InstanceMsg
+	Metric               metric.InstanceMsg
+	Quota                quota.InstanceMsg
+	ReportNothing        reportnothing.InstanceMsg
+	TraceSpan            tracespan.InstanceMsg
 }
 
 func main() {
@@ -75,7 +91,15 @@ func main() {
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
 		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
+		{"istio.io/istio/mixer/template/apikey", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_apikey_"},
+		{"istio.io/istio/mixer/template/authorization", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_authorization_"},
+		{"istio.io/istio/mixer/template/checknothing", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_checknothing_"},
+		{"istio.io/istio/mixer/template/listentry", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_listentry_"},
+		{"istio.io/istio/mixer/template/logentry", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_logentry_"},
 		{"istio.io/istio/mixer/template/metric", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_metric_"},
+		{"istio.io/istio/mixer/template/quota", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_quota_"},
+		{"istio.io/istio/mixer/template/reportnothing", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_reportnothing_"},
+		{"istio.io/istio/mixer/template/tracespan", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_tracespan_"},
 		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
 		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
 		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},

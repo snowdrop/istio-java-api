@@ -186,29 +186,11 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	path := pkgPath(t)
 
-	// transforms the type name if the path matches specific parts identifying a type kind and the name matches the specified typeName
-	// this is used to process templates and adapters automatically which use a fixed entry point struct name
-	nameTransformer := func(kind, typeName string) (string, bool) {
-		kindIndex := strings.Index(path, kind)
-		if kindIndex >= 0 && strings.Compare(typeName, name) == 0 {
-			// extract specific type name from path
-			extractedTypeName := path[kindIndex+len(kind)+1:]
-			slashIndex := strings.IndexRune(extractedTypeName, '/')
-			if slashIndex >= 0 {
-				// we have a sub-package after the type we want to extract (this is the case for adapters)
-				extractedTypeName = extractedTypeName[:slashIndex]
-			}
-			name = strings.Title(extractedTypeName)
-			return name, true
-		}
-
-		return name, false
-	}
-
 	// transform type name if needed
-	name, processed := nameTransformer("adapter", "Params")
-	if !processed {
-		name, _ = nameTransformer("template", "InstanceMsg")
+	if strings.Contains(path, "template") {
+		name = transformTemplateName(name, path)
+	} else if strings.Contains(path, "adapter") {
+		name = transformAdapterName(name, path)
 	}
 
 	pkgDesc, ok := g.packages[path]
@@ -243,24 +225,68 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case reflect.Map:
 			return "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">"
 		default:
-			if name == "Time" {
-				return "String"
-			}
-			if name == "BoolValue" {
+			switch name {
+			case "Time":
+				return "String" // todo: fix me?
+			case "BoolValue":
 				return "java.lang.Boolean"
-			}
-			if name == "Duration" {
+			case "Duration":
 				return "me.snowdrop.istio.api.model.Duration"
-			}
-			if name == "Value" {
+			case "TimeStamp":
+				return "me.snowdrop.istio.api.model.TimeStamp"
+			case "Value":
 				return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+			default:
+				if len(name) == 0 && t.NumField() == 0 {
+					return "Object"
+				} else {
+					return name
+				}
 			}
-			if len(name) == 0 && t.NumField() == 0 {
-				return "Object"
-			}
-			return name
 		}
 	}
+}
+
+func transformTemplateName(original string, path string) string {
+	kind := "template"
+	var name = original
+	kindIndex := strings.Index(path, kind)
+	if kindIndex >= 0 && strings.Compare("InstanceMsg", name) == 0 {
+		// extract specific type name from path
+		extractedTypeName := path[kindIndex+len(kind)+1:]
+		name = strings.Title(extractedTypeName)
+	}
+
+	if strings.Contains(name, "entry") {
+		return strings.Replace(name, "entry", "Entry", -1)
+	} else if strings.Contains(name, "Msg") {
+		return strings.Replace(name, "Msg", "", -1)
+	} else if strings.Contains(name, "nothing") {
+		return strings.Replace(name, "nothing", "Nothing", -1)
+	} else if strings.Contains(name, "key") {
+		return strings.Replace(name, "key", "Key", -1)
+	} else if strings.Contains(name, "span") {
+		return strings.Replace(name, "span", "Span", -1)
+	} else {
+		return name
+	}
+}
+
+func transformAdapterName(original string, path string) string {
+	kind := "adapter"
+	var name = original
+	kindIndex := strings.Index(path, kind)
+	if kindIndex >= 0 && strings.Compare("Params", name) == 0 {
+		// extract specific type name from path
+		extractedTypeName := path[kindIndex+len(kind)+1:]
+		slashIndex := strings.IndexRune(extractedTypeName, '/')
+		if slashIndex >= 0 {
+			extractedTypeName = extractedTypeName[:slashIndex]
+		}
+		name = strings.Title(extractedTypeName)
+	}
+
+	return name
 }
 
 func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
