@@ -43,7 +43,7 @@ public class Duration implements Serializable {
     private Map<String, Object> additionalProperties = new HashMap<>();
     private Integer nanos;
     private Long seconds;
-    final static PeriodFormatter FORMATTER = new PeriodFormatterBuilder()
+    private final static PeriodFormatter FORMATTER = new PeriodFormatterBuilder()
             .printZeroNever()
             .appendHours()
             .appendSuffix("h")

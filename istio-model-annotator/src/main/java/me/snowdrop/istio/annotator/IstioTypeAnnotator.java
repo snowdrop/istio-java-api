@@ -23,6 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
+import me.snowdrop.istio.api.model.IstioSpec;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
@@ -32,9 +33,16 @@ import org.jsonschema2pojo.Jackson2Annotator;
 public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
+    private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
+    private final JDefinedClass doneableClass;
 
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
+        try {
+            doneableClass = new JCodeModel()._class(DONEABLE_CLASS_NAME);
+        } catch (JClassAlreadyExistsException e) {
+            throw new IllegalStateException("Couldn't load " + DONEABLE_CLASS_NAME);
+        }
     }
 
     @Override
@@ -45,19 +53,15 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         annotationValue.param("metadata");
         for (Iterator<String> properties = propertiesNode.fieldNames(); properties.hasNext(); ) {
             String next = properties.next();
-            if (!next.equals("apiVersion") && !next.equals("kind") && !next.equals("metadata")) {
+            if (!"apiVersion".equals(next) && !"kind".equals(next) && !"metadata".equals(next)) {
                 annotationValue.param(next);
             }
         }
 
-        try {
-            final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
-            if (kind.isPresent()) {
-                clazz._implements(new JCodeModel()._class("me.snowdrop.istio.api.model.IstioSpec"));
-                clazz.annotate(IstioKind.class).param("name", kind.get());
-            }
-        } catch (JClassAlreadyExistsException e) {
-            throw new RuntimeException(e);
+        final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
+        if (kind.isPresent()) {
+            clazz._implements(IstioSpec.class);
+            clazz.annotate(IstioKind.class).param("name", kind.get());
         }
 
         //We just want to make sure we avoid infinite loops
@@ -65,18 +69,14 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 .param("using", JsonDeserializer.None.class);
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
-        try {
-            clazz.annotate(Buildable.class)
-                    .param("editableEnabled", false)
-                    .param("validationEnabled", true)
-                    .param("generateBuilderPackage", true)
-                    .param("builderPackage", BUILDER_PACKAGE)
-                    .annotationParam("inline", Inline.class)
-                    .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-                    .param("prefix", "Doneable")
-                    .param("value", "done");
-        } catch (JClassAlreadyExistsException e) {
-            throw new RuntimeException(e);
-        }
+        clazz.annotate(Buildable.class)
+                .param("editableEnabled", false)
+                .param("validationEnabled", true)
+                .param("generateBuilderPackage", true)
+                .param("builderPackage", BUILDER_PACKAGE)
+                .annotationParam("inline", Inline.class)
+                .param("type", doneableClass)
+                .param("prefix", "Doneable")
+                .param("value", "done");
     }
 }

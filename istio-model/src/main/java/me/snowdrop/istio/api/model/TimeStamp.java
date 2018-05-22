@@ -37,7 +37,7 @@ import org.joda.time.format.ISODateTimeFormat;
 public class TimeStamp implements Serializable {
     private Integer nanos;
     private Long seconds;
-    final static DateTimeFormatter FORMATTER = ISODateTimeFormat.dateTime();
+    private final static DateTimeFormatter FORMATTER = ISODateTimeFormat.dateTime();
 
     public TimeStamp() {
     }
