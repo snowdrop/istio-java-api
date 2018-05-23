@@ -1,11 +1,12 @@
 package me.snowdrop.istio.client;
 
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import me.snowdrop.istio.api.model.DoneableIstioResource;
 import me.snowdrop.istio.api.model.IstioResource;
@@ -73,7 +74,8 @@ public class KubernetesAdapter implements Adapter {
     }
 
     private CustomResourceDefinition getCustomResourceDefinition(IstioResource resource) {
-        final String crdName = IstioSpecRegistry.getCRDNameFor(resource.getKind());
+        final String kind = resource.getKind();
+        final String crdName = IstioSpecRegistry.getCRDNameFor(kind).orElseThrow(() -> new IllegalArgumentException(String.format("%s is not a known Istio resource.", kind)));
         final CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().withName(crdName).get();
         if (customResourceDefinition == null) {
             throw new IllegalArgumentException(String.format("Custom Resource Definition %s is not found in cluster %s",

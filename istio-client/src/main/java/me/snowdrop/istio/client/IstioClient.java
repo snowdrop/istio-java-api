@@ -41,14 +41,9 @@ public class IstioClient {
 
                     if (resourceYaml.containsKey(KIND)) {
                         final String kind = (String) resourceYaml.get(KIND);
-                        final String crdName = getCRDNameFor(kind);
-                        if (crdName != null) {
-                            final IstioResource resource = objectMapper.convertValue(resourceYaml, IstioResource.class);
-
-                            results.add(resource);
-                        } else {
-                            throw new IllegalArgumentException(String.format("%s is not a known Istio resource.", kind));
-                        }
+                        getCRDNameFor(kind).orElseThrow(() -> new IllegalArgumentException(String.format("%s is not a known Istio resource.", kind)));
+                        final IstioResource resource = objectMapper.convertValue(resourceYaml, IstioResource.class);
+                        results.add(resource);
                     } else {
                         throw new IllegalArgumentException(String.format("%s is not specified in provided resource.", KIND));
                     }

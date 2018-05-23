@@ -62,6 +62,8 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         if (kind.isPresent()) {
             clazz._implements(IstioSpec.class);
             clazz.annotate(IstioKind.class).param("name", kind.get());
+        } else {
+            System.out.println("class " + clazz.name() + " is not an IstioSpec");
         }
 
         //We just want to make sure we avoid infinite loops

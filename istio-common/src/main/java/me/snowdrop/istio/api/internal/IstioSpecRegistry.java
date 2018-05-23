@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import me.snowdrop.istio.api.model.IstioSpec;
@@ -28,49 +29,104 @@ public class IstioSpecRegistry {
     private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
     private static final String ISTIO_ADAPTER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "adapter.";
 
-    private static final Map<String, Class<? extends IstioSpec>> KIND_TO_TYPE = new HashMap<>();
-    private static final Map<String, String> KIND_TO_CLASSNAME = new HashMap<>();
+    private static final Map<String, CRDInfo> crdInfos = new HashMap<>();
 
-    private static final Map<String, String> KIND_TO_CRD;
     static {
-        final Properties crdFile = new Properties();
+        loadCRDInfosFromProperties("adapter_crds.properties", key -> ISTIO_ADAPTER_PACKAGE_PREFIX + key.toLowerCase() + ".");
+        loadCRDInfosFromProperties("template_crds.properties", key -> ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX);
+        loadCRDInfosFromProperties("other_crds.properties", key -> ISTIO_ROUTING_PACKAGE_PREFIX);
+    }
 
-        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("crd_list.properties")) {
+    private static void loadCRDInfosFromProperties(String propertyFileName, Function<String, String> packageNameFromPropertyKey) {
+        Properties crdFile = new Properties();
+
+        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyFileName)) {
             crdFile.load(inputStream);
         } catch (Exception e) {
-            throw new RuntimeException("Couldn't load 'crd_list.properties' from classpath", e);
+            throw new RuntimeException("Couldn't load '" + propertyFileName + "' from classpath", e);
         }
 
-        KIND_TO_CRD = crdFile.entrySet().stream().collect(Collectors.toMap(e -> String.valueOf(e.getKey()), e -> String.valueOf(e.getValue())));
+        crdInfos.putAll(crdFile.entrySet().stream().collect(
+                Collectors.toMap(
+                        e -> String.valueOf(e.getKey()),
+                        e -> getCRDInfoFrom(e, packageNameFromPropertyKey.apply(e.getKey().toString())))
+        ));
+    }
 
-        KIND_TO_CLASSNAME.put("RouteRule", ISTIO_ROUTING_PACKAGE_PREFIX + "RouteRule");
-        KIND_TO_CLASSNAME.put("DestinationPolicy", ISTIO_ROUTING_PACKAGE_PREFIX + "DestinationPolicy");
-        KIND_TO_CLASSNAME.put("EgressRule", ISTIO_ROUTING_PACKAGE_PREFIX + "EgressRule");
+    private static CRDInfo getCRDInfoFrom(Map.Entry<Object, Object> entry, String packageName) {
+        final String kind = String.valueOf(entry.getKey());
 
-        KIND_TO_CLASSNAME.put("apikey", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ApiKey");
-        KIND_TO_CLASSNAME.put("authorization", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Authorization");
-        KIND_TO_CLASSNAME.put("checknothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "CheckNothing");
-        KIND_TO_CLASSNAME.put("listentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ListEntry");
-        KIND_TO_CLASSNAME.put("logentry", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "LogEntry");
-        KIND_TO_CLASSNAME.put("metric", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Metric");
-        KIND_TO_CLASSNAME.put("quota", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "Quota");
-        KIND_TO_CLASSNAME.put("reportnothing", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "ReportNothing");
-        KIND_TO_CLASSNAME.put("tracespan", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "TraceSpan");
+        String className;
+        if (kind.contains("entry")) {
+            className = kind.replace("entry", "Entry");
+        } else if (kind.contains("Msg")) {
+            className = kind.replace("Msg", "");
+        } else if (kind.contains("nothing")) {
+            className = kind.replace("nothing", "Nothing");
+        } else if (kind.contains("key")) {
+            className = kind.replace("key", "Key");
+        } else if (kind.contains("span")) {
+            className = kind.replace("span", "Span");
+        } else {
+            className = kind;
+        }
+        final char c = className.charAt(0);
+        className = className.replaceFirst("" + c, "" + Character.toTitleCase(c));
 
-        KIND_TO_CLASSNAME.put("prometheus", ISTIO_ADAPTER_PACKAGE_PREFIX + "prometheus.Prometheus");
+        return new CRDInfo(kind, String.valueOf(entry.getValue()), packageName + className);
+    }
+
+    static class CRDInfo {
+        private final String kind;
+        private final String crdName;
+        private final String className;
+        private Optional<Class<? extends IstioSpec>> clazz = Optional.empty();
+
+        public CRDInfo(String kind, String crdName, String className) {
+            this.kind = kind;
+            this.crdName = crdName;
+            this.className = className;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CRDInfo crdInfo = (CRDInfo) o;
+
+            return kind.equals(crdInfo.kind);
+        }
+
+        @Override
+        public int hashCode() {
+            return kind.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "CRDInfo{" +
+                    "kind='" + kind + '\'' +
+                    ", crdName='" + crdName + '\'' +
+                    ", className='" + className + '\'' +
+                    '}';
+        }
     }
 
     public static Class<? extends IstioSpec> resolveIstioSpecForKind(String name) {
-        Class<? extends IstioSpec> result = KIND_TO_TYPE.get(name);
-        if (result == null) {
-            final String className = KIND_TO_CLASSNAME.get(name);
-            if (className != null) {
-                result = loadClassIfExists(className);
-                KIND_TO_TYPE.put(name, result);
+        final CRDInfo crdInfo = crdInfos.get(name);
+        if (crdInfo != null) {
+            Optional<Class<? extends IstioSpec>> result = crdInfo.clazz;
+            if (!result.isPresent()) {
+                final Class<? extends IstioSpec> clazz = loadClassIfExists(crdInfo.className);
+                crdInfo.clazz = Optional.of(clazz);
+                return clazz;
+            } else {
+                return result.get();
             }
+        } else {
+            return null;
         }
-
-        return result;
     }
 
     public static String getKindFor(Class<? extends IstioSpec> spec) {
@@ -82,16 +138,17 @@ public class IstioSpecRegistry {
     }
 
     public static Optional<String> getIstioKind(String simpleClassName) {
-        if (KIND_TO_CLASSNAME.containsKey(simpleClassName)) {
+        if (crdInfos.containsKey(simpleClassName)) {
             return Optional.of(simpleClassName);
         } else {
             final String lowerSimpleClassName = simpleClassName.toLowerCase();
-            return KIND_TO_CLASSNAME.containsKey(lowerSimpleClassName) ? Optional.of(lowerSimpleClassName) : Optional.empty();
+            return crdInfos.containsKey(lowerSimpleClassName) ? Optional.of(lowerSimpleClassName) : Optional.empty();
         }
     }
 
-    public static String getCRDNameFor(String kind) {
-        return KIND_TO_CRD.get(kind);
+    public static Optional<String> getCRDNameFor(String kind) {
+        final CRDInfo crdInfo = crdInfos.get(kind);
+        return crdInfo != null ? Optional.of(crdInfo.crdName) : Optional.empty();
     }
 
     private static Class<? extends IstioSpec> loadClassIfExists(String className) {
