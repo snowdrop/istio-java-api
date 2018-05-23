@@ -17,12 +17,17 @@
 SHELL := /bin/bash
 
 SCHEMA_DIR=istio-model/src/main/resources/schema
+CRD_FILE=istio-common/src/main/resources/crd_list.properties
 
 all: build
 
 clean:
 	rm -rf $(SCHEMA_DIR)
 	mvn clean
+
+crd:
+	oc get crd -o=jsonpath="{range .items[*]}{.spec.names.kind}={.metadata.name}{'\n'}{end}" > $(CRD_FILE)
+	git diff ${CRD_FILE}
 
 schema:
 	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go

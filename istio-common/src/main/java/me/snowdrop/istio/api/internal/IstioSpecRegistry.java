@@ -7,10 +7,12 @@ package me.snowdrop.istio.api.internal;
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 import me.snowdrop.istio.api.model.IstioSpec;
 
@@ -29,65 +31,18 @@ public class IstioSpecRegistry {
     private static final Map<String, Class<? extends IstioSpec>> KIND_TO_TYPE = new HashMap<>();
     private static final Map<String, String> KIND_TO_CLASSNAME = new HashMap<>();
 
-    private static final String DESTINATION_POLICY_CRD_NAME = "destinationpolicies.config.istio.io";
-    private static final String EGRESS_RULE_CRD_NAME = "egressrules.config.istio.io";
-    private static final String ROUTE_RULE_CRD_NAME = "routerules.config.istio.io";
-
-    private static final String API_KEY_CRD_NAME = "apikeys.config.istio.io";
-    private static final String AUTHORIZATION_CRD_NAME = "authorizations.config.istio.io";
-    private static final String CHECK_NOTHING_CRD_NAME = "checknothings.config.istio.io";
-    private static final String LIST_ENTRY_CRD_NAME = "listentries.config.istio.io";
-    private static final String LOG_ENTRY_CRD_NAME = "logentries.config.istio.io";
-    private static final String METRIC_CRD_NAME = "metrics.config.istio.io";
-    private static final String QUOTA_CRD_NAME = "quotas.config.istio.io";
-    private static final String REPORT_NOTHING_CRD_NAME = "reportnothings.config.istio.io";
-    private static final String TRACE_SPAN_CRD_NAME = "tracespans.config.istio.io";
-
-
-    private static final String PROMETHEUS_CRD_NAME = "prometheuses.config.istio.io";
-    // todo: add support for all CRDs reported by oc get customresourcedefinitions | grep istio.io
-    /*
-
-attributemanifests.config.istio.io                        26d
-circonuses.config.istio.io                                26d
-deniers.config.istio.io                                   26d
-destinationrules.config.istio.io                          26d
-destinationrules.networking.istio.io                      26d
-enduserauthenticationpolicyspecbindings.config.istio.io   26d
-enduserauthenticationpolicyspecs.config.istio.io          26d
-externalservices.config.istio.io                          26d
-externalservices.networking.istio.io                      26d
-fluentds.config.istio.io                                  26d
-gateways.networking.istio.io                              26d
-httpapispecbindings.config.istio.io                       26d
-httpapispecs.config.istio.io                              26d
-kubernetesenvs.config.istio.io                            26d
-kuberneteses.config.istio.io                              26d
-listcheckers.config.istio.io                              26d
-memquotas.config.istio.io                                 26d
-noops.config.istio.io                                     26d
-opas.config.istio.io                                      26d
-policies.authentication.istio.io                          26d
-prometheuses.config.istio.io                              26d
-quotaspecbindings.config.istio.io                         26d
-quotaspecs.config.istio.io                                26d
-rbacs.config.istio.io                                     26d
-routerules.config.istio.io                                26d
-rules.config.istio.io                                     26d
-servicecontrolreports.config.istio.io                     26d
-servicecontrols.config.istio.io                           26d
-servicerolebindings.config.istio.io                       26d
-serviceroles.config.istio.io                              26d
-solarwindses.config.istio.io                              26d
-stackdrivers.config.istio.io                              26d
-statsds.config.istio.io                                   26d
-stdios.config.istio.io                                    26d
-v1alpha2routerules.config.istio.io                        26d
-virtualservices.networking.istio.io                       26d
-     */
-    private static final Map<String, String> KIND_TO_CRD = new ConcurrentHashMap<>();
-    
+    private static final Map<String, String> KIND_TO_CRD;
     static {
+        final Properties crdFile = new Properties();
+
+        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("crd_list.properties")) {
+            crdFile.load(inputStream);
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't load 'crd_list.properties' from classpath", e);
+        }
+
+        KIND_TO_CRD = crdFile.entrySet().stream().collect(Collectors.toMap(e -> String.valueOf(e.getKey()), e -> String.valueOf(e.getValue())));
+
         KIND_TO_CLASSNAME.put("RouteRule", ISTIO_ROUTING_PACKAGE_PREFIX + "RouteRule");
         KIND_TO_CLASSNAME.put("DestinationPolicy", ISTIO_ROUTING_PACKAGE_PREFIX + "DestinationPolicy");
         KIND_TO_CLASSNAME.put("EgressRule", ISTIO_ROUTING_PACKAGE_PREFIX + "EgressRule");
@@ -103,22 +58,6 @@ virtualservices.networking.istio.io                       26d
         KIND_TO_CLASSNAME.put("tracespan", ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + "TraceSpan");
 
         KIND_TO_CLASSNAME.put("prometheus", ISTIO_ADAPTER_PACKAGE_PREFIX + "prometheus.Prometheus");
-
-        KIND_TO_CRD.put("DestinationPolicy", DESTINATION_POLICY_CRD_NAME);
-        KIND_TO_CRD.put("EgressRule", EGRESS_RULE_CRD_NAME);
-        KIND_TO_CRD.put("RouteRule", ROUTE_RULE_CRD_NAME);
-
-        KIND_TO_CRD.put("apikey", API_KEY_CRD_NAME);
-        KIND_TO_CRD.put("authorization", AUTHORIZATION_CRD_NAME);
-        KIND_TO_CRD.put("checknothing", CHECK_NOTHING_CRD_NAME);
-        KIND_TO_CRD.put("listentry", LIST_ENTRY_CRD_NAME);
-        KIND_TO_CRD.put("logentry", LOG_ENTRY_CRD_NAME);
-        KIND_TO_CRD.put("metric", METRIC_CRD_NAME);
-        KIND_TO_CRD.put("quota", QUOTA_CRD_NAME);
-        KIND_TO_CRD.put("reportnothing", REPORT_NOTHING_CRD_NAME);
-        KIND_TO_CRD.put("tracespan", TRACE_SPAN_CRD_NAME);
-
-        KIND_TO_CRD.put("prometheus", PROMETHEUS_CRD_NAME);
     }
 
     public static Class<? extends IstioSpec> resolveIstioSpecForKind(String name) {
@@ -140,18 +79,6 @@ virtualservices.networking.istio.io                       26d
         } catch (Exception e) {
             return null;
         }
-    }
-
-    /**
-     * Determines if the class with the specified simple class name (as returned by {@link Class#getSimpleName()}) should be
-     * considered as the basis for an Istio {@code spec} i.e. able to provide the {@code spec} part of a Kubernetes Custom
-     * Resource Definition.
-     *
-     * @param simpleClassName the simple name of the class to consider for spec status
-     * @return {@code true} if the class is considered as an Istio spec class, {@code false} otherwise
-     */
-    public static boolean isIstioSpec(String simpleClassName) {
-        return getIstioKind(simpleClassName).isPresent();
     }
 
     public static Optional<String> getIstioKind(String simpleClassName) {

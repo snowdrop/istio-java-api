@@ -16,24 +16,31 @@ and this API to send Istio artifacts to a running OpenShift cluster configured o
 
 = Building instructions
 
-If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to re-generate the classes from a newer version of the API, please see below.
+If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a Go programming environment.
 
 == Initial setup
 
-You will need to set up your environment for Go programming (`GOPATH` setup with the proper directory hierarchy):
+In particular, you will need to https://golang.org/doc/install[install Go] and check the code for this project within your `$GOPATH/src` hierarchy:
 
-  . cd $GOPATH/src
-  . git clone git@github.com:istio/api.git istio.io/api
-  . cd istio.io/api
-  . ./scripts/generate-protos.sh
-
-These steps put the API code in the proper spot with the proper https://github.com/istio/api/blob/master/BUILD#L2[organization prefix]. The `generate-protos.sh` script will re-generate the Go files base on the protobuf definitions if needed but also make sure that you have all the required dependencies.
+```bash
+cd $GOPATH/src
+git clone git@github.com:snowdrop/istio-java-api.git
+cd istio-java-api
+```
 
 == Building the Java API
 
 Run `make`. This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
-`istio-model/src/main/resources/schema/istio-schema.json`. A Maven build
-is then issued using the `jsonschema2pojo` Maven plugin to generate Java classes in `istio-model/target/generated-sources` and
-generate a Jar file containing the compiled version of these classes along with the JSON schema, ready to be used.
+`istio-model/src/main/resources/schema/istio-schema.json`. A Maven build is then issued using the `jsonschema2pojo` Maven plugin
+to generate Java classes in `istio-model/target/generated-sources` and generate a Jar file containing the compiled version of
+these classes along with the JSON schema, ready to be used.
 
 You can clean everything using `make clean`, only generate the schema using `make schema` or only generate the Java classes (assuming a schema already exists) using `mvn clean install`.
+
+You can also to re-generate the properties file that is used to determine which
+https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes Custom Resource Definitions (CRDs)]
+are specified by Istio. This file is located at `istio-common/src/main/resources/crd_list.properties` and can be generated using
+`make crd`. Right now, though, this command requires installing the
+https://docs.openshift.org/latest/cli_reference/get_started_cli.html[OpenShift Client] and an active administrative connection
+(via `oc login`) to an OpenShift cluster on which Istio is installed.
+

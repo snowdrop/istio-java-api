@@ -52,8 +52,7 @@ public class IstioClientTest {
     private void checkInput(String inputFileName, Class<? extends IstioSpec> expectedSpecClass) {
         // Given
         final IstioClient client = new IstioClient(adapter);
-        final InputStream inputStream = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(inputFileName);
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFileName);
 
         // When
         when(adapter.createCustomResources(any())).thenAnswer(invocation -> Collections.singletonList(invocation.getArgument(0)));
