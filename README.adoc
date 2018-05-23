@@ -37,6 +37,10 @@ these classes along with the JSON schema, ready to be used.
 
 You can clean everything using `make clean`, only generate the schema using `make schema` or only generate the Java classes (assuming a schema already exists) using `mvn clean install`.
 
+If any of the Go files are changed in such a way that new imports are required, you will need to run `dep ensure`
+at the top level of the project in order to update the `vendor` information otherwise you might run into issues
+when building the project.
+
 You can also to re-generate the properties file that is used to determine which
 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes Custom Resource Definitions (CRDs)]
 are specified by Istio. This file is located at `istio-common/src/main/resources/crd_list.properties` and can be generated using
