@@ -41,6 +41,7 @@ import (
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
 	rbac "istio.io/api/rbac/v1alpha1"
+	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd/config"
 )
 
 type Schema struct {
@@ -76,11 +77,13 @@ type Schema struct {
 	MatchRequest         routing.MatchRequest
 	RouteRule            routing.RouteRule
 	StringMatch          routing.StringMatch
-	ServiceRole          rbac.ServiceRole
-	ServiceRoleBinding   rbac.ServiceRoleBinding
 	Prometheus           prometheus.Params
 	Circonus             circonus.Params
 	Denier               denier.Params
+	ServiceRole          rbac.ServiceRole
+	ServiceRoleBinding   rbac.ServiceRoleBinding
+	Dogstatsd            dogstatsd.Params
+	MetricInfo           dogstatsd.Params_MetricInfo
 	APIKey               apikey.InstanceMsg
 	Authorization        authorization.InstanceMsg
 	CheckNothing         checknothing.InstanceMsg
@@ -99,6 +102,7 @@ func main() {
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
 		{"istio.io/api/rbac/v1alpha1", "me.snowdrop.istio.api.model.v1.rbac", "istio_rbac_"},
 		{"istio.io/istio/mixer/adapter/circonus/config", "me.snowdrop.istio.adapter.circonus", "istio_adapter_circonus_"},
+		{"istio.io/istio/mixer/adapter/dogstatsd/config", "me.snowdrop.istio.adapter.dogstatsd", "istio_adapter_dogstatsd_"},
 		{"istio.io/istio/mixer/adapter/denier/config", "me.snowdrop.istio.adapter.denier", "istio_adapter_denier_"},
 		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
 		{"istio.io/istio/mixer/template/apikey", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_apikey_"},
@@ -131,6 +135,7 @@ func main() {
 		"istio.mixer.v1.config.descriptor.ValueType":                "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
 		"adapter.circonus.config.Params_MetricInfo_Type":            "me.snowdrop.istio.adapter.circonus.Type",
 		"adapter.prometheus.config.Params_MetricInfo_Kind":          "me.snowdrop.istio.adapter.prometheus.Kind",
+		"adapter.dogstatsd.config.Params_MetricInfo_Type":           "me.snowdrop.istio.adapter.dogstatsd.Type",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)

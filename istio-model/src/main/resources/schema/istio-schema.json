@@ -2192,6 +2192,10 @@
       "$ref": "#/definitions/istio_mixer_metric_InstanceMsg",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.template.Metric"
     },
+    "MetricInfo": {
+      "$ref": "#/definitions/istio_adapter_dogstatsd_Params_MetricInfo",
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
+    },
     "Prometheus": {
       "$ref": "#/definitions/istio_adapter_prometheus_Params",
       "javaType": "me.snowdrop.istio.adapter.prometheus.Prometheus"
