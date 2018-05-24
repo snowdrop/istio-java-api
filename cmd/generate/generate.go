@@ -40,6 +40,7 @@ import (
 	"istio.io/istio/mixer/template/tracespan"
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
+	rbac "istio.io/api/rbac/v1alpha1"
 )
 
 type Schema struct {
@@ -75,6 +76,8 @@ type Schema struct {
 	MatchRequest         routing.MatchRequest
 	RouteRule            routing.RouteRule
 	StringMatch          routing.StringMatch
+	ServiceRole          rbac.ServiceRole
+	ServiceRoleBinding   rbac.ServiceRoleBinding
 	Prometheus           prometheus.Params
 	Circonus             circonus.Params
 	Denier               denier.Params
@@ -94,6 +97,7 @@ func main() {
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
+		{"istio.io/api/rbac/v1alpha1", "me.snowdrop.istio.api.model.v1.rbac", "istio_rbac_"},
 		{"istio.io/istio/mixer/adapter/circonus/config", "me.snowdrop.istio.adapter.circonus", "istio_adapter_circonus_"},
 		{"istio.io/istio/mixer/adapter/denier/config", "me.snowdrop.istio.adapter.denier", "istio_adapter_denier_"},
 		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},

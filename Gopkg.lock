@@ -126,6 +126,7 @@
     "mixer/adapter/model/v1beta1",
     "mixer/v1",
     "policy/v1beta1",
+    "rbac/v1alpha1",
     "routing/v1alpha1"
   ]
   revision = "0142cbd81f9dc723c57c1d43b1e07d3cb0817253"
@@ -155,6 +156,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1ca0d2d8d03ab49e07af2d1be8a6283e7245adabb69952c389b4ad70aa55d279"
+  inputs-digest = "98f4db5dc888afe2faaaee9a7526cfcec1a1cf513fd83d18df0bcd5309c63b16"
   solver-name = "gps-cdcl"
   solver-version = 1

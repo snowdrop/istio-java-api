@@ -1023,6 +1023,143 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.template.TraceSpan"
     },
+    "istio_rbac_AccessRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "constraints": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_rbac_AccessRule_Constraint",
+            "javaType": "me.snowdrop.istio.api.model.v1.rbac.Constraint"
+          }
+        },
+        "methods": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "paths": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "services": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.AccessRule"
+    },
+    "istio_rbac_AccessRule_Constraint": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "values": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.Constraint"
+    },
+    "istio_rbac_RoleRef": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.RoleRef"
+    },
+    "istio_rbac_ServiceRole": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_rbac_AccessRule",
+            "javaType": "me.snowdrop.istio.api.model.v1.rbac.AccessRule"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.ServiceRole"
+    },
+    "istio_rbac_ServiceRoleBinding": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "roleRef": {
+          "$ref": "#/definitions/istio_rbac_RoleRef",
+          "javaType": "me.snowdrop.istio.api.model.v1.rbac.RoleRef"
+        },
+        "subjects": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_rbac_Subject",
+            "javaType": "me.snowdrop.istio.api.model.v1.rbac.Subject"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.ServiceRoleBinding"
+    },
+    "istio_rbac_Subject": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "group": {
+          "type": "string",
+          "description": ""
+        },
+        "properties": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "user": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.Subject"
+    },
     "istio_routing_CircuitBreaker": {
       "type": "object",
       "description": "",
@@ -2094,6 +2231,14 @@
     "RouteRule": {
       "$ref": "#/definitions/istio_routing_RouteRule",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.RouteRule"
+    },
+    "ServiceRole": {
+      "$ref": "#/definitions/istio_rbac_ServiceRole",
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.ServiceRole"
+    },
+    "ServiceRoleBinding": {
+      "$ref": "#/definitions/istio_rbac_ServiceRoleBinding",
+      "javaType": "me.snowdrop.istio.api.model.v1.rbac.ServiceRoleBinding"
     },
     "StringMap": {
       "$ref": "#/definitions/istio_mixer_StringMap",
