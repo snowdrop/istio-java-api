@@ -38,6 +38,9 @@ import (
 	"istio.io/istio/mixer/template/quota"
 	"istio.io/istio/mixer/template/reportnothing"
 	"istio.io/istio/mixer/template/tracespan"
+	circonus "istio.io/istio/mixer/adapter/circonus/config"
+	denier "istio.io/istio/mixer/adapter/denier/config"
+	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd/config"
 )
 
 type Schema struct {
@@ -74,6 +77,9 @@ type Schema struct {
 	RouteRule            routing.RouteRule
 	StringMatch          routing.StringMatch
 	Prometheus           prometheus.Params
+	Circonus             circonus.Params
+	Denier               denier.Params
+	Dogstatsd            dogstatsd.Params
 	APIKey               apikey.InstanceMsg
 	Authorization        authorization.InstanceMsg
 	CheckNothing         checknothing.InstanceMsg
@@ -90,6 +96,9 @@ func main() {
 		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
 		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
 		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
+		{"istio.io/istio/mixer/adapter/circonus/config", "me.snowdrop.istio.adapter.circonus", "istio_adapter_circonus_"},
+		{"istio.io/istio/mixer/adapter/dogstatsd/config", "me.snowdrop.istio.adapter.dogstatsd", "istio_adapter_dogstatsd_"},
+		{"istio.io/istio/mixer/adapter/denier/config", "me.snowdrop.istio.adapter.denier", "istio_adapter_denier_"},
 		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
 		{"istio.io/istio/mixer/template/apikey", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_apikey_"},
 		{"istio.io/istio/mixer/template/authorization", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_authorization_"},
@@ -119,7 +128,9 @@ func main() {
 		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode": "me.snowdrop.istio.api.model.v1.mesh.Mode",
 		"istio.mixer.v1.ReferencedAttributes_Condition":             "me.snowdrop.istio.api.model.v1.mixer.Condition",
 		"istio.mixer.v1.config.descriptor.ValueType":                "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
+		"adapter.circonus.config.Params_MetricInfo_Type":            "me.snowdrop.istio.adapter.circonus.Type",
 		"adapter.prometheus.config.Params_MetricInfo_Kind":          "me.snowdrop.istio.adapter.prometheus.Kind",
+		"adapter.dogstatsd.config.Params_MetricInfo_Type":           "me.snowdrop.istio.adapter.dogstatsd.Type",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)

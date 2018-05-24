@@ -50,6 +50,133 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.Status"
     },
+    "istio_adapter_circonus_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "metrics": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_circonus_Params_MetricInfo",
+            "javaType": "me.snowdrop.istio.adapter.circonus.MetricInfo"
+          }
+        },
+        "submissionInterval": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "submissionUrl": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.circonus.Circonus"
+    },
+    "istio_adapter_circonus_Params_MetricInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "javaType": "me.snowdrop.istio.adapter.circonus.Type"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.circonus.MetricInfo"
+    },
+    "istio_adapter_denier_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/google_rpc_Status",
+          "javaType": "me.snowdrop.istio.api.model.Status"
+        },
+        "validDuration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "validUseCount": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.denier.Denier"
+    },
+    "istio_adapter_dogstatsd_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": ""
+        },
+        "bufferLength": {
+          "type": "integer",
+          "description": ""
+        },
+        "globalTags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "metrics": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_dogstatsd_Params_MetricInfo",
+            "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.dogstatsd.MetricInfo\u003e"
+        },
+        "prefix": {
+          "type": "string",
+          "description": ""
+        },
+        "sampleRate": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.Dogstatsd"
+    },
+    "istio_adapter_dogstatsd_Params_MetricInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "type": {
+          "javaType": "me.snowdrop.istio.adapter.dogstatsd.Type"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
+    },
     "istio_adapter_prometheus_Params": {
       "type": "object",
       "description": "",
@@ -1898,6 +2025,10 @@
       "$ref": "#/definitions/istio_mixer_CheckResponse",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.CheckResponse"
     },
+    "Circonus": {
+      "$ref": "#/definitions/istio_adapter_circonus_Params",
+      "javaType": "me.snowdrop.istio.adapter.circonus.Circonus"
+    },
     "CircuitBreaker": {
       "$ref": "#/definitions/istio_routing_CircuitBreaker",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.CircuitBreaker"
@@ -1910,6 +2041,10 @@
       "$ref": "#/definitions/istio_routing_CorsPolicy",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.CorsPolicy"
     },
+    "Denier": {
+      "$ref": "#/definitions/istio_adapter_denier_Params",
+      "javaType": "me.snowdrop.istio.adapter.denier.Denier"
+    },
     "DestinationPolicy": {
       "$ref": "#/definitions/istio_routing_DestinationPolicy",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationPolicy"
@@ -1917,6 +2052,10 @@
     "DestinationWeight": {
       "$ref": "#/definitions/istio_routing_DestinationWeight",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationWeight"
+    },
+    "Dogstatsd": {
+      "$ref": "#/definitions/istio_adapter_dogstatsd_Params",
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.Dogstatsd"
     },
     "EgressRule": {
       "$ref": "#/definitions/istio_routing_EgressRule",

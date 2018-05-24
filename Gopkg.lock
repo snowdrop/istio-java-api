@@ -133,6 +133,9 @@
 [[projects]]
   name = "istio.io/istio"
   packages = [
+    "mixer/adapter/circonus/config",
+    "mixer/adapter/denier/config",
+    "mixer/adapter/dogstatsd/config",
     "mixer/adapter/prometheus/config",
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
@@ -153,6 +156,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7ba63ee02aa5c33e479322413ef55e97c632057f804b5575275d84eba2efe6e7"
+  inputs-digest = "d51dddd30fb028058670586a2a4e112289b06fd3b4fcd4ac76e854f2b51633bb"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -257,6 +257,7 @@ func transformTemplateName(original string, path string) string {
 		name = strings.Title(extractedTypeName)
 	}
 
+	// same replacements should occur in IstioSpecRegistry.getCRDInfoFrom method
 	if strings.Contains(name, "entry") {
 		return strings.Replace(name, "entry", "Entry", -1)
 	} else if strings.Contains(name, "Msg") {
