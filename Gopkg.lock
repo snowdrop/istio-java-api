@@ -136,6 +136,7 @@
   packages = [
     "mixer/adapter/circonus/config",
     "mixer/adapter/denier/config",
+    "mixer/adapter/dogstatsd/config",
     "mixer/adapter/prometheus/config",
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
@@ -156,6 +157,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "98f4db5dc888afe2faaaee9a7526cfcec1a1cf513fd83d18df0bcd5309c63b16"
+  inputs-digest = "5383bd921dc742289e0aefdaaa77dfc435faff6d996c7709c1f14c39c36b5c87"
   solver-name = "gps-cdcl"
   solver-version = 1

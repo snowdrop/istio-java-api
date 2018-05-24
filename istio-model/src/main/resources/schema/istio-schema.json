@@ -111,6 +111,72 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.denier.Denier"
     },
+    "istio_adapter_dogstatsd_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": ""
+        },
+        "bufferLength": {
+          "type": "integer",
+          "description": ""
+        },
+        "globalTags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "metrics": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_dogstatsd_Params_MetricInfo",
+            "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.dogstatsd.MetricInfo\u003e"
+        },
+        "prefix": {
+          "type": "string",
+          "description": ""
+        },
+        "sampleRate": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.Dogstatsd"
+    },
+    "istio_adapter_dogstatsd_Params_MetricInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "type": {
+          "javaType": "me.snowdrop.istio.adapter.dogstatsd.Type"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
+    },
     "istio_adapter_prometheus_Params": {
       "type": "object",
       "description": "",
@@ -1027,6 +1093,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "constraints": {
           "type": "array",
           "description": "",
@@ -1067,6 +1145,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "key": {
           "type": "string",
           "description": ""
@@ -1087,6 +1177,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": ""
@@ -1103,6 +1205,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "rules": {
           "type": "array",
           "description": "",
@@ -1119,6 +1233,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "roleRef": {
           "$ref": "#/definitions/istio_rbac_RoleRef",
           "javaType": "me.snowdrop.istio.api.model.v1.rbac.RoleRef"
@@ -1139,6 +1265,18 @@
       "type": "object",
       "description": "",
       "properties": {
+        "XXX_NoUnkeyedLiteral": {
+          "type": "string",
+          "description": ""
+        },
+        "XXX_sizecache": {
+          "type": "integer",
+          "description": ""
+        },
+        "XXX_unrecognized": {
+          "type": "string",
+          "description": ""
+        },
         "group": {
           "type": "string",
           "description": ""
@@ -2123,6 +2261,10 @@
     "DestinationWeight": {
       "$ref": "#/definitions/istio_routing_DestinationWeight",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.DestinationWeight"
+    },
+    "Dogstatsd": {
+      "$ref": "#/definitions/istio_adapter_dogstatsd_Params",
+      "javaType": "me.snowdrop.istio.adapter.dogstatsd.Dogstatsd"
     },
     "EgressRule": {
       "$ref": "#/definitions/istio_routing_EgressRule",
