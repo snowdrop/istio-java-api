@@ -160,7 +160,7 @@
     <jackson.majorVersion>2</jackson.majorVersion>
     <jackson.minorVersion>9</jackson.minorVersion>
     <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.4</jackson.version>
-    <jsonschema2pojo.version>0.5.1</jsonschema2pojo.version>
+    <jsonschema2pojo.version>1.0.0-alpha2</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <kubernetes-model.version>2.0.8</kubernetes-model.version>
     <k8s-client.majorVersion>3</k8s-client.majorVersion>
