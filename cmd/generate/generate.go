@@ -26,22 +26,29 @@ import (
 	"time"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
+	rbac "istio.io/api/rbac/v1alpha1"
 	routing "istio.io/api/routing/v1alpha1"
+
+	circonus "istio.io/istio/mixer/adapter/circonus/config"
+	denier "istio.io/istio/mixer/adapter/denier/config"
+	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd/config"
+	fluentd "istio.io/istio/mixer/adapter/fluentd/config"
+	kubernetesenv "istio.io/istio/mixer/adapter/kubernetesenv/config"
+	list "istio.io/istio/mixer/adapter/list/config"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
-	"github.com/snowdrop/istio-java-api/pkg/schemagen"
-	"istio.io/istio/mixer/template/metric"
+
+	"istio.io/istio/mixer/template/apikey"
+	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
 	"istio.io/istio/mixer/template/listentry"
 	"istio.io/istio/mixer/template/logentry"
-	"istio.io/istio/mixer/template/apikey"
-	"istio.io/istio/mixer/template/authorization"
+	"istio.io/istio/mixer/template/metric"
 	"istio.io/istio/mixer/template/quota"
 	"istio.io/istio/mixer/template/reportnothing"
 	"istio.io/istio/mixer/template/tracespan"
-	circonus "istio.io/istio/mixer/adapter/circonus/config"
-	denier "istio.io/istio/mixer/adapter/denier/config"
-	rbac "istio.io/api/rbac/v1alpha1"
-	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd/config"
+
+	"github.com/snowdrop/istio-java-api/pkg/schemagen"
+	"bufio"
 )
 
 type Schema struct {
@@ -58,6 +65,8 @@ type Schema struct {
 	ReportRequest        mixer.ReportRequest
 	ReportResponse       mixer.ReportResponse
 	StringMap            mixer.StringMap
+	ServiceRole          rbac.ServiceRole
+	ServiceRoleBinding   rbac.ServiceRoleBinding
 	CircuitBreaker       routing.CircuitBreaker
 	CorsPolicy           routing.CorsPolicy
 	DestinationPolicy    routing.DestinationPolicy
@@ -77,13 +86,15 @@ type Schema struct {
 	MatchRequest         routing.MatchRequest
 	RouteRule            routing.RouteRule
 	StringMatch          routing.StringMatch
-	Prometheus           prometheus.Params
 	Circonus             circonus.Params
 	Denier               denier.Params
-	ServiceRole          rbac.ServiceRole
-	ServiceRoleBinding   rbac.ServiceRoleBinding
 	Dogstatsd            dogstatsd.Params
 	MetricInfo           dogstatsd.Params_MetricInfo
+	Fluentd              fluentd.Params
+	KubernetesEnv        kubernetesenv.Params
+	ListChecker          list.Params
+	//MemQuota             memquota.Params
+	Prometheus           prometheus.Params
 	APIKey               apikey.InstanceMsg
 	Authorization        authorization.InstanceMsg
 	CheckNothing         checknothing.InstanceMsg
@@ -95,30 +106,59 @@ type Schema struct {
 	TraceSpan            tracespan.InstanceMsg
 }
 
-func main() {
-	packages := []schemagen.PackageDescriptor{
-		{"istio.io/api/mesh/v1alpha1", "me.snowdrop.istio.api.model.v1.mesh", "istio_mesh_"},
-		{"istio.io/api/mixer/v1", "me.snowdrop.istio.api.model.v1.mixer", "istio_mixer_"},
-		{"istio.io/api/routing/v1alpha1", "me.snowdrop.istio.api.model.v1.routing", "istio_routing_"},
-		{"istio.io/api/rbac/v1alpha1", "me.snowdrop.istio.api.model.v1.rbac", "istio_rbac_"},
-		{"istio.io/istio/mixer/adapter/circonus/config", "me.snowdrop.istio.adapter.circonus", "istio_adapter_circonus_"},
-		{"istio.io/istio/mixer/adapter/dogstatsd/config", "me.snowdrop.istio.adapter.dogstatsd", "istio_adapter_dogstatsd_"},
-		{"istio.io/istio/mixer/adapter/denier/config", "me.snowdrop.istio.adapter.denier", "istio_adapter_denier_"},
-		{"istio.io/istio/mixer/adapter/prometheus/config", "me.snowdrop.istio.adapter.prometheus", "istio_adapter_prometheus_"},
-		{"istio.io/istio/mixer/template/apikey", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_apikey_"},
-		{"istio.io/istio/mixer/template/authorization", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_authorization_"},
-		{"istio.io/istio/mixer/template/checknothing", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_checknothing_"},
-		{"istio.io/istio/mixer/template/listentry", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_listentry_"},
-		{"istio.io/istio/mixer/template/logentry", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_logentry_"},
-		{"istio.io/istio/mixer/template/metric", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_metric_"},
-		{"istio.io/istio/mixer/template/quota", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_quota_"},
-		{"istio.io/istio/mixer/template/reportnothing", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_reportnothing_"},
-		{"istio.io/istio/mixer/template/tracespan", "me.snowdrop.istio.api.model.v1.mixer.template", "istio_mixer_tracespan_"},
-		{"github.com/golang/protobuf/ptypes/duration", "me.snowdrop.istio.api.model", "protobuf_duration_"},
-		{"github.com/gogo/protobuf/types", "me.snowdrop.istio.api.model", "protobuf_types_"},
-		{"github.com/golang/protobuf/ptypes/any", "me.snowdrop.istio.api.model", "protobuf_any_"},
-		{"github.com/gogo/googleapis/google/rpc", "me.snowdrop.istio.api.model", "google_rpc_"},
+// code adapted from https://kgrz.io/reading-files-in-go-an-overview.html#scanning-comma-seperated-string
+func readDescriptors() []schemagen.PackageDescriptor {
+	var descriptors = make([]schemagen.PackageDescriptor, 20)
+
+	file, err := os.Open("istio-common/src/main/resources/packages.csv")
+	if err != nil {
+		fmt.Println(err)
+		return descriptors
 	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		lineScanner := bufio.NewScanner(strings.NewReader(scanner.Text()))
+		lineScanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
+			commaidx := bytes.IndexByte(data, ',')
+			if commaidx > 0 {
+				// we need to return the next position
+				buffer := data[:commaidx]
+				return commaidx + 1, bytes.TrimSpace(buffer), nil
+			}
+
+			// if we are at the end of the string, just return the entire buffer
+			if atEOF {
+				// but only do that when there is some data. If not, this might mean
+				// that we've reached the end of our input CSV string
+				if len(data) > 0 {
+					return len(data), bytes.TrimSpace(data), nil
+				}
+			}
+
+			// when 0, nil, nil is returned, this is a signal to the interface to read
+			// more data in from the input reader. In this case, this input is our
+			// string reader and this pretty much will never occur.
+			return 0, nil, nil
+		})
+
+		var packageInfo = make([]string, 3)
+		var i = 0
+		for lineScanner.Scan() {
+			packageInfo[i] = lineScanner.Text()
+			i = i + 1
+		}
+		descriptors = append(descriptors, schemagen.PackageDescriptor{GoPackage: packageInfo[0], JavaPackage: packageInfo[1], Prefix: packageInfo[2]})
+	}
+
+	return descriptors
+}
+
+func main() {
+	packages := readDescriptors()
 
 	typeMap := map[reflect.Type]reflect.Type{
 		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
@@ -126,16 +166,17 @@ func main() {
 	}
 
 	enumMap := map[string]string{
-		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":      "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
-		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                 "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
-		"istio.mesh.v1alpha1.AuthenticationPolicy":                  "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode": "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
+		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":            "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.AuthenticationPolicy":             "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
 		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":   "me.snowdrop.istio.api.model.v1.mesh.InboundInterceptionMode",
 		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode": "me.snowdrop.istio.api.model.v1.mesh.Mode",
-		"istio.mixer.v1.ReferencedAttributes_Condition":             "me.snowdrop.istio.api.model.v1.mixer.Condition",
-		"istio.mixer.v1.config.descriptor.ValueType":                "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
-		"adapter.circonus.config.Params_MetricInfo_Type":            "me.snowdrop.istio.adapter.circonus.Type",
-		"adapter.prometheus.config.Params_MetricInfo_Kind":          "me.snowdrop.istio.adapter.prometheus.Kind",
-		"adapter.dogstatsd.config.Params_MetricInfo_Type":           "me.snowdrop.istio.adapter.dogstatsd.Type",
+		"istio.mixer.v1.ReferencedAttributes_Condition":        "me.snowdrop.istio.api.model.v1.mixer.Condition",
+		"istio.mixer.v1.config.descriptor.ValueType":           "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
+		"adapter.circonus.config.Params_MetricInfo_Type":       "me.snowdrop.istio.adapter.circonus.Type",
+		"adapter.prometheus.config.Params_MetricInfo_Kind":     "me.snowdrop.istio.adapter.prometheus.Kind",
+		"adapter.dogstatsd.config.Params_MetricInfo_Type":      "me.snowdrop.istio.adapter.dogstatsd.Type",
+		"adapter.list.config.Params_ListEntryType":             "me.snowdrop.istio.adapter.list.ListEntryType",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
