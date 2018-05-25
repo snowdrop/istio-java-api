@@ -177,6 +177,101 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
     },
+    "istio_adapter_fluentd_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.fluentd.Fluentd"
+    },
+    "istio_adapter_kubernetesenv_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "cacheRefreshDuration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "clusterDomainName": {
+          "type": "string",
+          "description": ""
+        },
+        "fullyQualifiedIstioIngressServiceName": {
+          "type": "string",
+          "description": ""
+        },
+        "kubeconfigPath": {
+          "type": "string",
+          "description": ""
+        },
+        "lookupIngressSourceAndOriginValues": {
+          "type": "boolean",
+          "description": ""
+        },
+        "podLabelForIstioComponentService": {
+          "type": "string",
+          "description": ""
+        },
+        "podLabelForService": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.kubernetesenv.Kubernetesenv"
+    },
+    "istio_adapter_list_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "blacklist": {
+          "type": "boolean",
+          "description": ""
+        },
+        "cachingInterval": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "cachingUseCount": {
+          "type": "integer",
+          "description": ""
+        },
+        "entryType": {
+          "javaType": "me.snowdrop.istio.adapter.list.ListEntryType"
+        },
+        "overrides": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "providerUrl": {
+          "type": "string",
+          "description": ""
+        },
+        "refreshInterval": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "ttl": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.list.BaseKubernetesList"
+    },
     "istio_adapter_prometheus_Params": {
       "type": "object",
       "description": "",
@@ -2270,6 +2365,10 @@
       "$ref": "#/definitions/istio_routing_EgressRule",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.EgressRule"
     },
+    "Fluentd": {
+      "$ref": "#/definitions/istio_adapter_fluentd_Params",
+      "javaType": "me.snowdrop.istio.adapter.fluentd.Fluentd"
+    },
     "HTTPFaultInjection": {
       "$ref": "#/definitions/istio_routing_HTTPFaultInjection",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.HTTPFaultInjection"
@@ -2298,6 +2397,10 @@
       "$ref": "#/definitions/istio_routing_IstioService",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.IstioService"
     },
+    "KubernetesEnv": {
+      "$ref": "#/definitions/istio_adapter_kubernetesenv_Params",
+      "javaType": "me.snowdrop.istio.adapter.kubernetesenv.Kubernetesenv"
+    },
     "L4FaultInjection": {
       "$ref": "#/definitions/istio_routing_L4FaultInjection",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.L4FaultInjection"
@@ -2305,6 +2408,10 @@
     "L4MatchAttributes": {
       "$ref": "#/definitions/istio_routing_L4MatchAttributes",
       "javaType": "me.snowdrop.istio.api.model.v1.routing.L4MatchAttributes"
+    },
+    "ListChecker": {
+      "$ref": "#/definitions/istio_adapter_list_Params",
+      "javaType": "me.snowdrop.istio.adapter.list.BaseKubernetesList"
     },
     "ListEntry": {
       "$ref": "#/definitions/istio_mixer_listentry_InstanceMsg",

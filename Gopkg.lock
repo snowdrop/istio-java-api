@@ -137,6 +137,10 @@
     "mixer/adapter/circonus/config",
     "mixer/adapter/denier/config",
     "mixer/adapter/dogstatsd/config",
+    "mixer/adapter/fluentd/config",
+    "mixer/adapter/kubernetesenv/config",
+    "mixer/adapter/list/config",
+    "mixer/adapter/memquota/config",
     "mixer/adapter/prometheus/config",
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
@@ -157,6 +161,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5383bd921dc742289e0aefdaaa77dfc435faff6d996c7709c1f14c39c36b5c87"
+  inputs-digest = "827ae0976a3e1b4a4cfb09fd8ad03456fa3729fe036c89cf84482fa57bbd0e27"
   solver-name = "gps-cdcl"
   solver-version = 1
