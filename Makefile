@@ -22,7 +22,7 @@ DECL_DIR=$(PWD)/istio-common/src/main/resources
 ADAPTER_CRDS=$(DECL_DIR)/adapter_crds.properties
 TEMPLATE_CRDS=$(DECL_DIR)/template_crds.properties
 OTHER_CRDS=$(DECL_DIR)/other_crds.properties
-CRD_FILE=$(DECL_DIR)/crd_list.properties
+CRD_FILE=$(DECL_DIR)/crd_list.tmp
 
 all: build
 
@@ -34,7 +34,7 @@ crd:
 	grep mixer-adapter $(CRD_FILE) | cut -d'|' -f1 > $(ADAPTER_CRDS)
 	grep mixer-instance $(CRD_FILE) | cut -d'|' -f1 > $(TEMPLATE_CRDS)
 	grep -v mixer-instance $(CRD_FILE) | grep -v mixer-adapter | cut -d'|' -f1 > $(OTHER_CRDS)
-	rm $(CRD_FILE)
+	rm $(DECL_DIR)/*.tmp
 
 schema:
 	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go
