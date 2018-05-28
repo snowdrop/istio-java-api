@@ -1,24 +1,42 @@
-istio.io/api/mesh/v1alpha1                       ,me.snowdrop.istio.api.model.v1.mesh          ,istio_mesh_
-istio.io/api/mixer/v1                            ,me.snowdrop.istio.api.model.v1.mixer         ,istio_mixer_
-istio.io/api/routing/v1alpha1                    ,me.snowdrop.istio.api.model.v1.routing       ,istio_routing_
-istio.io/api/rbac/v1alpha1                       ,me.snowdrop.istio.api.model.v1.rbac          ,istio_rbac_
-istio.io/istio/mixer/adapter/circonus/config     ,me.snowdrop.istio.adapter.circonus           ,istio_adapter_circonus_
-istio.io/istio/mixer/adapter/dogstatsd/config    ,me.snowdrop.istio.adapter.dogstatsd          ,istio_adapter_dogstatsd_
-istio.io/istio/mixer/adapter/denier/config       ,me.snowdrop.istio.adapter.denier             ,istio_adapter_denier_
-istio.io/istio/mixer/adapter/fluentd/config      ,me.snowdrop.istio.adapter.fluentd            ,istio_adapter_fluentd_
-istio.io/istio/mixer/adapter/kubernetesenv/config,me.snowdrop.istio.adapter.kubernetesenv      ,istio_adapter_kubernetesenv_
-istio.io/istio/mixer/adapter/list/config         ,me.snowdrop.istio.adapter.list               ,istio_adapter_list_
-istio.io/istio/mixer/adapter/prometheus/config   ,me.snowdrop.istio.adapter.prometheus         ,istio_adapter_prometheus_
-istio.io/istio/mixer/template/apikey             ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_apikey_
-istio.io/istio/mixer/template/authorization      ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_authorization_
-istio.io/istio/mixer/template/checknothing       ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_checknothing_
-istio.io/istio/mixer/template/listentry          ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_listentry_
-istio.io/istio/mixer/template/logentry           ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_logentry_
-istio.io/istio/mixer/template/metric             ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_metric_
-istio.io/istio/mixer/template/quota              ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_quota_
-istio.io/istio/mixer/template/reportnothing      ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_reportnothing_
-istio.io/istio/mixer/template/tracespan          ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_tracespan_
-github.com/golang/protobuf/ptypes/duration       ,me.snowdrop.istio.api.model                  ,protobuf_duration_
-github.com/gogo/protobuf/types                   ,me.snowdrop.istio.api.model                  ,protobuf_types_
-github.com/golang/protobuf/ptypes/any            ,me.snowdrop.istio.api.model                  ,protobuf_any_
-github.com/gogo/googleapis/google/rpc            ,me.snowdrop.istio.api.model                  ,google_rpc_
+github.com/golang/protobuf/ptypes/duration        ,me.snowdrop.istio.api.model                  ,protobuf_duration_
+github.com/gogo/protobuf/types                    ,me.snowdrop.istio.api.model                  ,protobuf_types_
+github.com/golang/protobuf/ptypes/any             ,me.snowdrop.istio.api.model                  ,protobuf_any_
+github.com/gogo/googleapis/google/rpc             ,me.snowdrop.istio.api.model                  ,google_rpc_
+## END MANUAL DEFINITIONS
+# api
+istio.io/api/authentication/v1alpha1              ,me.snowdrop.istio.api.model.v1.authentication,istio_authentication_
+istio.io/api/mesh/v1alpha1                        ,me.snowdrop.istio.api.model.v1.mesh          ,istio_mesh_
+istio.io/api/mixer/v1                             ,me.snowdrop.istio.api.model.v1.mixer         ,istio_mixer_
+istio.io/api/networking/v1alpha3                  ,me.snowdrop.istio.api.model.v1.networking    ,istio_networking_
+istio.io/api/policy/v1beta1                       ,me.snowdrop.istio.api.model.v1.policy        ,istio_policy_
+istio.io/api/rbac/v1alpha1                        ,me.snowdrop.istio.api.model.v1.rbac          ,istio_rbac_
+istio.io/api/routing/v1alpha1                     ,me.snowdrop.istio.api.model.v1.routing       ,istio_routing_
+# adapter
+istio.io/istio/mixer/adapter/circonus/config      ,me.snowdrop.istio.adapter.circonus           ,istio_adapter_circonus_
+istio.io/istio/mixer/adapter/cloudwatch/config    ,me.snowdrop.istio.adapter.cloudwatch         ,istio_adapter_cloudwatch_
+istio.io/istio/mixer/adapter/denier/config        ,me.snowdrop.istio.adapter.denier             ,istio_adapter_denier_
+istio.io/istio/mixer/adapter/dogstatsd/config     ,me.snowdrop.istio.adapter.dogstatsd          ,istio_adapter_dogstatsd_
+istio.io/istio/mixer/adapter/fluentd/config       ,me.snowdrop.istio.adapter.fluentd            ,istio_adapter_fluentd_
+istio.io/istio/mixer/adapter/kubernetesenv/config ,me.snowdrop.istio.adapter.kubernetesenv      ,istio_adapter_kubernetesenv_
+istio.io/istio/mixer/adapter/list/config          ,me.snowdrop.istio.adapter.list               ,istio_adapter_list_
+istio.io/istio/mixer/adapter/memquota/config      ,me.snowdrop.istio.adapter.memquota           ,istio_adapter_memquota_
+istio.io/istio/mixer/adapter/opa/config           ,me.snowdrop.istio.adapter.opa                ,istio_adapter_opa_
+istio.io/istio/mixer/adapter/prometheus/config    ,me.snowdrop.istio.adapter.prometheus         ,istio_adapter_prometheus_
+istio.io/istio/mixer/adapter/rbac/config          ,me.snowdrop.istio.adapter.rbac               ,istio_adapter_rbac_
+istio.io/istio/mixer/adapter/redisquota/config    ,me.snowdrop.istio.adapter.redisquota         ,istio_adapter_redisquota_
+istio.io/istio/mixer/adapter/servicecontrol/config,me.snowdrop.istio.adapter.servicecontrol     ,istio_adapter_servicecontrol_
+istio.io/istio/mixer/adapter/solarwinds/config    ,me.snowdrop.istio.adapter.solarwinds         ,istio_adapter_solarwinds_
+istio.io/istio/mixer/adapter/stackdriver/config   ,me.snowdrop.istio.adapter.stackdriver        ,istio_adapter_stackdriver_
+istio.io/istio/mixer/adapter/statsd/config        ,me.snowdrop.istio.adapter.statsd             ,istio_adapter_statsd_
+istio.io/istio/mixer/adapter/stdio/config         ,me.snowdrop.istio.adapter.stdio              ,istio_adapter_stdio_
+# template
+istio.io/istio/mixer/template/apikey              ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_apikey_
+istio.io/istio/mixer/template/authorization       ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_authorization_
+istio.io/istio/mixer/template/checknothing        ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_checknothing_
+istio.io/istio/mixer/template/listentry           ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_listentry_
+istio.io/istio/mixer/template/logentry            ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_logentry_
+istio.io/istio/mixer/template/metric              ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_metric_
+istio.io/istio/mixer/template/quota               ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_quota_
+istio.io/istio/mixer/template/reportnothing       ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_reportnothing_
+istio.io/istio/mixer/template/sample              ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_sample_
+istio.io/istio/mixer/template/tracespan           ,me.snowdrop.istio.api.model.v1.mixer.template,istio_mixer_tracespan_
