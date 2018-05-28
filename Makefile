@@ -36,6 +36,9 @@ crd:
 	grep -v mixer-instance $(CRD_FILE) | grep -v mixer-adapter | cut -d'|' -f1 > $(OTHER_CRDS)
 	rm $(DECL_DIR)/*.tmp
 
+packages:
+	./scripts/generate_package_info.sh
+
 schema:
 	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go
 	./generate > $(SCHEMA_DIR)/istio-schema.json
