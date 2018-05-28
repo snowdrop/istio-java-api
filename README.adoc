@@ -41,10 +41,13 @@ If any of the Go files are changed in such a way that new imports are required, 
 at the top level of the project in order to update the `vendor` information otherwise you might run into issues
 when building the project.
 
-You can also to re-generate the properties file that is used to determine which
+You can also re-generate the properties files that are used to determine which
 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes Custom Resource Definitions (CRDs)]
-are specified by Istio. This file is located at `istio-common/src/main/resources/crd_list.properties` and can be generated using
-`make crd`. Right now, though, this command requires installing the
+are specified by Istio. These files are located in `istio-common/src/main/resources/`, one for each kind of supported CRDs
+and can be generated using `make crd`. Right now, though, this command requires installing the
 https://docs.openshift.org/latest/cli_reference/get_started_cli.html[OpenShift Client] and an active administrative connection
 (via `oc login`) to an OpenShift cluster on which Istio is installed.
+
+You can also re-generate the CSV file that is used to map Istio Go packages to Java packages. The file is located at
+`istio-common/src/main/resources/packages.csv` and can be generated using `make packages`.
 
