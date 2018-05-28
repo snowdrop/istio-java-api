@@ -17,11 +17,11 @@
 SHELL := /bin/bash
 
 SCHEMA_DIR=istio-model/src/main/resources/schema
-CRDS_DIR=istio-common/src/main/resources
-ADAPTER_CRDS=$(CRDS_DIR)/adapter_crds.properties
-TEMPLATE_CRDS=$(CRDS_DIR)/template_crds.properties
-OTHER_CRDS=$(CRDS_DIR)/other_crds.properties
-CRD_FILE=$(CRDS_DIR)/crd_list.properties
+DECL_DIR=istio-common/src/main/resources
+ADAPTER_CRDS=$(DECL_DIR)/adapter_crds.properties
+TEMPLATE_CRDS=$(DECL_DIR)/template_crds.properties
+OTHER_CRDS=$(DECL_DIR)/other_crds.properties
+CRD_FILE=$(DECL_DIR)/crd_list.properties
 
 all: build
 
