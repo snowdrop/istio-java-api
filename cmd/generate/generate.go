@@ -121,7 +121,14 @@ func readDescriptors() []schemagen.PackageDescriptor {
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
-		lineScanner := bufio.NewScanner(strings.NewReader(scanner.Text()))
+		line := scanner.Text()
+
+		// ignore commented out lines
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		lineScanner := bufio.NewScanner(strings.NewReader(line))
 		lineScanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
 			commaidx := bytes.IndexByte(data, ',')
 			if commaidx > 0 {
