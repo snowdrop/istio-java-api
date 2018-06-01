@@ -35,8 +35,9 @@ import (
 	fluentd "istio.io/istio/mixer/adapter/fluentd/config"
 	kubernetesenv "istio.io/istio/mixer/adapter/kubernetesenv/config"
 	list "istio.io/istio/mixer/adapter/list/config"
+	opa "istio.io/istio/mixer/adapter/opa/config"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
-
+	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
@@ -52,8 +53,8 @@ import (
 )
 
 type Schema struct {
-	MeshConfig           mesh.MeshConfig
-	ProxyConfig          mesh.ProxyConfig
+	MeshConfig        mesh.MeshConfig
+	ProxyConfig       mesh.ProxyConfig
 	Attributes           mixer.Attributes
 	AttributeValue       mixer.Attributes_AttributeValue
 	CheckRequest         mixer.CheckRequest
@@ -77,33 +78,41 @@ type Schema struct {
 	HTTPRetry            routing.HTTPRetry
 	HTTPRewrite          routing.HTTPRewrite
 	HTTPTimeout          routing.HTTPTimeout
-	IngressRule          routing.IngressRule
-	IstioService         routing.IstioService
-	L4FaultInjection     routing.L4FaultInjection
-	L4MatchAttributes    routing.L4MatchAttributes
-	LoadBalancing        routing.LoadBalancing
-	MatchCondition       routing.MatchCondition
-	MatchRequest         routing.MatchRequest
-	RouteRule            routing.RouteRule
-	StringMatch          routing.StringMatch
-	Circonus             circonus.Params
-	Denier               denier.Params
-	Dogstatsd            dogstatsd.Params
-	MetricInfo           dogstatsd.Params_MetricInfo
-	Fluentd              fluentd.Params
-	KubernetesEnv        kubernetesenv.Params
-	ListChecker          list.Params
+	IngressRule       routing.IngressRule
+	IstioService      routing.IstioService
+	L4FaultInjection  routing.L4FaultInjection
+	L4MatchAttributes routing.L4MatchAttributes
+	LoadBalancing     routing.LoadBalancing
+	MatchCondition    routing.MatchCondition
+	MatchRequest      routing.MatchRequest
+	RouteRule         routing.RouteRule
+	StringMatch       routing.StringMatch
+	Circonus          circonus.Params
+	Denier            denier.Params
+	Dogstatsd         dogstatsd.Params
+	DSMetricInfo      dogstatsd.Params_MetricInfo
+	Fluentd           fluentd.Params
+	KubernetesEnv     kubernetesenv.Params
+	ListChecker       list.Params
 	//MemQuota             memquota.Params
-	Prometheus           prometheus.Params
-	APIKey               apikey.InstanceMsg
-	Authorization        authorization.InstanceMsg
-	CheckNothing         checknothing.InstanceMsg
-	ListEntry            listentry.InstanceMsg
-	LogEntry             logentry.InstanceMsg
-	Metric               metric.InstanceMsg
-	Quota                quota.InstanceMsg
-	ReportNothing        reportnothing.InstanceMsg
-	TraceSpan            tracespan.InstanceMsg
+	OPA        opa.Params
+	Prometheus prometheus.Params
+	//ServiceControl servicecontrol.Params
+	SolarWinds   solarwinds.Params
+	SWLogInfo    solarwinds.Params_LogInfo
+	SWMetricInfo solarwinds.Params_MetricInfo
+	//StackDriver	stackdriver.Params
+	//Statsd        statsd.Params
+	//Stdio         stdio.Params
+	APIKey        apikey.InstanceMsg
+	Authorization authorization.InstanceMsg
+	CheckNothing  checknothing.InstanceMsg
+	ListEntry     listentry.InstanceMsg
+	LogEntry      logentry.InstanceMsg
+	Metric        metric.InstanceMsg
+	Quota         quota.InstanceMsg
+	ReportNothing reportnothing.InstanceMsg
+	TraceSpan     tracespan.InstanceMsg
 }
 
 // code adapted from https://kgrz.io/reading-files-in-go-an-overview.html#scanning-comma-seperated-string
@@ -173,17 +182,17 @@ func main() {
 	}
 
 	enumMap := map[string]string{
-		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode": "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
-		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":            "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
-		"istio.mesh.v1alpha1.AuthenticationPolicy":             "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":      "me.snowdrop.istio.api.model.v1.mesh.IngressControllerMode",
+		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                 "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.AuthenticationPolicy":                  "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
 		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":   "me.snowdrop.istio.api.model.v1.mesh.InboundInterceptionMode",
 		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode": "me.snowdrop.istio.api.model.v1.mesh.Mode",
-		"istio.mixer.v1.ReferencedAttributes_Condition":        "me.snowdrop.istio.api.model.v1.mixer.Condition",
-		"istio.mixer.v1.config.descriptor.ValueType":           "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
-		"adapter.circonus.config.Params_MetricInfo_Type":       "me.snowdrop.istio.adapter.circonus.Type",
-		"adapter.prometheus.config.Params_MetricInfo_Kind":     "me.snowdrop.istio.adapter.prometheus.Kind",
-		"adapter.dogstatsd.config.Params_MetricInfo_Type":      "me.snowdrop.istio.adapter.dogstatsd.Type",
-		"adapter.list.config.Params_ListEntryType":             "me.snowdrop.istio.adapter.list.ListEntryType",
+		"istio.mixer.v1.ReferencedAttributes_Condition":             "me.snowdrop.istio.api.model.v1.mixer.Condition",
+		"istio.mixer.v1.config.descriptor.ValueType":                "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
+		"adapter.circonus.config.Params_MetricInfo_Type":            "me.snowdrop.istio.adapter.circonus.Type",
+		"adapter.prometheus.config.Params_MetricInfo_Kind":          "me.snowdrop.istio.adapter.prometheus.Kind",
+		"adapter.dogstatsd.config.Params_MetricInfo_Type":           "me.snowdrop.istio.adapter.dogstatsd.Type",
+		"adapter.list.config.Params_ListEntryType":                  "me.snowdrop.istio.adapter.list.ListEntryType",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)

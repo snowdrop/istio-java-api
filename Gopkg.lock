@@ -140,8 +140,9 @@
     "mixer/adapter/fluentd/config",
     "mixer/adapter/kubernetesenv/config",
     "mixer/adapter/list/config",
-    "mixer/adapter/memquota/config",
+    "mixer/adapter/opa/config",
     "mixer/adapter/prometheus/config",
+    "mixer/adapter/solarwinds/config",
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
     "mixer/pkg/status",
@@ -161,6 +162,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "827ae0976a3e1b4a4cfb09fd8ad03456fa3729fe036c89cf84482fa57bbd0e27"
+  inputs-digest = "756ea661d81fc8eae57b01c9d097260331fd7f347798f3b47f699932aa371793"
   solver-name = "gps-cdcl"
   solver-version = 1
