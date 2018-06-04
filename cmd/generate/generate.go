@@ -28,6 +28,7 @@ import (
 	mixer "istio.io/api/mixer/v1"
 	rbac "istio.io/api/rbac/v1alpha1"
 	routing "istio.io/api/routing/v1alpha1"
+	networking "istio.io/api/networking/v1alpha3"
 
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
@@ -87,6 +88,10 @@ type Schema struct {
 	MatchRequest      routing.MatchRequest
 	RouteRule         routing.RouteRule
 	StringMatch       routing.StringMatch
+	Gateway           networking.Gateway
+	DestinationRule   networking.DestinationRule
+	ServiceEntry      networking.ServiceEntry
+	VirtualService    networking.VirtualService
 	Circonus          circonus.Params
 	Denier            denier.Params
 	Dogstatsd         dogstatsd.Params
@@ -193,6 +198,10 @@ func main() {
 		"adapter.prometheus.config.Params_MetricInfo_Kind":          "me.snowdrop.istio.adapter.prometheus.Kind",
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":           "me.snowdrop.istio.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                  "me.snowdrop.istio.adapter.list.ListEntryType",
+		"istio.networking.v1alpha3.Server_TLSOptions_TLSmode":       "me.snowdrop.istio.api.model.v1.networking.TLSmode",
+		"istio.networking.v1alpha3.TLSSettings_TLSmode":             "me.snowdrop.istio.api.model.v1.networking.TLSmode",
+		"istio.networking.v1alpha3.ServiceEntry_Location":           "me.snowdrop.istio.api.model.v1.networking.ServiceEntryLocation",
+		"istio.networking.v1alpha3.ServiceEntry_Resolution":         "me.snowdrop.istio.api.model.v1.networking.ServiceEntryResolution",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)

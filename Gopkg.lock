@@ -8,7 +8,6 @@
   revision = "b23578765ee54ff6bceff57f397d833bf4ca6869"
 
 [[projects]]
-  branch = "master"
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -17,7 +16,8 @@
     "sortkeys",
     "types"
   ]
-  revision = "30cf7ac33676b5786e78c746683f0d4cd64fa75b"
+  revision = "342cbe0a04158f6dcb03ca0079991a51a4248c02"
+  version = "v0.5"
 
 [[projects]]
   branch = "master"
@@ -119,17 +119,18 @@
   version = "v1.12.0"
 
 [[projects]]
-  branch = "master"
   name = "istio.io/api"
   packages = [
     "mesh/v1alpha1",
     "mixer/adapter/model/v1beta1",
     "mixer/v1",
+    "networking/v1alpha3",
     "policy/v1beta1",
     "rbac/v1alpha1",
     "routing/v1alpha1"
   ]
-  revision = "0142cbd81f9dc723c57c1d43b1e07d3cb0817253"
+  revision = "8d67e57e3612dae1a3423795bce93a372cfe4fa4"
+  version = "0.8.0"
 
 [[projects]]
   name = "istio.io/istio"
@@ -156,12 +157,12 @@
     "mixer/template/reportnothing",
     "mixer/template/tracespan"
   ]
-  revision = "62110d4f0373a7613e57b8a4d559ded9cb6a1cc8"
-  version = "0.7.1"
+  revision = "6f9f420f0c7119ff4fa6a1966a6f6d89b1b4db84"
+  version = "0.8.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "756ea661d81fc8eae57b01c9d097260331fd7f347798f3b47f699932aa371793"
+  inputs-digest = "3ff880116926dc284b96988b02081d89fe9593e29405980f9ba0baa3a562f65c"
   solver-name = "gps-cdcl"
   solver-version = 1
