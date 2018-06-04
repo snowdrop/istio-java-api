@@ -549,7 +549,7 @@ public class AttributeVocabulary {
     /**
      * api.protocol attribute with expected type: string
      * The protocol type of the API call. Mainly for monitoring/analytics. Note that this is the frontend protocol exposed to the client, not the protocol implemented by the backend service.
-     * Example: "http", “https”, or "grpc"
+     * Example: "http", "https", or "grpc"
      */
     public static final String api_protocol = "api.protocol";
 
@@ -559,13 +559,13 @@ public class AttributeVocabulary {
 
     /**
      * request.auth.principal attribute with expected type: string
-     * The authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) claims within a JWT concatenated with “/” with a percent-encoded subject value.
+     * The authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) claims within a JWT concatenated with "/" with a percent-encoded subject value.
      * Example: accounts.my-svc.com/104958560606
      */
     public static final String request_auth_principal = "request.auth.principal";
 
     static {
-        ATTRIBUTE_INFO_MAP.put(request_auth_principal, new AttributeInfo(request_auth_principal, "string", "The authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) claims within a JWT concatenated with “/” with a percent-encoded subject value.", "accounts.my-svc.com/104958560606"));
+        ATTRIBUTE_INFO_MAP.put(request_auth_principal, new AttributeInfo(request_auth_principal, "string", "The authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) claims within a JWT concatenated with \"/\" with a percent-encoded subject value.", "accounts.my-svc.com/104958560606"));
     }
 
     /**
