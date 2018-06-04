@@ -8,7 +8,7 @@ package me.snowdrop.istio.api.model.v1.mesh;
 
 /**
  * AuthenticationPolicy defines authentication policy. It can be set for
- * different scopes (mesh, service …), and the most narrow scope with
+ * different scopes (mesh, service ...), and the most narrow scope with
  * non-{@link #INHERIT} value will be used.
  * Mesh policy cannot be {@link #INHERIT}.
  *
