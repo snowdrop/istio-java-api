@@ -539,7 +539,7 @@ func (g *schemaGenerator) addConstraints(objectName string, propName string, pro
 		case "name":
 			prop.Pattern = `^[A-Za-z_][A-Za-z0-9_]*$`
 		}
-	case "Container", "Volume", "ContainePort", "ContainerStatus", "ServicePort", "EndpointPort":
+	case "Container", "Volume", "ContainerPort", "ContainerStatus", "ServicePort", "EndpointPort":
 		switch propName {
 		case "name":
 			prop.Pattern = `^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`
