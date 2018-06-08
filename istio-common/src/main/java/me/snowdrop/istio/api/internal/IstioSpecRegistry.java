@@ -27,6 +27,7 @@ public class IstioSpecRegistry {
     private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
     private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
     private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
+    private static final String ISTIO_NETWORKING_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "networking.";
     private static final String ISTIO_ADAPTER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "adapter.";
 
     private static final Map<String, CRDInfo> crdInfos = new HashMap<>();
@@ -35,6 +36,8 @@ public class IstioSpecRegistry {
         loadCRDInfosFromProperties("adapter_crds.properties", key -> ISTIO_ADAPTER_PACKAGE_PREFIX + key.toLowerCase() + ".");
         loadCRDInfosFromProperties("template_crds.properties", key -> ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX);
         loadCRDInfosFromProperties("other_crds.properties", key -> ISTIO_ROUTING_PACKAGE_PREFIX);
+        loadCRDInfosFromProperties("networking_crds.properties", key -> ISTIO_NETWORKING_PACKAGE_PREFIX);
+        loadCRDInfosFromProperties("additional_resources.properties", key -> ISTIO_PACKAGE_PREFIX);
     }
 
     private static void loadCRDInfosFromProperties(String propertyFileName, Function<String, String> packageNameFromPropertyKey) {
