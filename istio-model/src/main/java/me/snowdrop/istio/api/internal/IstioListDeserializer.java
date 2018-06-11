@@ -13,16 +13,12 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.ListMeta;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioResourceList;
-import me.snowdrop.istio.api.model.IstioSpec;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static me.snowdrop.istio.api.internal.IstioSpecRegistry.resolveIstioSpecForKind;
 
 /**
  * @author
