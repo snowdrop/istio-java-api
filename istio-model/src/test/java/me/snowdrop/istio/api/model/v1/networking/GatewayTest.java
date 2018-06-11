@@ -36,13 +36,15 @@ spec:
 
     @Test
     public void checkBasicGateway() throws Exception {
+        Map<String, String> selectorMap = new HashMap<>();
+        selectorMap.put("istio","ingressgateway");
         final IstioResource gateway = new IstioResourceBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()
                 .withNewGatewaySpec()
-                .withSelector(new HashMap<String, String>(){{ put("istio","ingressgateway"); }})
+                .withSelector(selectorMap)
                 .withServers(new me.snowdrop.istio.api.model.v1.networking.ServerBuilder()
                         .withNewPort("http", 80, "HTTP")
                         .withHosts("httpbin.example.com")
@@ -51,7 +53,6 @@ spec:
                 .build();
 
         final String output = mapper.writeValueAsString(gateway);
-        System.out.println(output);
         Yaml parser = new Yaml();
         final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
 
@@ -87,13 +88,15 @@ spec:
 
     @Test
     public void roundtripBasicGatewayShouldWork() throws Exception {
+        Map<String, String> selectorMap = new HashMap<>();
+        selectorMap.put("istio","ingressgateway");
         final IstioResource gateway = new IstioResourceBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()
                 .withNewGatewaySpec()
-                .withSelector(new HashMap<String, String>(){{ put("istio","ingressgateway"); }})
+                .withSelector(selectorMap)
                 .withServers(new me.snowdrop.istio.api.model.v1.networking.ServerBuilder()
                         .withNewPort("http", 80, "HTTP")
                         .withHosts("httpbin.example.com")

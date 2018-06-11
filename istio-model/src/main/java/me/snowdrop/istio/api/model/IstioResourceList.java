@@ -23,7 +23,6 @@ import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import me.snowdrop.istio.api.internal.IstioDeserializer;
 import me.snowdrop.istio.api.internal.IstioListDeserializer;
 
 
