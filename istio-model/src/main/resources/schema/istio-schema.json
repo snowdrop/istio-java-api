@@ -1751,7 +1751,10 @@
       "type": "object",
       "description": "",
       "properties": {
-        "Port": {}
+        "number": {
+          "type": "integer",
+          "description": ""
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.networking.PortSelector"
