@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -152,6 +153,10 @@ public class IstioSpecRegistry {
     public static Optional<String> getCRDNameFor(String kind) {
         final CRDInfo crdInfo = crdInfos.get(kind);
         return crdInfo != null ? Optional.of(crdInfo.crdName) : Optional.empty();
+    }
+
+    public static Set<String> getKnownKinds() {
+        return crdInfos.keySet();
     }
 
     private static Class<? extends IstioSpec> loadClassIfExists(String className) {
