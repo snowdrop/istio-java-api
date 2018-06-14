@@ -22,7 +22,7 @@
   <parent>
     <groupId>me.snowdrop</groupId>
     <artifactId>istio-java-api</artifactId>
-    <version>0.10-SNAPSHOT</version>
+    <version>0.10</version>
   </parent>
 
   <artifactId>istio-model</artifactId>
@@ -164,9 +164,8 @@
                 <echo>removing the duplicate / useless generated classes</echo>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true" />
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/IstioSchema.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Timestamp.java" verbose="true"/>
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/cexl/TypedValue.java"
-                        verbose="true"/>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Timestamp.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/cexl/TypedValue.java" verbose="true" />
               </target>
             </configuration>
             <goals>
