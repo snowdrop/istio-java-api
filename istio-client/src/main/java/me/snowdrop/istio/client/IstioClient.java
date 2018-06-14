@@ -11,8 +11,13 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import me.snowdrop.istio.api.internal.IstioSpecRegistry;
+import me.snowdrop.istio.api.model.DoneableIstioResource;
 import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.IstioResourceList;
 
 import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDNameFor;
 
@@ -67,6 +72,30 @@ public class IstioClient {
         return registerCustomResources(readSpecFileFromInputStream(resource));
     }
 
+    public List<IstioResource> getResources(final String kind) {
+        final String crdName = IstioSpecRegistry.getCRDNameFor(kind)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unknown kind %s", kind)));
+
+        final KubernetesClient client = getKubernetesClient();
+        final CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().withName(crdName).get();
+
+        if (customResourceDefinition == null) {
+            throw new IllegalArgumentException(String.format("Custom Resource Definition %s is not found in cluster %s",
+                    crdName, client.getMasterUrl()));
+        }
+
+        final KubernetesResourceList list = client.customResources(customResourceDefinition, IstioResource.class, IstioResourceList.class, DoneableIstioResource.class)
+                .inNamespace(client.getNamespace())
+                .list();
+        return list.getItems();
+    }
+
+    public List<IstioResource> getResourcesLike(final IstioResource resource) {
+        if (resource == null) {
+            return Collections.emptyList();
+        }
+        return getResources(resource.getKind());
+    }
 
     public IstioResource registerCustomResource(final IstioResource resource) {
         return client.createCustomResources(resource).get(0);
