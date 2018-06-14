@@ -162,10 +162,10 @@
     <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.4</jackson.version>
     <jsonschema2pojo.version>1.0.0-alpha2</jsonschema2pojo.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
-    <kubernetes-model.version>2.0.8</kubernetes-model.version>
+    <kubernetes-model.version>2.1.1</kubernetes-model.version>
     <k8s-client.majorVersion>3</k8s-client.majorVersion>
-    <k8s-client.minorVersion>1</k8s-client.minorVersion>
-    <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.10</kubernetes-client.version>
+    <k8s-client.minorVersion>2</k8s-client.minorVersion>
+    <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.0</kubernetes-client.version>
     <junit.version>4.12</junit.version>
     <mockito.version>2.13.0</mockito.version>
     <assertj.version>3.9.0</assertj.version>
