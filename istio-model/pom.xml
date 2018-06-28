@@ -164,7 +164,7 @@
                 <echo>removing the duplicate / useless generated classes</echo>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true" />
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/IstioSchema.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Timestamp.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/TimeStamp.java" verbose="true" />
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/cexl/TypedValue.java" verbose="true" />
               </target>
             </configuration>
