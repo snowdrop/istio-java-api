@@ -3,10 +3,11 @@
 A project to generate a Java API for https://istio.io[Istio]'s domain allowing, in particular, the generation of Istio deployment
 descriptors. This project is inspired by https://github.com/fabric8io/kubernetes-model[Fabric8's kubernetes-model] and relies on
 the same approach: a Go program uses Go reflection to generate a http://json-schema.org[JSON Schema] which is then used by
-https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] to generate Java classes, enriched by annotations
-(https://github.com/fasterxml/jackson[Jackson] and https://jcp.org/en/jsr/detail?id=380[Bean Validation - JSR 380] notably,
-though custom annotations can also be used). Jackson is then used to output JSON or YAML representation of the Java objects when
-needed.
+https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] to generate Java classes. jsonschema2pojo is configured to use
+a custom annotator, `IstioTypeAnnotator` (found in the `istio-model-annotator` module), to add
+(https://github.com/fasterxml/jackson[Jackson], https://jcp.org/en/jsr/detail?id=380[Bean Validation - JSR 380] and
+https://github.com/sundrio/sundrio[sundrio] annotations. Sundrio is used generate idiomatic builder and DSL Java classes.
+Jackson is used to output JSON or YAML representation of the Java objects when needed.
 
 = Usage
 
@@ -16,14 +17,20 @@ and this API to send Istio artifacts to a running OpenShift cluster configured o
 
 = Building instructions
 
-If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a Go programming environment.
+If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can
+build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to
+re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a
+Go programming environment.
 
 == Initial setup
 
-In particular, you will need to https://golang.org/doc/install[install Go] and check the code for this project within your `$GOPATH/src` hierarchy:
+In particular, you will need to https://golang.org/doc/install[install Go] and check the code for this project within your
+`$GOPATH/src` hierarchy:
 
 ```bash
 cd $GOPATH/src
+mkdir -p github.com/snowdrop
+cd github.com/snowdrop
 git clone git@github.com:snowdrop/istio-java-api.git
 cd istio-java-api
 ```
@@ -35,7 +42,8 @@ Run `make`. This will build the `generate` command line tool from Go and then ru
 to generate Java classes in `istio-model/target/generated-sources` and generate a Jar file containing the compiled version of
 these classes along with the JSON schema, ready to be used.
 
-You can clean everything using `make clean`, only generate the schema using `make schema` or only generate the Java classes (assuming a schema already exists) using `mvn clean install`.
+You can *clean* everything using `make clean`, only *generate the schema* using `make schema` or only generate the Java classes
+from an already generated schema such as the provided one using `mvn clean install`.
 
 If any of the Go files are changed in such a way that new imports are required, you will need to run `dep ensure`
 at the top level of the project in order to update the `vendor` information otherwise you might run into issues
