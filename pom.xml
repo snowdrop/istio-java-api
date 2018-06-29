@@ -176,6 +176,7 @@
   <modules>
     <module>istio-model-annotator</module>
     <module>istio-model</module>
+    <module>istio-shadow-model</module>
     <module>istio-client</module>
     <module>istio-common</module>
     <module>istio-client-uberjar</module>
