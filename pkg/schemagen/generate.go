@@ -234,6 +234,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "me.snowdrop.istio.api.model.Duration"
 			case "TimeStamp":
 				return "me.snowdrop.istio.api.model.TimeStamp"
+			case "Timestamp":
+				return "me.snowdrop.istio.api.model.TimeStamp"
 			case "Value":
 				return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
 			default:
