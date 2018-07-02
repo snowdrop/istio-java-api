@@ -7,14 +7,6 @@ jobs:
     - checkout
 
     - run:
-        name: Install dep
-        command: |
-          GO_PATH_FIRST=$(echo ${GOPATH} | cut -d ":" -f1)
-          export GOBIN=${GO_PATH_FIRST}/bin
-          mkdir ${GOBIN}
-          curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
-    - run:
         name: Build and test
         command: |
           GO_PATH_FIRST=$(echo ${GOPATH} | cut -d ":" -f1)
@@ -22,7 +14,6 @@ jobs:
           mkdir -p ${GO_PATH_FIRST}/${PROJECT_PATH}
           cp -R * ${GO_PATH_FIRST}/${PROJECT_PATH}
           cd ${GO_PATH_FIRST}/${PROJECT_PATH}
-          ${GO_PATH_FIRST}/bin/dep ensure
           make
 
 workflows:
