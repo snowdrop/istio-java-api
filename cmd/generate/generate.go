@@ -204,13 +204,13 @@ func main() {
 		"istio.networking.v1alpha3.ServiceEntry_Resolution":         "me.snowdrop.istio.api.model.v1.networking.ServiceEntryResolution",
 	}
 
-	schema, err, interfaces := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
+	schema, interfaces, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)
 	}
 
-	if interfaces != nil {
+	if len(interfaces) > 0 {
 		log.Println(interfaces)
 	}
 

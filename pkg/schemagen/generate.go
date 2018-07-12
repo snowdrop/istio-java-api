@@ -38,7 +38,7 @@ type schemaGenerator struct {
 	interfaces   []string
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, error, error) {
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, string, error) {
 	g := newSchemaGenerator(packages, typeMap, enumMap)
 	return g.generate(t)
 }
@@ -295,9 +295,9 @@ func transformAdapterName(original string, path string) string {
 	return name
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error, error) {
+func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, string, error) {
 	if t.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("only struct types can be converted"), nil
+		return nil, "", fmt.Errorf("only struct types can be converted")
 	}
 
 	s := JSONSchema{
@@ -329,15 +329,15 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error, error) {
 		}
 	}
 
-	var interfaces error = nil
+	var interfaces string
 	if len(g.interfaces) > 0 {
-		interfaces = errors.New("Detected interfaces:\n" + strings.Join(g.interfaces, "\n"))
+		interfaces = "Detected interfaces:\n" + strings.Join(g.interfaces, "\n")
 	}
 
 	if len(g.unknownEnums) > 0 {
-		return &s, errors.New("Unknown enums:\n" + strings.Join(g.unknownEnums, "\n")), interfaces
+		return &s, interfaces, errors.New("Unknown enums:\n" + strings.Join(g.unknownEnums, "\n"))
 	} else {
-		return &s, nil, interfaces
+		return &s, interfaces, nil
 	}
 }
 
