@@ -9,20 +9,20 @@ a custom annotator, `IstioTypeAnnotator` (found in the `istio-model-annotator` m
 https://github.com/sundrio/sundrio[sundrio] annotations. Sundrio is used generate idiomatic builder and DSL Java classes.
 Jackson is used to output JSON or YAML representation of the Java objects when needed.
 
-= Usage
+== Usage
 
 Please take a look at the tests in `istio-model/src/test/java` to see how the API can be used. You can also take a look at the
 https://github.com/metacosm/istio-test-dsl project which demonstrates an end-to-end scenario using the Fabric8 OpenShift adapter
 and this API to send Istio artifacts to a running OpenShift cluster configured on which Istio is set up.
 
-= Building instructions
+== Building instructions
 
 If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can
 build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to
 re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a
 Go programming environment.
 
-== Initial setup
+=== Initial setup
 
 In particular, you will need to https://golang.org/doc/install[install Go] and check the code for this project within your
 `$GOPATH/src` hierarchy:
@@ -35,7 +35,7 @@ git clone git@github.com:snowdrop/istio-java-api.git
 cd istio-java-api
 ```
 
-== Building the Java API
+=== Building the Java API
 
 Run `make`. This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
 `istio-model/src/main/resources/schema/istio-schema.json`. A Maven build is then issued using the `jsonschema2pojo` Maven plugin
