@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 Red Hat, Inc.
+ * Copyright (C) 2018 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,10 @@ type schemaGenerator struct {
 	enumMap      map[string]string
 	typeMap      map[reflect.Type]reflect.Type
 	unknownEnums []string
+	interfaces   []string
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, error) {
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, error, error) {
 	g := newSchemaGenerator(packages, typeMap, enumMap)
 	return g.generate(t)
 }
@@ -294,9 +295,9 @@ func transformAdapterName(original string, path string) string {
 	return name
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
+func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error, error) {
 	if t.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("Only struct types can be converted.")
+		return nil, fmt.Errorf("only struct types can be converted"), nil
 	}
 
 	s := JSONSchema{
@@ -328,10 +329,15 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 		}
 	}
 
+	var interfaces error = nil
+	if len(g.interfaces) > 0 {
+		interfaces = errors.New("Detected interfaces:\n" + strings.Join(g.interfaces, "\n"))
+	}
+
 	if len(g.unknownEnums) > 0 {
-		return &s, errors.New("Unknown enums: " + strings.Join(g.unknownEnums, ","))
+		return &s, errors.New("Unknown enums:\n" + strings.Join(g.unknownEnums, "\n")), interfaces
 	} else {
-		return &s, nil
+		return &s, nil, interfaces
 	}
 }
 
@@ -455,6 +461,10 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		path := pkgPath(t)
 		if path == "github.com/openshift/origin/pkg/image/api/v1" && t.Name() == "Image" && name == "dockerImageMetadata" {
 			continue
+		}
+
+		if field.Type.Kind() == reflect.Interface {
+			g.interfaces = append(g.interfaces, name+" in "+path+"/"+t.Name())
 		}
 
 		desc := getFieldDescription(field)

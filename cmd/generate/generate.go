@@ -19,16 +19,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	mesh "istio.io/api/mesh/v1alpha1"
+	mixer "istio.io/api/mixer/v1"
+	networking "istio.io/api/networking/v1alpha3"
+	rbac "istio.io/api/rbac/v1alpha1"
+	routing "istio.io/api/routing/v1alpha1"
 	"log"
 	"os"
 	"reflect"
 	"strings"
 	"time"
-	mesh "istio.io/api/mesh/v1alpha1"
-	mixer "istio.io/api/mixer/v1"
-	rbac "istio.io/api/rbac/v1alpha1"
-	routing "istio.io/api/routing/v1alpha1"
-	networking "istio.io/api/networking/v1alpha3"
 
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
@@ -49,13 +49,13 @@ import (
 	"istio.io/istio/mixer/template/reportnothing"
 	"istio.io/istio/mixer/template/tracespan"
 
-	"github.com/snowdrop/istio-java-api/pkg/schemagen"
 	"bufio"
+	"github.com/snowdrop/istio-java-api/pkg/schemagen"
 )
 
 type Schema struct {
-	MeshConfig        mesh.MeshConfig
-	ProxyConfig       mesh.ProxyConfig
+	MeshConfig           mesh.MeshConfig
+	ProxyConfig          mesh.ProxyConfig
 	Attributes           mixer.Attributes
 	AttributeValue       mixer.Attributes_AttributeValue
 	CheckRequest         mixer.CheckRequest
@@ -79,26 +79,26 @@ type Schema struct {
 	HTTPRetry            routing.HTTPRetry
 	HTTPRewrite          routing.HTTPRewrite
 	HTTPTimeout          routing.HTTPTimeout
-	IngressRule       routing.IngressRule
-	IstioService      routing.IstioService
-	L4FaultInjection  routing.L4FaultInjection
-	L4MatchAttributes routing.L4MatchAttributes
-	LoadBalancing     routing.LoadBalancing
-	MatchCondition    routing.MatchCondition
-	MatchRequest      routing.MatchRequest
-	RouteRule         routing.RouteRule
-	StringMatch       routing.StringMatch
-	Gateway           networking.Gateway
-	DestinationRule   networking.DestinationRule
-	ServiceEntry      networking.ServiceEntry
-	VirtualService    networking.VirtualService
-	Circonus          circonus.Params
-	Denier            denier.Params
-	Dogstatsd         dogstatsd.Params
-	DSMetricInfo      dogstatsd.Params_MetricInfo
-	Fluentd           fluentd.Params
-	KubernetesEnv     kubernetesenv.Params
-	ListChecker       list.Params
+	IngressRule          routing.IngressRule
+	IstioService         routing.IstioService
+	L4FaultInjection     routing.L4FaultInjection
+	L4MatchAttributes    routing.L4MatchAttributes
+	LoadBalancing        routing.LoadBalancing
+	MatchCondition       routing.MatchCondition
+	MatchRequest         routing.MatchRequest
+	RouteRule            routing.RouteRule
+	StringMatch          routing.StringMatch
+	Gateway              networking.Gateway
+	DestinationRule      networking.DestinationRule
+	ServiceEntry         networking.ServiceEntry
+	VirtualService       networking.VirtualService
+	Circonus             circonus.Params
+	Denier               denier.Params
+	Dogstatsd            dogstatsd.Params
+	DSMetricInfo         dogstatsd.Params_MetricInfo
+	Fluentd              fluentd.Params
+	KubernetesEnv        kubernetesenv.Params
+	ListChecker          list.Params
 	//MemQuota             memquota.Params
 	OPA        opa.Params
 	Prometheus prometheus.Params
@@ -204,10 +204,14 @@ func main() {
 		"istio.networking.v1alpha3.ServiceEntry_Resolution":         "me.snowdrop.istio.api.model.v1.networking.ServiceEntryResolution",
 	}
 
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
+	schema, err, interfaces := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)
+	}
+
+	if interfaces != nil {
+		log.Println(interfaces)
 	}
 
 	args := os.Args[1:]
