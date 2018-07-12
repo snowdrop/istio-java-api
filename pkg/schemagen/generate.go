@@ -16,11 +16,11 @@
 package schemagen
 
 import (
+	"errors"
 	"fmt"
 	"path/filepath"
 	"reflect"
 	"strings"
-	"errors"
 )
 
 type PackageDescriptor struct {
@@ -238,6 +238,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "me.snowdrop.istio.api.model.TimeStamp"
 			case "Value":
 				return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+			case "StringMatch":
+				return "me.snowdrop.istio.api.model.v1.networking.StringMatch"
 			default:
 				if len(name) == 0 && t.NumField() == 0 {
 					return "Object"
