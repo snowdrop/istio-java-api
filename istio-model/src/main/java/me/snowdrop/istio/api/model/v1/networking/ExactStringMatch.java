@@ -32,6 +32,7 @@ public class ExactStringMatch extends StringMatch {
     public ExactStringMatch() {
     }
 
+    // note that the argument name *MUST* match the field name so that sundrio can match the constructor
     public ExactStringMatch(String exact) {
         this.exact = exact;
     }

@@ -32,6 +32,7 @@ public class RegexStringMatch extends StringMatch {
     public RegexStringMatch() {
     }
 
+    // note that the argument name *MUST* match the field name so that sundrio can match the constructor
     public RegexStringMatch(String regex) {
         this.regex = regex;
     }

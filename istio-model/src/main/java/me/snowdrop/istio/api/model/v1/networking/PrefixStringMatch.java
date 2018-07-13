@@ -32,6 +32,7 @@ public class PrefixStringMatch extends StringMatch {
     public PrefixStringMatch() {
     }
 
+    // note that the argument name *MUST* match the field name so that sundrio can match the constructor
     public PrefixStringMatch(String prefix) {
         this.prefix = prefix;
     }
