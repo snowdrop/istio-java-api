@@ -27,8 +27,7 @@
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
-    "ptypes/timestamp",
-    "ptypes/wrappers"
+    "ptypes/timestamp"
   ]
   revision = "927b65914520a8b7d44f5c9057611cfec6b2e2d0"
 
@@ -126,8 +125,7 @@
     "mixer/v1",
     "networking/v1alpha3",
     "policy/v1beta1",
-    "rbac/v1alpha1",
-    "routing/v1alpha1"
+    "rbac/v1alpha1"
   ]
   revision = "8d67e57e3612dae1a3423795bce93a372cfe4fa4"
   version = "0.8.0"
@@ -163,6 +161,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3ff880116926dc284b96988b02081d89fe9593e29405980f9ba0baa3a562f65c"
+  inputs-digest = "4cc4371d0e6ac4a64107002fc2355b7ade487bd510d7535aba1c71f7fc8b54e2"
   solver-name = "gps-cdcl"
   solver-version = 1

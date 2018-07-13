@@ -9,9 +9,6 @@ import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
 import me.snowdrop.istio.api.model.v1.mixer.template.Metric;
 import me.snowdrop.istio.api.model.v1.networking.VirtualService;
-import me.snowdrop.istio.api.model.v1.routing.DestinationPolicy;
-import me.snowdrop.istio.api.model.v1.routing.EgressRule;
-import me.snowdrop.istio.api.model.v1.routing.RouteRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -29,21 +26,6 @@ public class IstioClientTest {
 
     @Mock
     Adapter adapter;
-
-    @Test
-    public void shouldApplyRouteRuleIstioResource() {
-        checkInput("route-rule.yaml", RouteRule.class);
-    }
-
-    @Test
-    public void shouldApplyDestinationPolicyIstioResource() {
-        checkInput("destination-policy.yaml", DestinationPolicy.class);
-    }
-
-    @Test
-    public void shouldApplyEgressRuleIstioResource() {
-        checkInput("egress-rule.yaml", EgressRule.class);
-    }
 
     @Test
     public void shouldApplyMetricIstioResource() {
@@ -86,10 +68,9 @@ public class IstioClientTest {
         // Then
         final List<IstioResource> result = client.registerCustomResources(aggregate);
         assertThat(result).isNotEmpty();
-        assertThat(result.size()).isEqualTo(3);
-        assertThat(result.get(0).getKind()).isEqualTo(getKindFor(DestinationPolicy.class));
-        assertThat(result.get(1).getKind()).isEqualTo(getKindFor(EgressRule.class));
-        assertThat(result.get(2).getKind()).isEqualTo(getKindFor(RouteRule.class));
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getKind()).isEqualTo(getKindFor(Metric.class));
+        assertThat(result.get(1).getKind()).isEqualTo(getKindFor(VirtualService.class));
         verify(adapter, times(1)).createCustomResources(any());
     }
 

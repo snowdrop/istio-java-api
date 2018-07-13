@@ -23,7 +23,6 @@ import (
 	mixer "istio.io/api/mixer/v1"
 	networking "istio.io/api/networking/v1alpha3"
 	rbac "istio.io/api/rbac/v1alpha1"
-	routing "istio.io/api/routing/v1alpha1"
 	"log"
 	"os"
 	"reflect"
@@ -69,25 +68,6 @@ type Schema struct {
 	StringMap            mixer.StringMap
 	ServiceRole          rbac.ServiceRole
 	ServiceRoleBinding   rbac.ServiceRoleBinding
-	CircuitBreaker       routing.CircuitBreaker
-	CorsPolicy           routing.CorsPolicy
-	DestinationPolicy    routing.DestinationPolicy
-	DestinationWeight    routing.DestinationWeight
-	EgressRule           routing.EgressRule
-	HTTPFaultInjection   routing.HTTPFaultInjection
-	HTTPRedirect         routing.HTTPRedirect
-	HTTPRetry            routing.HTTPRetry
-	HTTPRewrite          routing.HTTPRewrite
-	HTTPTimeout          routing.HTTPTimeout
-	IngressRule          routing.IngressRule
-	IstioService         routing.IstioService
-	L4FaultInjection     routing.L4FaultInjection
-	L4MatchAttributes    routing.L4MatchAttributes
-	LoadBalancing        routing.LoadBalancing
-	MatchCondition       routing.MatchCondition
-	MatchRequest         routing.MatchRequest
-	RouteRule            routing.RouteRule
-	StringMatch          routing.StringMatch
 	Gateway              networking.Gateway
 	DestinationRule      networking.DestinationRule
 	ServiceEntry         networking.ServiceEntry
@@ -202,6 +182,7 @@ func main() {
 		"istio.networking.v1alpha3.TLSSettings_TLSmode":             "me.snowdrop.istio.api.model.v1.networking.TLSmode",
 		"istio.networking.v1alpha3.ServiceEntry_Location":           "me.snowdrop.istio.api.model.v1.networking.ServiceEntryLocation",
 		"istio.networking.v1alpha3.ServiceEntry_Resolution":         "me.snowdrop.istio.api.model.v1.networking.ServiceEntryResolution",
+		"istio.networking.v1alpha3.LoadBalancerSettings_SimpleLB":   "me.snowdrop.istio.api.model.v1.networking.SimpleLB",
 	}
 
 	schema, interfaces, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
