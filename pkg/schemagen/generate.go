@@ -464,7 +464,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		}
 
 		if field.Type.Kind() == reflect.Interface {
-			g.interfaces = append(g.interfaces, name+" in "+path+"/"+t.Name())
+			g.interfaces = append(g.interfaces, field.Type.Name()+": field "+name+" in "+path+"/"+t.Name())
 		}
 
 		desc := getFieldDescription(field)
