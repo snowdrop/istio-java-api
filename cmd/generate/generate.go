@@ -77,6 +77,11 @@ type Schema struct {
 	RegexStringMatch                   networking.StringMatch_Regex
 	NamePortSelector                   networking.PortSelector_Name
 	NumberPortSelector                 networking.PortSelector_Number
+	ExponentialDelay                   networking.HTTPFaultInjection_Delay_ExponentialDelay
+	FixedDelay                         networking.HTTPFaultInjection_Delay_FixedDelay
+	GrpcStatusAbort                    networking.HTTPFaultInjection_Abort_GrpcStatus
+	Http2ErrorAbort                    networking.HTTPFaultInjection_Abort_Http2Error
+	HttpStatusAbort                    networking.HTTPFaultInjection_Abort_HttpStatus
 	ServiceEntry                       networking.ServiceEntry
 	VirtualService                     networking.VirtualService
 	Circonus                           circonus.Params
@@ -193,19 +198,30 @@ func main() {
 	}
 
 	interfacesMap := map[string]string{
-		"isLoadBalancerSettings_LbPolicy": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"isStringMatch_MatchType":         "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"isPortSelector_Port":             "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		//"isParams_MetricInfo_BucketsDefinition_Definition": "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
+		"isLoadBalancerSettings_LbPolicy":          "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"isStringMatch_MatchType":                  "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"isPortSelector_Port":                      "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"isHTTPFaultInjection_Delay_HttpDelayType": "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"isHTTPFaultInjection_Abort_ErrorType":     "me.snowdrop.istio.api.model.v1.networking.Abort",
 	}
 
 	interfacesImpl := map[string]string{
-		"LoadBalancerSettings_Simple":         "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"LoadBalancerSettings_ConsistentHash": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"StringMatch_Exact":                   "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"StringMatch_Prefix":                  "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"StringMatch_Regex":                   "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"PortSelector_Name":                   "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"PortSelector_Number":                 "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		//"Params_MetricInfo_BucketsDefinition_LinearBuckets":      "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
+		//"Params_MetricInfo_BucketsDefinition_ExponentialBuckets": "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
+		//"Params_MetricInfo_BucketsDefinition_ExplicitBuckets":    "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
+		"LoadBalancerSettings_Simple":               "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"LoadBalancerSettings_ConsistentHash":       "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"StringMatch_Exact":                         "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"StringMatch_Prefix":                        "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"StringMatch_Regex":                         "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"PortSelector_Name":                         "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"PortSelector_Number":                       "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"HTTPFaultInjection_Delay_FixedDelay":       "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"HTTPFaultInjection_Delay_ExponentialDelay": "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"HTTPFaultInjection_Abort_HttpStatus":       "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"HTTPFaultInjection_Abort_GrpcStatus":       "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"HTTPFaultInjection_Abort_Http2Error":       "me.snowdrop.istio.api.model.v1.networking.Abort",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl)

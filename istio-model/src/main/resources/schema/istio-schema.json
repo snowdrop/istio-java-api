@@ -1441,6 +1441,51 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.networking.Abort"
     },
+    "istio_networking_HTTPFaultInjection_Abort_GrpcStatus": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.Abort"
+      ],
+      "description": "",
+      "properties": {
+        "grpcStatus": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.GrpcStatusAbortHTTPFaultInjection"
+    },
+    "istio_networking_HTTPFaultInjection_Abort_Http2Error": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.Abort"
+      ],
+      "description": "",
+      "properties": {
+        "http2Error": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection"
+    },
+    "istio_networking_HTTPFaultInjection_Abort_HttpStatus": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.Abort"
+      ],
+      "description": "",
+      "properties": {
+        "httpStatus": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection"
+    },
     "istio_networking_HTTPFaultInjection_Delay": {
       "type": "object",
       "description": "",
@@ -1453,6 +1498,36 @@
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.networking.Delay"
+    },
+    "istio_networking_HTTPFaultInjection_Delay_ExponentialDelay": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.Delay"
+      ],
+      "description": "",
+      "properties": {
+        "exponentialDelay": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHTTPFaultInjection"
+    },
+    "istio_networking_HTTPFaultInjection_Delay_FixedDelay": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.Delay"
+      ],
+      "description": "",
+      "properties": {
+        "fixedDelay": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.FixedDelayHTTPFaultInjection"
     },
     "istio_networking_HTTPMatchRequest": {
       "type": "object",
@@ -2471,6 +2546,14 @@
       "$ref": "#/definitions/istio_networking_StringMatch_Exact",
       "javaType": "me.snowdrop.istio.api.model.v1.networking.ExactStringMatch"
     },
+    "ExponentialDelay": {
+      "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Delay_ExponentialDelay",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHTTPFaultInjection"
+    },
+    "FixedDelay": {
+      "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Delay_FixedDelay",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.FixedDelayHTTPFaultInjection"
+    },
     "Fluentd": {
       "$ref": "#/definitions/istio_adapter_fluentd_Params",
       "javaType": "me.snowdrop.istio.adapter.fluentd.Fluentd"
@@ -2478,6 +2561,18 @@
     "Gateway": {
       "$ref": "#/definitions/istio_networking_Gateway",
       "javaType": "me.snowdrop.istio.api.model.v1.networking.Gateway"
+    },
+    "GrpcStatusAbort": {
+      "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_GrpcStatus",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.GrpcStatusAbortHTTPFaultInjection"
+    },
+    "Http2ErrorAbort": {
+      "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_Http2Error",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection"
+    },
+    "HttpStatusAbort": {
+      "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_HttpStatus",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection"
     },
     "KubernetesEnv": {
       "$ref": "#/definitions/istio_adapter_kubernetesenv_Params",
