@@ -115,7 +115,7 @@
             "$ref": "#/definitions/istio_adapter_dogstatsd_Params_MetricInfo",
             "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
           },
-          "javaType": "java.util.Map\u003cString,MetricInfo\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.dogstatsd.MetricInfo\u003e"
         },
         "prefix": {
           "type": "string",
@@ -355,7 +355,7 @@
             "$ref": "#/definitions/istio_adapter_solarwinds_Params_LogInfo",
             "javaType": "me.snowdrop.istio.adapter.solarwinds.LogInfo"
           },
-          "javaType": "java.util.Map\u003cString,LogInfo\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.solarwinds.LogInfo\u003e"
         },
         "metrics": {
           "type": "object",
@@ -364,7 +364,7 @@
             "$ref": "#/definitions/istio_adapter_solarwinds_Params_MetricInfo",
             "javaType": "me.snowdrop.istio.adapter.solarwinds.MetricInfo"
           },
-          "javaType": "java.util.Map\u003cString,MetricInfo\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.solarwinds.MetricInfo\u003e"
         },
         "papertrailLocalRetentionDuration": {
           "type": "integer",
@@ -606,7 +606,7 @@
             "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
             "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
           },
-          "javaType": "java.util.Map\u003cString,AttributeValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.AttributeValue\u003e"
         }
       },
       "additionalProperties": true,

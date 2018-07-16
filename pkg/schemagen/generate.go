@@ -241,6 +241,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
 			case "StringMatch":
 				return "me.snowdrop.istio.api.model.v1.networking.StringMatch"
+			case "PortSelector":
+                return "me.snowdrop.istio.api.model.v1.networking.PortSelector"
 			default:
 				if len(name) == 0 && t.NumField() == 0 {
 					return "Object"
