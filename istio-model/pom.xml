@@ -168,6 +168,8 @@
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/cexl/TypedValue.java" verbose="true" />
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/networking/StringMatch.java"
                         verbose="true"/>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/networking/PortSelector.java"
+                        verbose="true"/>
               </target>
             </configuration>
             <goals>

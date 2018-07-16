@@ -179,6 +179,93 @@ spec:
         assertEquals("v1", destination.get("subset"));
     }
 
+    /*
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "VirtualService"
+metadata:
+  name: "reviews-route"
+spec:
+  hosts:
+  - "reviews.prod.svc.cluster.local"
+  http:
+  - route:
+    - destination:
+        host: "reviews.prod.svc.cluster.local"
+        port:
+          number: 9090
+        subset: "v2"
+  - route:
+    - destination:
+        host: "reviews.prod.svc.cluster.local"
+        port:
+          number: 9090
+        subset: "v1"
+    */
+    @Test
+    public void checkVirtualServiceWithPortSelector() throws IOException {
+        final String reviewsHost = "reviews.prod.svc.cluster.local";
+        final IstioResource resource = new IstioResourceBuilder()
+                .withApiVersion("networking.istio.io/v1alpha3")
+                .withNewMetadata().withName("reviews-route").endMetadata()
+                .withNewVirtualServiceSpec()
+                .addToHosts(reviewsHost)
+                .addNewHttp()
+                .addNewRoute()
+                .withNewDestination().withHost(reviewsHost).withSubset("v2").withPort(new PortSelector(9090)).endDestination()
+                .endRoute()
+                .endHttp()
+                .addNewHttp()
+                .addNewRoute()
+                .withNewDestination().withHost(reviewsHost).withSubset("v1").withPort(new PortSelector(9090)).endDestination()
+                .endRoute()
+                .endHttp()
+                .endVirtualServiceSpec()
+                .build();
+
+        final String output = mapper.writeValueAsString(resource);
+
+        assertEquals(resource, mapper.readValue(output, IstioResource.class));
+
+        Yaml parser = new Yaml();
+        final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+
+
+        assertEquals("VirtualService", reloaded.get("kind"));
+
+        final Map metadata = reloaded.get("metadata");
+        assertNotNull(metadata);
+        assertEquals("reviews-route", metadata.get("name"));
+
+        final Map<String, Map> spec = reloaded.get("spec");
+        assertNotNull(spec);
+
+        assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
+
+        final List<Map> https = (List) spec.get("http");
+        assertNotNull(https);
+
+        Map<String, Map> http = https.get(0);
+        assertNotNull(http);
+
+
+        Map destination = (Map) ((List<Map>) http.get("route")).get(0).get("destination");
+        assertEquals(reviewsHost, destination.get("host"));
+        assertEquals("v2", destination.get("subset"));
+
+        final Map<String, Integer> portSelector1 = (Map<String, Integer>) ( destination.get("port") );
+        assertNotNull(portSelector1);
+        assertEquals(9090, portSelector1.get("number").intValue());
+
+        http = https.get(1);
+        destination = (Map) ((List<Map>) http.get("route")).get(0).get("destination");
+        assertEquals(reviewsHost, destination.get("host"));
+        assertEquals("v1", destination.get("subset"));
+
+        final Map<String, Integer> portSelector2 = (Map<String, Integer>) ( destination.get("port") );
+        assertNotNull(portSelector2);
+        assertEquals(9090, portSelector2.get("number").intValue());
+    }
+
     @Test
     public void roundtripBasicVirtualServiceShouldWork() throws Exception {
         final IstioResource virtualService = new IstioResourceBuilder()
