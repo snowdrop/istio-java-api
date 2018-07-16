@@ -34,27 +34,29 @@ type schemaGenerator struct {
 	packages          map[string]PackageDescriptor
 	enumMap           map[string]string
 	interfacesMap     map[string]string
+	interfacesimpl    map[string]string
 	typeMap           map[reflect.Type]reflect.Type
 	unknownEnums      []string
 	unknownInterfaces []string
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap, interfacesImpl)
 	return g.generate(t)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
 	}
 	g := schemaGenerator{
-		types:         make(map[reflect.Type]*JSONObjectDescriptor),
-		packages:      pkgMap,
-		typeMap:       typeMap,
-		enumMap:       enumMap,
-		interfacesMap: interfacesMap,
+		types:          make(map[reflect.Type]*JSONObjectDescriptor),
+		packages:       pkgMap,
+		typeMap:        typeMap,
+		enumMap:        enumMap,
+		interfacesMap:  interfacesMap,
+		interfacesimpl: interfacesImpl,
 	}
 	return &g
 }
@@ -134,10 +136,10 @@ func (g *schemaGenerator) generateReference(t reflect.Type) string {
 	return g.generateReferenceFrom(g.qualifiedName(t))
 }
 
-func (g *schemaGenerator) generateEnumTypeAccumulatingUnknown(t string) (string, string) {
+func (g *schemaGenerator) generateEnumTypeAccumulatingUnknown(t string, humanReadableFieldName string) (string, string) {
 	enum, ok := g.enumMap[t]
 	if !ok {
-		g.unknownEnums = append(g.unknownEnums, t)
+		g.unknownEnums = append(g.unknownEnums, humanReadableFieldName)
 	}
 
 	return g.generateReferenceFrom(escapedQualifiedName(enum)), enum
@@ -184,7 +186,14 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	// deal with "inner" structs
 	underscore := strings.IndexRune(name, '_')
 	if underscore >= 0 {
-		name = name[underscore+1:]
+		// check if we have an interface which we should rename
+		_, ok := g.interfacesimpl[name]
+		if ok {
+			interfaceName := name[:underscore]
+			name = name[underscore+1:] + interfaceName
+		} else {
+			name = name[underscore+1:]
+		}
 	}
 
 	path := pkgPath(t)
@@ -244,7 +253,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			case "StringMatch":
 				return "me.snowdrop.istio.api.model.v1.networking.StringMatch"
 			case "PortSelector":
-                return "me.snowdrop.istio.api.model.v1.networking.PortSelector"
+				return "me.snowdrop.istio.api.model.v1.networking.PortSelector"
 			default:
 				if len(name) == 0 && t.NumField() == 0 {
 					return "Object"
@@ -319,10 +328,18 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 		for k, v := range g.types {
 			name := g.qualifiedName(k)
 			resource := g.resourceDetails(k)
+			descriptor := &JSONDescriptor{
+				Type: "object",
+			}
+
+			typeName := k.Name()
+			i, ok := g.interfacesimpl[typeName]
+			if ok {
+				descriptor.JavaInterfaces = []string{i}
+			}
+
 			value := JSONPropertyDescriptor{
-				JSONDescriptor: &JSONDescriptor{
-					Type: "object",
-				},
+				JSONDescriptor:       descriptor,
 				JSONObjectDescriptor: v,
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					JavaType: g.javaType(k),
@@ -350,7 +367,7 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	}
 }
 
-func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string) JSONPropertyDescriptor {
+func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, humanReadableFieldName string) JSONPropertyDescriptor {
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
@@ -416,7 +433,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string) JSO
 					Description: desc,
 				},
 				JSONArrayDescriptor: &JSONArrayDescriptor{
-					Items: g.getPropertyDescriptor(t.Elem(), desc),
+					Items: g.getPropertyDescriptor(t.Elem(), desc, ""),
 				},
 			}
 		}
@@ -427,7 +444,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string) JSO
 				Description: desc,
 			},
 			JSONMapDescriptor: &JSONMapDescriptor{
-				MapValueType: g.getPropertyDescriptor(t.Elem(), desc),
+				MapValueType: g.getPropertyDescriptor(t.Elem(), desc, ""),
 			},
 			JavaTypeDescriptor: &JavaTypeDescriptor{
 				JavaType: "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">",
@@ -447,6 +464,12 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string) JSO
 			JavaTypeDescriptor: &JavaTypeDescriptor{
 				JavaType: g.javaType(t),
 			},
+		}
+	case reflect.Interface:
+		name := t.Name()
+		_, ok := g.interfacesMap[name]
+		if !ok {
+			g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)
 		}
 	}
 
@@ -472,25 +495,20 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 			continue
 		}
 
-		if field.Type.Kind() == reflect.Interface {
-			_, ok := g.interfacesMap[name]
-			if !ok {
-				g.unknownInterfaces = append(g.unknownInterfaces, field.Type.Name()+": field "+name+" in "+path+"/"+t.Name())
-			}
-		}
+		humanReadableFieldName := field.Type.Name() + " field " + name + " in " + path + "/" + t.Name()
 
 		desc := getFieldDescription(field)
 		enum := getFieldEnum(field)
 		var prop JSONPropertyDescriptor
 		if len(enum) > 0 {
-			_, javaType := g.generateEnumTypeAccumulatingUnknown(enum)
+			_, javaType := g.generateEnumTypeAccumulatingUnknown(enum, humanReadableFieldName)
 			prop = JSONPropertyDescriptor{
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					JavaType: javaType,
 				},
 			}
 		} else {
-			prop = g.getPropertyDescriptor(field.Type, desc)
+			prop = g.getPropertyDescriptor(field.Type, desc, humanReadableFieldName)
 		}
 		if field.Anonymous && field.Type.Kind() == reflect.Struct && len(name) == 0 {
 			var newProps map[string]JSONPropertyDescriptor

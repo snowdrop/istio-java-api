@@ -53,32 +53,39 @@ import (
 )
 
 type Schema struct {
-	MeshConfig           mesh.MeshConfig
-	ProxyConfig          mesh.ProxyConfig
-	Attributes           mixer.Attributes
-	AttributeValue       mixer.Attributes_AttributeValue
-	CheckRequest         mixer.CheckRequest
-	QuotaParams          mixer.CheckRequest_QuotaParams
-	CheckResponse        mixer.CheckResponse
-	QuotaResult          mixer.CheckResponse_QuotaResult
-	CompressedAttributes mixer.CompressedAttributes
-	ReferencedAttributes mixer.ReferencedAttributes
-	ReportRequest        mixer.ReportRequest
-	ReportResponse       mixer.ReportResponse
-	StringMap            mixer.StringMap
-	ServiceRole          rbac.ServiceRole
-	ServiceRoleBinding   rbac.ServiceRoleBinding
-	Gateway              networking.Gateway
-	DestinationRule      networking.DestinationRule
-	ServiceEntry         networking.ServiceEntry
-	VirtualService       networking.VirtualService
-	Circonus             circonus.Params
-	Denier               denier.Params
-	Dogstatsd            dogstatsd.Params
-	DSMetricInfo         dogstatsd.Params_MetricInfo
-	Fluentd              fluentd.Params
-	KubernetesEnv        kubernetesenv.Params
-	ListChecker          list.Params
+	MeshConfig                         mesh.MeshConfig
+	ProxyConfig                        mesh.ProxyConfig
+	Attributes                         mixer.Attributes
+	AttributeValue                     mixer.Attributes_AttributeValue
+	CheckRequest                       mixer.CheckRequest
+	QuotaParams                        mixer.CheckRequest_QuotaParams
+	CheckResponse                      mixer.CheckResponse
+	QuotaResult                        mixer.CheckResponse_QuotaResult
+	CompressedAttributes               mixer.CompressedAttributes
+	ReferencedAttributes               mixer.ReferencedAttributes
+	ReportRequest                      mixer.ReportRequest
+	ReportResponse                     mixer.ReportResponse
+	StringMap                          mixer.StringMap
+	ServiceRole                        rbac.ServiceRole
+	ServiceRoleBinding                 rbac.ServiceRoleBinding
+	Gateway                            networking.Gateway
+	DestinationRule                    networking.DestinationRule
+	SimpleLoadBalancerSettings         networking.LoadBalancerSettings_Simple
+	ConsistentHashLoadBalancerSettings networking.LoadBalancerSettings_ConsistentHash
+	ExactStringMatch                   networking.StringMatch_Exact
+	PrefixStringMatch                  networking.StringMatch_Prefix
+	RegexStringMatch                   networking.StringMatch_Regex
+	NamePortSelector                   networking.PortSelector_Name
+	NumberPortSelector                 networking.PortSelector_Number
+	ServiceEntry                       networking.ServiceEntry
+	VirtualService                     networking.VirtualService
+	Circonus                           circonus.Params
+	Denier                             denier.Params
+	Dogstatsd                          dogstatsd.Params
+	DSMetricInfo                       dogstatsd.Params_MetricInfo
+	Fluentd                            fluentd.Params
+	KubernetesEnv                      kubernetesenv.Params
+	ListChecker                        list.Params
 	//MemQuota             memquota.Params
 	OPA        opa.Params
 	Prometheus prometheus.Params
@@ -186,10 +193,22 @@ func main() {
 	}
 
 	interfacesMap := map[string]string{
-		"istio.networking.v1alpha3.isLoadBalancerSettings_LbPolicy": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"isLoadBalancerSettings_LbPolicy": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"isStringMatch_MatchType":         "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"isPortSelector_Port":             "me.snowdrop.istio.api.model.v1.networking.PortSelector",
 	}
 
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap)
+	interfacesImpl := map[string]string{
+		"LoadBalancerSettings_Simple":         "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"LoadBalancerSettings_ConsistentHash": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"StringMatch_Exact":                   "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"StringMatch_Prefix":                  "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"StringMatch_Regex":                   "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"PortSelector_Name":                   "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"PortSelector_Number":                 "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+	}
+
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)

@@ -32,11 +32,11 @@ public class StringMatchDeserializer extends JsonDeserializer<StringMatch> {
         final Map.Entry<String, JsonNode> field = node.fields().next();
         final String value = field.getValue().asText();
         switch (field.getKey()) {
-            case ExactStringMatch.MATCH_TYPE:
+            case "exact":
                 return new ExactStringMatch(value);
-            case PrefixStringMatch.MATCH_TYPE:
+            case "prefix":
                 return new PrefixStringMatch(value);
-            case RegexStringMatch.MATCH_TYPE:
+            case "regex":
                 return new RegexStringMatch(value);
             default:
                 throw new IllegalArgumentException("Unknown StringMatch type: " + field.getKey());

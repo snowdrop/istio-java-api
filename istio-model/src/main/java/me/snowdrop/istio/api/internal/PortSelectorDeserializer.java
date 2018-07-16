@@ -6,16 +6,18 @@
  */
 package me.snowdrop.istio.api.internal;
 
+import java.io.IOException;
+import java.util.Map;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import me.snowdrop.istio.api.model.v1.networking.*;
-
-import java.io.IOException;
-import java.util.Map;
+import me.snowdrop.istio.api.model.v1.networking.NamePortSelector;
+import me.snowdrop.istio.api.model.v1.networking.NumberPortSelector;
+import me.snowdrop.istio.api.model.v1.networking.PortSelector;
 
 public class PortSelectorDeserializer extends JsonDeserializer<PortSelector> {
     @Override
@@ -24,7 +26,14 @@ public class PortSelectorDeserializer extends JsonDeserializer<PortSelector> {
 
         // there should be exactly one field
         final Map.Entry<String, JsonNode> field = node.fields().next();
-        final int value = field.getValue().asInt();
-        return new PortSelector(value);
+        final String fieldName = field.getKey();
+        switch (fieldName) {
+            case "number":
+                return jsonParser.getCodec().treeToValue(node, NumberPortSelector.class);
+            case "name":
+                return jsonParser.getCodec().treeToValue(node, NamePortSelector.class);
+            default:
+                throw new IllegalArgumentException("Unknown PortSelector type: " + fieldName);
+        }
     }
 }

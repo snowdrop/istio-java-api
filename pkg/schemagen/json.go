@@ -22,22 +22,23 @@ type JSONSchema struct {
 	Definitions map[string]JSONPropertyDescriptor `json:"definitions"`
 	JSONDescriptor
 	*JSONObjectDescriptor
-	Resources  map[string]*JSONObjectDescriptor   `json:"resources,omitempty"`
+	Resources map[string]*JSONObjectDescriptor `json:"resources,omitempty"`
 }
 
 type JSONDescriptor struct {
-	Type        string        `json:"type"`
-	Description string        `json:"description"`
-	Default     string        `json:"default,omitempty"`
-	Required    bool          `json:"required,omitempty"`
-	Minimum     float32       `json:"minimum,omitempty"`
-	Maximum     float32       `json:"maximum,omitempty"`
-	MinItems    int           `json:"minItems,omitempty"`
-	MaxItems    int           `json:"maxItems,omitempty"`
-	MinLength   int           `json:"minLength,omitempty"`
-	MaxLength   int           `json:"maxLength,omitempty"`
-	Pattern     string        `json:"pattern,omitempty"`
-	Enum        []interface{} `json:"enum,omitempty"`
+	Type           string        `json:"type"`
+	JavaInterfaces []string      `json:"javaInterfaces,omitempty"`
+	Description    string        `json:"description"`
+	Default        string        `json:"default,omitempty"`
+	Required       bool          `json:"required,omitempty"`
+	Minimum        float32       `json:"minimum,omitempty"`
+	Maximum        float32       `json:"maximum,omitempty"`
+	MinItems       int           `json:"minItems,omitempty"`
+	MaxItems       int           `json:"maxItems,omitempty"`
+	MinLength      int           `json:"minLength,omitempty"`
+	MaxLength      int           `json:"maxLength,omitempty"`
+	Pattern        string        `json:"pattern,omitempty"`
+	Enum           []interface{} `json:"enum,omitempty"`
 }
 
 type JSONObjectDescriptor struct {
@@ -57,10 +58,6 @@ type JavaTypeDescriptor struct {
 	JavaType string `json:"javaType"`
 }
 
-type JavaInterfacesDescriptor struct {
-	JavaInterfaces []string `json:"javaInterfaces,omitempty"`
-}
-
 type JSONPropertyDescriptor struct {
 	*JSONDescriptor
 	*JSONReferenceDescriptor
@@ -68,7 +65,6 @@ type JSONPropertyDescriptor struct {
 	*JSONArrayDescriptor
 	*JSONMapDescriptor
 	*JavaTypeDescriptor
-	*JavaInterfacesDescriptor
 }
 
 type JSONMapDescriptor struct {

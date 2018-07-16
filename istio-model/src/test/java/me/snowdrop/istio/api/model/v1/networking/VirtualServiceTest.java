@@ -211,12 +211,14 @@ spec:
                 .addToHosts(reviewsHost)
                 .addNewHttp()
                 .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v2").withPort(new PortSelector(9090)).endDestination()
+                .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewNumberPortSelector()
+                .withNewNumber(9090).endNumberPortSelector().endDestination()
                 .endRoute()
                 .endHttp()
                 .addNewHttp()
                 .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v1").withPort(new PortSelector(9090)).endDestination()
+                .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewNumberPortSelector()
+                .withNewNumber(9090).endNumberPortSelector().endDestination()
                 .endRoute()
                 .endHttp()
                 .endVirtualServiceSpec()
@@ -252,7 +254,7 @@ spec:
         assertEquals(reviewsHost, destination.get("host"));
         assertEquals("v2", destination.get("subset"));
 
-        final Map<String, Integer> portSelector1 = (Map<String, Integer>) ( destination.get("port") );
+        final Map<String, Integer> portSelector1 = (Map<String, Integer>) (destination.get("port"));
         assertNotNull(portSelector1);
         assertEquals(9090, portSelector1.get("number").intValue());
 
@@ -261,7 +263,7 @@ spec:
         assertEquals(reviewsHost, destination.get("host"));
         assertEquals("v1", destination.get("subset"));
 
-        final Map<String, Integer> portSelector2 = (Map<String, Integer>) ( destination.get("port") );
+        final Map<String, Integer> portSelector2 = (Map<String, Integer>) (destination.get("port"));
         assertNotNull(portSelector2);
         assertEquals(9090, portSelector2.get("number").intValue());
     }
