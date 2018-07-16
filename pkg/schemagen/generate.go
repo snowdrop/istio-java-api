@@ -30,29 +30,31 @@ type PackageDescriptor struct {
 }
 
 type schemaGenerator struct {
-	types        map[reflect.Type]*JSONObjectDescriptor
-	packages     map[string]PackageDescriptor
-	enumMap      map[string]string
-	typeMap      map[reflect.Type]reflect.Type
-	unknownEnums []string
-	interfaces   []string
+	types             map[reflect.Type]*JSONObjectDescriptor
+	packages          map[string]PackageDescriptor
+	enumMap           map[string]string
+	interfacesMap     map[string]string
+	typeMap           map[reflect.Type]reflect.Type
+	unknownEnums      []string
+	unknownInterfaces []string
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) (*JSONSchema, string, error) {
-	g := newSchemaGenerator(packages, typeMap, enumMap)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap)
 	return g.generate(t)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
 	}
 	g := schemaGenerator{
-		types:    make(map[reflect.Type]*JSONObjectDescriptor),
-		packages: pkgMap,
-		typeMap:  typeMap,
-		enumMap:  enumMap,
+		types:         make(map[reflect.Type]*JSONObjectDescriptor),
+		packages:      pkgMap,
+		typeMap:       typeMap,
+		enumMap:       enumMap,
+		interfacesMap: interfacesMap,
 	}
 	return &g
 }
@@ -297,9 +299,9 @@ func transformAdapterName(original string, path string) string {
 	return name
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, string, error) {
+func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	if t.Kind() != reflect.Struct {
-		return nil, "", fmt.Errorf("only struct types can be converted")
+		return nil, fmt.Errorf("only struct types can be converted")
 	}
 
 	s := JSONSchema{
@@ -331,15 +333,20 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, string, error) 
 		}
 	}
 
-	var interfaces string
-	if len(g.interfaces) > 0 {
-		interfaces = "Detected interfaces:\n" + strings.Join(g.interfaces, "\n")
-	}
+	hasUnknownEnums := len(g.unknownEnums) > 0
+	hasUnknownInterfaces := len(g.unknownInterfaces) > 0
+	if hasUnknownEnums || hasUnknownInterfaces {
+		var msg string
+		if hasUnknownEnums {
+			msg = msg + "Unknown enums:\n" + strings.Join(g.unknownEnums, "\n")
+		}
+		if hasUnknownInterfaces {
+			msg = msg + "Unknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
+		}
 
-	if len(g.unknownEnums) > 0 {
-		return &s, interfaces, errors.New("Unknown enums:\n" + strings.Join(g.unknownEnums, "\n"))
+		return &s, errors.New(msg)
 	} else {
-		return &s, interfaces, nil
+		return &s, nil
 	}
 }
 
@@ -466,7 +473,10 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		}
 
 		if field.Type.Kind() == reflect.Interface {
-			g.interfaces = append(g.interfaces, field.Type.Name()+": field "+name+" in "+path+"/"+t.Name())
+			_, ok := g.interfacesMap[name]
+			if !ok {
+				g.unknownInterfaces = append(g.unknownInterfaces, field.Type.Name()+": field "+name+" in "+path+"/"+t.Name())
+			}
 		}
 
 		desc := getFieldDescription(field)

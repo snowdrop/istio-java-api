@@ -185,14 +185,14 @@ func main() {
 		"istio.networking.v1alpha3.LoadBalancerSettings_SimpleLB":   "me.snowdrop.istio.api.model.v1.networking.SimpleLB",
 	}
 
-	schema, interfaces, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap)
+	interfacesMap := map[string]string{
+		"istio.networking.v1alpha3.isLoadBalancerSettings_LbPolicy": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+	}
+
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)
-	}
-
-	if len(interfaces) > 0 {
-		log.Println(interfaces)
 	}
 
 	args := os.Args[1:]
