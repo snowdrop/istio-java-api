@@ -2356,6 +2356,46 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.networking.VirtualService"
     },
+    "istio_policy_Action": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "handler": {
+          "type": "string",
+          "description": ""
+        },
+        "instances": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.policy.Action"
+    },
+    "istio_policy_Rule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_policy_Action",
+            "javaType": "me.snowdrop.istio.api.model.v1.policy.Action"
+          }
+        },
+        "match": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.policy.Rule"
+    },
     "istio_rbac_AccessRule": {
       "type": "object",
       "description": "",
@@ -2766,6 +2806,10 @@
     "ReportResponse": {
       "$ref": "#/definitions/istio_mixer_ReportResponse",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.ReportResponse"
+    },
+    "Rule": {
+      "$ref": "#/definitions/istio_policy_Rule",
+      "javaType": "me.snowdrop.istio.api.model.v1.policy.Rule"
     },
     "SWLogInfo": {
       "$ref": "#/definitions/istio_adapter_solarwinds_Params_LogInfo",

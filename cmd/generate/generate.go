@@ -22,6 +22,7 @@ import (
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	networking "istio.io/api/networking/v1alpha3"
+	policy "istio.io/api/policy/v1beta1"
 	rbac "istio.io/api/rbac/v1alpha1"
 	"log"
 	"os"
@@ -68,6 +69,7 @@ type Schema struct {
 	StringMap                          mixer.StringMap
 	ServiceRole                        rbac.ServiceRole
 	ServiceRoleBinding                 rbac.ServiceRoleBinding
+	Rule                               policy.Rule
 	Gateway                            networking.Gateway
 	DestinationRule                    networking.DestinationRule
 	SimpleLoadBalancerSettings         networking.LoadBalancerSettings_Simple
