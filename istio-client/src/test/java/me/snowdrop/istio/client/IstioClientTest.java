@@ -1,25 +1,25 @@
 package me.snowdrop.istio.client;
 
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioSpec;
-import me.snowdrop.istio.api.model.v1.mixer.template.Metric;
-import me.snowdrop.istio.api.model.v1.networking.VirtualService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getKindFor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import me.snowdrop.istio.api.model.IstioResource;
+import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.model.v1.mixer.template.Metric;
+import me.snowdrop.istio.api.model.v1.networking.VirtualService;
+import me.snowdrop.istio.api.model.v1.policy.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IstioClientTest {
@@ -35,6 +35,11 @@ public class IstioClientTest {
     @Test
     public void shouldApplyVirtualServiceIstioResource() {
         checkInput("virtual-service.yaml", VirtualService.class);
+    }
+
+    @Test
+    public void shouldApplyruleIstioResource() {
+        checkInput("rule.yaml", Rule.class);
     }
 
     private void checkInput(String inputFileName, Class<? extends IstioSpec> expectedSpecClass) {
