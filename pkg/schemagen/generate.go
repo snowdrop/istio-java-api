@@ -381,10 +381,10 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	if hasUnknownEnums /*|| hasUnknownInterfaces*/ {
 		var msg string
 		if hasUnknownEnums {
-			msg = msg + "Unknown enums:\n" + strings.Join(g.unknownEnums, "\n")
+			msg = msg + "\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
 		}
 		if hasUnknownInterfaces {
-			msg = msg + "Unknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
+			msg = msg + "\nUnknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
 		}
 
 		return &s, errors.New(msg)
