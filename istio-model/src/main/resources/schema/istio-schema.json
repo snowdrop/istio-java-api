@@ -294,7 +294,7 @@
       "properties": {
         "buckets": {
           "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition",
-          "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo_BucketsDefinition"
+          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
         },
         "description": {
           "type": "string",
@@ -334,7 +334,108 @@
         "Definition": {}
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo_BucketsDefinition"
+      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Explicit": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bounds": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "number",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Explicit"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExplicitBuckets": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+      ],
+      "description": "",
+      "properties": {
+        "explicitBuckets": {
+          "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Explicit",
+          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Explicit"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.ExplicitBucketsDefinition"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Exponential": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "growthFactor": {
+          "type": "number",
+          "description": ""
+        },
+        "numFiniteBuckets": {
+          "type": "integer",
+          "description": ""
+        },
+        "scale": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Exponential"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExponentialBuckets": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+      ],
+      "description": "",
+      "properties": {
+        "exponentialBuckets": {
+          "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Exponential",
+          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Exponential"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.ExponentialBucketsDefinition"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Linear": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "numFiniteBuckets": {
+          "type": "integer",
+          "description": ""
+        },
+        "offset": {
+          "type": "number",
+          "description": ""
+        },
+        "width": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Linear"
+    },
+    "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_LinearBuckets": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+      ],
+      "description": "",
+      "properties": {
+        "linearBuckets": {
+          "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Linear",
+          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Linear"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.prometheus.LinearBucketsDefinition"
     },
     "istio_adapter_solarwinds_Params": {
       "type": "object",
@@ -2546,6 +2647,14 @@
       "$ref": "#/definitions/istio_networking_StringMatch_Exact",
       "javaType": "me.snowdrop.istio.api.model.v1.networking.ExactStringMatch"
     },
+    "ExplicitBucketsDefinition": {
+      "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExplicitBuckets",
+      "javaType": "me.snowdrop.istio.adapter.prometheus.ExplicitBucketsDefinition"
+    },
+    "ExponentialBucketsDefinition": {
+      "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExponentialBuckets",
+      "javaType": "me.snowdrop.istio.adapter.prometheus.ExponentialBucketsDefinition"
+    },
     "ExponentialDelay": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Delay_ExponentialDelay",
       "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHTTPFaultInjection"
@@ -2577,6 +2686,10 @@
     "KubernetesEnv": {
       "$ref": "#/definitions/istio_adapter_kubernetesenv_Params",
       "javaType": "me.snowdrop.istio.adapter.kubernetesenv.Kubernetesenv"
+    },
+    "LinearBucketsDefinition": {
+      "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_LinearBuckets",
+      "javaType": "me.snowdrop.istio.adapter.prometheus.LinearBucketsDefinition"
     },
     "ListChecker": {
       "$ref": "#/definitions/istio_adapter_list_Params",

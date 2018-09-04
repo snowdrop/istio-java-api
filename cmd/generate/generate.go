@@ -92,8 +92,11 @@ type Schema struct {
 	KubernetesEnv                      kubernetesenv.Params
 	ListChecker                        list.Params
 	//MemQuota             memquota.Params
-	OPA        opa.Params
-	Prometheus prometheus.Params
+	OPA                          opa.Params
+	Prometheus                   prometheus.Params
+	ExplicitBucketsDefinition    prometheus.Params_MetricInfo_BucketsDefinition_ExplicitBuckets
+	LinearBucketsDefinition      prometheus.Params_MetricInfo_BucketsDefinition_LinearBuckets
+	ExponentialBucketsDefinition prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
 	//ServiceControl servicecontrol.Params
 	SolarWinds   solarwinds.Params
 	SWLogInfo    solarwinds.Params_LogInfo
@@ -198,30 +201,30 @@ func main() {
 	}
 
 	interfacesMap := map[string]string{
-		//"isParams_MetricInfo_BucketsDefinition_Definition": "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
-		"isLoadBalancerSettings_LbPolicy":          "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"isStringMatch_MatchType":                  "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"isPortSelector_Port":                      "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"isHTTPFaultInjection_Delay_HttpDelayType": "me.snowdrop.istio.api.model.v1.networking.Delay",
-		"isHTTPFaultInjection_Abort_ErrorType":     "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"isParams_MetricInfo_BucketsDefinition_Definition": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
+		"isLoadBalancerSettings_LbPolicy":                  "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"isStringMatch_MatchType":                          "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"isPortSelector_Port":                              "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"isHTTPFaultInjection_Delay_HttpDelayType":         "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"isHTTPFaultInjection_Abort_ErrorType":             "me.snowdrop.istio.api.model.v1.networking.Abort",
 	}
 
 	interfacesImpl := map[string]string{
-		//"Params_MetricInfo_BucketsDefinition_LinearBuckets":      "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
-		//"Params_MetricInfo_BucketsDefinition_ExponentialBuckets": "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
-		//"Params_MetricInfo_BucketsDefinition_ExplicitBuckets":    "me.snowdrop.istio.adapter.prometheus.BucketsDefinitions",
-		"LoadBalancerSettings_Simple":               "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"LoadBalancerSettings_ConsistentHash":       "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"StringMatch_Exact":                         "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"StringMatch_Prefix":                        "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"StringMatch_Regex":                         "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"PortSelector_Name":                         "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"PortSelector_Number":                       "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"HTTPFaultInjection_Delay_FixedDelay":       "me.snowdrop.istio.api.model.v1.networking.Delay",
-		"HTTPFaultInjection_Delay_ExponentialDelay": "me.snowdrop.istio.api.model.v1.networking.Delay",
-		"HTTPFaultInjection_Abort_HttpStatus":       "me.snowdrop.istio.api.model.v1.networking.Abort",
-		"HTTPFaultInjection_Abort_GrpcStatus":       "me.snowdrop.istio.api.model.v1.networking.Abort",
-		"HTTPFaultInjection_Abort_Http2Error":       "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"Params_MetricInfo_BucketsDefinition_LinearBuckets":      "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
+		"Params_MetricInfo_BucketsDefinition_ExponentialBuckets": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
+		"Params_MetricInfo_BucketsDefinition_ExplicitBuckets":    "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
+		"LoadBalancerSettings_Simple":                            "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"LoadBalancerSettings_ConsistentHash":                    "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"StringMatch_Exact":                                      "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"StringMatch_Prefix":                                     "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"StringMatch_Regex":                                      "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+		"PortSelector_Name":                                      "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"PortSelector_Number":                                    "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+		"HTTPFaultInjection_Delay_FixedDelay":                    "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"HTTPFaultInjection_Delay_ExponentialDelay":              "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"HTTPFaultInjection_Abort_HttpStatus":                    "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"HTTPFaultInjection_Abort_GrpcStatus":                    "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"HTTPFaultInjection_Abort_Http2Error":                    "me.snowdrop.istio.api.model.v1.networking.Abort",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl)

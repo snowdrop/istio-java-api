@@ -177,6 +177,8 @@
                         verbose="true"/>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/networking/Abort.java"
                         verbose="true"/>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/adapter/prometheus/BucketsDefinition.java"
+                        verbose="true"/>
               </target>
             </configuration>
             <goals>
