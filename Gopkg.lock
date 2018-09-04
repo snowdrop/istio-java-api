@@ -16,8 +16,8 @@
     "sortkeys",
     "types"
   ]
-  revision = "342cbe0a04158f6dcb03ca0079991a51a4248c02"
-  version = "v0.5"
+  revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
@@ -118,6 +118,7 @@
   version = "v1.12.0"
 
 [[projects]]
+  branch = "release-1.0"
   name = "istio.io/api"
   packages = [
     "mesh/v1alpha1",
@@ -127,8 +128,7 @@
     "policy/v1beta1",
     "rbac/v1alpha1"
   ]
-  revision = "8d67e57e3612dae1a3423795bce93a372cfe4fa4"
-  version = "0.8.0"
+  revision = "76349c53b87f03f1e610b3aa3843dba3c38138d7"
 
 [[projects]]
   name = "istio.io/istio"
@@ -155,12 +155,12 @@
     "mixer/template/reportnothing",
     "mixer/template/tracespan"
   ]
-  revision = "6f9f420f0c7119ff4fa6a1966a6f6d89b1b4db84"
-  version = "0.8.0"
+  revision = "42773aacced474d97159902d20579a25b1f98106"
+  version = "1.0.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4cc4371d0e6ac4a64107002fc2355b7ade487bd510d7535aba1c71f7fc8b54e2"
+  inputs-digest = "009cba025a2ea7522eea0342c9d4be7c16b3e77fe2495d461d6efb3d24a2aa8d"
   solver-name = "gps-cdcl"
   solver-version = 1
