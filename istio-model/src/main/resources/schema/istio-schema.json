@@ -2090,6 +2090,72 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB"
     },
+    "istio_networking_LoadBalancerSettings_ConsistentHashLB_HTTPCookie": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "ttl": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB_HTTPCookie"
+    },
+    "istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpCookie": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.HashKey"
+      ],
+      "description": "",
+      "properties": {
+        "httpCookie": {
+          "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_HTTPCookie",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB_HTTPCookie"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpCookieConsistentHashLBLoadBalancerSettings"
+    },
+    "istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.HashKey"
+      ],
+      "description": "",
+      "properties": {
+        "httpHeaderName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpHeaderNameConsistentHashLBLoadBalancerSettings"
+    },
+    "istio_networking_LoadBalancerSettings_ConsistentHashLB_UseSourceIp": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.model.v1.networking.HashKey"
+      ],
+      "description": "",
+      "properties": {
+        "useSourceIp": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.UseSourceIpConsistentHashLBLoadBalancerSettings"
+    },
     "istio_networking_LoadBalancerSettings_Simple": {
       "type": "object",
       "javaInterfaces": [
@@ -3010,6 +3076,14 @@
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_Http2Error",
       "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection"
     },
+    "HttpCookieHashKey": {
+      "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpCookie",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpCookieConsistentHashLBLoadBalancerSettings"
+    },
+    "HttpHeaderNameHashKey": {
+      "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpHeaderNameConsistentHashLBLoadBalancerSettings"
+    },
     "HttpStatusAbort": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_HttpStatus",
       "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection"
@@ -3133,6 +3207,10 @@
     "TraceSpan": {
       "$ref": "#/definitions/istio_mixer_tracespan_InstanceMsg",
       "javaType": "me.snowdrop.istio.api.model.v1.mixer.template.TraceSpan"
+    },
+    "UseSourceIpHashKey": {
+      "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_UseSourceIp",
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.UseSourceIpConsistentHashLBLoadBalancerSettings"
     },
     "VirtualService": {
       "$ref": "#/definitions/istio_networking_VirtualService",

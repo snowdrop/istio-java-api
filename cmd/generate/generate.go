@@ -75,6 +75,9 @@ type Schema struct {
 	DestinationRule                    networking.DestinationRule
 	SimpleLoadBalancerSettings         networking.LoadBalancerSettings_Simple
 	ConsistentHashLoadBalancerSettings networking.LoadBalancerSettings_ConsistentHash
+	HttpCookieHashKey                  networking.LoadBalancerSettings_ConsistentHashLB_HttpCookie
+	HttpHeaderNameHashKey              networking.LoadBalancerSettings_ConsistentHashLB_HttpHeaderName
+	UseSourceIpHashKey                 networking.LoadBalancerSettings_ConsistentHashLB_UseSourceIp
 	ExactStringMatch                   networking.StringMatch_Exact
 	PrefixStringMatch                  networking.StringMatch_Prefix
 	RegexStringMatch                   networking.StringMatch_Regex
@@ -217,6 +220,7 @@ func main() {
 		"isPortSelector_Port":                              "me.snowdrop.istio.api.model.v1.networking.PortSelector",
 		"isHTTPFaultInjection_Delay_HttpDelayType":         "me.snowdrop.istio.api.model.v1.networking.Delay",
 		"isHTTPFaultInjection_Abort_ErrorType":             "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"isLoadBalancerSettings_ConsistentHashLB_HashKey":  "me.snowdrop.istio.api.model.v1.networking.HashKey",
 	}
 
 	interfacesImpl := map[string]string{
@@ -235,6 +239,9 @@ func main() {
 		"HTTPFaultInjection_Abort_HttpStatus":                    "me.snowdrop.istio.api.model.v1.networking.Abort",
 		"HTTPFaultInjection_Abort_GrpcStatus":                    "me.snowdrop.istio.api.model.v1.networking.Abort",
 		"HTTPFaultInjection_Abort_Http2Error":                    "me.snowdrop.istio.api.model.v1.networking.Abort",
+		"LoadBalancerSettings_ConsistentHashLB_HttpHeaderName":   "me.snowdrop.istio.api.model.v1.networking.HashKey",
+		"LoadBalancerSettings_ConsistentHashLB_HttpCookie":       "me.snowdrop.istio.api.model.v1.networking.HashKey",
+		"LoadBalancerSettings_ConsistentHashLB_UseSourceIp":      "me.snowdrop.istio.api.model.v1.networking.HashKey",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl)
