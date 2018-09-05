@@ -189,6 +189,7 @@ func main() {
 		"istio.mesh.v1alpha1.AuthenticationPolicy":                  "me.snowdrop.istio.api.model.v1.mesh.AuthenticationPolicy",
 		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":   "me.snowdrop.istio.api.model.v1.mesh.InboundInterceptionMode",
 		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode": "me.snowdrop.istio.api.model.v1.mesh.Mode",
+		"istio.mixer.v1.HeaderOperation_Operation":                  "me.snowdrop.istio.api.model.v1.mixer.Operation",
 		"istio.mixer.v1.ReferencedAttributes_Condition":             "me.snowdrop.istio.api.model.v1.mixer.Condition",
 		"istio.mixer.v1.config.descriptor.ValueType":                "me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType",
 		"adapter.circonus.config.Params_MetricInfo_Type":            "me.snowdrop.istio.adapter.circonus.Type",
@@ -200,6 +201,11 @@ func main() {
 		"istio.networking.v1alpha3.ServiceEntry_Location":           "me.snowdrop.istio.api.model.v1.networking.ServiceEntryLocation",
 		"istio.networking.v1alpha3.ServiceEntry_Resolution":         "me.snowdrop.istio.api.model.v1.networking.ServiceEntryResolution",
 		"istio.networking.v1alpha3.LoadBalancerSettings_SimpleLB":   "me.snowdrop.istio.api.model.v1.networking.SimpleLB",
+		/*"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerType":     "me.snowdrop.istio.api.model.v1.networking.ListenerType",
+		"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerProtocol": "me.snowdrop.istio.api.model.v1.networking.ListenerProtocol",
+		"istio.networking.v1alpha3.EnvoyFilter_InsertPosition_Index":           "me.snowdrop.istio.api.model.v1.networking.Index",
+		"istio.networking.v1alpha3.EnvoyFilter_Filter_FilterType":              "me.snowdrop.istio.api.model.v1.networking.FilterType",*/
+		"istio.rbac.v1alpha1.EnforcementMode": "me.snowdrop.istio.api.model.v1.rbac.EnforcementMode",
 	}
 
 	interfacesMap := map[string]string{
