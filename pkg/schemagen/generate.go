@@ -51,9 +51,9 @@ func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
 	return descriptor, ok
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string) (*JSONSchema, error) {
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, strict bool) (*JSONSchema, error) {
 	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap, interfacesImpl)
-	return g.generate(t)
+	return g.generate(t, strict)
 }
 
 func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string) *schemaGenerator {
@@ -346,7 +346,7 @@ func transformAdapterName(original string, path string) string {
 	return name
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
+func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, error) {
 	if t.Kind() != reflect.Struct {
 		return nil, fmt.Errorf("only struct types can be converted")
 	}
@@ -388,33 +388,34 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 		}
 	}
 
-	// check if there are API packages that weren't visited, which would indicate classes that were missed
-	unvisitedPkgs := make([]string, 0)
-	for _, pkgDesc := range g.packages {
-		if !pkgDesc.Visited && strings.HasPrefix(pkgDesc.GoPackage, "istio.io/api") {
-			unvisitedPkgs = append(unvisitedPkgs, pkgDesc.GoPackage)
+	if strict {
+		// check if there are API packages that weren't visited, which would indicate classes that were missed
+		unvisitedPkgs := make([]string, 0)
+		for _, pkgDesc := range g.packages {
+			if !pkgDesc.Visited && strings.HasPrefix(pkgDesc.GoPackage, "istio.io/api") {
+				unvisitedPkgs = append(unvisitedPkgs, pkgDesc.GoPackage)
+			}
+		}
+		hasUnvisitedPkgs := len(unvisitedPkgs) > 0
+		hasUnknownEnums := len(g.unknownEnums) > 0
+		hasUnknownInterfaces := len(g.unknownInterfaces) > 0
+		if hasUnknownEnums || hasUnvisitedPkgs || hasUnknownInterfaces {
+			var msg string
+			if hasUnknownEnums {
+				msg = msg + "\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
+			}
+			if hasUnknownInterfaces {
+				msg = msg + "\nUnknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
+			}
+			if hasUnvisitedPkgs {
+				msg = msg + "\nUnvisited packages:\n" + strings.Join(unvisitedPkgs, "\n")
+			}
+
+			return &s, errors.New(msg)
 		}
 	}
 
-	hasUnvisitedPkgs := len(unvisitedPkgs) > 0
-	hasUnknownEnums := len(g.unknownEnums) > 0
-	hasUnknownInterfaces := len(g.unknownInterfaces) > 0
-	if hasUnknownEnums || hasUnvisitedPkgs {
-		var msg string
-		if hasUnknownEnums {
-			msg = msg + "\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
-		}
-		if hasUnknownInterfaces {
-			msg = msg + "\nUnknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
-		}
-		if hasUnvisitedPkgs {
-			msg = msg + "\nUnvisited packages:\n" + strings.Join(unvisitedPkgs, "\n")
-		}
-
-		return &s, errors.New(msg)
-	} else {
-		return &s, nil
-	}
+	return &s, nil
 }
 
 func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, humanReadableFieldName string) JSONPropertyDescriptor {

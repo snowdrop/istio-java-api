@@ -27,6 +27,10 @@ CRD_FILE=$(DECL_DIR)/crd_list.tmp
 
 all: build
 
+strict:
+	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go
+	./generate -strict > $(SCHEMA_DIR)/istio-schema.json
+
 clean:
 	mvn clean
 

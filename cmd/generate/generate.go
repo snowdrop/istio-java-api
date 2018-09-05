@@ -18,6 +18,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
@@ -182,6 +183,9 @@ func readDescriptors() []schemagen.PackageDescriptor {
 }
 
 func main() {
+	strict := flag.Bool("strict", false, "Toggle strict mode to check for missing types")
+	flag.Parse()
+
 	packages := readDescriptors()
 
 	typeMap := map[reflect.Type]reflect.Type{
@@ -245,7 +249,7 @@ func main() {
 		"LoadBalancerSettings_ConsistentHashLB_UseSourceIp":      "me.snowdrop.istio.api.model.v1.networking.HashKey",
 	}
 
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl)
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)
