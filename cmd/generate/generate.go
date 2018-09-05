@@ -22,7 +22,6 @@ import (
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	networking "istio.io/api/networking/v1alpha3"
-	policy "istio.io/api/policy/v1beta1"
 	rbac "istio.io/api/rbac/v1alpha1"
 	"log"
 	"os"
@@ -54,22 +53,23 @@ import (
 )
 
 type Schema struct {
-	MeshConfig                         mesh.MeshConfig
-	ProxyConfig                        mesh.ProxyConfig
-	Attributes                         mixer.Attributes
-	AttributeValue                     mixer.Attributes_AttributeValue
-	CheckRequest                       mixer.CheckRequest
-	QuotaParams                        mixer.CheckRequest_QuotaParams
-	CheckResponse                      mixer.CheckResponse
-	QuotaResult                        mixer.CheckResponse_QuotaResult
-	CompressedAttributes               mixer.CompressedAttributes
-	ReferencedAttributes               mixer.ReferencedAttributes
-	ReportRequest                      mixer.ReportRequest
-	ReportResponse                     mixer.ReportResponse
-	StringMap                          mixer.StringMap
-	ServiceRole                        rbac.ServiceRole
-	ServiceRoleBinding                 rbac.ServiceRoleBinding
-	Rule                               policy.Rule
+	MeshConfig           mesh.MeshConfig
+	ProxyConfig          mesh.ProxyConfig
+	Attributes           mixer.Attributes
+	AttributeValue       mixer.Attributes_AttributeValue
+	CheckRequest         mixer.CheckRequest
+	QuotaParams          mixer.CheckRequest_QuotaParams
+	CheckResponse        mixer.CheckResponse
+	QuotaResult          mixer.CheckResponse_QuotaResult
+	CompressedAttributes mixer.CompressedAttributes
+	ReferencedAttributes mixer.ReferencedAttributes
+	ReportRequest        mixer.ReportRequest
+	ReportResponse       mixer.ReportResponse
+	StringMap            mixer.StringMap
+	ServiceRole          rbac.ServiceRole
+	ServiceRoleBinding   rbac.ServiceRoleBinding
+	//EnvoyFilter                        networking.EnvoyFilter
+	Rule policy.Rule
 	Gateway                            networking.Gateway
 	DestinationRule                    networking.DestinationRule
 	SimpleLoadBalancerSettings         networking.LoadBalancerSettings_Simple
@@ -109,6 +109,7 @@ type Schema struct {
 	APIKey        apikey.InstanceMsg
 	Authorization authorization.InstanceMsg
 	CheckNothing  checknothing.InstanceMsg
+	Edge          edge.InstanceMsg
 	ListEntry     listentry.InstanceMsg
 	LogEntry      logentry.InstanceMsg
 	Metric        metric.InstanceMsg

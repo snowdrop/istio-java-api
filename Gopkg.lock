@@ -148,6 +148,7 @@
     "mixer/template/apikey",
     "mixer/template/authorization",
     "mixer/template/checknothing",
+    "mixer/template/edge",
     "mixer/template/listentry",
     "mixer/template/logentry",
     "mixer/template/metric",
@@ -161,6 +162,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "009cba025a2ea7522eea0342c9d4be7c16b3e77fe2495d461d6efb3d24a2aa8d"
+  inputs-digest = "cd0fc327bc69fddcd551b0dd34f7a75c827309b78a2cc76739399de0bcf614f2"
   solver-name = "gps-cdcl"
   solver-version = 1
