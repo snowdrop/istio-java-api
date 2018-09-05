@@ -82,7 +82,12 @@ func getFieldName(f reflect.StructField) string {
 		if len(field) > 0 {
 			return field
 		} else {
-			return f.Name
+			json := f.Tag.Get("json")
+			if len(json) > 0 {
+				return json
+			} else {
+				return f.Name
+			}
 		}
 	}
 }
