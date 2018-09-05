@@ -251,6 +251,14 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			return "io.fabric8.kubernetes.api.model.HasMetadata"
 		case "List":
 			return pkgDesc.JavaPackage + ".BaseKubernetesList"
+		case "Duration":
+			return "me.snowdrop.istio.api.model.Duration"
+		case "TimeStamp":
+			return "me.snowdrop.istio.api.model.TimeStamp"
+		case "Timestamp":
+			return "me.snowdrop.istio.api.model.TimeStamp"
+		case "Value":
+			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
 		default:
 			return pkgDesc.JavaPackage + "." + name
 		}
@@ -279,18 +287,6 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "String" // todo: fix me?
 			case "BoolValue":
 				return "java.lang.Boolean"
-			case "Duration":
-				return "me.snowdrop.istio.api.model.Duration"
-			case "TimeStamp":
-				return "me.snowdrop.istio.api.model.TimeStamp"
-			case "Timestamp":
-				return "me.snowdrop.istio.api.model.TimeStamp"
-			case "Value":
-				return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
-			case "StringMatch":
-				return "me.snowdrop.istio.api.model.v1.networking.StringMatch"
-			case "PortSelector":
-				return "me.snowdrop.istio.api.model.v1.networking.PortSelector"
 			default:
 				if len(name) == 0 && t.NumField() == 0 {
 					return "Object"
