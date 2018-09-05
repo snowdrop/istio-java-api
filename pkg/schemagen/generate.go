@@ -27,6 +27,7 @@ type PackageDescriptor struct {
 	GoPackage   string
 	JavaPackage string
 	Prefix      string
+	Visited     bool
 }
 
 type schemaGenerator struct {
@@ -38,6 +39,16 @@ type schemaGenerator struct {
 	typeMap           map[reflect.Type]reflect.Type
 	unknownEnums      []string
 	unknownInterfaces []string
+}
+
+func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
+	descriptor, ok := g.packages[name]
+	if ok {
+		descriptor.Visited = true
+		g.packages[name] = descriptor
+	}
+
+	return descriptor, ok
 }
 
 func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string) (*JSONSchema, error) {
@@ -107,7 +118,7 @@ func getFieldDescription(f reflect.StructField) string {
 
 func (g *schemaGenerator) qualifiedName(t reflect.Type) string {
 	path := pkgPath(t)
-	pkgDesc, ok := g.packages[path]
+	pkgDesc, ok := g.getPackage(path)
 	name := t.Name()
 	if !ok {
 		return escapedQualifiedName(path) + "_" + name
@@ -226,8 +237,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		name = transformAdapterName(name, path)
 	}
 
-	pkgDesc, ok := g.packages[path]
-	if t.Kind() == reflect.Struct && ok {
+	pkgDesc, ok := g.getPackage(path)
+	if ok && t.Kind() == reflect.Struct {
 		switch name {
 		case "Time":
 			return "String"
@@ -376,15 +387,27 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 		}
 	}
 
+	// check if there are API packages that weren't visited, which would indicate classes that were missed
+	unvisitedPkgs := make([]string, 0)
+	for _, pkgDesc := range g.packages {
+		if !pkgDesc.Visited && strings.HasPrefix(pkgDesc.GoPackage, "istio.io/api") {
+			unvisitedPkgs = append(unvisitedPkgs, pkgDesc.GoPackage)
+		}
+	}
+
+	hasUnvisitedPkgs := len(unvisitedPkgs) > 0
 	hasUnknownEnums := len(g.unknownEnums) > 0
 	hasUnknownInterfaces := len(g.unknownInterfaces) > 0
-	if hasUnknownEnums /*|| hasUnknownInterfaces*/ {
+	if hasUnknownEnums || hasUnvisitedPkgs {
 		var msg string
 		if hasUnknownEnums {
 			msg = msg + "\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
 		}
 		if hasUnknownInterfaces {
 			msg = msg + "\nUnknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
+		}
+		if hasUnvisitedPkgs {
+			msg = msg + "\nUnvisited packages:\n" + strings.Join(unvisitedPkgs, "\n")
 		}
 
 		return &s, errors.New(msg)
