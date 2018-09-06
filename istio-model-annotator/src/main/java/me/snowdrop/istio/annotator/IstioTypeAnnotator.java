@@ -36,6 +36,18 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
     private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
     private final JDefinedClass doneableClass;
 
+    static {
+        final String strict = System.getenv("ISTIO_STRICT");
+        if ("true".equals(strict)) {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                final String unvisitedCRDs = IstioSpecRegistry.unvisitedCRDNames();
+                if (!unvisitedCRDs.isEmpty()) {
+                    throw new IllegalStateException("The following CRDs were not visited:\n" + unvisitedCRDs);
+                }
+            }));
+        }
+    }
+
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
         try {

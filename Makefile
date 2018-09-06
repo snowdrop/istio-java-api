@@ -30,6 +30,7 @@ all: build
 strict:
 	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go
 	./generate -strict > $(SCHEMA_DIR)/istio-schema.json
+	ISTIO_STRICT=true mvn clean install
 
 clean:
 	mvn clean

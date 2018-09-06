@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import me.snowdrop.istio.api.model.IstioSpec;
 
 /**
@@ -83,9 +84,14 @@ public class IstioSpecRegistry {
 
     static class CRDInfo {
         private final String kind;
+
         private final String crdName;
+
         private final String className;
+
         private Optional<Class<? extends IstioSpec>> clazz = Optional.empty();
+
+        private boolean visited;
 
         public CRDInfo(String kind, String crdName, String className) {
             this.kind = kind;
@@ -116,11 +122,20 @@ public class IstioSpecRegistry {
                     ", className='" + className + '\'' +
                     '}';
         }
+
+        boolean isUnvisited() {
+            return !visited;
+        }
+    }
+
+    public static String unvisitedCRDNames() {
+        return crdInfos.values().stream().filter(CRDInfo::isUnvisited).map(CRDInfo::toString).collect(Collectors.joining("\n"));
     }
 
     public static Class<? extends IstioSpec> resolveIstioSpecForKind(String name) {
         final CRDInfo crdInfo = crdInfos.get(name);
         if (crdInfo != null) {
+            crdInfo.visited = true;
             Optional<Class<? extends IstioSpec>> result = crdInfo.clazz;
             if (!result.isPresent()) {
                 final Class<? extends IstioSpec> clazz = loadClassIfExists(crdInfo.className);
@@ -143,11 +158,19 @@ public class IstioSpecRegistry {
     }
 
     public static Optional<String> getIstioKind(String simpleClassName) {
-        if (crdInfos.containsKey(simpleClassName)) {
+        CRDInfo crd = crdInfos.get(simpleClassName);
+        if (crd != null) {
+            crd.visited = true;
             return Optional.of(simpleClassName);
         } else {
             final String lowerSimpleClassName = simpleClassName.toLowerCase();
-            return crdInfos.containsKey(lowerSimpleClassName) ? Optional.of(lowerSimpleClassName) : Optional.empty();
+            crd = crdInfos.get(lowerSimpleClassName);
+            if (crd != null) {
+                crd.visited = true;
+                return Optional.of(lowerSimpleClassName);
+            } else {
+                return Optional.empty();
+            }
         }
     }
 
