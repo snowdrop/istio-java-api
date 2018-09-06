@@ -49,6 +49,32 @@ If any of the Go files are changed in such a way that new imports are required, 
 at the top level of the project in order to update the `vendor` information otherwise you might run into issues
 when building the project.
 
+=== Updating the Java API when Istio is updated
+
+NOTE: The process is not completely reproduceable at this time. :(
+
+```bash
+# download istio and api source
+go get -u istio.io/istio
+go get -u istio.io/api
+cd $GOPATH/src/istio.io/istio
+# checkout the istio version
+git checkout <istio version>
+# look for the constraint on the istio.io/api version in Gopkg.toml, which the following should help with:
+grep -C 3 "istio.io/api" $GOPATH/src/istio.io/istio/Gopkg.toml | grep -A 3 "constraint"
+cd $GOPATH/src/istio.io/api
+# checkout the associated api version
+git checkout <api version>
+cd $GOPATH/src/github.com/snowdrop/istio-java-api
+# log in to an OpenShift cluster with the target Istio version installed
+oc login ...
+# rebuild crd list and packages
+make crd
+make packages
+# build using strict mode
+make strict
+```
+
 You can also re-generate the properties files that are used to determine which
 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes Custom Resource Definitions (CRDs)]
 are specified by Istio. These files are located in `istio-common/src/main/resources/`, one for each kind of supported CRDs
