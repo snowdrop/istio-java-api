@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	authentication "istio.io/api/authentication/v1alpha1"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	networking "istio.io/api/networking/v1alpha3"
@@ -73,6 +74,9 @@ type Schema struct {
 	ServiceRoleBinding                 rbac.ServiceRoleBinding
 	EnvoyFilter                        networking.EnvoyFilter
 	Rule                               policy.Rule
+	Policy                             authentication.Policy
+	JwtPeerAuthenticationMethod        authentication.PeerAuthenticationMethod_Jwt
+	MtlsPeerAuthenticationMethod       authentication.PeerAuthenticationMethod_Mtls
 	Gateway                            networking.Gateway
 	DestinationRule                    networking.DestinationRule
 	SimpleLoadBalancerSettings         networking.LoadBalancerSettings_Simple
@@ -216,6 +220,8 @@ func main() {
 		"istio.networking.v1alpha3.EnvoyFilter_InsertPosition_Index":           "me.snowdrop.istio.api.model.v1.networking.Index",
 		"istio.networking.v1alpha3.EnvoyFilter_Filter_FilterType":              "me.snowdrop.istio.api.model.v1.networking.FilterType",
 		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.model.v1.rbac.EnforcementMode",
+		"istio.authentication.v1alpha1.PrincipalBinding":                       "me.snowdrop.istio.api.model.v1.authentication.PrincipalBinding",
+		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.model.v1.authentication.Mode",
 	}
 
 	interfacesMap := map[string]string{
@@ -226,6 +232,7 @@ func main() {
 		"isHTTPFaultInjection_Delay_HttpDelayType":         "me.snowdrop.istio.api.model.v1.networking.Delay",
 		"isHTTPFaultInjection_Abort_ErrorType":             "me.snowdrop.istio.api.model.v1.networking.Abort",
 		"isLoadBalancerSettings_ConsistentHashLB_HashKey":  "me.snowdrop.istio.api.model.v1.networking.HashKey",
+		"isPeerAuthenticationMethod_Params":                "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
 	}
 
 	interfacesImpl := map[string]string{
@@ -247,6 +254,8 @@ func main() {
 		"LoadBalancerSettings_ConsistentHashLB_HttpHeaderName":   "me.snowdrop.istio.api.model.v1.networking.HashKey",
 		"LoadBalancerSettings_ConsistentHashLB_HttpCookie":       "me.snowdrop.istio.api.model.v1.networking.HashKey",
 		"LoadBalancerSettings_ConsistentHashLB_UseSourceIp":      "me.snowdrop.istio.api.model.v1.networking.HashKey",
+		"PeerAuthenticationMethod_Mtls":                          "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
+		"PeerAuthenticationMethod_Jwt":                           "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
