@@ -51,4 +51,4 @@ schema:
 	./generate > $(SCHEMA_DIR)/istio-schema.json
 
 build: schema
-	./mvnw clean install
+	mvn clean install
