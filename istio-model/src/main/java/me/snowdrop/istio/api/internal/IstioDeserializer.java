@@ -6,7 +6,7 @@
  */
 package me.snowdrop.istio.api.internal;
 
-import java.io.IOException;
+import static me.snowdrop.istio.api.internal.IstioSpecRegistry.resolveIstioSpecForKind;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,10 +15,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import java.io.IOException;
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
-
-import static me.snowdrop.istio.api.internal.IstioSpecRegistry.resolveIstioSpecForKind;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -47,13 +46,15 @@ public class IstioDeserializer extends JsonDeserializer<IstioResource> {
             final JsonNode metadataNode = node.get("metadata");
             final ObjectMeta metadata = p.getCodec().treeToValue(metadataNode, ObjectMeta.class);
 
-            // deserialize spec
-            final JsonNode specNode = node.get("spec");
-            final IstioSpec spec = p.getCodec().treeToValue(specNode, specType);
-
-
-            return new IstioResource(apiVersion, kind, metadata, spec);
+            return new IstioResource(apiVersion, kind, metadata, getIstioSpec(p, node, specType));
         }
         throw new IllegalArgumentException("Cannot process resources without a 'kind' field");
+    }
+
+    private IstioSpec getIstioSpec(JsonParser p, ObjectNode node,
+        Class<? extends IstioSpec> specType) throws JsonProcessingException {
+
+        final JsonNode specNode = node.get("spec");
+        return specNode != null ? p.getCodec().treeToValue(specNode, specType) : null;
     }
 }
