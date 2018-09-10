@@ -3,17 +3,18 @@ jobs:
   build_and_test:
     machine: true
 
+    #### TEMPLATE_NOTE: go expects specific checkout path representing url
+    #### expecting it in the form of
+    ####   /go/src/github.com/circleci/go-tool
+    ####   /go/src/bitbucket.org/circleci/go-tool
+    working_directory: /go/src/github.com/snowdrop/istio-java-api
+
     steps:
     - checkout
 
     - run:
-        name: Build and test
+        name: Perform build
         command: |
-          GO_PATH_FIRST=$(echo ${GOPATH} | cut -d ":" -f1)
-          PROJECT_PATH=src/github.com/snowdrop/istio-java-api
-          mkdir -p ${GO_PATH_FIRST}/${PROJECT_PATH}
-          cp -R * ${GO_PATH_FIRST}/${PROJECT_PATH}
-          cd ${GO_PATH_FIRST}/${PROJECT_PATH}
           make
 
 workflows:
