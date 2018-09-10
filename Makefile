@@ -33,7 +33,7 @@ strict:
 	ISTIO_STRICT=true mvn clean install
 
 clean:
-	mvn clean
+	./mvnw clean
 
 crd:
 	oc get crd -o=jsonpath="{range .items[*]}{.spec.names.kind}={.metadata.name}| istio={.metadata.labels.istio}{'\n'}{end}" > $(CRD_FILE)
@@ -51,4 +51,4 @@ schema:
 	./generate > $(SCHEMA_DIR)/istio-schema.json
 
 build: schema
-	mvn clean install
+	./mvnw clean install

@@ -12,7 +12,7 @@ jobs:
           GO_PATH_FIRST=$(echo ${GOPATH} | cut -d ":" -f1)
           PROJECT_PATH=src/github.com/snowdrop/istio-java-api
           mkdir -p ${GO_PATH_FIRST}/${PROJECT_PATH}
-          cp -R * ${GO_PATH_FIRST}/${PROJECT_PATH}
+          cp -R . ${GO_PATH_FIRST}/${PROJECT_PATH}
           cd ${GO_PATH_FIRST}/${PROJECT_PATH}
           make
 
