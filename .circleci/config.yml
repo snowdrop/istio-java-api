@@ -1,8 +1,7 @@
 version: 2
 jobs:
   build_and_test:
-    docker:
-    - image: circleci/golang:1.9
+    machine: true
 
     #### TEMPLATE_NOTE: go expects specific checkout path representing url
     #### expecting it in the form of
