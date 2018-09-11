@@ -7,6 +7,7 @@
 package me.snowdrop.istio.annotator;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -21,6 +22,7 @@ import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
 import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import me.snowdrop.istio.api.model.IstioSpec;
@@ -33,7 +35,9 @@ import org.jsonschema2pojo.Jackson2Annotator;
 public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
+
     private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
+
     private final JDefinedClass doneableClass;
 
     static {
@@ -59,16 +63,34 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     @Override
     public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
+        boolean hasInterfaces = false;
+
         JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
         annotationValue.param("apiVersion");
         annotationValue.param("kind");
         annotationValue.param("metadata");
-        for (Iterator<String> properties = propertiesNode.fieldNames(); properties.hasNext(); ) {
-            String next = properties.next();
-            if (!"apiVersion".equals(next) && !"kind".equals(next) && !"metadata".equals(next)) {
-                annotationValue.param(next);
+
+        final Iterator<Map.Entry<String, JsonNode>> fields = propertiesNode.fields();
+        while (fields.hasNext()) {
+            final Map.Entry<String, JsonNode> entry = fields.next();
+            String key = entry.getKey();
+            if (!"apiVersion".equals(key) && !"kind".equals(key) && !"metadata".equals(key)) {
+                annotationValue.param(key);
+
+                // check if the field is an interface
+                final JsonNode field = entry.getValue();
+                hasInterfaces = field.hasNonNull("isInterface");
             }
         }
+
+        // if we have an interface field, then we need a custom deserializer so add an annotation for it.
+//        if (hasInterfaces) {
+        if (clazz.name().equals("Abort")) {
+            clazz.annotate(JsonDeserialize.class).param("using", ClassWithInterfaceFieldsDeserializer.class);
+        } else {
+            clazz.annotate(JsonDeserialize.class).param("using", JsonDeserializer.None.class);
+        }
+
 
         final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
         if (kind.isPresent()) {
@@ -77,8 +99,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         }
 
         //We just want to make sure we avoid infinite loops
-        clazz.annotate(JsonDeserialize.class)
-                .param("using", JsonDeserializer.None.class);
+
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
         clazz.annotate(Buildable.class)

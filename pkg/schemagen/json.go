@@ -55,7 +55,8 @@ type JSONReferenceDescriptor struct {
 }
 
 type JavaTypeDescriptor struct {
-	JavaType string `json:"javaType"`
+	JavaType    string `json:"javaType"`
+	IsInterface bool   `json:"isInterface,omitempty"`
 }
 
 type JSONPropertyDescriptor struct {
