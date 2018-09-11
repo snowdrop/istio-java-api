@@ -130,7 +130,7 @@ type Schema struct {
 
 // code adapted from https://kgrz.io/reading-files-in-go-an-overview.html#scanning-comma-seperated-string
 func readDescriptors() []schemagen.PackageDescriptor {
-	var descriptors = make([]schemagen.PackageDescriptor, 20)
+	var descriptors = make([]schemagen.PackageDescriptor, 0, 20)
 
 	file, err := os.Open("istio-common/src/main/resources/packages.csv")
 	if err != nil {
