@@ -26,18 +26,38 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer {
-    private Map<String, FieldInfo> fieldNameToClass = new HashMap<>();
+public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer implements ContextualDeserializer {
+    private static Map<String, Map<String, FieldInfo>> classNameToFieldInfos = new HashMap<>();
 
-    private String targetClassName = "me.snowdrop.istio.api.model.v1.networking.Abort";
+    static {
+        classNameToFieldInfos.put("me.snowdrop.istio.api.model.v1.networking.Abort", new HashMap<>());
+    }
+
+    private Map<String, FieldInfo> fieldNameToClass;
+
+    private String targetClassName;
+
+    /*
+     * Needed by Jackson
+     */
+    public ClassWithInterfaceFieldsDeserializer() {
+    }
+
+    private ClassWithInterfaceFieldsDeserializer(String targetClassName, Map<String, FieldInfo> fieldNameToClass) {
+        this.targetClassName = targetClassName;
+        this.fieldNameToClass = fieldNameToClass;
+    }
 
     @Override
     public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
@@ -120,6 +140,14 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer {
 
 
         return result;
+    }
+
+    @Override
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+        final Class<?> classToDeserialize = property.getType().getRawClass();
+        final Map<String, FieldInfo> fieldInfoMap = classNameToFieldInfos.get(classToDeserialize.getName());
+
+        return new ClassWithInterfaceFieldsDeserializer(classToDeserialize.getName(), fieldInfoMap);
     }
 
     private static class FieldInfo {
