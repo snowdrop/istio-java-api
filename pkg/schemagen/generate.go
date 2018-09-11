@@ -502,11 +502,9 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 		iFace, ok := g.interfacesMap[name]
 		if !ok {
 			g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)
+			return JSONPropertyDescriptor{}
 		}
 		return JSONPropertyDescriptor{
-			/*JSONReferenceDescriptor: &JSONReferenceDescriptor{
-				Reference: g.generateReference(t),
-			},*/
 			JavaTypeDescriptor: &JavaTypeDescriptor{
 				JavaType:    iFace,
 				IsInterface: true,
