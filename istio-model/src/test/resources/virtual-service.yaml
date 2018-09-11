@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings-route
+spec:
+  hosts:
+  - ratings.prod.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: ratings.prod.svc.cluster.local
+        subset: v1
+    fault:
+      abort:
+        percent: 10
+        httpStatus: 400

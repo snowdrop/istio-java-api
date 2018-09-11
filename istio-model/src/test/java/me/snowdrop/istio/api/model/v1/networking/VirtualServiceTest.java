@@ -1,17 +1,20 @@
 package me.snowdrop.istio.api.model.v1.networking;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioResourceBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
+import me.snowdrop.istio.util.YAML;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class VirtualServiceTest extends BaseIstioTest {
     /*
@@ -294,5 +297,44 @@ spec:
         IstioResource reloaded = mapper.readValue(output, IstioResource.class);
 
         assertEquals(virtualService, reloaded);
+    }
+
+    @Test
+    public void loadingFromYAMLShouldWork() {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service.yaml");
+
+        /*
+        apiVersion: networking.istio.io/v1alpha3
+ metadata:
+ kind: VirtualService
+   name: ratings-route
+ spec:
+   hosts:
+     - ratings.prod.svc.cluster.local
+   http:
+   - route:
+     - destination:
+         host: ratings.prod.svc.cluster.local
+         subset: v1
+     fault:
+       abort:
+         percent: 10
+         httpStatus: 400
+         */
+
+        final VirtualService virtualService = YAML.loadIstioResource(inputStream, VirtualService.class);
+        assertEquals("ratings.prod.svc.cluster.local", virtualService.getHosts().get(0));
+        final List<HTTPRoute> http = virtualService.getHttp();
+        assertEquals(1, http.size());
+        final HTTPRoute route = http.get(0);
+        final List<DestinationWeight> weights = route.getRoute();
+        assertEquals(1, weights.size());
+        final DestinationWeight weight = weights.get(0);
+        assertEquals("ratings.prod.svc.cluster.local", weight.getDestination().getHost());
+        assertEquals("v1", weight.getDestination().getSubset());
+        assertNull(route.getFault().getDelay());
+        final Abort abort = route.getFault().getAbort();
+        assertEquals(10, abort.getPercent().intValue());
+        assertEquals(400, ((HttpStatusAbortHTTPFaultInjection) abort.getErrorType()).getHttpStatus().intValue());
     }
 }

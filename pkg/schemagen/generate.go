@@ -86,7 +86,7 @@ func getFieldName(f reflect.StructField) string {
 			if len(json) > 0 {
 				return json
 			} else {
-				return f.Name
+				return strings.ToLower(f.Name[:1]) + f.Name[1:]
 			}
 		}
 	}
@@ -518,9 +518,18 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 		}
 	case reflect.Interface:
 		name := t.Name()
-		_, ok := g.interfacesMap[name]
+		iFace, ok := g.interfacesMap[name]
 		if !ok {
 			g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)
+		}
+		return JSONPropertyDescriptor{
+			/*JSONReferenceDescriptor: &JSONReferenceDescriptor{
+				Reference: g.generateReference(t),
+			},*/
+			JavaTypeDescriptor: &JavaTypeDescriptor{
+				JavaType:    iFace,
+				IsInterface: true,
+			},
 		}
 	}
 

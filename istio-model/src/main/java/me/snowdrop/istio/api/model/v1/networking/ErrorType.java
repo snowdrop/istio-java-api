@@ -27,5 +27,5 @@ import me.snowdrop.istio.api.internal.AbortDeserializer;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 @JsonDeserialize(using = AbortDeserializer.class)
-public interface Abort extends Serializable {
+public interface ErrorType extends Serializable {
 }
