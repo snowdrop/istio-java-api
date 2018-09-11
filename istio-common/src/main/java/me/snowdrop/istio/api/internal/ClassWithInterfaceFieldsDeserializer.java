@@ -19,11 +19,13 @@
 package me.snowdrop.istio.api.internal;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -33,6 +35,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -41,7 +44,23 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
     private static Map<String, Map<String, FieldInfo>> classNameToFieldInfos = new HashMap<>();
 
     static {
-        classNameToFieldInfos.put("me.snowdrop.istio.api.model.v1.networking.Abort", new HashMap<>());
+        YAMLMapper mapper = new YAMLMapper();
+        final InputStream dataIs = Thread.currentThread().getContextClassLoader().getResourceAsStream("interfaces-data.yml");
+        try {
+            final Map<String, Map> map = mapper.readValue(dataIs, Map.class);
+            map.forEach((s, o) -> {
+                final Map<String, Object> fields = mapper.convertValue(o, Map.class);
+                final Map<String, FieldInfo> infos = new HashMap<>(fields.size());
+                fields.forEach((o1, o2) -> {
+                    infos.put(o1, mapper.convertValue(o2, FieldInfo.class));
+                });
+
+                classNameToFieldInfos.put(s, infos);
+            });
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Map<String, FieldInfo> fieldNameToClass;
@@ -61,15 +80,6 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
 
     @Override
     public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-
-        fieldNameToClass.put("percent", new FieldInfo("percent", "percent", "integer"));
-        fieldNameToClass.put("grpcStatus", new FieldInfo("grpcStatus", "errorType",
-                "me.snowdrop.istio.api.model.v1.networking.GrpcStatusAbortHTTPFaultInjection"));
-        fieldNameToClass.put("httpStatus", new FieldInfo("httpStatus", "errorType",
-                "me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection"));
-        fieldNameToClass.put("http2Error", new FieldInfo("http2Error", "errorType",
-                "me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection"));
-
         ObjectNode node = p.readValueAsTree();
 
         Class targetClass = null;
@@ -151,17 +161,14 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
     }
 
     private static class FieldInfo {
-        final String name;
+        @JsonProperty
+        String name;
 
-        final String targetFieldName;
+        @JsonProperty("target")
+        String targetFieldName;
 
-        final String typeName;
-
-        FieldInfo(String name, String targetFieldName, String typeName) {
-            this.name = name;
-            this.typeName = typeName;
-            this.targetFieldName = targetFieldName;
-        }
+        @JsonProperty("type")
+        String typeName;
 
         boolean isSimpleField() {
             return name.equals(targetFieldName);
