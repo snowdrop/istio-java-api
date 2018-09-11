@@ -71,6 +71,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         annotationValue.param("metadata");
 
         final Iterator<Map.Entry<String, JsonNode>> fields = propertiesNode.fields();
+        String interfaceFQN = null;
         while (fields.hasNext()) {
             final Map.Entry<String, JsonNode> entry = fields.next();
             String key = entry.getKey();
@@ -80,14 +81,25 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 // check if the field is an interface
                 final JsonNode field = entry.getValue();
                 hasInterfaces = field.hasNonNull("isInterface");
+                if (hasInterfaces) {
+                    // todo: fix me, this won't work if a type has several fields using interfaces
+                    interfaceFQN = field.get("javaType").asText();
+                }
             }
         }
 
         // if we have an interface field, then we need a custom deserializer so add an annotation for it.
 //        if (hasInterfaces) {
-        if (clazz.name().equals("Abort")) {
+        if ("Abort".equals(clazz.name())) {
+            // create interface if we haven't done it yet
+            try {
+                clazz.getPackage()._interface(interfaceFQN.substring(interfaceFQN.lastIndexOf('.') + 1));
+            } catch (JClassAlreadyExistsException e) {
+                // ignore
+            }
             clazz.annotate(JsonDeserialize.class).param("using", ClassWithInterfaceFieldsDeserializer.class);
         } else {
+            //We just want to make sure we avoid infinite loops
             clazz.annotate(JsonDeserialize.class).param("using", JsonDeserializer.None.class);
         }
 
@@ -97,8 +109,6 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             clazz._implements(IstioSpec.class);
             clazz.annotate(IstioKind.class).param("name", kind.get());
         }
-
-        //We just want to make sure we avoid infinite loops
 
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
