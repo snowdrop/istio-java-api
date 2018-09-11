@@ -203,31 +203,12 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	var underscore = strings.IndexRune(name, '_')
 	if underscore >= 0 {
 		// check if we have an interface which we should rename
-		_, ok := g.interfacesimpl[name]
+		interfaceFQN, ok := g.interfacesimpl[name]
 		if ok {
-
-			// handle Params_MetricInfo_BucketsDefinition_ExplicitBuckets cases
-			if strings.Contains(name, "BucketsDefinition") {
-				underscore = strings.LastIndex(name, "_")
-				name = name[underscore+1:] + "Definition"
-			} else {
-				interfaceName := name[:underscore]
-				implName := name[underscore+1:]
-				// check if implementation name still has an _ in it as in: HTTPFaultInjection_Delay_ExponentialDelay
-				underscore = strings.IndexRune(implName, '_')
-				if underscore > 0 {
-					// in that case, keep only the part after the underscore if it doesn't contain the part before
-					intName := implName[:underscore]
-					lastImplName := implName[underscore+1:]
-					if strings.Contains(lastImplName, intName) {
-						implName = lastImplName
-					} else {
-						implName = lastImplName + intName
-					}
-				}
-				name = implName + interfaceName
-			}
-
+			dot := strings.LastIndex(interfaceFQN, ".")
+			interfaceName := interfaceFQN[dot+1:]
+			underscore = strings.LastIndex(name, "_")
+			name = name[underscore+1:] + interfaceName
 		} else {
 			name = name[underscore+1:]
 		}
