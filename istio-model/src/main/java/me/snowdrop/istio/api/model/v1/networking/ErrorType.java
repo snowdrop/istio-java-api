@@ -20,12 +20,8 @@ package me.snowdrop.istio.api.model.v1.networking;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import me.snowdrop.istio.api.internal.AbortDeserializer;
-
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-@JsonDeserialize(using = AbortDeserializer.class)
 public interface ErrorType extends Serializable {
 }
