@@ -11,6 +11,7 @@ import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import me.snowdrop.istio.api.model.DoneableIstioResource;
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioResourceList;
+import me.snowdrop.istio.util.Utils;
 import me.snowdrop.istio.util.YAML;
 
 public class IstioClient {
@@ -35,7 +36,7 @@ public class IstioClient {
     }
 
     public List<IstioResource> registerCustomResources(final InputStream resource) {
-        return registerCustomResources(YAML.writeStreamToString(resource));
+        return registerCustomResources(Utils.writeStreamToString(resource));
     }
 
     public List<IstioResource> getResources(final String kind) {

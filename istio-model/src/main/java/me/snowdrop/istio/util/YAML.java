@@ -18,7 +18,6 @@
  */
 package me.snowdrop.istio.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -84,25 +83,11 @@ public class YAML {
     }
 
     public static <T> List<T> loadIstioResources(final InputStream resource, Class<T> clazz) {
-        return loadIstioResources(writeStreamToString(resource), clazz);
+        return loadIstioResources(Utils.writeStreamToString(resource), clazz);
     }
 
     public static <T> T loadIstioResource(final InputStream resource, Class<T> clazz) {
         return loadIstioResources(resource, clazz).get(0);
-    }
-
-    public static String writeStreamToString(InputStream inputStream) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int length;
-        try {
-            while ((length = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, length);
-            }
-            return outputStream.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to read InputStream.", e);
-        }
     }
 
 }
