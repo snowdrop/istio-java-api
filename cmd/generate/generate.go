@@ -20,6 +20,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/ghodss/yaml"
+	"io/ioutil"
 	authentication "istio.io/api/authentication/v1alpha1"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
@@ -186,9 +188,57 @@ func readDescriptors() []schemagen.PackageDescriptor {
 	return descriptors
 }
 
+type class struct {
+	Class  string            `json:"class"`
+	Fields map[string]string `json:"fields"`
+}
+
+type classData struct {
+	Classes []class `json:"classes"`
+}
+
+func loadInterfacesData() map[string]string {
+	result := make(map[string]string)
+
+	path := "istio-common/src/main/resources/interfaces-data.yml"
+	source, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+
+	var classes classData
+	err = yaml.Unmarshal(source, &classes)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, class := range classes.Classes {
+		className := class.Class
+		var interfaceName = className[:strings.LastIndex(className, ".")+1]
+		var interfaceSet = false
+		for key, field := range class.Fields {
+			if strings.HasPrefix(field, "is") {
+				lastUnderscore := strings.LastIndex(field, "_")
+
+				if !interfaceSet {
+					interfaceName += field[lastUnderscore+1:]
+					interfaceSet = true
+				}
+
+				impl := field[2:lastUnderscore+1] + strings.Title(key)
+				result[impl] = interfaceName
+			}
+		}
+	}
+
+	return result
+}
+
 func main() {
 	strict := flag.Bool("strict", false, "Toggle strict mode to check for missing types")
 	flag.Parse()
+
+	interfacesImpl := loadInterfacesData()
 
 	packages := readDescriptors()
 
@@ -229,25 +279,25 @@ func main() {
 		"isLoadBalancerSettings_LbPolicy":                  "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
 		"isStringMatch_MatchType":                          "me.snowdrop.istio.api.model.v1.networking.StringMatch",
 		"isPortSelector_Port":                              "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"isHTTPFaultInjection_Delay_HttpDelayType":         "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"isHTTPFaultInjection_Delay_HttpDelayType":         "me.snowdrop.istio.api.model.v1.networking.DelayType",
 		"isHTTPFaultInjection_Abort_ErrorType":             "me.snowdrop.istio.api.model.v1.networking.ErrorType",
 		"isLoadBalancerSettings_ConsistentHashLB_HashKey":  "me.snowdrop.istio.api.model.v1.networking.HashKey",
 		"isPeerAuthenticationMethod_Params":                "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
 	}
 
-	interfacesImpl := map[string]string{
+	/*interfacesImpl := map[string]string{
 		"Params_MetricInfo_BucketsDefinition_LinearBuckets":      "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
 		"Params_MetricInfo_BucketsDefinition_ExponentialBuckets": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
 		"Params_MetricInfo_BucketsDefinition_ExplicitBuckets":    "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
-		"LoadBalancerSettings_Simple":                            "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+		"LoadBalancerSettings_Simple":                            "me.snowdrop.istio.api.model.v1.networking.Lb",
 		"LoadBalancerSettings_ConsistentHash":                    "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
 		"StringMatch_Exact":                                      "me.snowdrop.istio.api.model.v1.networking.StringMatch",
 		"StringMatch_Prefix":                                     "me.snowdrop.istio.api.model.v1.networking.StringMatch",
 		"StringMatch_Regex":                                      "me.snowdrop.istio.api.model.v1.networking.StringMatch",
 		"PortSelector_Name":                                      "me.snowdrop.istio.api.model.v1.networking.PortSelector",
 		"PortSelector_Number":                                    "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"HTTPFaultInjection_Delay_FixedDelay":                    "me.snowdrop.istio.api.model.v1.networking.Delay",
-		"HTTPFaultInjection_Delay_ExponentialDelay":              "me.snowdrop.istio.api.model.v1.networking.Delay",
+		"HTTPFaultInjection_Delay_FixedDelay":                    "me.snowdrop.istio.api.model.v1.networking.DelayType",
+		"HTTPFaultInjection_Delay_ExponentialDelay":              "me.snowdrop.istio.api.model.v1.networking.DelayType",
 		"HTTPFaultInjection_Abort_HttpStatus":                    "me.snowdrop.istio.api.model.v1.networking.ErrorType",
 		"HTTPFaultInjection_Abort_GrpcStatus":                    "me.snowdrop.istio.api.model.v1.networking.ErrorType",
 		"HTTPFaultInjection_Abort_Http2Error":                    "me.snowdrop.istio.api.model.v1.networking.ErrorType",
@@ -256,7 +306,7 @@ func main() {
 		"LoadBalancerSettings_ConsistentHashLB_UseSourceIp":      "me.snowdrop.istio.api.model.v1.networking.HashKey",
 		"PeerAuthenticationMethod_Mtls":                          "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
 		"PeerAuthenticationMethod_Jwt":                           "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
-	}
+	}*/
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
 	if err != nil {
