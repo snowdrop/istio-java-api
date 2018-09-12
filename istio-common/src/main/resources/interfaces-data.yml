@@ -1,21 +1,12 @@
-me.snowdrop.istio.api.model.v1.networking.Abort:
-  percent:
-    type: integer
-  grpcStatus:
-    target: errorType
-    type: me.snowdrop.istio.api.model.v1.networking.GrpcStatusAbortHTTPFaultInjection
-  httpStatus:
-    target: errorType
-    type: me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection
-  http2Error:
-    target: errorType
-    type: me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection
-me.snowdrop.istio.api.model.v1.networking.Delay:
-  percent:
-    type: integer
-  fixedDelay:
-    target: httpDelayType
-    type: me.snowdrop.istio.api.model.v1.networking.FixedDelayHTTPFaultInjection
-  exponentialDelay:
-    target: httpDelayType
-    type: me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHTTPFaultInjection
+classes:
+  - class: me.snowdrop.istio.api.model.v1.networking.Abort
+    fields:
+      percent: integer
+      grpcStatus: isHTTPFaultInjection_Abort_ErrorType
+      httpStatus: isHTTPFaultInjection_Abort_ErrorType
+      http2Error: isHTTPFaultInjection_Abort_ErrorType
+  - class: me.snowdrop.istio.api.model.v1.networking.Delay
+    fields:
+      percent: integer
+      fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
+      exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
