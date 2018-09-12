@@ -135,7 +135,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
 
 
                 try {
-                    final Field targetClassField = targetClass.getDeclaredField(fieldInfo.targetFieldName);
+                    final Field targetClassField = targetClass.getDeclaredField(getTargetFieldName(fieldName, fieldInfo));
                     targetClassField.setAccessible(true);
                     targetClassField.set(result, deserialized);
                 } catch (NoSuchFieldException e) {
@@ -152,6 +152,10 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
         return result;
     }
 
+    private String getTargetFieldName(String fieldName, FieldInfo fieldInfo) {
+        return fieldInfo.targetFieldName != null ? fieldInfo.targetFieldName : fieldName;
+    }
+
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
         final Class<?> classToDeserialize = property.getType().getRawClass();
@@ -161,9 +165,6 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
     }
 
     private static class FieldInfo {
-        @JsonProperty
-        String name;
-
         @JsonProperty("target")
         String targetFieldName;
 
@@ -171,7 +172,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
         String typeName;
 
         boolean isSimpleField() {
-            return name.equals(targetFieldName);
+            return targetFieldName != null;
         }
     }
 }
