@@ -6,11 +6,8 @@
  */
 package me.snowdrop.istio.annotator;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,8 +15,12 @@ import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JFieldVar;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
@@ -121,5 +122,13 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 .param("type", doneableClass)
                 .param("prefix", "Doneable")
                 .param("value", "done");
+    }
+
+    @Override
+    public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
+        super.propertyField(field, clazz, propertyName, propertyNode);
+        if (propertyNode.hasNonNull("isInterface")) {
+            field.annotate(JsonUnwrapped.class);
+        }
     }
 }
