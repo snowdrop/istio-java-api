@@ -8,5 +8,33 @@ classes:
   - class: me.snowdrop.istio.api.model.v1.networking.Delay
     fields:
       percent: integer
-      fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
       exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
+      fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
+  - class: me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings
+    fields:
+      simple: isLoadBalancerSettings_LbPolicy
+      consitentHash: isLoadBalancerSettings_LbPolicy
+  - class: me.snowdrop.istio.api.model.v1.networking.PortSelector
+    fields:
+      name: isPortSelector_Port
+      number: isPortSelector_Port
+  - class: me.snowdrop.istio.api.model.v1.networking.StringMatch
+    fields:
+      exact: isStringMatch_MatchType
+      prefix: isStringMatch_MatchType
+      regex: isStringMatch_MatchType
+  - class: me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB
+    fields:
+      httpHeaderName: isLoadBalancerSettings_ConsistentHashLB_HashKey
+      httpCookie: isLoadBalancerSettings_ConsistentHashLB_HashKey
+      minimumRingSize: integer
+      useSourceIp: isLoadBalancerSettings_ConsistentHashLB_HashKey
+  - class: me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod
+    fields:
+      jwt: isPeerAuthenticationMethod_Params
+      mtls: isPeerAuthenticationMethod_Params
+  - class: me.snowdrop.istio.adapter.prometheus.BucketsDefinition
+    fields:
+      explicitBuckets: isParams_MetricInfo_BucketsDefinition_Definition
+      exponentialBuckets: isParams_MetricInfo_BucketsDefinition_Definition
+      linearBuckets: isParams_MetricInfo_BucketsDefinition_Definition
