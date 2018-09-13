@@ -200,14 +200,13 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	name := t.Name()
 
 	// deal with "inner" structs
-	var underscore = strings.IndexRune(name, '_')
+	underscore := strings.LastIndex(name, "_")
 	if underscore >= 0 {
 		// check if we have an interface which we should rename
 		interfaceFQN, ok := g.interfacesimpl[name]
 		if ok {
 			dot := strings.LastIndex(interfaceFQN, ".")
 			interfaceName := interfaceFQN[dot+1:]
-			underscore = strings.LastIndex(name, "_")
 			name = name[underscore+1:] + interfaceName
 		} else {
 			name = name[underscore+1:]
