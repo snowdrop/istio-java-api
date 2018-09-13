@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/gogo/googleapis"
   packages = ["google/rpc"]
@@ -118,6 +124,12 @@
   version = "v1.12.0"
 
 [[projects]]
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
+
+[[projects]]
   branch = "release-1.0"
   name = "istio.io/api"
   packages = [
@@ -163,6 +175,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d196e69b17bea4e6cf1b71c8378a5d0523af3815f88a941279844007b7cb1f81"
+  inputs-digest = "e237804db29d2c89e188d5d3c342cef6b1ac1a24e328090c5d2ebef62b4f4af5"
   solver-name = "gps-cdcl"
   solver-version = 1
