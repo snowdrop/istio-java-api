@@ -197,8 +197,9 @@ type classData struct {
 	Classes []class `json:"classes"`
 }
 
-func loadInterfacesData() map[string]string {
-	result := make(map[string]string)
+func loadInterfacesData() (map[string]string, map[string]string) {
+	impls := make(map[string]string)
+	interfaces := make(map[string]string)
 
 	path := "istio-common/src/main/resources/interfaces-data.yml"
 	source, err := ioutil.ReadFile(path)
@@ -227,19 +228,20 @@ func loadInterfacesData() map[string]string {
 				}
 
 				impl := field[2:lastUnderscore+1] + strings.Title(key)
-				result[impl] = interfaceName
+				impls[impl] = interfaceName
+				interfaces[field] = interfaceName
 			}
 		}
 	}
 
-	return result
+	return impls, interfaces
 }
 
 func main() {
 	strict := flag.Bool("strict", false, "Toggle strict mode to check for missing types")
 	flag.Parse()
 
-	interfacesImpl := loadInterfacesData()
+	interfacesImpl, interfacesMap := loadInterfacesData()
 
 	packages := readDescriptors()
 
@@ -275,7 +277,13 @@ func main() {
 		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.model.v1.authentication.Mode",
 	}
 
-	interfacesMap := map[string]string{
+	/*
+			isAttributes_AttributeValue_Value field value in istio.io/api/mixer/v1/Attributes_AttributeValue
+		isValue_Kind field kind in github.com/gogo/protobuf/types/Value
+		isParams_Creds field creds in istio.io/istio/mixer/adapter/stackdriver/config/Params
+		isValue_Value field value in istio.io/api/policy/v1beta1/Value
+	*/
+	/*interfacesMap := map[string]string{
 		"isParams_MetricInfo_BucketsDefinition_Definition": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
 		"isLoadBalancerSettings_LbPolicy":                  "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
 		"isStringMatch_MatchType":                          "me.snowdrop.istio.api.model.v1.networking.StringMatch",
@@ -284,29 +292,6 @@ func main() {
 		"isHTTPFaultInjection_Abort_ErrorType":             "me.snowdrop.istio.api.model.v1.networking.ErrorType",
 		"isLoadBalancerSettings_ConsistentHashLB_HashKey":  "me.snowdrop.istio.api.model.v1.networking.HashKey",
 		"isPeerAuthenticationMethod_Params":                "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
-	}
-
-	/*interfacesImpl := map[string]string{
-		"Params_MetricInfo_BucketsDefinition_LinearBuckets":      "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
-		"Params_MetricInfo_BucketsDefinition_ExponentialBuckets": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
-		"Params_MetricInfo_BucketsDefinition_ExplicitBuckets":    "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
-		"LoadBalancerSettings_Simple":                            "me.snowdrop.istio.api.model.v1.networking.Lb",
-		"LoadBalancerSettings_ConsistentHash":                    "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"StringMatch_Exact":                                      "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"StringMatch_Prefix":                                     "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"StringMatch_Regex":                                      "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"PortSelector_Name":                                      "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"PortSelector_Number":                                    "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"HTTPFaultInjection_Delay_FixedDelay":                    "me.snowdrop.istio.api.model.v1.networking.DelayType",
-		"HTTPFaultInjection_Delay_ExponentialDelay":              "me.snowdrop.istio.api.model.v1.networking.DelayType",
-		"HTTPFaultInjection_Abort_HttpStatus":                    "me.snowdrop.istio.api.model.v1.networking.ErrorType",
-		"HTTPFaultInjection_Abort_GrpcStatus":                    "me.snowdrop.istio.api.model.v1.networking.ErrorType",
-		"HTTPFaultInjection_Abort_Http2Error":                    "me.snowdrop.istio.api.model.v1.networking.ErrorType",
-		"LoadBalancerSettings_ConsistentHashLB_HttpHeaderName":   "me.snowdrop.istio.api.model.v1.networking.HashKey",
-		"LoadBalancerSettings_ConsistentHashLB_HttpCookie":       "me.snowdrop.istio.api.model.v1.networking.HashKey",
-		"LoadBalancerSettings_ConsistentHashLB_UseSourceIp":      "me.snowdrop.istio.api.model.v1.networking.HashKey",
-		"PeerAuthenticationMethod_Mtls":                          "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
-		"PeerAuthenticationMethod_Jwt":                           "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
 	}*/
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
