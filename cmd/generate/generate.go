@@ -214,7 +214,8 @@ func loadInterfacesData() map[string]string {
 
 	for _, class := range classes.Classes {
 		className := class.Class
-		var interfaceName = className[:strings.LastIndex(className, ".")+1]
+		//var interfaceName = className[:strings.LastIndex(className, ".")+1]
+		var interfaceName = className + "." // to define inner classes for interface fields
 		var interfaceSet = false
 		for key, field := range class.Fields {
 			if strings.HasPrefix(field, "is") {
