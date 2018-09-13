@@ -320,7 +320,7 @@
       "description": "",
       "properties": {
         "definition": {
-          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
+          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition.Definition",
           "isInterface": true
         }
       },
@@ -341,18 +341,18 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Explicit"
+      "javaType": "me.snowdrop.istio.adapter.prometheus.Explicit"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExplicitBuckets": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition.Definition"
       ],
       "description": "",
       "properties": {
         "explicitBuckets": {
           "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Explicit",
-          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Explicit"
+          "javaType": "me.snowdrop.istio.adapter.prometheus.Explicit"
         }
       },
       "additionalProperties": true,
@@ -376,18 +376,18 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Exponential"
+      "javaType": "me.snowdrop.istio.adapter.prometheus.Exponential"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExponentialBuckets": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition.Definition"
       ],
       "description": "",
       "properties": {
         "exponentialBuckets": {
           "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Exponential",
-          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Exponential"
+          "javaType": "me.snowdrop.istio.adapter.prometheus.Exponential"
         }
       },
       "additionalProperties": true,
@@ -411,18 +411,18 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Linear"
+      "javaType": "me.snowdrop.istio.adapter.prometheus.Linear"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_LinearBuckets": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
+        "me.snowdrop.istio.adapter.prometheus.BucketsDefinition.Definition"
       ],
       "description": "",
       "properties": {
         "linearBuckets": {
           "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Linear",
-          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition_Linear"
+          "javaType": "me.snowdrop.istio.adapter.prometheus.Linear"
         }
       },
       "additionalProperties": true,
@@ -589,7 +589,7 @@
       "description": "",
       "properties": {
         "params": {
-          "javaType": "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
+          "javaType": "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod.Params",
           "isInterface": true
         }
       },
@@ -599,7 +599,7 @@
     "istio_authentication_PeerAuthenticationMethod_Jwt": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod"
+        "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod.Params"
       ],
       "description": "",
       "properties": {
@@ -609,12 +609,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.authentication.JwtPeerAuthenticationMethod"
+      "javaType": "me.snowdrop.istio.api.model.v1.authentication.JwtParams"
     },
     "istio_authentication_PeerAuthenticationMethod_Mtls": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod"
+        "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod.Params"
       ],
       "description": "",
       "properties": {
@@ -624,7 +624,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.authentication.MtlsPeerAuthenticationMethod"
+      "javaType": "me.snowdrop.istio.api.model.v1.authentication.MtlsParams"
     },
     "istio_authentication_Policy": {
       "type": "object",
@@ -674,7 +674,7 @@
       "description": "",
       "properties": {
         "port": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.PortSelector.Port",
           "isInterface": true
         }
       },
@@ -881,9 +881,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
-            "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
+            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.mixer.AttributeValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": true,
@@ -893,10 +893,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "Value": {}
+        "value": {
+          "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue",
+          "isInterface": true
+        }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
+      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
     },
     "istio_mixer_CheckRequest": {
       "type": "object",
@@ -1927,7 +1930,7 @@
       "description": "",
       "properties": {
         "errorType": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.ErrorType",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.Abort.ErrorType",
           "isInterface": true
         },
         "percent": {
@@ -1941,7 +1944,7 @@
     "istio_networking_HTTPFaultInjection_Abort_GrpcStatus": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.ErrorType"
+        "me.snowdrop.istio.api.model.v1.networking.Abort.ErrorType"
       ],
       "description": "",
       "properties": {
@@ -1951,12 +1954,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.GrpcStatusAbortHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.GrpcStatusErrorType"
     },
     "istio_networking_HTTPFaultInjection_Abort_Http2Error": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.ErrorType"
+        "me.snowdrop.istio.api.model.v1.networking.Abort.ErrorType"
       ],
       "description": "",
       "properties": {
@@ -1966,12 +1969,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorErrorType"
     },
     "istio_networking_HTTPFaultInjection_Abort_HttpStatus": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.ErrorType"
+        "me.snowdrop.istio.api.model.v1.networking.Abort.ErrorType"
       ],
       "description": "",
       "properties": {
@@ -1981,14 +1984,14 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusErrorType"
     },
     "istio_networking_HTTPFaultInjection_Delay": {
       "type": "object",
       "description": "",
       "properties": {
         "httpDelayType": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.Delay",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.Delay.HttpDelayType",
           "isInterface": true
         },
         "percent": {
@@ -2002,7 +2005,7 @@
     "istio_networking_HTTPFaultInjection_Delay_ExponentialDelay": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.Delay"
+        "me.snowdrop.istio.api.model.v1.networking.Delay.HttpDelayType"
       ],
       "description": "",
       "properties": {
@@ -2012,12 +2015,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHttpDelayType"
     },
     "istio_networking_HTTPFaultInjection_Delay_FixedDelay": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.Delay"
+        "me.snowdrop.istio.api.model.v1.networking.Delay.HttpDelayType"
       ],
       "description": "",
       "properties": {
@@ -2027,7 +2030,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.FixedDelayHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.FixedDelayHttpDelayType"
     },
     "istio_networking_HTTPMatchRequest": {
       "type": "object",
@@ -2250,7 +2253,7 @@
       "description": "",
       "properties": {
         "lbPolicy": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings.LbPolicy",
           "isInterface": true
         }
       },
@@ -2259,9 +2262,6 @@
     },
     "istio_networking_LoadBalancerSettings_ConsistentHash": {
       "type": "object",
-      "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings"
-      ],
       "description": "",
       "properties": {
         "consistentHash": {
@@ -2270,14 +2270,14 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHash"
     },
     "istio_networking_LoadBalancerSettings_ConsistentHashLB": {
       "type": "object",
       "description": "",
       "properties": {
         "hashKey": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.HashKey",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB.HashKey",
           "isInterface": true
         },
         "minimumRingSize": {
@@ -2308,27 +2308,27 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB_HTTPCookie"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HTTPCookie"
     },
     "istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpCookie": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.HashKey"
+        "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB.HashKey"
       ],
       "description": "",
       "properties": {
         "httpCookie": {
           "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_HTTPCookie",
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB_HTTPCookie"
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.HTTPCookie"
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpCookieConsistentHashLBLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpCookieHashKey"
     },
     "istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.HashKey"
+        "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB.HashKey"
       ],
       "description": "",
       "properties": {
@@ -2338,12 +2338,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpHeaderNameConsistentHashLBLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpHeaderNameHashKey"
     },
     "istio_networking_LoadBalancerSettings_ConsistentHashLB_UseSourceIp": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.HashKey"
+        "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB.HashKey"
       ],
       "description": "",
       "properties": {
@@ -2353,12 +2353,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.UseSourceIpConsistentHashLBLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.UseSourceIpHashKey"
     },
     "istio_networking_LoadBalancerSettings_Simple": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings"
+        "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings.LbPolicy"
       ],
       "description": "",
       "properties": {
@@ -2367,7 +2367,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.SimpleLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.SimpleLbPolicy"
     },
     "istio_networking_OutlierDetection": {
       "type": "object",
@@ -2418,7 +2418,7 @@
       "description": "",
       "properties": {
         "port": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.PortSelector",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.PortSelector.Port",
           "isInterface": true
         }
       },
@@ -2428,7 +2428,7 @@
     "istio_networking_PortSelector_Name": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.PortSelector"
+        "me.snowdrop.istio.api.model.v1.networking.PortSelector.Port"
       ],
       "description": "",
       "properties": {
@@ -2438,12 +2438,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.NamePortSelector"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.NamePort"
     },
     "istio_networking_PortSelector_Number": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.PortSelector"
+        "me.snowdrop.istio.api.model.v1.networking.PortSelector.Port"
       ],
       "description": "",
       "properties": {
@@ -2453,7 +2453,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.NumberPortSelector"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.NumberPort"
     },
     "istio_networking_Server": {
       "type": "object",
@@ -2595,7 +2595,7 @@
       "description": "",
       "properties": {
         "matchType": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.StringMatch",
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.StringMatch.MatchType",
           "isInterface": true
         }
       },
@@ -2605,7 +2605,7 @@
     "istio_networking_StringMatch_Exact": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.StringMatch"
+        "me.snowdrop.istio.api.model.v1.networking.StringMatch.MatchType"
       ],
       "description": "",
       "properties": {
@@ -2615,12 +2615,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExactStringMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExactMatchType"
     },
     "istio_networking_StringMatch_Prefix": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.StringMatch"
+        "me.snowdrop.istio.api.model.v1.networking.StringMatch.MatchType"
       ],
       "description": "",
       "properties": {
@@ -2630,12 +2630,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.PrefixStringMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.PrefixMatchType"
     },
     "istio_networking_StringMatch_Regex": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.api.model.v1.networking.StringMatch"
+        "me.snowdrop.istio.api.model.v1.networking.StringMatch.MatchType"
       ],
       "description": "",
       "properties": {
@@ -2645,7 +2645,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.RegexStringMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.RegexMatchType"
     },
     "istio_networking_Subset": {
       "type": "object",
@@ -2968,7 +2968,10 @@
       "type": "object",
       "description": "",
       "properties": {
-        "Value": {}
+        "value": {
+          "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue",
+          "isInterface": true
+        }
       },
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
@@ -3214,7 +3217,7 @@
       "description": "",
       "properties": {
         "kind": {
-          "javaType": "",
+          "javaType": "me.snowdrop.istio.api.model.Kind",
           "isInterface": true
         }
       },
@@ -3230,7 +3233,7 @@
     },
     "attributeValue": {
       "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
-      "javaType": "me.snowdrop.istio.api.model.v1.mixer.AttributeValue"
+      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
     },
     "attributes": {
       "$ref": "#/definitions/istio_mixer_Attributes",
@@ -3262,7 +3265,7 @@
     },
     "consistentHashLoadBalancerSettings": {
       "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHash",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHashLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ConsistentHash"
     },
     "dSMetricInfo": {
       "$ref": "#/definitions/istio_adapter_dogstatsd_Params_MetricInfo",
@@ -3290,7 +3293,7 @@
     },
     "exactStringMatch": {
       "$ref": "#/definitions/istio_networking_StringMatch_Exact",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExactStringMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExactMatchType"
     },
     "explicitBucketsDefinition": {
       "$ref": "#/definitions/istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExplicitBuckets",
@@ -3302,11 +3305,11 @@
     },
     "exponentialDelay": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Delay_ExponentialDelay",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.ExponentialDelayHttpDelayType"
     },
     "fixedDelay": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Delay_FixedDelay",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.FixedDelayHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.FixedDelayHttpDelayType"
     },
     "fluentd": {
       "$ref": "#/definitions/istio_adapter_fluentd_Params",
@@ -3318,27 +3321,27 @@
     },
     "grpcStatusAbort": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_GrpcStatus",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.GrpcStatusAbortHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.GrpcStatusErrorType"
     },
     "http2ErrorAbort": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_Http2Error",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorAbortHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.Http2ErrorErrorType"
     },
     "httpCookieHashKey": {
       "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpCookie",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpCookieConsistentHashLBLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpCookieHashKey"
     },
     "httpHeaderNameHashKey": {
       "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpHeaderNameConsistentHashLBLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpHeaderNameHashKey"
     },
     "httpStatusAbort": {
       "$ref": "#/definitions/istio_networking_HTTPFaultInjection_Abort_HttpStatus",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusAbortHTTPFaultInjection"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.HttpStatusErrorType"
     },
     "jwtPeerAuthenticationMethod": {
       "$ref": "#/definitions/istio_authentication_PeerAuthenticationMethod_Jwt",
-      "javaType": "me.snowdrop.istio.api.model.v1.authentication.JwtPeerAuthenticationMethod"
+      "javaType": "me.snowdrop.istio.api.model.v1.authentication.JwtParams"
     },
     "kubernetesEnv": {
       "$ref": "#/definitions/istio_adapter_kubernetesenv_Params",
@@ -3370,15 +3373,15 @@
     },
     "mtlsPeerAuthenticationMethod": {
       "$ref": "#/definitions/istio_authentication_PeerAuthenticationMethod_Mtls",
-      "javaType": "me.snowdrop.istio.api.model.v1.authentication.MtlsPeerAuthenticationMethod"
+      "javaType": "me.snowdrop.istio.api.model.v1.authentication.MtlsParams"
     },
     "namePortSelector": {
       "$ref": "#/definitions/istio_networking_PortSelector_Name",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.NamePortSelector"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.NamePort"
     },
     "numberPortSelector": {
       "$ref": "#/definitions/istio_networking_PortSelector_Number",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.NumberPortSelector"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.NumberPort"
     },
     "oPA": {
       "$ref": "#/definitions/istio_adapter_opa_Params",
@@ -3390,7 +3393,7 @@
     },
     "prefixStringMatch": {
       "$ref": "#/definitions/istio_networking_StringMatch_Prefix",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.PrefixStringMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.PrefixMatchType"
     },
     "prometheus": {
       "$ref": "#/definitions/istio_adapter_prometheus_Params",
@@ -3418,7 +3421,7 @@
     },
     "regexStringMatch": {
       "$ref": "#/definitions/istio_networking_StringMatch_Regex",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.RegexStringMatch"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.RegexMatchType"
     },
     "reportNothing": {
       "$ref": "#/definitions/istio_mixer_reportnothing_InstanceMsg",
@@ -3458,7 +3461,7 @@
     },
     "simpleLoadBalancerSettings": {
       "$ref": "#/definitions/istio_networking_LoadBalancerSettings_Simple",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.SimpleLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.SimpleLbPolicy"
     },
     "solarWinds": {
       "$ref": "#/definitions/istio_adapter_solarwinds_Params",
@@ -3474,7 +3477,7 @@
     },
     "useSourceIpHashKey": {
       "$ref": "#/definitions/istio_networking_LoadBalancerSettings_ConsistentHashLB_UseSourceIp",
-      "javaType": "me.snowdrop.istio.api.model.v1.networking.UseSourceIpConsistentHashLBLoadBalancerSettings"
+      "javaType": "me.snowdrop.istio.api.model.v1.networking.UseSourceIpHashKey"
     },
     "virtualService": {
       "$ref": "#/definitions/istio_networking_VirtualService",
