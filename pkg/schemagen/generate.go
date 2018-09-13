@@ -223,7 +223,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 
 	pkgDesc, ok := g.getPackage(path)
-	if ok && t.Kind() == reflect.Struct {
+	if ok && (t.Kind() == reflect.Struct || t.Kind() == reflect.Interface) {
 		switch name {
 		case "Time":
 			return "String"
@@ -238,6 +238,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "Timestamp":
 			return "me.snowdrop.istio.api.model.TimeStamp"
 		case "Value":
+			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+		case "AttributeValue":
 			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
 		default:
 			return pkgDesc.JavaPackage + "." + name
@@ -498,14 +500,15 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 		}
 	case reflect.Interface:
 		name := t.Name()
-		iFace, ok := g.interfacesMap[name]
+		interfaceType, ok := g.interfacesMap[name]
 		if !ok {
 			g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)
-			return JSONPropertyDescriptor{}
+			interfaceType = g.javaType(t)
 		}
+
 		return JSONPropertyDescriptor{
 			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType:    iFace,
+				JavaType:    interfaceType,
 				IsInterface: true,
 			},
 		}
