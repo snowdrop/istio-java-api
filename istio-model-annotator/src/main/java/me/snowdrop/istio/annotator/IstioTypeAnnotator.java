@@ -6,6 +6,13 @@
  */
 package me.snowdrop.istio.annotator;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -18,9 +25,6 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
@@ -64,46 +68,19 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     @Override
     public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
-        boolean hasInterfaces = false;
-
         JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
         annotationValue.param("apiVersion");
         annotationValue.param("kind");
         annotationValue.param("metadata");
 
         final Iterator<Map.Entry<String, JsonNode>> fields = propertiesNode.fields();
-        String interfaceFQN = null;
         while (fields.hasNext()) {
             final Map.Entry<String, JsonNode> entry = fields.next();
             String key = entry.getKey();
             if (!"apiVersion".equals(key) && !"kind".equals(key) && !"metadata".equals(key)) {
                 annotationValue.param(key);
-
-                // check if the field is an interface
-                final JsonNode field = entry.getValue();
-                hasInterfaces = field.hasNonNull("isInterface");
-                if (hasInterfaces) {
-                    // todo: fix me, this won't work if a type has several fields using interfaces
-                    interfaceFQN = field.get("javaType").asText();
-                }
             }
         }
-
-        // if we have an interface field, then we need a custom deserializer so add an annotation for it.
-//        if (hasInterfaces) {
-        if ("Abort".equals(clazz.name())) {
-            // create interface if we haven't done it yet
-            try {
-                clazz.getPackage()._interface(interfaceFQN.substring(interfaceFQN.lastIndexOf('.') + 1));
-            } catch (JClassAlreadyExistsException e) {
-                // ignore
-            }
-            clazz.annotate(JsonDeserialize.class).param("using", ClassWithInterfaceFieldsDeserializer.class);
-        } else {
-            //We just want to make sure we avoid infinite loops
-            clazz.annotate(JsonDeserialize.class).param("using", JsonDeserializer.None.class);
-        }
-
 
         final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
         if (kind.isPresent()) {
@@ -129,6 +106,27 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         super.propertyField(field, clazz, propertyName, propertyNode);
         if (propertyNode.hasNonNull("isInterface")) {
             field.annotate(JsonUnwrapped.class);
+
+            // todo: fix me, this won't work if a type has several fields using interfaces
+            String interfaceFQN = propertyNode.get("javaType").asText();
+
+            // create interface if we haven't done it yet
+            try {
+                final JDefinedClass fieldInterface = clazz._interface(interfaceFQN.substring(interfaceFQN.lastIndexOf('.') + 1));
+                fieldInterface._extends(Serializable.class);
+            } catch (JClassAlreadyExistsException e) {
+                throw new RuntimeException(e);
+            }
+            annotateIfNotDone(clazz, ClassWithInterfaceFieldsDeserializer.class);
+        }
+    }
+
+    private Set<JDefinedClass> annotated = new HashSet<>();
+
+    private void annotateIfNotDone(JDefinedClass clazz, Class<? extends JsonDeserializer> deserializerClass) {
+        if (!annotated.contains(clazz)) {
+            clazz.annotate(JsonDeserialize.class).param("using", deserializerClass);
+            annotated.add(clazz);
         }
     }
 }
