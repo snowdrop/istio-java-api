@@ -277,23 +277,6 @@ func main() {
 		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.model.v1.authentication.Mode",
 	}
 
-	/*
-			isAttributes_AttributeValue_Value field value in istio.io/api/mixer/v1/Attributes_AttributeValue
-		isValue_Kind field kind in github.com/gogo/protobuf/types/Value
-		isParams_Creds field creds in istio.io/istio/mixer/adapter/stackdriver/config/Params
-		isValue_Value field value in istio.io/api/policy/v1beta1/Value
-	*/
-	/*interfacesMap := map[string]string{
-		"isParams_MetricInfo_BucketsDefinition_Definition": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition",
-		"isLoadBalancerSettings_LbPolicy":                  "me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings",
-		"isStringMatch_MatchType":                          "me.snowdrop.istio.api.model.v1.networking.StringMatch",
-		"isPortSelector_Port":                              "me.snowdrop.istio.api.model.v1.networking.PortSelector",
-		"isHTTPFaultInjection_Delay_HttpDelayType":         "me.snowdrop.istio.api.model.v1.networking.DelayType",
-		"isHTTPFaultInjection_Abort_ErrorType":             "me.snowdrop.istio.api.model.v1.networking.ErrorType",
-		"isLoadBalancerSettings_ConsistentHashLB_HashKey":  "me.snowdrop.istio.api.model.v1.networking.HashKey",
-		"isPeerAuthenticationMethod_Params":                "me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod",
-	}*/
-
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
 	if err != nil {
 		log.Fatal(err)
