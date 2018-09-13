@@ -124,8 +124,8 @@ spec:
                 .withNewVirtualServiceSpec()
                 .addToHosts(reviewsHost)
                 .addNewHttp()
-                .addNewMatch().withNewPrefixStringMatchUri("/wpcatalog").endMatch()
-                .addNewMatch().withNewPrefixStringMatchUri("/consumercatalog").endMatch()
+                .addNewMatch().withNewUri().withNewPrefixMatchType("/wpcatalog").endUri().endMatch()
+                .addNewMatch().withNewUri().withNewPrefixMatchType("/consumercatalog").endUri().endMatch()
                 .withNewRewrite().withUri("/newcatalog").endRewrite()
                 .addNewRoute()
                 .withNewDestination().withHost(reviewsHost).withSubset("v2").endDestination()
@@ -214,14 +214,14 @@ spec:
                 .addToHosts(reviewsHost)
                 .addNewHttp()
                 .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewNumberPortSelector()
-                .withNewNumber(9090).endNumberPortSelector().endDestination()
+                .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort().withNewNumberPort()
+                .withNewNumber(9090).endNumberPort().endPort().endDestination()
                 .endRoute()
                 .endHttp()
                 .addNewHttp()
                 .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewNumberPortSelector()
-                .withNewNumber(9090).endNumberPortSelector().endDestination()
+                .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort().withNewNumberPort()
+                .withNewNumber(9090).endNumberPort().endPort().endDestination()
                 .endRoute()
                 .endHttp()
                 .endVirtualServiceSpec()
@@ -335,6 +335,6 @@ spec:
         assertNull(route.getFault().getDelay());
         final Abort abort = route.getFault().getAbort();
         assertEquals(10, abort.getPercent().intValue());
-        assertEquals(400, ((HttpStatusAbortHTTPFaultInjection) abort.getErrorType()).getHttpStatus().intValue());
+        assertEquals(400, ((HttpStatusErrorType) abort.getErrorType()).getHttpStatus().intValue());
     }
 }
