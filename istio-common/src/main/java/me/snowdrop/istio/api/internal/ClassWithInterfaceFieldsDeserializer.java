@@ -117,11 +117,12 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
                     deserialized = value.booleanValue();
                     break;
                 default:
+                    final String type = targetClass.getPackage().getName() + '.' + info.type;
                     try {
-                        final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(info.type);
+                        final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
                         deserialized = p.getCodec().treeToValue(node, fieldClass);
                     } catch (ClassNotFoundException | JsonProcessingException e) {
-                        throw new RuntimeException("Unsupported type " + info.type + " for field " + fieldName + " on " +
+                        throw new RuntimeException("Unsupported type " + type + " for field " + fieldName + " on " +
                                 "class " + targetClassName, e);
                     }
             }
