@@ -2492,7 +2492,7 @@
           "description": ""
         },
         "mode": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.TLSmode"
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.TLSOptionsMode"
         },
         "privateKey": {
           "type": "string",
@@ -2782,7 +2782,7 @@
           "description": ""
         },
         "mode": {
-          "javaType": "me.snowdrop.istio.api.model.v1.networking.TLSmode"
+          "javaType": "me.snowdrop.istio.api.model.v1.networking.TLSSettingsMode"
         },
         "privateKey": {
           "type": "string",

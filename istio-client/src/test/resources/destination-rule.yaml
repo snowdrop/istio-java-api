@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: spring-boot-istio-routing-service
+spec:
+  host: spring-boot-istio-routing-service
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+  subsets:
+    - name: a
+      labels:
+        version: a
+    - name: b
+      labels:
+        version: b
