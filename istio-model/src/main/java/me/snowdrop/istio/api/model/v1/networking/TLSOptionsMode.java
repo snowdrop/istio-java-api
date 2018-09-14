@@ -1,6 +1,6 @@
 package me.snowdrop.istio.api.model.v1.networking;
 
-public enum TLSmode {
+public enum TLSOptionsMode {
     /**
      * Forward the connection to the upstream server selected based on the SNI string presented by the client.
      */
@@ -16,7 +16,7 @@ public enum TLSmode {
 
     private final int intValue;
 
-    TLSmode(int intValue) {
+    TLSOptionsMode(int intValue) {
         this.intValue = intValue;
     }
 
