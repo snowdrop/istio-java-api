@@ -116,11 +116,12 @@ public class IstioSpecRegistry {
 
         @Override
         public String toString() {
-            return "CRDInfo{" +
-                    "kind='" + kind + '\'' +
-                    ", crdName='" + crdName + '\'' +
-                    ", className='" + className + '\'' +
-                    '}';
+            return kind + ":\t" + crdName + "\t=>\t" + className;
+        }
+
+        public String getGroup() {
+            final int beginIndex = crdName.indexOf('.');
+            return crdName.substring(beginIndex + 1, crdName.indexOf('.', beginIndex + 1));
         }
 
         boolean isUnvisited() {
@@ -194,6 +195,20 @@ public class IstioSpecRegistry {
         } catch (Throwable t) {
             throw new IllegalArgumentException(String.format("Cannot load class: %s", className), t);
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(crdInfos.values().stream()
+                .collect(Collectors.groupingBy(CRDInfo::getGroup))
+                .entrySet().stream()
+                .map(entry ->
+                        entry.getKey() + ":\n\t"
+                                + entry.getValue().stream()
+                                .map(Object::toString)
+                                .sorted(String::compareToIgnoreCase)
+                                .collect(Collectors.joining("\n\t")))
+                .collect(Collectors.joining("\n"))
+        );
     }
 
 }
