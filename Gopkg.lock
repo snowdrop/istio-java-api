@@ -130,7 +130,6 @@
   version = "v2.2.1"
 
 [[projects]]
-  branch = "release-1.0"
   name = "istio.io/api"
   packages = [
     "authentication/v1alpha1",
@@ -142,6 +141,7 @@
     "rbac/v1alpha1"
   ]
   revision = "76349c53b87f03f1e610b3aa3843dba3c38138d7"
+  version = "1.0.2"
 
 [[projects]]
   name = "istio.io/istio"
@@ -170,7 +170,7 @@
     "mixer/template/tracespan"
   ]
   revision = "42773aacced474d97159902d20579a25b1f98106"
-  version = "1.0.1"
+  version = "1.0.2"
 
 [solve-meta]
   analyzer-name = "dep"
