@@ -78,14 +78,14 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
         try {
             targetClass = Thread.currentThread().getContextClassLoader().loadClass(targetClassName);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(targetClassName + " doesn't appear to be a known Istio class", e);
         }
 
         final Object result;
         try {
             result = targetClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Couldn't create an instance of " + targetClassName, e);
         }
 
         final Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
@@ -122,8 +122,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
                         final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
                         deserialized = p.getCodec().treeToValue(node, fieldClass);
                     } catch (ClassNotFoundException | JsonProcessingException e) {
-                        throw new RuntimeException("Unsupported type " + type + " for field " + fieldName + " on " +
-                                "class " + targetClassName, e);
+                        throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClassName + "' class", e);
                     }
             }
 
@@ -132,10 +131,10 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
                 targetClassField.setAccessible(true);
                 targetClassField.set(result, deserialized);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Couldn't assign '" + deserialized + "' to '" + info.target
+                        + "' target field on '" + targetClassName + "' class", e);
             }
         }
-
 
         return result;
     }
