@@ -19,14 +19,10 @@
 package me.snowdrop.istio.api.internal;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -36,27 +32,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+
+import static me.snowdrop.istio.api.internal.InterfacesRegistry.getFieldInfo;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer implements ContextualDeserializer {
-    private static Map<String, Map<String, String>> classNameToFieldInfos = new HashMap<>();
-
-    static {
-        YAMLMapper mapper = new YAMLMapper();
-        final InputStream dataIs = Thread.currentThread().getContextClassLoader().getResourceAsStream("interfaces-data.yml");
-        try {
-            final Classes classes = mapper.readValue(dataIs, Classes.class);
-            classes.classes.forEach(ci -> classNameToFieldInfos.put(ci.className, ci.fields));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Map<String, String> fieldToType;
-
     private String targetClassName;
 
     /*
@@ -65,16 +47,15 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
     public ClassWithInterfaceFieldsDeserializer() {
     }
 
-    private ClassWithInterfaceFieldsDeserializer(String targetClassName, Map<String, String> fieldNameToClass) {
+    private ClassWithInterfaceFieldsDeserializer(String targetClassName) {
         this.targetClassName = targetClassName;
-        this.fieldToType = fieldNameToClass;
     }
 
     @Override
     public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectNode node = p.readValueAsTree();
 
-        Class targetClass = null;
+        Class targetClass;
         try {
             targetClass = Thread.currentThread().getContextClassLoader().loadClass(targetClassName);
         } catch (ClassNotFoundException e) {
@@ -93,12 +74,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
             final Map.Entry<String, JsonNode> field = fields.next();
             final String fieldName = field.getKey();
 
-            final String declaredType = fieldToType.get(fieldName);
-            if (declaredType == null) {
-                throw new IllegalArgumentException("Unknown field '" + fieldName + "'");
-            }
-
-            final FieldInfo info = getFieldInfo(fieldName, declaredType);
+            final InterfacesRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
 
             Object deserialized;
             final JsonNode value = field.getValue();
@@ -139,55 +115,11 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
         return result;
     }
 
-    /**
-     * percent, integer => percent, integer
-     * grpcStatus, isHTTPFaultInjection_Abort_ErrorType => errorType, GrpcStatusErrorType
-     *
-     * @param fieldName
-     * @param type
-     * @return
-     */
-    private static FieldInfo getFieldInfo(String fieldName, String type) {
-        if (type.startsWith("is")) {
-            final String interfaceName = type.substring(type.lastIndexOf('_') + 1);
-            final String target = interfaceName.substring(0, 1).toLowerCase() + interfaceName.substring(1);
-            final String impl = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-
-            return new FieldInfo(target, impl + interfaceName);
-        } else {
-            return new FieldInfo(fieldName, type);
-        }
-    }
-
-    private static class Classes {
-        @JsonProperty
-        private List<ClassInfo> classes;
-    }
-
-    private static class ClassInfo {
-        @JsonProperty("class")
-        private String className;
-
-        @JsonProperty
-        private Map<String, String> fields;
-    }
-
-    private static class FieldInfo {
-        private final String target;
-
-        private final String type;
-
-        public FieldInfo(String target, String type) {
-            this.target = target;
-            this.type = type;
-        }
-    }
-
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
         final Class<?> classToDeserialize = property.getType().getRawClass();
-        final Map<String, String> fieldInfoMap = classNameToFieldInfos.get(classToDeserialize.getName());
-
-        return new ClassWithInterfaceFieldsDeserializer(classToDeserialize.getName(), fieldInfoMap);
+        return new ClassWithInterfaceFieldsDeserializer(classToDeserialize.getName());
     }
+
+
 }
