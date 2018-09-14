@@ -1,0 +1,7 @@
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: spring-boot-istio-routing-service
+spec:
+  targets:
+    - name: spring-boot-istio-routing-service

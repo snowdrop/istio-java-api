@@ -7,6 +7,7 @@ import java.util.List;
 
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.model.v1.authentication.Policy;
 import me.snowdrop.istio.api.model.v1.mixer.template.Metric;
 import me.snowdrop.istio.api.model.v1.networking.DestinationRule;
 import me.snowdrop.istio.api.model.v1.networking.VirtualService;
@@ -47,6 +48,11 @@ public class IstioClientTest {
     @Test
     public void shouldApplyDestinationRuleIstioResource() {
         checkInput("destination-rule.yaml", DestinationRule.class);
+    }
+
+    @Test
+    public void shouldApplyPolicyIstioResource() {
+        checkInput("policy.yaml", Policy.class);
     }
 
     private void checkInput(String inputFileName, Class<? extends IstioSpec> expectedSpecClass) {

@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import me.snowdrop.istio.api.model.IstioSpec;
@@ -23,45 +22,39 @@ import me.snowdrop.istio.api.model.IstioSpec;
  */
 public class IstioSpecRegistry {
     private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.";
+
     private static final String ISTIO_API_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "api.model.";
+
     private static final String ISTIO_VERSION = "v1.";
+
     private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
+
     private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
-    private static final String ISTIO_ROUTING_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "routing.";
-    private static final String ISTIO_POLICY_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "policy.";
-    private static final String ISTIO_NETWORKING_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "networking.";
+
     private static final String ISTIO_ADAPTER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "adapter.";
 
     private static final Map<String, CRDInfo> crdInfos = new HashMap<>();
 
     static {
-        loadCRDInfosFromProperties("adapter_crds.properties", key -> ISTIO_ADAPTER_PACKAGE_PREFIX + key.toLowerCase() + ".");
-        loadCRDInfosFromProperties("template_crds.properties", key -> ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX);
-        loadCRDInfosFromProperties("other_crds.properties", key -> ISTIO_ROUTING_PACKAGE_PREFIX);
-        loadCRDInfosFromProperties("policy_crds.properties", key -> ISTIO_POLICY_PACKAGE_PREFIX);
-        loadCRDInfosFromProperties("networking_crds.properties", key -> ISTIO_NETWORKING_PACKAGE_PREFIX);
-        loadCRDInfosFromProperties("additional_resources.properties", key -> ISTIO_PACKAGE_PREFIX);
-    }
-
-    private static void loadCRDInfosFromProperties(String propertyFileName, Function<String, String> packageNameFromPropertyKey) {
         Properties crdFile = new Properties();
 
-        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyFileName)) {
+        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("istio-crd.properties")) {
             crdFile.load(inputStream);
         } catch (Exception e) {
-            throw new RuntimeException("Couldn't load '" + propertyFileName + "' from classpath", e);
+            throw new RuntimeException("Couldn't load Istio CRD information from classpath", e);
         }
 
         crdInfos.putAll(crdFile.entrySet().stream().collect(
                 Collectors.toMap(
                         e -> String.valueOf(e.getKey()),
-                        e -> getCRDInfoFrom(e, packageNameFromPropertyKey.apply(e.getKey().toString())))
+                        e -> getCRDInfoFrom(e))
         ));
     }
 
-    private static CRDInfo getCRDInfoFrom(Map.Entry<Object, Object> entry, String packageName) {
+    private static CRDInfo getCRDInfoFrom(Map.Entry<Object, Object> entry) {
         final String kind = String.valueOf(entry.getKey());
 
+        // compute class name based on CRD kind
         String className;
         if (kind.contains("entry")) {
             className = kind.replace("entry", "Entry");
@@ -79,7 +72,32 @@ public class IstioSpecRegistry {
         final char c = className.charAt(0);
         className = className.replaceFirst("" + c, "" + Character.toTitleCase(c));
 
-        return new CRDInfo(kind, String.valueOf(entry.getValue()), packageName + className);
+        // compute package name based on CRD FQN and labels
+        final String[] crdDetail = String.valueOf(entry.getValue()).split("\\|");
+        final String name = crdDetail[0].trim();
+        final String istioLabel = crdDetail[1].trim().substring(crdDetail[1].lastIndexOf('='));
+
+        String packageName;
+        switch (istioLabel) {
+            case "mixer-adapter":
+                packageName = ISTIO_ADAPTER_PACKAGE_PREFIX + kind.toLowerCase() + ".";
+                break;
+            case "mixer-instance":
+                packageName = ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX;
+                break;
+            case "core":
+                packageName = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "policy.";
+                break;
+            default:
+                final String group = CRDInfo.getGroup(name);
+                packageName = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + group + ".";
+                /*if(!istioLabel.isEmpty() && !group.equals(istioLabel)) {
+                    System.out.println(kind + " => " + istioLabel + " / proposed pkg: " + packageName);
+                }*/
+        }
+
+
+        return new CRDInfo(kind, name, packageName + className);
     }
 
     static class CRDInfo {
@@ -119,7 +137,11 @@ public class IstioSpecRegistry {
             return kind + ":\t" + crdName + "\t=>\t" + className;
         }
 
-        public String getGroup() {
+        String getGroup() {
+            return getGroup(crdName);
+        }
+
+        static String getGroup(String crdName) {
             final int beginIndex = crdName.indexOf('.');
             return crdName.substring(beginIndex + 1, crdName.indexOf('.', beginIndex + 1));
         }
