@@ -238,9 +238,9 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "Timestamp":
 			return "me.snowdrop.istio.api.TimeStamp"
 		case "Value":
-			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+			return "me.snowdrop.istio.api.cexl.TypedValue"
 		case "AttributeValue":
-			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+			return "me.snowdrop.istio.api.cexl.TypedValue"
 		default:
 			return pkgDesc.JavaPackage + "." + name
 		}

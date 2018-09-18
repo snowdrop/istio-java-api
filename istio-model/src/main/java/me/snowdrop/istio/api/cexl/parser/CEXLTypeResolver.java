@@ -4,10 +4,10 @@
  * Licensed under the Eclipse Public License version 1.0, available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package me.snowdrop.istio.api.model.v1.cexl.parser;
+package me.snowdrop.istio.api.cexl.parser;
 
+import me.snowdrop.istio.api.cexl.AttributeVocabulary;
 import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
-import me.snowdrop.istio.api.model.v1.cexl.AttributeVocabulary;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**

@@ -4,7 +4,7 @@
  * Licensed under the Eclipse Public License version 1.0, available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package me.snowdrop.istio.api.model.v1.cexl;
+package me.snowdrop.istio.api.cexl;
 
 import java.io.IOException;
 
@@ -21,10 +21,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.cexl.parser.CEXLLexer;
+import me.snowdrop.istio.api.cexl.parser.CEXLParser;
+import me.snowdrop.istio.api.cexl.parser.CEXLTypeResolver;
 import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
-import me.snowdrop.istio.api.model.v1.cexl.parser.CEXLLexer;
-import me.snowdrop.istio.api.model.v1.cexl.parser.CEXLParser;
-import me.snowdrop.istio.api.model.v1.cexl.parser.CEXLTypeResolver;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;

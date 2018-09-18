@@ -4,7 +4,7 @@
  * Licensed under the Eclipse Public License version 1.0, available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package me.snowdrop.istio.api.model.v1.cexl;
+package me.snowdrop.istio.api.cexl;
 
 import java.util.Collections;
 import java.util.Map;

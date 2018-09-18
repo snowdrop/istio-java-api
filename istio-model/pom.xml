@@ -112,7 +112,7 @@
             </goals>
             <!-- If we want to put the generated ANTLR classes in the proper package with other sources -->
             <!--<configuration>
-              <outputDirectory>${project.build.sourceDirectory}/me/snowdrop/istio/api/model/v1/cexl/parser</outputDirectory>
+              <outputDirectory>${project.build.sourceDirectory}/me/snowdrop/istio/api/cexl/parser</outputDirectory>
             </configuration>-->
           </execution>
         </executions>
@@ -163,7 +163,7 @@
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/Duration.java" verbose="true"/>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/IstioSchema.java" verbose="true"/>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/TimeStamp.java" verbose="true"/>
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/cexl/TypedValue.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/cexl/TypedValue.java" verbose="true"/>
               </target>
             </configuration>
             <goals>

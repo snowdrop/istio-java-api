@@ -881,9 +881,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": true,
@@ -894,12 +894,12 @@
       "description": "",
       "properties": {
         "value": {
-          "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue",
+          "javaType": "me.snowdrop.istio.api.cexl.TypedValue",
           "isInterface": true
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+      "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     },
     "istio_mixer_CheckRequest": {
       "type": "object",
@@ -1311,9 +1311,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "service": {
           "type": "string",
@@ -1356,9 +1356,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "user": {
           "type": "string",
@@ -1461,9 +1461,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "monitoredResourceType": {
           "type": "string",
@@ -1486,9 +1486,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": true,
@@ -1503,18 +1503,18 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "monitoredResourceDimensions": {
           "type": "object",
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "monitoredResourceType": {
           "type": "string",
@@ -1526,7 +1526,7 @@
         },
         "value": {
           "$ref": "#/definitions/istio_policy_Value",
-          "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+          "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
         }
       },
       "additionalProperties": true,
@@ -1541,9 +1541,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "name": {
           "type": "string",
@@ -1607,9 +1607,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/istio_policy_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "startTime": {
           "$ref": "#/definitions/istio_policy_TimeStamp",
@@ -2969,12 +2969,12 @@
       "description": "",
       "properties": {
         "value": {
-          "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue",
+          "javaType": "me.snowdrop.istio.api.cexl.TypedValue",
           "isInterface": true
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+      "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     },
     "istio_rbac_AccessRule": {
       "type": "object",
@@ -3187,9 +3187,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/protobuf_types_Value",
-            "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.model.v1.cexl.TypedValue\u003e"
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": true,
@@ -3222,7 +3222,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+      "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     }
   },
   "type": "object",
@@ -3233,7 +3233,7 @@
     },
     "attributeValue": {
       "$ref": "#/definitions/istio_mixer_Attributes_AttributeValue",
-      "javaType": "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+      "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     },
     "attributes": {
       "$ref": "#/definitions/istio_mixer_Attributes",

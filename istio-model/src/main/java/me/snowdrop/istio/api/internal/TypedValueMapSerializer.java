@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
+import me.snowdrop.istio.api.cexl.TypedValue;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>

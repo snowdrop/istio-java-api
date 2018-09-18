@@ -16,7 +16,7 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
+import me.snowdrop.istio.api.cexl.TypedValue;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>

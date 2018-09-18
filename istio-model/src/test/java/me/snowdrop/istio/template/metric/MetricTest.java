@@ -24,7 +24,7 @@ import java.util.Map;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.api.IstioSpec;
-import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
+import me.snowdrop.istio.api.cexl.TypedValue;
 import me.snowdrop.istio.mixer.template.metric.Metric;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
