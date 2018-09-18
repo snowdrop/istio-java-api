@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
-	"os"
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -27,7 +27,7 @@ func main() {
 	var pkgAssemblyStrategy, jsonAssemblyStrategy func(prefix string, component string) string
 	switch kind {
 	case "api":
-		pkgPrefix = projectPkgPrefix + "api.model.v1."
+		pkgPrefix = projectPkgPrefix + "api."
 		jsonPrefix = projectJsonPrefix
 		pkgAssemblyStrategy = concatenate
 		jsonAssemblyStrategy = concatenate
@@ -37,9 +37,9 @@ func main() {
 		pkgAssemblyStrategy = concatenate
 		jsonAssemblyStrategy = concatenate
 	case "template":
-		pkgPrefix = projectPkgPrefix + "api.model.v1.mixer.template."
+		pkgPrefix = projectPkgPrefix + "mixer.template."
 		jsonPrefix = projectJsonPrefix + "mixer_"
-		pkgAssemblyStrategy = prefixOnly
+		pkgAssemblyStrategy = concatenate
 		jsonAssemblyStrategy = concatenate
 	}
 

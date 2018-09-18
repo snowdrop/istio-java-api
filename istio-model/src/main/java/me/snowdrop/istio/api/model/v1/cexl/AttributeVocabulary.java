@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
+import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>

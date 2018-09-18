@@ -6,7 +6,7 @@
  */
 package me.snowdrop.istio.api.model.v1.cexl;
 
-import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
+import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 

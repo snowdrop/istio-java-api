@@ -6,8 +6,8 @@
  */
 package me.snowdrop.istio.api.model.v1.cexl.parser;
 
+import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
 import me.snowdrop.istio.api.model.v1.cexl.AttributeVocabulary;
-import me.snowdrop.istio.api.model.v1.mixer.config.descriptor.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**

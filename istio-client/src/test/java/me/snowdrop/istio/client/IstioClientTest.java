@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import me.snowdrop.istio.api.authentication.Policy;
 import me.snowdrop.istio.api.model.IstioResource;
 import me.snowdrop.istio.api.model.IstioSpec;
-import me.snowdrop.istio.api.model.v1.authentication.Policy;
-import me.snowdrop.istio.api.model.v1.mixer.template.Metric;
-import me.snowdrop.istio.api.model.v1.networking.DestinationRule;
-import me.snowdrop.istio.api.model.v1.networking.VirtualService;
-import me.snowdrop.istio.api.model.v1.policy.Rule;
+import me.snowdrop.istio.api.networking.DestinationRule;
+import me.snowdrop.istio.api.networking.VirtualService;
+import me.snowdrop.istio.api.policy.Rule;
+import me.snowdrop.istio.mixer.template.metric.Metric;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
