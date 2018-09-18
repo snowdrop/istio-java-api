@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
@@ -65,10 +68,16 @@ public class InterfacesRegistry {
             final String target = interfaceName.substring(0, 1).toLowerCase() + interfaceName.substring(1);
             final String impl = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
-            return new FieldInfo(target, impl + interfaceName);
+            return new InterfaceFieldInfo(target, impl + interfaceName);
+        } else if (type.startsWith("map")) {
+            return new MapFieldInfo(fieldName, type);
         } else {
             return new FieldInfo(fieldName, type);
         }
+    }
+
+    static Set<String> getKnownClasses() {
+        return Collections.unmodifiableSet(classNameToFieldInfos.keySet());
     }
 
     private static class Classes {
@@ -85,13 +94,63 @@ public class InterfacesRegistry {
     }
 
     static class FieldInfo {
-        final String target;
+        private final String target;
 
-        final String type;
+        private final String type;
 
         private FieldInfo(String target, String type) {
             this.target = target;
             this.type = type;
+        }
+
+        public String target() {
+            return target;
+        }
+
+        public String type() {
+            return type;
+        }
+    }
+
+    static class MapFieldInfo extends FieldInfo {
+
+        private static final Pattern MAP_PATTERN = Pattern.compile("\\s*map<([^,]*),([^)]*)>");
+
+        private final String keyType;
+
+        private final String valueType;
+
+
+        private MapFieldInfo(String target, String type) {
+            super(target, type);
+
+            final Matcher matcher = MAP_PATTERN.matcher(type);
+
+            if (matcher.matches()) {
+                keyType = matcher.group(1).trim();
+                valueType = matcher.group(2).trim();
+            } else {
+                throw new IllegalArgumentException("Expected map field format 'map<T,U>', got: " + type);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return String.format("map<%s,%s>", keyType, valueType);
+        }
+
+        public String keyType() {
+            return keyType;
+        }
+
+        public String valueType() {
+            return valueType;
+        }
+    }
+
+    static class InterfaceFieldInfo extends FieldInfo {
+        private InterfaceFieldInfo(String target, String type) {
+            super(target, type);
         }
     }
 }

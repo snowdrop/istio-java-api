@@ -517,6 +517,256 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.solarwinds.MetricInfo"
     },
+    "istio_adapter_stackdriver_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "creds": {
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds",
+          "isInterface": true
+        },
+        "endpoint": {
+          "type": "string",
+          "description": ""
+        },
+        "logInfo": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_stackdriver_Params_LogInfo",
+            "javaType": "me.snowdrop.istio.adapter.stackdriver.LogInfo"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.stackdriver.LogInfo\u003e"
+        },
+        "metricInfo": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_stackdriver_Params_MetricInfo",
+            "javaType": "me.snowdrop.istio.adapter.stackdriver.MetricInfo"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.stackdriver.MetricInfo\u003e"
+        },
+        "projectId": {
+          "type": "string",
+          "description": ""
+        },
+        "pushInterval": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "trace": {
+          "$ref": "#/definitions/istio_adapter_stackdriver_Params_Trace",
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.Trace"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.Stackdriver"
+    },
+    "istio_adapter_stackdriver_Params_ApiKey": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds"
+      ],
+      "description": "",
+      "properties": {
+        "apiKey": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.ApiKeyCreds"
+    },
+    "istio_adapter_stackdriver_Params_AppCredentials": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds"
+      ],
+      "description": "",
+      "properties": {
+        "appCredentials": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.AppCredentialsCreds"
+    },
+    "istio_adapter_stackdriver_Params_LogInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "httpMapping": {
+          "$ref": "#/definitions/istio_adapter_stackdriver_Params_LogInfo_HttpRequestMapping",
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.HttpRequestMapping"
+        },
+        "labelNames": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "payloadTemplate": {
+          "type": "string",
+          "description": ""
+        },
+        "sinkInfo": {
+          "$ref": "#/definitions/istio_adapter_stackdriver_Params_LogInfo_SinkInfo",
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.SinkInfo"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.LogInfo"
+    },
+    "istio_adapter_stackdriver_Params_LogInfo_HttpRequestMapping": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "latency": {
+          "type": "string",
+          "description": ""
+        },
+        "localIp": {
+          "type": "string",
+          "description": ""
+        },
+        "method": {
+          "type": "string",
+          "description": ""
+        },
+        "referer": {
+          "type": "string",
+          "description": ""
+        },
+        "remoteIp": {
+          "type": "string",
+          "description": ""
+        },
+        "requestSize": {
+          "type": "string",
+          "description": ""
+        },
+        "responseSize": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "url": {
+          "type": "string",
+          "description": ""
+        },
+        "userAgent": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.HttpRequestMapping"
+    },
+    "istio_adapter_stackdriver_Params_LogInfo_SinkInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "UniqueWriterIdentity": {
+          "type": "boolean",
+          "description": ""
+        },
+        "UpdateDestination": {
+          "type": "boolean",
+          "description": ""
+        },
+        "UpdateFilter": {
+          "type": "boolean",
+          "description": ""
+        },
+        "UpdateIncludeChildren": {
+          "type": "boolean",
+          "description": ""
+        },
+        "destination": {
+          "type": "string",
+          "description": ""
+        },
+        "filter": {
+          "type": "string",
+          "description": ""
+        },
+        "id": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.SinkInfo"
+    },
+    "istio_adapter_stackdriver_Params_MetricInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "buckets": {
+          "$ref": "#/definitions/istio_adapter_stackdriver_Params_MetricInfo_BucketsDefinition",
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.BucketsDefinition"
+        },
+        "kind": {
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.MetricKind"
+        },
+        "metricType": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.ValueType"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.MetricInfo"
+    },
+    "istio_adapter_stackdriver_Params_MetricInfo_BucketsDefinition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "definition": {
+          "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition.Definition",
+          "isInterface": true
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.BucketsDefinition"
+    },
+    "istio_adapter_stackdriver_Params_ServiceAccountPath": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds"
+      ],
+      "description": "",
+      "properties": {
+        "serviceAccountPath": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.ServiceAccountPathCreds"
+    },
+    "istio_adapter_stackdriver_Params_Trace": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "sampleProbability": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.Trace"
+    },
     "istio_authentication_Jwt": {
       "type": "object",
       "description": "",
@@ -3439,6 +3689,26 @@
       "$ref": "#/definitions/istio_policy_Rule",
       "javaType": "me.snowdrop.istio.api.policy.Rule"
     },
+    "sDApiKey": {
+      "$ref": "#/definitions/istio_adapter_stackdriver_Params_ApiKey",
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.ApiKeyCreds"
+    },
+    "sDAppCredentials": {
+      "$ref": "#/definitions/istio_adapter_stackdriver_Params_AppCredentials",
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.AppCredentialsCreds"
+    },
+    "sDLogInfo": {
+      "$ref": "#/definitions/istio_adapter_stackdriver_Params_LogInfo",
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.LogInfo"
+    },
+    "sDMetricInfo": {
+      "$ref": "#/definitions/istio_adapter_stackdriver_Params_MetricInfo",
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.MetricInfo"
+    },
+    "sDServiceAccountPath": {
+      "$ref": "#/definitions/istio_adapter_stackdriver_Params_ServiceAccountPath",
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.ServiceAccountPathCreds"
+    },
     "sWLogInfo": {
       "$ref": "#/definitions/istio_adapter_solarwinds_Params_LogInfo",
       "javaType": "me.snowdrop.istio.adapter.solarwinds.LogInfo"
@@ -3466,6 +3736,10 @@
     "solarWinds": {
       "$ref": "#/definitions/istio_adapter_solarwinds_Params",
       "javaType": "me.snowdrop.istio.adapter.solarwinds.Solarwinds"
+    },
+    "stackDriver": {
+      "$ref": "#/definitions/istio_adapter_stackdriver_Params",
+      "javaType": "me.snowdrop.istio.adapter.stackdriver.Stackdriver"
     },
     "stringMap": {
       "$ref": "#/definitions/istio_mixer_StringMap",

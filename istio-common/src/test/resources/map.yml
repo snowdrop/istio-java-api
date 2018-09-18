@@ -1,0 +1,8 @@
+local:
+  a:
+    aInt: 1
+  b:
+    aString: foo
+#full:
+#  x:
+#    aBoolean: true

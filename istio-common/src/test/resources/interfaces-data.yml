@@ -1,0 +1,19 @@
+classes:
+  - class: me.snowdrop.istio.api.test.Simple
+    fields:
+      aInt: integer
+      aString: string
+      aNumber: number
+      aBoolean: boolean
+  - class: me.snowdrop.istio.api.test.Interface
+    fields:
+      a: isFoo_Bar_InterfaceType
+      b: isFoo_Bar_InterfaceType
+  - class: me.snowdrop.istio.api.test.Class
+    fields:
+      simple: Simple
+      qualified: me.snowdrop.istio.api.test.Simple
+  - class: me.snowdrop.istio.api.test.Map
+    fields:
+      local: map<String, Simple>
+      full: map<String, me.snowdrop.istio.api.test.Simple>
