@@ -232,15 +232,15 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "List":
 			return pkgDesc.JavaPackage + ".BaseKubernetesList"
 		case "Duration":
-			return "me.snowdrop.istio.api.model.Duration"
+			return "me.snowdrop.istio.api.Duration"
 		case "TimeStamp":
-			return "me.snowdrop.istio.api.model.TimeStamp"
+			return "me.snowdrop.istio.api.TimeStamp"
 		case "Timestamp":
-			return "me.snowdrop.istio.api.model.TimeStamp"
+			return "me.snowdrop.istio.api.TimeStamp"
 		case "Value":
-			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+			return "me.snowdrop.istio.api.cexl.TypedValue"
 		case "AttributeValue":
-			return "me.snowdrop.istio.api.model.v1.cexl.TypedValue"
+			return "me.snowdrop.istio.api.cexl.TypedValue"
 		default:
 			return pkgDesc.JavaPackage + "." + name
 		}

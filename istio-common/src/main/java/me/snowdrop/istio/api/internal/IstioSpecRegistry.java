@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.IstioSpec;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -23,13 +23,9 @@ import me.snowdrop.istio.api.model.IstioSpec;
 public class IstioSpecRegistry {
     private static final String ISTIO_PACKAGE_PREFIX = "me.snowdrop.istio.";
 
-    private static final String ISTIO_API_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "api.model.";
+    private static final String ISTIO_API_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "api.";
 
-    private static final String ISTIO_VERSION = "v1.";
-
-    private static final String ISTIO_MIXER_PACKAGE_PREFIX = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "mixer.";
-
-    private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_MIXER_PACKAGE_PREFIX + "template.";
+    private static final String ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "mixer.template.";
 
     private static final String ISTIO_ADAPTER_PACKAGE_PREFIX = ISTIO_PACKAGE_PREFIX + "adapter.";
 
@@ -83,14 +79,14 @@ public class IstioSpecRegistry {
                 packageName = ISTIO_ADAPTER_PACKAGE_PREFIX + kind.toLowerCase() + ".";
                 break;
             case "mixer-instance":
-                packageName = ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX;
+                packageName = ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + kind.toLowerCase() + ".";
                 break;
             case "core":
-                packageName = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + "policy.";
+                packageName = ISTIO_API_PACKAGE_PREFIX + "policy.";
                 break;
             default:
                 final String group = CRDInfo.getGroup(name);
-                packageName = ISTIO_API_PACKAGE_PREFIX + ISTIO_VERSION + group + ".";
+                packageName = ISTIO_API_PACKAGE_PREFIX + group + ".";
                 /*if(!istioLabel.isEmpty() && !group.equals(istioLabel)) {
                     System.out.println(kind + " => " + istioLabel + " / proposed pkg: " + packageName);
                 }*/

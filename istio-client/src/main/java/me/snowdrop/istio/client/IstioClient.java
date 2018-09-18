@@ -7,10 +7,10 @@ import java.util.List;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import me.snowdrop.istio.api.DoneableIstioResource;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioResourceList;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
-import me.snowdrop.istio.api.model.DoneableIstioResource;
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioResourceList;
 import me.snowdrop.istio.util.Utils;
 import me.snowdrop.istio.util.YAML;
 

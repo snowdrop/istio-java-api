@@ -8,9 +8,9 @@ package me.snowdrop.istio.adapter.prometheus;
 
 import java.io.InputStream;
 
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioResourceBuilder;
-import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioResourceBuilder;
+import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 

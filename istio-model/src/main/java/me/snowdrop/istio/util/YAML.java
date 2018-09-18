@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioSpec;
 
 import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDNameFor;
 

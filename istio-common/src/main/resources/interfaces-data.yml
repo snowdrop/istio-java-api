@@ -4,37 +4,37 @@
 # isParams_Creds field creds in istio.io/istio/mixer/adapter/stackdriver/config/Params
 # isValue_Value field value in istio.io/api/policy/v1beta1/Value
 classes:
-  - class: me.snowdrop.istio.api.model.v1.networking.Abort
+  - class: me.snowdrop.istio.api.networking.Abort
     fields:
       percent: integer
       grpcStatus: isHTTPFaultInjection_Abort_ErrorType
       httpStatus: isHTTPFaultInjection_Abort_ErrorType
       http2Error: isHTTPFaultInjection_Abort_ErrorType
-  - class: me.snowdrop.istio.api.model.v1.networking.Delay
+  - class: me.snowdrop.istio.api.networking.Delay
     fields:
       percent: integer
       exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
       fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
-  - class: me.snowdrop.istio.api.model.v1.networking.LoadBalancerSettings
+  - class: me.snowdrop.istio.api.networking.LoadBalancerSettings
     fields:
       simple: isLoadBalancerSettings_LbPolicy
       consitentHash: isLoadBalancerSettings_LbPolicy
-  - class: me.snowdrop.istio.api.model.v1.networking.PortSelector
+  - class: me.snowdrop.istio.api.networking.PortSelector
     fields:
       name: isPortSelector_Port
       number: isPortSelector_Port
-  - class: me.snowdrop.istio.api.model.v1.networking.StringMatch
+  - class: me.snowdrop.istio.api.networking.StringMatch
     fields:
       exact: isStringMatch_MatchType
       prefix: isStringMatch_MatchType
       regex: isStringMatch_MatchType
-  - class: me.snowdrop.istio.api.model.v1.networking.ConsistentHashLB
+  - class: me.snowdrop.istio.api.networking.ConsistentHashLB
     fields:
       httpHeaderName: isLoadBalancerSettings_ConsistentHashLB_HashKey
       httpCookie: isLoadBalancerSettings_ConsistentHashLB_HashKey
       minimumRingSize: integer
       useSourceIp: isLoadBalancerSettings_ConsistentHashLB_HashKey
-  - class: me.snowdrop.istio.api.model.v1.authentication.PeerAuthenticationMethod
+  - class: me.snowdrop.istio.api.authentication.PeerAuthenticationMethod
     fields:
       jwt: isPeerAuthenticationMethod_Params
       mtls: isPeerAuthenticationMethod_Params

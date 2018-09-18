@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-SCHEMA_DIR=${PWD}/istio-model/src/main/resources/schema
 DECL_DIR=${PWD}/istio-common/src/main/resources
 ADAPTER_CRDS=${DECL_DIR}/adapter_crds.properties
 TEMPLATE_CRDS=${DECL_DIR}/template_crds.properties
@@ -16,6 +15,10 @@ sed -e '/##/q' ${PACKAGES_CSV} > ${PACKAGES_CSV}.new
 rm ${PACKAGES_CSV}
 mv ${PACKAGES_CSV}.new ${PACKAGES_CSV}
 
+if [[ -z "$GOPATH" ]]; then
+    echo "You must set and export your GOPATH environment variable to use this script!"
+    exit 1
+fi
 
 pushd ${GOPATH}/src > /dev/null
 ls -d istio.io/api/*/v* > ${APIS_TMP}
