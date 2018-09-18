@@ -155,7 +155,7 @@ func (g *schemaGenerator) generateReference(t reflect.Type) string {
 func (g *schemaGenerator) generateEnumTypeAccumulatingUnknown(t string, humanReadableFieldName string) (string, string) {
 	enum, ok := g.enumMap[t]
 	if !ok {
-		g.unknownEnums = append(g.unknownEnums, humanReadableFieldName)
+		g.unknownEnums = append(g.unknownEnums, humanReadableFieldName+". Add "+t+" to generate.generate.enumMap.")
 	}
 
 	return g.generateReferenceFrom(escapedQualifiedName(enum)), enum
