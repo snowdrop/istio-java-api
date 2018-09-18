@@ -15,7 +15,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/protobuf_types_Any",
-            "javaType": "me.snowdrop.istio.api.model.Any"
+            "javaType": "me.snowdrop.istio.api.Any"
           }
         },
         "message": {
@@ -24,7 +24,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Status"
+      "javaType": "me.snowdrop.istio.api.Status"
     },
     "istio_adapter_circonus_Params": {
       "type": "object",
@@ -72,7 +72,7 @@
       "properties": {
         "status": {
           "$ref": "#/definitions/google_rpc_Status",
-          "javaType": "me.snowdrop.istio.api.model.Status"
+          "javaType": "me.snowdrop.istio.api.Status"
         },
         "validDuration": {
           "type": "integer",
@@ -714,7 +714,7 @@
         },
         "connectTimeout": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "defaultConfig": {
           "$ref": "#/definitions/istio_mesh_ProxyConfig",
@@ -769,11 +769,11 @@
         },
         "rdsRefreshDelay": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "sdsRefreshDelay": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "sdsUdsPath": {
           "type": "string",
@@ -816,7 +816,7 @@
         },
         "connectTimeout": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "controlPlaneAuthPolicy": {
           "javaType": "me.snowdrop.istio.api.mesh.AuthenticationPolicy"
@@ -831,18 +831,18 @@
         },
         "discoveryRefreshDelay": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "drainDuration": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "interceptionMode": {
           "javaType": "me.snowdrop.istio.api.mesh.InboundInterceptionMode"
         },
         "parentShutdownDuration": {
           "$ref": "#/definitions/protobuf_duration_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "proxyAdminPort": {
           "type": "integer",
@@ -982,7 +982,7 @@
         },
         "status": {
           "$ref": "#/definitions/google_rpc_Status",
-          "javaType": "me.snowdrop.istio.api.model.Status"
+          "javaType": "me.snowdrop.istio.api.Status"
         },
         "validDuration": {
           "type": "integer",
@@ -1284,7 +1284,7 @@
         },
         "timestamp": {
           "$ref": "#/definitions/istio_policy_TimeStamp",
-          "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+          "javaType": "me.snowdrop.istio.api.TimeStamp"
         }
       },
       "additionalProperties": true,
@@ -1430,7 +1430,7 @@
         },
         "timestamp": {
           "$ref": "#/definitions/istio_policy_TimeStamp",
-          "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+          "javaType": "me.snowdrop.istio.api.TimeStamp"
         }
       },
       "additionalProperties": true,
@@ -1479,7 +1479,7 @@
         },
         "timestamp": {
           "$ref": "#/definitions/istio_policy_TimeStamp",
-          "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+          "javaType": "me.snowdrop.istio.api.TimeStamp"
         },
         "variables": {
           "type": "object",
@@ -1575,7 +1575,7 @@
         },
         "endTime": {
           "$ref": "#/definitions/istio_policy_TimeStamp",
-          "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+          "javaType": "me.snowdrop.istio.api.TimeStamp"
         },
         "httpStatusCode": {
           "type": "integer",
@@ -1613,7 +1613,7 @@
         },
         "startTime": {
           "$ref": "#/definitions/istio_policy_TimeStamp",
-          "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+          "javaType": "me.snowdrop.istio.api.TimeStamp"
         },
         "traceId": {
           "type": "string",
@@ -1669,7 +1669,7 @@
       "properties": {
         "connectTimeout": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "maxConnections": {
           "type": "integer",
@@ -1685,7 +1685,7 @@
       "properties": {
         "allowCredentials": {
           "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.model.BoolValue"
+          "javaType": "me.snowdrop.istio.api.BoolValue"
         },
         "allowHeaders": {
           "type": "array",
@@ -1721,7 +1721,7 @@
         },
         "maxAge": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
       "additionalProperties": true,
@@ -1818,7 +1818,7 @@
       "properties": {
         "filterConfig": {
           "$ref": "#/definitions/protobuf_types_Struct",
-          "javaType": "me.snowdrop.istio.api.model.Struct"
+          "javaType": "me.snowdrop.istio.api.Struct"
         },
         "filterName": {
           "type": "string",
@@ -2011,7 +2011,7 @@
       "properties": {
         "exponentialDelay": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
       "additionalProperties": true,
@@ -2026,7 +2026,7 @@
       "properties": {
         "fixedDelay": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
       "additionalProperties": true,
@@ -2112,7 +2112,7 @@
         },
         "perTryTimeout": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
       "additionalProperties": true,
@@ -2197,7 +2197,7 @@
         },
         "timeout": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "websocketUpgrade": {
           "type": "boolean",
@@ -2375,7 +2375,7 @@
       "properties": {
         "baseEjectionTime": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "consecutiveErrors": {
           "type": "integer",
@@ -2383,7 +2383,7 @@
         },
         "interval": {
           "$ref": "#/definitions/protobuf_types_Duration",
-          "javaType": "me.snowdrop.istio.api.model.Duration"
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "maxEjectionPercent": {
           "type": "integer",
@@ -2958,11 +2958,11 @@
       "properties": {
         "value": {
           "$ref": "#/definitions/protobuf_types_Timestamp",
-          "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+          "javaType": "me.snowdrop.istio.api.TimeStamp"
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+      "javaType": "me.snowdrop.istio.api.TimeStamp"
     },
     "istio_policy_Value": {
       "type": "object",
@@ -3131,7 +3131,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Duration"
+      "javaType": "me.snowdrop.istio.api.Duration"
     },
     "protobuf_types_Any": {
       "type": "object",
@@ -3147,7 +3147,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Any"
+      "javaType": "me.snowdrop.istio.api.Any"
     },
     "protobuf_types_BoolValue": {
       "type": "object",
@@ -3159,7 +3159,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.BoolValue"
+      "javaType": "me.snowdrop.istio.api.BoolValue"
     },
     "protobuf_types_Duration": {
       "type": "object",
@@ -3176,7 +3176,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Duration"
+      "javaType": "me.snowdrop.istio.api.Duration"
     },
     "protobuf_types_Struct": {
       "type": "object",
@@ -3193,7 +3193,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.Struct"
+      "javaType": "me.snowdrop.istio.api.Struct"
     },
     "protobuf_types_Timestamp": {
       "type": "object",
@@ -3210,14 +3210,14 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "me.snowdrop.istio.api.model.TimeStamp"
+      "javaType": "me.snowdrop.istio.api.TimeStamp"
     },
     "protobuf_types_Value": {
       "type": "object",
       "description": "",
       "properties": {
         "kind": {
-          "javaType": "me.snowdrop.istio.api.model.Kind",
+          "javaType": "me.snowdrop.istio.api.Kind",
           "isInterface": true
         }
       },

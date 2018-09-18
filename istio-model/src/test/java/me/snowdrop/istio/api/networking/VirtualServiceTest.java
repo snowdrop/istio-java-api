@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioResourceBuilder;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import me.snowdrop.istio.util.YAML;
 import org.junit.Test;

@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.authentication.Policy;
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioSpec;
 import me.snowdrop.istio.api.networking.DestinationRule;
 import me.snowdrop.istio.api.networking.VirtualService;
 import me.snowdrop.istio.api.policy.Rule;

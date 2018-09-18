@@ -123,7 +123,7 @@
         <version>${jsonschema2pojo.version}</version>
         <configuration>
           <sourceDirectory>${schema.dir}</sourceDirectory>
-          <targetPackage>me.snowdrop.istio.api.model</targetPackage>
+          <targetPackage>me.snowdrop.istio.api</targetPackage>
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>true</includeJsr303Annotations>
           <includeToString>false</includeToString>
@@ -160,9 +160,9 @@
             <configuration>
               <target>
                 <echo>removing the duplicate / useless generated classes</echo>
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/Duration.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/IstioSchema.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/TimeStamp.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/Duration.java" verbose="true"/>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/IstioSchema.java" verbose="true"/>
+                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/TimeStamp.java" verbose="true"/>
                 <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/model/v1/cexl/TypedValue.java" verbose="true" />
               </target>
             </configuration>

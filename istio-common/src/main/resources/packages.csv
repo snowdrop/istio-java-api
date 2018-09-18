@@ -1,7 +1,7 @@
-github.com/golang/protobuf/ptypes/duration        ,me.snowdrop.istio.api.model                   ,protobuf_duration_
-github.com/gogo/protobuf/types                    ,me.snowdrop.istio.api.model                   ,protobuf_types_
-github.com/golang/protobuf/ptypes/any             ,me.snowdrop.istio.api.model                   ,protobuf_any_
-github.com/gogo/googleapis/google/rpc             ,me.snowdrop.istio.api.model                   ,google_rpc_
+github.com/golang/protobuf/ptypes/duration        ,me.snowdrop.istio.api                         ,protobuf_duration_
+github.com/gogo/protobuf/types                    ,me.snowdrop.istio.api                         ,protobuf_types_
+github.com/golang/protobuf/ptypes/any             ,me.snowdrop.istio.api                         ,protobuf_any_
+github.com/gogo/googleapis/google/rpc             ,me.snowdrop.istio.api                         ,google_rpc_
 ## END MANUAL DEFINITIONS
 # api
 istio.io/api/authentication/v1alpha1              ,me.snowdrop.istio.api.authentication          ,istio_authentication_

@@ -6,7 +6,7 @@
  */
 package me.snowdrop.istio.api.internal;
 
-import static me.snowdrop.istio.api.internal.IstioSpecRegistry.resolveIstioSpecForKind;
+import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,9 +15,10 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import java.io.IOException;
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioSpec;
+
+import static me.snowdrop.istio.api.internal.IstioSpecRegistry.resolveIstioSpecForKind;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>

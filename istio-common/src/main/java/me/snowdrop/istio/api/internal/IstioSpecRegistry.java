@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import me.snowdrop.istio.api.model.IstioSpec;
+import me.snowdrop.istio.api.IstioSpec;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>

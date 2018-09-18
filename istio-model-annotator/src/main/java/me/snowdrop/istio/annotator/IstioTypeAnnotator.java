@@ -27,10 +27,10 @@ import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
 import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
-import me.snowdrop.istio.api.model.IstioSpec;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 

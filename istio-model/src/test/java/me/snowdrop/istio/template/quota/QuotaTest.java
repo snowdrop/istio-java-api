@@ -18,9 +18,9 @@
  */
 package me.snowdrop.istio.template.quota;
 
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioResourceBuilder;
 import me.snowdrop.istio.api.model.v1.cexl.TypedValue;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;

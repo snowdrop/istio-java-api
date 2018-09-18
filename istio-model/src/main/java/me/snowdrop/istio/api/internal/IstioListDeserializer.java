@@ -6,6 +6,9 @@
  */
 package me.snowdrop.istio.api.internal;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -13,11 +16,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.ListMeta;
-import me.snowdrop.istio.api.model.IstioResource;
-import me.snowdrop.istio.api.model.IstioResourceList;
-
-import java.io.IOException;
-import java.util.ArrayList;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.IstioResourceList;
 
 
 /**

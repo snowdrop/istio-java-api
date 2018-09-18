@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
-import me.snowdrop.istio.api.model.Duration;
+import me.snowdrop.istio.api.Duration;
 
 /**
  * ValueType describes the types that values in the Istio system can take. These
