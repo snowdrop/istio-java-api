@@ -21,6 +21,7 @@ package me.snowdrop.istio.api.internal;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -32,8 +33,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import static me.snowdrop.istio.api.internal.InterfacesRegistry.getFieldInfo;
 
@@ -101,10 +100,17 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
                         final String valueType = mapFieldInfo.valueType();
                         final String type = getFieldClassFQN(targetClass, valueType);
                         try {
+                            // load class of the field
                             final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
-                            TypeFactory typeFactory = ctxt.getTypeFactory();
-                            MapType mapType = typeFactory.constructMapType(Map.class, String.class, fieldClass);
-                            deserialized = p.getCodec().readValue(p, mapType);
+                            // deserialize the current value as an untyped Map
+                            final Map<String, Object> map = p.getCodec().treeToValue(value, Map.class);
+
+                            // we know the type of each entry, so ask Jackson to parse them individually
+                            deserialized = new LinkedHashMap(map.size());
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                final Object o = p.getCodec().treeToValue(value.get(entry.getKey()), fieldClass);
+                                ((Map) deserialized).put(entry.getKey(), o);
+                            }
                         } catch (ClassNotFoundException e) {
                             throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName +
                                     "' on '" + targetClassName + "' class. Full type was " + mapFieldInfo, e);

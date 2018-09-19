@@ -3,6 +3,6 @@ local:
     aInt: 1
   b:
     aString: foo
-#full:
-#  x:
-#    aBoolean: true
+full:
+  x:
+    aBoolean: true

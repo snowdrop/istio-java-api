@@ -76,7 +76,7 @@ public class ClassWithInterfaceFieldsDeserializerTest {
         assertThat(value.local.get("b").aInt).isEqualTo(0);
         assertThat(value.local.get("b").aString).isEqualTo("foo");
         assertThat(value.local.get("x")).isNull();
-        assertThat(value.full.get("x").aBoolean).isEqualTo(false);
+        assertThat(value.full.get("x").aBoolean).isEqualTo(true);
     }
 
 }
