@@ -35,15 +35,15 @@ public class InterfacesRegistryTest {
         assertThat(knownClasses).isNotEmpty();
         assertThat(knownClasses).size().isEqualTo(4);
         assertThat(knownClasses).contains(
-                "me.snowdrop.istio.api.internal.Simple",
-                "me.snowdrop.istio.api.internal.Interface",
-                "me.snowdrop.istio.api.internal.Class",
-                "me.snowdrop.istio.api.internal.Map");
+                "me.snowdrop.istio.api.test.Simple",
+                "me.snowdrop.istio.api.test.Interface",
+                "me.snowdrop.istio.api.test.Class",
+                "me.snowdrop.istio.api.test.Map");
     }
 
     @Test
     public void simpleClassShouldDefineSimpleFields() {
-        final String targetClassName = "me.snowdrop.istio.api.internal.Simple";
+        final String targetClassName = "me.snowdrop.istio.api.test.Simple";
         checkFieldFor(targetClassName, "aInt", "aInt", "integer");
         checkFieldFor(targetClassName, "aNumber", "aNumber", "number");
         checkFieldFor(targetClassName, "aString", "aString", "string");
