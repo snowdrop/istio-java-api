@@ -44,6 +44,8 @@ import (
 	opa "istio.io/istio/mixer/adapter/opa/config"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
+	//servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
+	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
@@ -112,10 +114,15 @@ type Schema struct {
 	LinearBucketsDefinition      prometheus.Params_MetricInfo_BucketsDefinition_LinearBuckets
 	ExponentialBucketsDefinition prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
 	//ServiceControl servicecontrol.Params
-	SolarWinds   solarwinds.Params
-	SWLogInfo    solarwinds.Params_LogInfo
-	SWMetricInfo solarwinds.Params_MetricInfo
-	//StackDriver	stackdriver.Params
+	SolarWinds           solarwinds.Params
+	SWLogInfo            solarwinds.Params_LogInfo
+	SWMetricInfo         solarwinds.Params_MetricInfo
+	StackDriver          stackdriver.Params
+	SDLogInfo            stackdriver.Params_LogInfo
+	SDMetricInfo         stackdriver.Params_MetricInfo
+	SDApiKey             stackdriver.Params_ApiKey
+	SDAppCredentials     stackdriver.Params_AppCredentials
+	SDServiceAccountPath stackdriver.Params_ServiceAccountPath
 	//Statsd        statsd.Params
 	//Stdio         stdio.Params
 	APIKey        apikey.InstanceMsg
@@ -201,7 +208,7 @@ func loadInterfacesData() (map[string]string, map[string]string) {
 	impls := make(map[string]string)
 	interfaces := make(map[string]string)
 
-	path := "istio-common/src/main/resources/interfaces-data.yml"
+	path := "istio-common/src/main/resources/classes-with-interface-fields.yml"
 	source, err := ioutil.ReadFile(path)
 	if err != nil {
 		panic(err)
@@ -275,6 +282,8 @@ func main() {
 		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.rbac.EnforcementMode",
 		"istio.authentication.v1alpha1.PrincipalBinding":                       "me.snowdrop.istio.api.authentication.PrincipalBinding",
 		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.authentication.Mode",
+		"google.api.MetricDescriptor_MetricKind":                               "me.snowdrop.istio.adapter.stackdriver.MetricKind",
+		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.adapter.stackdriver.ValueType",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)

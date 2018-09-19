@@ -89,7 +89,11 @@
 [[projects]]
   branch = "master"
   name = "google.golang.org/genproto"
-  packages = ["googleapis/rpc/status"]
+  packages = [
+    "googleapis/api/label",
+    "googleapis/api/metric",
+    "googleapis/rpc/status"
+  ]
   revision = "7bb2a897381c9c5ab2aeb8614f758d7766af68ff"
 
 [[projects]]
@@ -155,6 +159,7 @@
     "mixer/adapter/opa/config",
     "mixer/adapter/prometheus/config",
     "mixer/adapter/solarwinds/config",
+    "mixer/adapter/stackdriver/config",
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
     "mixer/pkg/status",
@@ -175,6 +180,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "861917900b92927b2fab913158d98d3b6515c4c8a22290052af2f87528ca1c9a"
+  inputs-digest = "c9581638477fd10a12d2a4c32eeb5509e591dd412c3f94093df263f3ce20a843"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -1,0 +1,4 @@
+simple:
+  aString: simple
+qualified:
+  aBoolean: false

@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static me.snowdrop.istio.api.internal.InterfacesRegistry.getFieldInfo;
+import static me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsRegistry.getFieldInfo;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -74,40 +74,16 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
             final Map.Entry<String, JsonNode> field = fields.next();
             final String fieldName = field.getKey();
 
-            final InterfacesRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
+            final ClassWithInterfaceFieldsRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
 
-            Object deserialized;
-            final JsonNode value = field.getValue();
-
-            switch (info.type) {
-                case "integer":
-                    deserialized = value.intValue();
-                    break;
-                case "string":
-                    deserialized = value.textValue();
-                    break;
-                case "number":
-                    deserialized = value.doubleValue();
-                    break;
-                case "boolean":
-                    deserialized = value.booleanValue();
-                    break;
-                default:
-                    final String type = targetClass.getPackage().getName() + '.' + info.type;
-                    try {
-                        final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
-                        deserialized = p.getCodec().treeToValue(node, fieldClass);
-                    } catch (ClassNotFoundException | JsonProcessingException e) {
-                        throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClassName + "' class", e);
-                    }
-            }
+            Object deserialized = info.deserialize(node, fieldName, targetClass, ctxt);
 
             try {
-                final Field targetClassField = targetClass.getDeclaredField(info.target);
+                final Field targetClassField = targetClass.getDeclaredField(info.target());
                 targetClassField.setAccessible(true);
                 targetClassField.set(result, deserialized);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new RuntimeException("Couldn't assign '" + deserialized + "' to '" + info.target
+                throw new RuntimeException("Couldn't assign '" + deserialized + "' to '" + info.target()
                         + "' target field on '" + targetClassName + "' class", e);
             }
         }
@@ -117,7 +93,8 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        final Class<?> classToDeserialize = property.getType().getRawClass();
+        final Class<?> classToDeserialize = property != null ? property.getType().getRawClass() :
+                ctxt.getContextualType().getRawClass();
         return new ClassWithInterfaceFieldsDeserializer(classToDeserialize.getName());
     }
 
