@@ -41,7 +41,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class ClassWithInterfaceFieldsRegistry {
-    private static final Map<String, Map<String, String>> classNameToFieldInfos = new HashMap<>();
+    private static final Map<String, Map<String, FieldInfo>> classNameToFieldInfos = new HashMap<>();
 
     private static final Set<String> supportedSimpleTypes = new HashSet<>();
 
@@ -49,13 +49,49 @@ public class ClassWithInterfaceFieldsRegistry {
         Collections.addAll(supportedSimpleTypes, "integer", "string", "number", "boolean");
     }
 
+    private static class Classes {
+        @JsonProperty
+        private List<ClassInfo> classes;
+    }
+
+    private static class ClassInfo {
+        @JsonProperty("class")
+        private String className;
+
+        @JsonProperty
+        private Map<String, String> fields;
+    }
     static {
         // load interfaces information
         YAMLMapper mapper = new YAMLMapper();
         final InputStream dataIs = Thread.currentThread().getContextClassLoader().getResourceAsStream("classes-with-interface-fields.yml");
         try {
             final Classes classes = mapper.readValue(dataIs, Classes.class);
-            classes.classes.forEach(ci -> classNameToFieldInfos.put(ci.className, ci.fields));
+            classes.classes.forEach(ci -> {
+                final Map<String, FieldInfo> infos = new HashMap<>(ci.fields.size());
+                for (Map.Entry<String, String> entry : ci.fields.entrySet()) {
+                    final String type = entry.getValue();
+                    final String fieldName = entry.getKey();
+
+                    FieldInfo info;
+                    if (supportedSimpleTypes.contains(type)) {
+                        info = new FieldInfo(fieldName, type);
+                    } else if (type.startsWith("is")) {
+                        final String interfaceName = type.substring(type.lastIndexOf('_') + 1);
+                        final String target = interfaceName.substring(0, 1).toLowerCase() + interfaceName.substring(1);
+                        final String impl = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+
+                        info = new InterfaceFieldInfo(target, impl + interfaceName);
+                    } else if (type.startsWith("map")) {
+                        info = new MapFieldInfo(fieldName, type);
+                    } else {
+                        info = new ObjectFieldInfo(fieldName, type);
+                    }
+
+                    infos.put(fieldName, info);
+                }
+                classNameToFieldInfos.put(ci.className, infos);
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -70,41 +106,16 @@ public class ClassWithInterfaceFieldsRegistry {
      * @return
      */
     static FieldInfo getFieldInfo(String targetClassName, String fieldName) {
-        final String type = classNameToFieldInfos.getOrDefault(targetClassName, Collections.emptyMap()).get(fieldName);
-        if (type == null) {
+        final FieldInfo info = classNameToFieldInfos.getOrDefault(targetClassName, Collections.emptyMap()).get(fieldName);
+        if (info == null) {
             throw new IllegalArgumentException("Unknown field '" + fieldName + "'");
         }
 
-        if (type.startsWith("is")) {
-            final String interfaceName = type.substring(type.lastIndexOf('_') + 1);
-            final String target = interfaceName.substring(0, 1).toLowerCase() + interfaceName.substring(1);
-            final String impl = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-
-            return new InterfaceFieldInfo(target, impl + interfaceName);
-        } else if (type.startsWith("map")) {
-            return new MapFieldInfo(fieldName, type);
-        } else if (supportedSimpleTypes.contains(type)) {
-            return new FieldInfo(fieldName, type);
-        } else {
-            return new ObjectFieldInfo(fieldName, type);
-        }
+        return info;
     }
 
     static Set<String> getKnownClasses() {
         return Collections.unmodifiableSet(classNameToFieldInfos.keySet());
-    }
-
-    private static class Classes {
-        @JsonProperty
-        private List<ClassInfo> classes;
-    }
-
-    private static class ClassInfo {
-        @JsonProperty("class")
-        private String className;
-
-        @JsonProperty
-        private Map<String, String> fields;
     }
 
     static class FieldInfo {
