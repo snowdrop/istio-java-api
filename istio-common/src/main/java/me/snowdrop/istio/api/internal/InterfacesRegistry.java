@@ -52,7 +52,7 @@ public class InterfacesRegistry {
     static {
         // load interfaces information
         YAMLMapper mapper = new YAMLMapper();
-        final InputStream dataIs = Thread.currentThread().getContextClassLoader().getResourceAsStream("interfaces-data.yml");
+        final InputStream dataIs = Thread.currentThread().getContextClassLoader().getResourceAsStream("classes-with-interface-fields.yml");
         try {
             final Classes classes = mapper.readValue(dataIs, Classes.class);
             classes.classes.forEach(ci -> classNameToFieldInfos.put(ci.className, ci.fields));
