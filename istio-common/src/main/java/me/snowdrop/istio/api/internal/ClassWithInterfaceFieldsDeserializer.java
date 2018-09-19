@@ -32,7 +32,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
@@ -54,7 +53,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
     public ClassWithInterfaceFieldsDeserializer() {
     }
 
-    ClassWithInterfaceFieldsDeserializer(String targetClassName) {
+    private ClassWithInterfaceFieldsDeserializer(String targetClassName) {
         this.targetClassName = targetClassName;
     }
 
@@ -83,54 +82,8 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
 
             final InterfacesRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
 
-            Object deserialized;
-            final JsonNode value = field.getValue();
-
-            switch (info.type()) {
-                case "integer":
-                    deserialized = value.intValue();
-                    break;
-                case "string":
-                    deserialized = value.textValue();
-                    break;
-                case "number":
-                    deserialized = value.doubleValue();
-                    break;
-                case "boolean":
-                    deserialized = value.booleanValue();
-                    break;
-                default:
-                    if (info instanceof InterfacesRegistry.MapFieldInfo) {
-                        InterfacesRegistry.MapFieldInfo mapFieldInfo = (InterfacesRegistry.MapFieldInfo) info;
-                        // deal with map types
-                        final String valueType = mapFieldInfo.valueType();
-                        final String type = getFieldClassFQN(targetClass, valueType);
-                        try {
-                            // load class of the field
-                            final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
-                            // create a map type matching the type of the field from the mapping information
-                            MapType mapType = factory.constructMapType(Map.class, String.class, fieldClass);
-                            // get a parser taking the current value as root
-                            final JsonParser traverse = value.traverse(p.getCodec());
-                            // and use it to deserialize the subtree as the map type we just created
-                            deserialized = mapper.readValue(traverse, mapType);
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName +
-                                    "' on '" + targetClassName + "' class. Full type was " + mapFieldInfo, e);
-                        }
-                    } else {
-                        final String type = getFieldClassFQN(targetClass, info.type());
-                        try {
-                            final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
-                            final ObjectNode targetNode = info instanceof InterfacesRegistry.InterfaceFieldInfo ? node :
-                                    (ObjectNode) node.get(fieldName);
-                            deserialized = p.getCodec().treeToValue(targetNode, fieldClass);
-                        } catch (ClassNotFoundException | JsonProcessingException e) {
-                            throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClassName + "' class", e);
-                        }
-                    }
-            }
-
+            Object deserialized = info.deserialize(node, fieldName, targetClass, ctxt);
+            
             try {
                 final Field targetClassField = targetClass.getDeclaredField(info.target());
                 targetClassField.setAccessible(true);
@@ -142,12 +95,6 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
         }
 
         return result;
-    }
-
-    private String getFieldClassFQN(Class targetClass, String type) {
-        // if type contains a '.', we have a fully qualified target type so use it, otherwise use the target
-        // class package
-        return type.contains(".") ? type : targetClass.getPackage().getName() + '.' + type;
     }
 
     @Override

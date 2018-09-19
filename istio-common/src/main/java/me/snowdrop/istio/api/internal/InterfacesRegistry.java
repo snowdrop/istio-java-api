@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,13 +30,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class InterfacesRegistry {
-    private static Map<String, Map<String, String>> classNameToFieldInfos = new HashMap<>();
+    private static final Map<String, Map<String, String>> classNameToFieldInfos = new HashMap<>();
+
+    private static final Set<String> supportedSimpleTypes = new HashSet<>();
+
+    static {
+        Collections.addAll(supportedSimpleTypes, "integer", "string", "number", "boolean");
+    }
 
     static {
         // load interfaces information
@@ -71,8 +83,10 @@ public class InterfacesRegistry {
             return new InterfaceFieldInfo(target, impl + interfaceName);
         } else if (type.startsWith("map")) {
             return new MapFieldInfo(fieldName, type);
-        } else {
+        } else if (supportedSimpleTypes.contains(type)) {
             return new FieldInfo(fieldName, type);
+        } else {
+            return new ObjectFieldInfo(fieldName, type);
         }
     }
 
@@ -110,10 +124,25 @@ public class InterfacesRegistry {
         public String type() {
             return type;
         }
+
+        Object deserialize(JsonNode node, String fieldName, Class targetClass, DeserializationContext ctxt) throws IOException {
+            final JsonNode value = node.get(fieldName);
+            switch (type()) {
+                case "integer":
+                    return value.intValue();
+                case "string":
+                    return value.textValue();
+                case "number":
+                    return value.doubleValue();
+                case "boolean":
+                    return value.booleanValue();
+                default:
+                    throw new IllegalArgumentException("Unknown simple type '" + type + "'");
+            }
+        }
     }
 
     static class MapFieldInfo extends FieldInfo {
-
         private static final Pattern MAP_PATTERN = Pattern.compile("\\s*map<([^,]*),([^)]*)>");
 
         private final String keyType;
@@ -146,11 +175,60 @@ public class InterfacesRegistry {
         public String valueType() {
             return valueType;
         }
+
+        Object deserialize(JsonNode node, String fieldName, Class targetClass, DeserializationContext ctxt) throws IOException {
+            final String type = getFieldClassFQN(targetClass, valueType);
+            try {
+                // load class of the field
+                final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
+                // create a map type matching the type of the field from the mapping information
+                final YAMLMapper codec = (YAMLMapper) ctxt.getParser().getCodec();
+                MapType mapType = codec.getTypeFactory().constructMapType(Map.class, String.class, fieldClass);
+                // get a parser taking the current value as root
+                final JsonParser traverse = node.get(fieldName).traverse(codec);
+                // and use it to deserialize the subtree as the map type we just created
+                return codec.readValue(traverse, mapType);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName +
+                        "' on '" + targetClass.getName() + "' class. Full type was " + this, e);
+            }
+        }
     }
 
-    static class InterfaceFieldInfo extends FieldInfo {
+    static class ObjectFieldInfo extends FieldInfo {
+        private ObjectFieldInfo(String target, String type) {
+            super(target, type);
+        }
+
+        Object deserialize(JsonNode node, String fieldName, Class targetClass, DeserializationContext ctxt) throws IOException {
+            final String type = getFieldClassFQN(targetClass, type());
+            try {
+                final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
+                return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
+            } catch (ClassNotFoundException | JsonProcessingException e) {
+                throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClass.getName() + "' class", e);
+            }
+        }
+
+        protected JsonNode getTargetNode(JsonNode node, String fieldName) {
+            return node.get(fieldName);
+        }
+    }
+
+    static class InterfaceFieldInfo extends ObjectFieldInfo {
         private InterfaceFieldInfo(String target, String type) {
             super(target, type);
         }
+
+        @Override
+        protected JsonNode getTargetNode(JsonNode node, String fieldName) {
+            return node;
+        }
+    }
+
+    private static String getFieldClassFQN(Class targetClass, String type) {
+        // if type contains a '.', we have a fully qualified target type so use it, otherwise use the target
+        // class package
+        return type.contains(".") ? type : targetClass.getPackage().getName() + '.' + type;
     }
 }
