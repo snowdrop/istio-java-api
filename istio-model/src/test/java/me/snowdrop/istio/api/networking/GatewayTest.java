@@ -1,6 +1,5 @@
 package me.snowdrop.istio.api.networking;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,15 +33,13 @@ spec:
 
     @Test
     public void checkBasicGateway() throws Exception {
-        Map<String, String> selectorMap = new HashMap<>();
-        selectorMap.put("istio","ingressgateway");
         final IstioResource gateway = new IstioResourceBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()
                 .withNewGatewaySpec()
-                .withSelector(selectorMap)
+                .addToSelector("istio", "ingressgateway")
                 .withServers(new me.snowdrop.istio.api.networking.ServerBuilder()
                         .withNewPort("http", 80, "HTTP")
                         .withHosts("httpbin.example.com")
@@ -86,15 +83,13 @@ spec:
 
     @Test
     public void roundtripBasicGatewayShouldWork() throws Exception {
-        Map<String, String> selectorMap = new HashMap<>();
-        selectorMap.put("istio","ingressgateway");
         final IstioResource gateway = new IstioResourceBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()
                 .withNewGatewaySpec()
-                .withSelector(selectorMap)
+                .addToSelector("istio", "ingressgateway")
                 .withServers(new me.snowdrop.istio.api.networking.ServerBuilder()
                         .withNewPort("http", 80, "HTTP")
                         .withHosts("httpbin.example.com")
