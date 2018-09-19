@@ -32,8 +32,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 import static me.snowdrop.istio.api.internal.InterfacesRegistry.getFieldInfo;
 
@@ -42,10 +40,6 @@ import static me.snowdrop.istio.api.internal.InterfacesRegistry.getFieldInfo;
  */
 public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer implements ContextualDeserializer {
     private String targetClassName;
-
-    private static final YAMLMapper mapper = new YAMLMapper();
-
-    private static final TypeFactory factory = mapper.getTypeFactory();
 
     /*
      * Needed by Jackson
@@ -83,7 +77,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
             final InterfacesRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
 
             Object deserialized = info.deserialize(node, fieldName, targetClass, ctxt);
-            
+
             try {
                 final Field targetClassField = targetClass.getDeclaredField(info.target());
                 targetClassField.setAccessible(true);
