@@ -7,14 +7,61 @@ jobs:
     - checkout
 
     - run:
-        name: Build and test
+        name: Launch Openshift with Istio
         command: |
-          GO_PATH_FIRST=$(echo ${GOPATH} | cut -d ":" -f1)
-          PROJECT_PATH=src/github.com/snowdrop/istio-java-api
-          mkdir -p ${GO_PATH_FIRST}/${PROJECT_PATH}
-          cp -R . ${GO_PATH_FIRST}/${PROJECT_PATH}
-          cd ${GO_PATH_FIRST}/${PROJECT_PATH}
-          make
+          kube_version=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
+              chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+          echo "Installed kubectl CLI tool"
+
+          istiooc_version="v3.10.0%2Bmaistra-0.1.0-4"
+          curl -LO https://github.com/Maistra/origin/releases/download/${istiooc_version}/istiooc_linux && \
+              chmod +x $PWD/istiooc_linux && sudo mv $PWD/istiooc_linux /usr/local/bin/oc && \
+          echo "Installed istiooc CLI tool"
+
+          tmp=`mktemp`
+          echo 'DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 172.30.0.0/16  --insecure-registry registry.access.redhat.com"' > ${tmp}
+          sudo mv ${tmp} /etc/default/docker
+          sudo mount --make-shared /
+          sudo service docker restart
+          echo "Configured Docker daemon with insecure-registry"
+
+          oc cluster up --enable='*,-web-console,-persistent-volumes,-registry,-sample-templates'
+
+          oc login -u system:admin
+          oc new-project istio-system
+
+          # make sure the Istio components have the appropriate permissions to run
+          oc adm policy add-scc-to-user anyuid -z istio-galley-service-account -n istio-system
+          oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account -n istio-system
+          oc adm policy add-scc-to-user anyuid -z istio-mixer-service-account -n istio-system
+          oc adm policy add-scc-to-user privileged -z istio-galley-service-account -n istio-system
+          oc adm policy add-scc-to-user privileged -z istio-pilot-service-account -n istio-system
+          oc adm policy add-scc-to-user privileged -z istio-pilot-service-account -n istio-system
+
+          # perform actual Istio deployment
+          oc apply -f .circleci/crds.yaml
+          oc apply -f .circleci/istio.yaml
+
+          sleep 30
+
+          # wait for the istio components to stand up
+          timeout 300s bash -c 'while [[ $(oc get pod -l istio=galley  -n istio-system -o json | jq ".items[0].status.phase") == "Running" ]]; do sleep 20; done; echo ""'
+
+          # Configure webhook
+          uid=$(oc get deployment -n istio-system istio-galley -o yaml 2>&1 | grep -w uid | awk '{print $2}')
+          sed -i "s/DEPLOYMENT_UID/${uid}/g" .circleci/webhook-config.yaml
+          oc apply -f .circleci/webhook-config.yaml
+
+          # create the project were the tests will execute
+          oc new-project test
+
+          echo "Configured OpenShift cluster with Istio 1.0.x"
+
+    - run:
+        name: Build project
+        command: |
+          ./mvnw clean install -Pit
 
 workflows:
   version: 2
