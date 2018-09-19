@@ -208,7 +208,7 @@ func loadInterfacesData() (map[string]string, map[string]string) {
 	impls := make(map[string]string)
 	interfaces := make(map[string]string)
 
-	path := "istio-common/src/main/resources/interfaces-data.yml"
+	path := "istio-common/src/main/resources/classes-with-interface-fields.yml"
 	source, err := ioutil.ReadFile(path)
 	if err != nil {
 		panic(err)
