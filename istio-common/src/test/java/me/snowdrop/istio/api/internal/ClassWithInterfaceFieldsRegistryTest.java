@@ -28,10 +28,10 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class InterfacesRegistryTest {
+public class ClassWithInterfaceFieldsRegistryTest {
     @Test
     public void loadingResourceShouldWork() {
-        final Set<String> knownClasses = InterfacesRegistry.getKnownClasses();
+        final Set<String> knownClasses = ClassWithInterfaceFieldsRegistry.getKnownClasses();
         assertThat(knownClasses).isNotEmpty();
         assertThat(knownClasses).size().isEqualTo(4);
         assertThat(knownClasses).contains(
@@ -49,13 +49,13 @@ public class InterfacesRegistryTest {
         checkFieldFor(targetClassName, "aString", "aString", "string");
         checkFieldFor(targetClassName, "aBoolean", "aBoolean", "boolean");
 
-        Throwable thrown = catchThrowable(() -> InterfacesRegistry.getFieldInfo(targetClassName, "foo"));
+        Throwable thrown = catchThrowable(() -> ClassWithInterfaceFieldsRegistry.getFieldInfo(targetClassName, "foo"));
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasNoCause().hasMessageContaining("foo");
     }
 
     private void checkFieldFor(String targetClassName, String field, String expectedTarget, String expectedType) {
-        InterfacesRegistry.FieldInfo info = InterfacesRegistry.getFieldInfo(targetClassName, field);
+        ClassWithInterfaceFieldsRegistry.FieldInfo info = ClassWithInterfaceFieldsRegistry.getFieldInfo(targetClassName, field);
         assertThat(info).isNotNull();
         assertThat(info.target()).isEqualTo(expectedTarget);
         assertThat(info.type()).isEqualTo(expectedType);

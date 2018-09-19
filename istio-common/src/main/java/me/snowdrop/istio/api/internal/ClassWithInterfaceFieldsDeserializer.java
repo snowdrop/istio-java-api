@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static me.snowdrop.istio.api.internal.InterfacesRegistry.getFieldInfo;
+import static me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsRegistry.getFieldInfo;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -74,7 +74,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
             final Map.Entry<String, JsonNode> field = fields.next();
             final String fieldName = field.getKey();
 
-            final InterfacesRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
+            final ClassWithInterfaceFieldsRegistry.FieldInfo info = getFieldInfo(targetClassName, fieldName);
 
             Object deserialized = info.deserialize(node, fieldName, targetClass, ctxt);
 

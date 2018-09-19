@@ -40,7 +40,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class InterfacesRegistry {
+public class ClassWithInterfaceFieldsRegistry {
     private static final Map<String, Map<String, String>> classNameToFieldInfos = new HashMap<>();
 
     private static final Set<String> supportedSimpleTypes = new HashSet<>();
