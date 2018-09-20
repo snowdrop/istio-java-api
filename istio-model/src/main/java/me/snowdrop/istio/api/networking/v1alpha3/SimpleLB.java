@@ -16,35 +16,43 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking;
+package me.snowdrop.istio.api.networking.v1alpha3;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum ListenerType {
+public enum SimpleLB {
     /**
-     * All listeners
+     * Round Robin policy. Default
      */
-    ANY(0),
+    ROUND_ROBIN(0),
 
     /**
-     * Inbound listener in sidecar
+     * The least request load balancer uses an O(1) algorithm which selects
+     * two random healthy hosts and picks the host which has fewer active
+     * requests.
      */
-    SIDECAR_INBOUND(1),
+    LEAST_CONN(1),
 
     /**
-     * Outbound listener in sidecar
+     * The random load balancer selects a random healthy host. The random
+     * load balancer generally performs better than round robin if no health
+     * checking policy is configured.
      */
-    SIDECAR_OUTBOUND(2),
+    RANDOM(2),
 
     /**
-     * Gateway listener
+     * This option will forward the connection to the original IP address
+     * requested by the caller without doing any form of load
+     * balancing. This option must be used with care. It is meant for
+     * advanced use cases. Refer to Original Destination load balancer in
+     * Envoy for further details.
      */
-    GATEWAY(3);
+    PASSTHROUGH(3);
 
     private final int intValue;
 
-    ListenerType(int intValue) {
+    SimpleLB(int intValue) {
         this.intValue = intValue;
     }
 

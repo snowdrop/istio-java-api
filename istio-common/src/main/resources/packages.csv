@@ -4,13 +4,13 @@ github.com/golang/protobuf/ptypes/any             ,me.snowdrop.istio.api        
 github.com/gogo/googleapis/google/rpc             ,me.snowdrop.istio.api                         ,google_rpc_
 ## END MANUAL DEFINITIONS
 # api
-istio.io/api/authentication/v1alpha1              ,me.snowdrop.istio.api.authentication          ,istio_authentication_
-istio.io/api/mcp/v1alpha1                         ,me.snowdrop.istio.api.mcp                     ,istio_mcp_
-istio.io/api/mesh/v1alpha1                        ,me.snowdrop.istio.api.mesh                    ,istio_mesh_
-istio.io/api/mixer/v1                             ,me.snowdrop.istio.api.mixer                   ,istio_mixer_
-istio.io/api/networking/v1alpha3                  ,me.snowdrop.istio.api.networking              ,istio_networking_
-istio.io/api/policy/v1beta1                       ,me.snowdrop.istio.api.policy                  ,istio_policy_
-istio.io/api/rbac/v1alpha1                        ,me.snowdrop.istio.api.rbac                    ,istio_rbac_
+istio.io/api/authentication/v1alpha1              ,me.snowdrop.istio.api.authentication.v1alpha1 ,istio_authentication_v1alpha1_
+istio.io/api/mcp/v1alpha1                         ,me.snowdrop.istio.api.mcp.v1alpha1            ,istio_mcp_v1alpha1_
+istio.io/api/mesh/v1alpha1                        ,me.snowdrop.istio.api.mesh.v1alpha1           ,istio_mesh_v1alpha1_
+istio.io/api/mixer/v1                             ,me.snowdrop.istio.api.mixer.v1                ,istio_mixer_v1_
+istio.io/api/networking/v1alpha3                  ,me.snowdrop.istio.api.networking.v1alpha3     ,istio_networking_v1alpha3_
+istio.io/api/policy/v1beta1                       ,me.snowdrop.istio.api.policy.v1beta1          ,istio_policy_v1beta1_
+istio.io/api/rbac/v1alpha1                        ,me.snowdrop.istio.api.rbac.v1alpha1           ,istio_rbac_v1alpha1_
 # adapter
 istio.io/istio/mixer/adapter/bypass/config        ,me.snowdrop.istio.adapter.bypass              ,istio_adapter_bypass_
 istio.io/istio/mixer/adapter/circonus/config      ,me.snowdrop.istio.adapter.circonus            ,istio_adapter_circonus_

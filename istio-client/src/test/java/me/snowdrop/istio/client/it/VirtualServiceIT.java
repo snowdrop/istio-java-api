@@ -1,20 +1,21 @@
 package me.snowdrop.istio.client.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import java.util.List;
 
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import java.util.List;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.api.IstioSpec;
-import me.snowdrop.istio.api.networking.HTTPRoute;
-import me.snowdrop.istio.api.networking.NumberPort;
-import me.snowdrop.istio.api.networking.PrefixMatchType;
-import me.snowdrop.istio.api.networking.VirtualService;
+import me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute;
+import me.snowdrop.istio.api.networking.v1alpha3.NumberPort;
+import me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType;
+import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
 import me.snowdrop.istio.client.IstioClient;
 import me.snowdrop.istio.client.KubernetesAdapter;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 public class VirtualServiceIT {
 

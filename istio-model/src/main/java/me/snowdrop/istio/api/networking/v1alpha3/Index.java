@@ -16,32 +16,36 @@
  *
  *
  */
-package me.snowdrop.istio.api.rbac;
+package me.snowdrop.istio.api.networking.v1alpha3;
 
 /**
- * RBAC ServiceRoleBinding enforcement mode, used to verify new ServiceRoleBinding
- * configs work as expected before rolling to production. RBAC engine only logs results
- * from configs that are in permissive mode, and discards result before returning
- * to the user.
- *
+ * Index/position in the filter chain.
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum EnforcementMode {
+public enum Index {
     /**
-     * Policy in ENFORCED mode has impact on user experience.
-     * Policy is in ENFORCED mode by default.
+     * Insert first
      */
-    ENFORCED(0),
+    FIRST(0),
 
     /**
-     * Policy in PERMISSIVE mode isn't enforced and has no impact on users.
-     * RBAC engine run policies in PERMISSIVE mode and logs stats.
+     * Insert last
      */
-    PERMISSIVE(1);
+    LAST(1),
+
+    /**
+     * Insert before the named filter.
+     */
+    BEFORE(2),
+
+    /**
+     * Insert after the named filter.
+     */
+    AFTER(3);
 
     private final int intValue;
 
-    EnforcementMode(int intValue) {
+    Index(int intValue) {
         this.intValue = intValue;
     }
 

@@ -16,7 +16,7 @@
  *
  *
  */
-package me.snowdrop.istio.api.authentication;
+package me.snowdrop.istio.api.authentication.v1alpha1;
 
 /**
  * Associates authentication with request principal.

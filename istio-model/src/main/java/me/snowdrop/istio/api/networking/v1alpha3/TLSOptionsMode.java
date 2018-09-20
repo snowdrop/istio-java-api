@@ -16,30 +16,26 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking;
 
-/**
- * @author <a href="claprun@redhat.com">Christophe Laprun</a>
- */
-public enum ListenerProtocol {
-    /**
-     * All protocols
-     */
-    ALL(0),
+package me.snowdrop.istio.api.networking.v1alpha3;
 
+public enum TLSOptionsMode {
     /**
-     * HTTP or HTTPS (with termination) / HTTP2/gRPC
+     * Forward the connection to the upstream server selected based on the SNI string presented by the client.
      */
-    HTTP(1),
-
+    PASSTHROUGH(0),
     /**
-     * Any non-HTTP listener
+     * Secure connections with standard TLS semantics.
      */
-    TCP(2);
+    SIMPLE(1),
+    /**
+     * Secure connections to the upstream using mutual TLS by presenting client certificates for authentication.
+     */
+    MUTUAL(2);
 
     private final int intValue;
 
-    ListenerProtocol(int intValue) {
+    TLSOptionsMode(int intValue) {
         this.intValue = intValue;
     }
 

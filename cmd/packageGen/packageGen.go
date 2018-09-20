@@ -43,6 +43,7 @@ func main() {
 		jsonAssemblyStrategy = concatenate
 	}
 
+	//istio.io/api/networking/v1alpha3
 	fmt.Println("# " + kind)
 	var component string
 	for scanner.Scan() {
@@ -54,13 +55,17 @@ func main() {
 		elements := strings.Split(line, sep)
 		for i, value := range elements {
 			if value == kind {
-				component = elements[i+1]
+				if kind != "api" {
+					component = elements[i+1]
+				} else {
+					component = elements[i+1] + "." + elements[i+2]
+				}
 				break
 			}
 		}
 
 		fmt.Println(line + "," + pkgAssemblyStrategy(pkgPrefix, component) + "," +
-			jsonAssemblyStrategy(jsonPrefix, component) + "_")
+			jsonAssemblyStrategy(jsonPrefix, strings.Replace(component, ".", "_", -1)) + "_")
 	}
 
 	if err := scanner.Err(); err != nil {
