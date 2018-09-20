@@ -159,6 +159,7 @@
     "mixer/adapter/memquota/config",
     "mixer/adapter/opa/config",
     "mixer/adapter/prometheus/config",
+    "mixer/adapter/servicecontrol/config",
     "mixer/adapter/solarwinds/config",
     "mixer/adapter/stackdriver/config",
     "mixer/pkg/adapter",
@@ -181,6 +182,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "13d92e8d82ae2278fe54b5a1d13c9d7b09d626780c60922a36a22f094f6861a6"
+  inputs-digest = "85b2340bb9e8c788854993e8023a05d74fb6340b762970ce2340c7fcef740ad3"
   solver-name = "gps-cdcl"
   solver-version = 1

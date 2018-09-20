@@ -44,8 +44,8 @@ import (
 	memquota "istio.io/istio/mixer/adapter/memquota/config"
 	opa "istio.io/istio/mixer/adapter/opa/config"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
+	servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
-	//servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
@@ -114,16 +114,16 @@ type Schema struct {
 	ExplicitBucketsDefinition          prometheus.Params_MetricInfo_BucketsDefinition_ExplicitBuckets
 	LinearBucketsDefinition            prometheus.Params_MetricInfo_BucketsDefinition_LinearBuckets
 	ExponentialBucketsDefinition       prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
-	//ServiceControl servicecontrol.Params
-	SolarWinds           solarwinds.Params
-	SWLogInfo            solarwinds.Params_LogInfo
-	SWMetricInfo         solarwinds.Params_MetricInfo
-	StackDriver          stackdriver.Params
-	SDLogInfo            stackdriver.Params_LogInfo
-	SDMetricInfo         stackdriver.Params_MetricInfo
-	SDApiKey             stackdriver.Params_ApiKey
-	SDAppCredentials     stackdriver.Params_AppCredentials
-	SDServiceAccountPath stackdriver.Params_ServiceAccountPath
+	ServiceControl                     servicecontrol.Params
+	SolarWinds                         solarwinds.Params
+	SWLogInfo                          solarwinds.Params_LogInfo
+	SWMetricInfo                       solarwinds.Params_MetricInfo
+	StackDriver                        stackdriver.Params
+	SDLogInfo                          stackdriver.Params_LogInfo
+	SDMetricInfo                       stackdriver.Params_MetricInfo
+	SDApiKey                           stackdriver.Params_ApiKey
+	SDAppCredentials                   stackdriver.Params_AppCredentials
+	SDServiceAccountPath               stackdriver.Params_ServiceAccountPath
 	//Statsd        statsd.Params
 	//Stdio         stdio.Params
 	APIKey        apikey.InstanceMsg

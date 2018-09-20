@@ -524,6 +524,90 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.prometheus.MetricsExpirationPolicy"
     },
+    "istio_adapter_servicecontrol_GcpServiceSetting": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "googleServiceName": {
+          "type": "string",
+          "description": ""
+        },
+        "meshServiceName": {
+          "type": "string",
+          "description": ""
+        },
+        "quotas": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_servicecontrol_Quota",
+            "javaType": "me.snowdrop.istio.adapter.servicecontrol.Quota"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.servicecontrol.GcpServiceSetting"
+    },
+    "istio_adapter_servicecontrol_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "credentialPath": {
+          "type": "string",
+          "description": ""
+        },
+        "runtimeConfig": {
+          "$ref": "#/definitions/istio_adapter_servicecontrol_RuntimeConfig",
+          "javaType": "me.snowdrop.istio.adapter.servicecontrol.RuntimeConfig"
+        },
+        "serviceConfigs": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_servicecontrol_GcpServiceSetting",
+            "javaType": "me.snowdrop.istio.adapter.servicecontrol.GcpServiceSetting"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.servicecontrol.Servicecontrol"
+    },
+    "istio_adapter_servicecontrol_Quota": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "expiration": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
+        "googleQuotaMetricName": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.servicecontrol.Quota"
+    },
+    "istio_adapter_servicecontrol_RuntimeConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "checkCacheSize": {
+          "type": "integer",
+          "description": ""
+        },
+        "checkResultExpiration": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.servicecontrol.RuntimeConfig"
+    },
     "istio_adapter_solarwinds_Params": {
       "type": "object",
       "description": "",
@@ -3798,6 +3882,10 @@
     "sWMetricInfo": {
       "$ref": "#/definitions/istio_adapter_solarwinds_Params_MetricInfo",
       "javaType": "me.snowdrop.istio.adapter.solarwinds.MetricInfo"
+    },
+    "serviceControl": {
+      "$ref": "#/definitions/istio_adapter_servicecontrol_Params",
+      "javaType": "me.snowdrop.istio.adapter.servicecontrol.Servicecontrol"
     },
     "serviceEntry": {
       "$ref": "#/definitions/istio_networking_v1alpha3_ServiceEntry",
