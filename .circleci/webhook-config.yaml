@@ -1,0 +1,19 @@
+# Needed to properly configure the validation webhook on Openshift
+
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: istio-galley
+  namespace: istio-system
+  labels:
+    app: istio-galley
+    maistra-version: 0.2.0
+    release: istio-1.0.2
+  ownerReferences:
+  - apiVersion: extensions/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Deployment
+    name: istio-galley
+    uid: DEPLOYMENT_UID
+webhooks:
