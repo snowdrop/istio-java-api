@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.HashMap;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.api.IstioSpec;
@@ -43,9 +42,7 @@ servers:
         .withName("httpbin-gateway")
         .endMetadata()
         .withNewGatewaySpec()
-        .withSelector(new HashMap<String, String>() {{
-          put("istio","ingressgateway");
-        }})
+        .addToSelector("istio","ingressgateway")
         .withServers(new me.snowdrop.istio.api.networking.ServerBuilder()
             .withNewPort("http", 80, "HTTP")
             .withHosts("httpbin.example.com")
