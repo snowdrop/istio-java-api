@@ -16,36 +16,26 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking;
 
-/**
- * Index/position in the filter chain.
- * @author <a href="claprun@redhat.com">Christophe Laprun</a>
- */
-public enum Index {
-    /**
-     * Insert first
-     */
-    FIRST(0),
+package me.snowdrop.istio.api.networking.v1alpha3;
 
+public enum ServiceEntryLocation {
     /**
-     * Insert last
+     * Signifies that the service is external to the mesh.
+     * Typically used to indicate external services consumed through APIs.
      */
-    LAST(1),
-
+    MESH_EXTERNAL(0),
     /**
-     * Insert before the named filter.
+     * Signifies that the service is part of the mesh.
+     * Typically used to indicate services added explicitly
+     * as part of expanding the service mesh
+     * to include unmanaged infrastructure (e.g., VMs added to a Kubernetes based service mesh).
      */
-    BEFORE(2),
-
-    /**
-     * Insert after the named filter.
-     */
-    AFTER(3);
+    MESH_INTERNAL(1);
 
     private final int intValue;
 
-    Index(int intValue) {
+    ServiceEntryLocation(int intValue) {
         this.intValue = intValue;
     }
 

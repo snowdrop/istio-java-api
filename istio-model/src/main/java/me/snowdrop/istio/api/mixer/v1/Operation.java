@@ -16,30 +16,24 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking;
+package me.snowdrop.istio.api.mixer.v1;
 
 /**
+ * Operation type.
+ *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum FilterType {
-    /**
-     * placeholder
-     */
-    INVALID(0),
+public enum Operation {
 
-    /**
-     * Http filter
-     */
-    HTTP(1),
+    REPLACE(0),
 
-    /**
-     * Network filter
-     */
-    NETWORK(2);
+    REMOVE(1),
+
+    APPEND(2);
 
     private final int intValue;
 
-    FilterType(int intValue) {
+    Operation(int intValue) {
         this.intValue = intValue;
     }
 

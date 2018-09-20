@@ -16,43 +16,29 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking;
+package me.snowdrop.istio.api.mesh.v1alpha1;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum SimpleLB {
+public enum Mode {
     /**
-     * Round Robin policy. Default
+     * outbound traffic will be restricted to services defined in the service registry as well as those defined
+     * through ServiceEntries
      */
-    ROUND_ROBIN(0),
-
+    REGISTRY_ONLY(0),
     /**
-     * The least request load balancer uses an O(1) algorithm which selects
-     * two random healthy hosts and picks the host which has fewer active
-     * requests.
+     * outbound traffic to unknown destinations will be allowed
      */
-    LEAST_CONN(1),
-
+    ALLOW_ANY(1),
     /**
-     * The random load balancer selects a random healthy host. The random
-     * load balancer generally performs better than round robin if no health
-     * checking policy is configured.
+     * not implemented. outbound traffic will be restricted to destinations defined in VirtualServices only
      */
-    RANDOM(2),
-
-    /**
-     * This option will forward the connection to the original IP address
-     * requested by the caller without doing any form of load
-     * balancing. This option must be used with care. It is meant for
-     * advanced use cases. Refer to Original Destination load balancer in
-     * Envoy for further details.
-     */
-    PASSTHROUGH(3);
+    VIRTUAL_SERVICE_ONLY(2);
 
     private final int intValue;
 
-    SimpleLB(int intValue) {
+    Mode(int intValue) {
         this.intValue = intValue;
     }
 

@@ -16,28 +16,16 @@
  *
  *
  */
-package me.snowdrop.istio.api.mixer;
+package me.snowdrop.istio.api.mixer.v1;
 
 /**
- * Operation type.
+ * How an attribute's value was matched.
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum Operation {
-
-    REPLACE(0),
-
-    REMOVE(1),
-
-    APPEND(2);
-
-    private final int intValue;
-
-    Operation(int intValue) {
-        this.intValue = intValue;
-    }
-
-    public int value() {
-        return intValue;
-    }
+public enum Condition {
+    CONDITION_UNSPECIFIED,
+    ABSENCE,
+    EXACT,
+    REGEX
 }

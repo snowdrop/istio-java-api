@@ -53,12 +53,12 @@ spec:
                 .withName("requestcount")
                 .withNamespace("istio-config-default")
                 .endMetadata()
-                .withNewQuotaSpec()
+                .withNewQuotaQuotaSpec()
                 .addToDimensions("source", new TypedValue(ValueType.STRING, "source.labels[\"app\"] | source.service | \"unknown\""))
                 .addToDimensions("sourceVersion", new TypedValue(ValueType.STRING, "source.labels[\"version\"] | \"unknown\""))
                 .addToDimensions("destination", new TypedValue(ValueType.STRING, "destination.labels[\"app\"] | destination.service | \"unknown\""))
                 .addToDimensions("destinationVersion", new TypedValue(ValueType.STRING, "destination.labels[\"version\"] \"unknown\""))
-                .endQuotaSpec()
+                .endQuotaQuotaSpec()
                 .build();
 
 

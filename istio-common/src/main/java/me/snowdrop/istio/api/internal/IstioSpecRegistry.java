@@ -72,6 +72,7 @@ public class IstioSpecRegistry {
         final String[] crdDetail = String.valueOf(entry.getValue()).split("\\|");
         final String name = crdDetail[0].trim();
         final String istioLabel = crdDetail[1].trim().substring(crdDetail[1].lastIndexOf('='));
+        final String version = crdDetail[2].trim().substring(crdDetail[2].lastIndexOf('='));
 
         String packageName;
         switch (istioLabel) {
@@ -82,11 +83,12 @@ public class IstioSpecRegistry {
                 packageName = ISTIO_MIXER_TEMPLATE_PACKAGE_PREFIX + kind.toLowerCase() + ".";
                 break;
             case "core":
-                packageName = ISTIO_API_PACKAGE_PREFIX + "policy.";
+                // override group and version since crd info and package don't match (priority given to package)
+                packageName = ISTIO_API_PACKAGE_PREFIX + "policy.v1beta1.";
                 break;
             default:
                 final String group = CRDInfo.getGroup(name);
-                packageName = ISTIO_API_PACKAGE_PREFIX + group + ".";
+                packageName = ISTIO_API_PACKAGE_PREFIX + group + "." + version + ".";
                 /*if(!istioLabel.isEmpty() && !group.equals(istioLabel)) {
                     System.out.println(kind + " => " + istioLabel + " / proposed pkg: " + packageName);
                 }*/

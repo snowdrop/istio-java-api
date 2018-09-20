@@ -41,6 +41,7 @@ import (
 	fluentd "istio.io/istio/mixer/adapter/fluentd/config"
 	kubernetesenv "istio.io/istio/mixer/adapter/kubernetesenv/config"
 	list "istio.io/istio/mixer/adapter/list/config"
+	memquota "istio.io/istio/mixer/adapter/memquota/config"
 	opa "istio.io/istio/mixer/adapter/opa/config"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
@@ -107,12 +108,12 @@ type Schema struct {
 	Fluentd                            fluentd.Params
 	KubernetesEnv                      kubernetesenv.Params
 	ListChecker                        list.Params
-	//MemQuota             memquota.Params
-	OPA                          opa.Params
-	Prometheus                   prometheus.Params
-	ExplicitBucketsDefinition    prometheus.Params_MetricInfo_BucketsDefinition_ExplicitBuckets
-	LinearBucketsDefinition      prometheus.Params_MetricInfo_BucketsDefinition_LinearBuckets
-	ExponentialBucketsDefinition prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
+	MemQuota                           memquota.Params
+	OPA                                opa.Params
+	Prometheus                         prometheus.Params
+	ExplicitBucketsDefinition          prometheus.Params_MetricInfo_BucketsDefinition_ExplicitBuckets
+	LinearBucketsDefinition            prometheus.Params_MetricInfo_BucketsDefinition_LinearBuckets
+	ExponentialBucketsDefinition       prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
 	//ServiceControl servicecontrol.Params
 	SolarWinds           solarwinds.Params
 	SWLogInfo            solarwinds.Params_LogInfo
@@ -258,30 +259,30 @@ func main() {
 	}
 
 	enumMap := map[string]string{
-		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":                 "me.snowdrop.istio.api.mesh.IngressControllerMode",
-		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                            "me.snowdrop.istio.api.mesh.AuthenticationPolicy",
-		"istio.mesh.v1alpha1.AuthenticationPolicy":                             "me.snowdrop.istio.api.mesh.AuthenticationPolicy",
-		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":              "me.snowdrop.istio.api.mesh.InboundInterceptionMode",
-		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode":            "me.snowdrop.istio.api.mesh.Mode",
-		"istio.mixer.v1.HeaderOperation_Operation":                             "me.snowdrop.istio.api.mixer.Operation",
-		"istio.mixer.v1.ReferencedAttributes_Condition":                        "me.snowdrop.istio.api.mixer.Condition",
-		"istio.mixer.v1.config.descriptor.ValueType":                           "me.snowdrop.istio.api.mixer.config.descriptor.ValueType",
+		"istio.authentication.v1alpha1.PrincipalBinding":                       "me.snowdrop.istio.api.authentication.v1alpha1.PrincipalBinding",
+		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.authentication.v1alpha1.Mode",
+		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":                 "me.snowdrop.istio.api.mesh.v1alpha1.IngressControllerMode",
+		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                            "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.AuthenticationPolicy":                             "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy",
+		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":              "me.snowdrop.istio.api.mesh.v1alpha1.InboundInterceptionMode",
+		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode":            "me.snowdrop.istio.api.mesh.v1alpha1.Mode",
+		"istio.mixer.v1.HeaderOperation_Operation":                             "me.snowdrop.istio.api.mixer.v1.Operation",
+		"istio.mixer.v1.ReferencedAttributes_Condition":                        "me.snowdrop.istio.api.mixer.v1.Condition",
+		"istio.mixer.v1.config.descriptor.ValueType":                           "me.snowdrop.istio.api.mixer.v1.config.descriptor.ValueType",
+		"istio.networking.v1alpha3.Server_TLSOptions_TLSmode":                  "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsMode",
+		"istio.networking.v1alpha3.TLSSettings_TLSmode":                        "me.snowdrop.istio.api.networking.v1alpha3.TLSSettingsMode",
+		"istio.networking.v1alpha3.ServiceEntry_Location":                      "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryLocation",
+		"istio.networking.v1alpha3.ServiceEntry_Resolution":                    "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryResolution",
+		"istio.networking.v1alpha3.LoadBalancerSettings_SimpleLB":              "me.snowdrop.istio.api.networking.v1alpha3.SimpleLB",
+		"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerType":     "me.snowdrop.istio.api.networking.v1alpha3.ListenerType",
+		"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerProtocol": "me.snowdrop.istio.api.networking.v1alpha3.ListenerProtocol",
+		"istio.networking.v1alpha3.EnvoyFilter_InsertPosition_Index":           "me.snowdrop.istio.api.networking.v1alpha3.Index",
+		"istio.networking.v1alpha3.EnvoyFilter_Filter_FilterType":              "me.snowdrop.istio.api.networking.v1alpha3.FilterType",
+		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode",
 		"adapter.circonus.config.Params_MetricInfo_Type":                       "me.snowdrop.istio.adapter.circonus.Type",
 		"adapter.prometheus.config.Params_MetricInfo_Kind":                     "me.snowdrop.istio.adapter.prometheus.Kind",
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.adapter.list.ListEntryType",
-		"istio.networking.v1alpha3.Server_TLSOptions_TLSmode":                  "me.snowdrop.istio.api.networking.TLSOptionsMode",
-		"istio.networking.v1alpha3.TLSSettings_TLSmode":                        "me.snowdrop.istio.api.networking.TLSSettingsMode",
-		"istio.networking.v1alpha3.ServiceEntry_Location":                      "me.snowdrop.istio.api.networking.ServiceEntryLocation",
-		"istio.networking.v1alpha3.ServiceEntry_Resolution":                    "me.snowdrop.istio.api.networking.ServiceEntryResolution",
-		"istio.networking.v1alpha3.LoadBalancerSettings_SimpleLB":              "me.snowdrop.istio.api.networking.SimpleLB",
-		"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerType":     "me.snowdrop.istio.api.networking.ListenerType",
-		"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerProtocol": "me.snowdrop.istio.api.networking.ListenerProtocol",
-		"istio.networking.v1alpha3.EnvoyFilter_InsertPosition_Index":           "me.snowdrop.istio.api.networking.Index",
-		"istio.networking.v1alpha3.EnvoyFilter_Filter_FilterType":              "me.snowdrop.istio.api.networking.FilterType",
-		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.rbac.EnforcementMode",
-		"istio.authentication.v1alpha1.PrincipalBinding":                       "me.snowdrop.istio.api.authentication.PrincipalBinding",
-		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.authentication.Mode",
 		"google.api.MetricDescriptor_MetricKind":                               "me.snowdrop.istio.adapter.stackdriver.MetricKind",
 		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.adapter.stackdriver.ValueType",
 	}

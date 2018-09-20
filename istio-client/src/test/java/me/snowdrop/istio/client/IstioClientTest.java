@@ -7,10 +7,10 @@ import java.util.List;
 
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.IstioSpec;
-import me.snowdrop.istio.api.authentication.Policy;
-import me.snowdrop.istio.api.networking.DestinationRule;
-import me.snowdrop.istio.api.networking.VirtualService;
-import me.snowdrop.istio.api.policy.Rule;
+import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
+import me.snowdrop.istio.api.networking.v1alpha3.DestinationRule;
+import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
+import me.snowdrop.istio.api.policy.v1beta1.Rule;
 import me.snowdrop.istio.mixer.template.metric.Metric;
 import org.junit.Test;
 import org.junit.runner.RunWith;

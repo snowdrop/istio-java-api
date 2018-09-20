@@ -30,5 +30,5 @@ cat ${APIS_TMP} | go run cmd/packageGen/packageGen.go api >> ${PACKAGES_CSV}
 cat ${ADAPTERS_TMP} | go run cmd/packageGen/packageGen.go adapter >> ${PACKAGES_CSV}
 cat ${TEMPLATES_TMP} | go run cmd/packageGen/packageGen.go template >> ${PACKAGES_CSV}
 
-rm -f ${DECL_DIR}/*.tmp
+#rm -f ${DECL_DIR}/*.tmp
 rm -f ${PACKAGES_CSV}.bak

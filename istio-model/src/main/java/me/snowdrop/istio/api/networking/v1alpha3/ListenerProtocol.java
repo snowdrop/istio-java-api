@@ -16,42 +16,30 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking;
+package me.snowdrop.istio.api.networking.v1alpha3;
 
 /**
- * TLS connection mode
- *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum TLSSettingsMode {
+public enum ListenerProtocol {
     /**
-     * Do not setup a TLS connection to the upstream endpoint.
+     * All protocols
      */
-    DISABLE(0),
+    ALL(0),
 
     /**
-     * Originate a TLS connection to the upstream endpoint.
+     * HTTP or HTTPS (with termination) / HTTP2/gRPC
      */
-    SIMPLE(1),
+    HTTP(1),
 
     /**
-     * Secure connections to the upstream using mutual TLS by presenting
-     * client certificates for authentication.
+     * Any non-HTTP listener
      */
-    MUTUAL(2),
-
-    /**
-     * Secure connections to the upstream using mutual TLS by presenting
-     * client certificates for authentication.
-     * Compared to Mutual mode, this mode uses certificates generated
-     * automatically by Istio for mTLS authentication. When this mode is
-     * used, all other fields in `TLSSettings` should be empty.
-     */
-    ISTIO_MUTUAL(3);
+    TCP(2);
 
     private final int intValue;
 
-    TLSSettingsMode(int intValue) {
+    ListenerProtocol(int intValue) {
         this.intValue = intValue;
     }
 
