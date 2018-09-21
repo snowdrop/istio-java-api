@@ -47,6 +47,7 @@ import (
 	servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
+	statsd "istio.io/istio/mixer/adapter/statsd/config"
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
@@ -124,7 +125,8 @@ type Schema struct {
 	SDApiKey                           stackdriver.Params_ApiKey
 	SDAppCredentials                   stackdriver.Params_AppCredentials
 	SDServiceAccountPath               stackdriver.Params_ServiceAccountPath
-	//Statsd        statsd.Params
+	Statsd                             statsd.Params
+	StatsdMetricInfo                   statsd.Params_MetricInfo
 	//Stdio         stdio.Params
 	APIKey        apikey.InstanceMsg
 	Authorization authorization.InstanceMsg
@@ -283,6 +285,7 @@ func main() {
 		"adapter.prometheus.config.Params_MetricInfo_Kind":                     "me.snowdrop.istio.adapter.prometheus.Kind",
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.adapter.list.ListEntryType",
+		"adapter.statsd.config.Params_MetricInfo_Type":                         "me.snowdrop.istio.adapter.statsd.Type",
 		"google.api.MetricDescriptor_MetricKind":                               "me.snowdrop.istio.adapter.stackdriver.MetricKind",
 		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.adapter.stackdriver.ValueType",
 	}

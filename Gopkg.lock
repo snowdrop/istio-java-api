@@ -162,6 +162,7 @@
     "mixer/adapter/servicecontrol/config",
     "mixer/adapter/solarwinds/config",
     "mixer/adapter/stackdriver/config",
+    "mixer/adapter/statsd/config",
     "mixer/pkg/adapter",
     "mixer/pkg/pool",
     "mixer/pkg/status",
@@ -182,6 +183,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "85b2340bb9e8c788854993e8023a05d74fb6340b762970ce2340c7fcef740ad3"
+  inputs-digest = "2fa675c3575aa52925806c85da8ee9939fe9faa7d69b8d5c6770e6466cbd65d4"
   solver-name = "gps-cdcl"
   solver-version = 1

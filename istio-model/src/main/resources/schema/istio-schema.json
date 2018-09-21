@@ -929,6 +929,59 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.Trace"
     },
+    "istio_adapter_statsd_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": ""
+        },
+        "flushBytes": {
+          "type": "integer",
+          "description": ""
+        },
+        "flushDuration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "metrics": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_statsd_Params_MetricInfo",
+            "javaType": "me.snowdrop.istio.adapter.statsd.MetricInfo"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.adapter.statsd.MetricInfo\u003e"
+        },
+        "prefix": {
+          "type": "string",
+          "description": ""
+        },
+        "samplingRate": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.statsd.Statsd"
+    },
+    "istio_adapter_statsd_Params_MetricInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "nameTemplate": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "javaType": "me.snowdrop.istio.adapter.statsd.Type"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.statsd.MetricInfo"
+    },
     "istio_authentication_v1alpha1_Jwt": {
       "type": "object",
       "description": "",
@@ -3910,6 +3963,14 @@
     "stackDriver": {
       "$ref": "#/definitions/istio_adapter_stackdriver_Params",
       "javaType": "me.snowdrop.istio.adapter.stackdriver.Stackdriver"
+    },
+    "statsd": {
+      "$ref": "#/definitions/istio_adapter_statsd_Params",
+      "javaType": "me.snowdrop.istio.adapter.statsd.Statsd"
+    },
+    "statsdMetricInfo": {
+      "$ref": "#/definitions/istio_adapter_statsd_Params_MetricInfo",
+      "javaType": "me.snowdrop.istio.adapter.statsd.MetricInfo"
     },
     "stringMap": {
       "$ref": "#/definitions/istio_mixer_v1_StringMap",
