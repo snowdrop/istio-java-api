@@ -48,6 +48,7 @@ import (
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
 	statsd "istio.io/istio/mixer/adapter/statsd/config"
+	stdio "istio.io/istio/mixer/adapter/stdio/config"
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
@@ -127,17 +128,17 @@ type Schema struct {
 	SDServiceAccountPath               stackdriver.Params_ServiceAccountPath
 	Statsd                             statsd.Params
 	StatsdMetricInfo                   statsd.Params_MetricInfo
-	//Stdio         stdio.Params
-	APIKey        apikey.InstanceMsg
-	Authorization authorization.InstanceMsg
-	CheckNothing  checknothing.InstanceMsg
-	Edge          edge.InstanceMsg
-	ListEntry     listentry.InstanceMsg
-	LogEntry      logentry.InstanceMsg
-	Metric        metric.InstanceMsg
-	Quota         quota.InstanceMsg
-	ReportNothing reportnothing.InstanceMsg
-	TraceSpan     tracespan.InstanceMsg
+	Stdio                              stdio.Params
+	APIKey                             apikey.InstanceMsg
+	Authorization                      authorization.InstanceMsg
+	CheckNothing                       checknothing.InstanceMsg
+	Edge                               edge.InstanceMsg
+	ListEntry                          listentry.InstanceMsg
+	LogEntry                           logentry.InstanceMsg
+	Metric                             metric.InstanceMsg
+	Quota                              quota.InstanceMsg
+	ReportNothing                      reportnothing.InstanceMsg
+	TraceSpan                          tracespan.InstanceMsg
 }
 
 // code adapted from https://kgrz.io/reading-files-in-go-an-overview.html#scanning-comma-seperated-string
@@ -286,6 +287,8 @@ func main() {
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.adapter.list.ListEntryType",
 		"adapter.statsd.config.Params_MetricInfo_Type":                         "me.snowdrop.istio.adapter.statsd.Type",
+		"adapter.stdio.config.Params_Stream":                                   "me.snowdrop.istio.adapter.stdio.Stream",
+		"adapter.stdio.config.Params_Level":                                    "me.snowdrop.istio.adapter.stdio.Level",
 		"google.api.MetricDescriptor_MetricKind":                               "me.snowdrop.istio.adapter.stackdriver.MetricKind",
 		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.adapter.stackdriver.ValueType",
 	}

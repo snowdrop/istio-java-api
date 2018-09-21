@@ -982,6 +982,52 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.statsd.MetricInfo"
     },
+    "istio_adapter_stdio_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "logStream": {
+          "javaType": "me.snowdrop.istio.adapter.stdio.Stream"
+        },
+        "maxDaysBeforeRotation": {
+          "type": "integer",
+          "description": ""
+        },
+        "maxMegabytesBeforeRotation": {
+          "type": "integer",
+          "description": ""
+        },
+        "maxRotatedFiles": {
+          "type": "integer",
+          "description": ""
+        },
+        "metricLevel": {
+          "javaType": "me.snowdrop.istio.adapter.stdio.Level"
+        },
+        "outputAsJson": {
+          "type": "boolean",
+          "description": ""
+        },
+        "outputLevel": {
+          "javaType": "me.snowdrop.istio.adapter.stdio.Level"
+        },
+        "outputPath": {
+          "type": "string",
+          "description": ""
+        },
+        "severityLevels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "integer",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,Integer\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.stdio.Stdio"
+    },
     "istio_authentication_v1alpha1_Jwt": {
       "type": "object",
       "description": "",
@@ -3971,6 +4017,10 @@
     "statsdMetricInfo": {
       "$ref": "#/definitions/istio_adapter_statsd_Params_MetricInfo",
       "javaType": "me.snowdrop.istio.adapter.statsd.MetricInfo"
+    },
+    "stdio": {
+      "$ref": "#/definitions/istio_adapter_stdio_Params",
+      "javaType": "me.snowdrop.istio.adapter.stdio.Stdio"
     },
     "stringMap": {
       "$ref": "#/definitions/istio_mixer_v1_StringMap",
