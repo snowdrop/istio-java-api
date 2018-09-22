@@ -16,8 +16,10 @@
 package schemagen
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -39,6 +41,7 @@ type schemaGenerator struct {
 	typeMap           map[reflect.Type]reflect.Type
 	unknownEnums      []string
 	unknownInterfaces []string
+	crds              map[string]bool
 }
 
 func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
@@ -61,6 +64,7 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
 	}
+
 	g := schemaGenerator{
 		types:          make(map[reflect.Type]*JSONObjectDescriptor),
 		packages:       pkgMap,
@@ -68,8 +72,34 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 		enumMap:        enumMap,
 		interfacesMap:  interfacesMap,
 		interfacesimpl: interfacesImpl,
+		crds:           loadCRDs(),
 	}
 	return &g
+}
+
+func loadCRDs() map[string]bool {
+	crds := make(map[string]bool)
+
+	path := "istio-common/src/main/resources/istio-crd.properties"
+
+	file, err := os.Open(path)
+	if err != nil {
+		fmt.Println(err)
+		return crds
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		crd := strings.ToLower(line[:strings.IndexRune(line, '=')])
+		crds[crd] = true
+	}
+
+	return crds
 }
 
 func getFieldName(f reflect.StructField) string {
@@ -220,6 +250,10 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		name = transformTemplateName(name, path)
 	} else if strings.Contains(path, "adapter") {
 		name = transformAdapterName(name, path)
+	}
+
+	if g.crds[strings.ToLower(name)] {
+		name += "Spec"
 	}
 
 	pkgDesc, ok := g.getPackage(path)

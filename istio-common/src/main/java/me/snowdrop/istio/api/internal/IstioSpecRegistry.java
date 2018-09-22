@@ -42,7 +42,7 @@ public class IstioSpecRegistry {
 
         crdInfos.putAll(crdFile.entrySet().stream().collect(
                 Collectors.toMap(
-                        e -> String.valueOf(e.getKey()),
+                        e -> String.valueOf(e.getKey()).toLowerCase(),
                         e -> getCRDInfoFrom(e))
         ));
     }
@@ -179,19 +179,16 @@ public class IstioSpecRegistry {
     }
 
     public static Optional<String> getIstioKind(String simpleClassName) {
-        CRDInfo crd = crdInfos.get(simpleClassName);
+        if (simpleClassName.endsWith("Spec")) {
+            simpleClassName = simpleClassName.substring(0, simpleClassName.indexOf("Spec"));
+        }
+
+        CRDInfo crd = crdInfos.get(simpleClassName.toLowerCase());
         if (crd != null) {
             crd.visited = true;
             return Optional.of(simpleClassName);
         } else {
-            final String lowerSimpleClassName = simpleClassName.toLowerCase();
-            crd = crdInfos.get(lowerSimpleClassName);
-            if (crd != null) {
-                crd.visited = true;
-                return Optional.of(lowerSimpleClassName);
-            } else {
-                return Optional.empty();
-            }
+            return Optional.empty();
         }
     }
 
