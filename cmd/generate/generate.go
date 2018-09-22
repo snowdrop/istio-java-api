@@ -35,6 +35,7 @@ import (
 	"strings"
 	"time"
 
+	bypass "istio.io/istio/mixer/adapter/bypass/config"
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
 	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd/config"
@@ -103,6 +104,7 @@ type Schema struct {
 	HttpStatusAbort                    networking.HTTPFaultInjection_Abort_HttpStatus
 	ServiceEntry                       networking.ServiceEntry
 	VirtualService                     networking.VirtualService
+	Bypass                             bypass.Params
 	Circonus                           circonus.Params
 	Denier                             denier.Params
 	Dogstatsd                          dogstatsd.Params

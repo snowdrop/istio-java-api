@@ -26,6 +26,26 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.Status"
     },
+    "istio_adapter_bypass_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "backendAddress": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "$ref": "#/definitions/protobuf_types_Any",
+          "javaType": "me.snowdrop.istio.api.Any"
+        },
+        "sessionBased": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.bypass.Bypass"
+    },
     "istio_adapter_circonus_Params": {
       "type": "object",
       "description": "",
@@ -3753,6 +3773,10 @@
     "authorization": {
       "$ref": "#/definitions/istio_mixer_authorization_InstanceMsg",
       "javaType": "me.snowdrop.istio.mixer.template.authorization.Authorization"
+    },
+    "bypass": {
+      "$ref": "#/definitions/istio_adapter_bypass_Params",
+      "javaType": "me.snowdrop.istio.adapter.bypass.Bypass"
     },
     "checkNothing": {
       "$ref": "#/definitions/istio_mixer_checknothing_InstanceMsg",
