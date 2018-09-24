@@ -48,6 +48,7 @@ import (
 	rbac_adapter "istio.io/istio/mixer/adapter/rbac/config"
 	redisquota "istio.io/istio/mixer/adapter/redisquota/config"
 	servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
+	signalfx "istio.io/istio/mixer/adapter/signalfx/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
 	statsd "istio.io/istio/mixer/adapter/statsd/config"
@@ -124,6 +125,7 @@ type Schema struct {
 	Rbac                               rbac_adapter.Params
 	RedisQuota                         redisquota.Params
 	ServiceControl                     servicecontrol.Params
+	SignalFX                           signalfx.Params
 	SolarWinds                         solarwinds.Params
 	SWLogInfo                          solarwinds.Params_LogInfo
 	SWMetricInfo                       solarwinds.Params_MetricInfo
@@ -295,6 +297,7 @@ func main() {
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.adapter.list.ListEntryType",
 		"adapter.redisquota.config.Params_QuotaAlgorithm":                      "me.snowdrop.istio.adapter.redisquota.QuotaAlgorithm",
+		"adapter.signalfx.config.Params_MetricConfig_Type":                     "me.snowdrop.istio.adapter.signalfx.Type",
 		"adapter.statsd.config.Params_MetricInfo_Type":                         "me.snowdrop.istio.adapter.statsd.Type",
 		"adapter.stdio.config.Params_Stream":                                   "me.snowdrop.istio.adapter.stdio.Stream",
 		"adapter.stdio.config.Params_Level":                                    "me.snowdrop.istio.adapter.stdio.Level",

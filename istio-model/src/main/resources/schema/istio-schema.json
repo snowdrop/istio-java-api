@@ -730,6 +730,50 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.servicecontrol.RuntimeConfig"
     },
+    "istio_adapter_signalfx_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "description": ""
+        },
+        "datapointInterval": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "ingestUrl": {
+          "type": "string",
+          "description": ""
+        },
+        "metrics": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_signalfx_Params_MetricConfig",
+            "javaType": "me.snowdrop.istio.adapter.signalfx.MetricConfig"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.signalfx.Signalfx"
+    },
+    "istio_adapter_signalfx_Params_MetricConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "javaType": "me.snowdrop.istio.adapter.signalfx.Type"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.signalfx.MetricConfig"
+    },
     "istio_adapter_solarwinds_Params": {
       "type": "object",
       "description": "",
@@ -4178,6 +4222,10 @@
     "serviceRoleBinding": {
       "$ref": "#/definitions/istio_rbac_v1alpha1_ServiceRoleBinding",
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBinding"
+    },
+    "signalFX": {
+      "$ref": "#/definitions/istio_adapter_signalfx_Params",
+      "javaType": "me.snowdrop.istio.adapter.signalfx.Signalfx"
     },
     "simpleLoadBalancerSettings": {
       "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_Simple",

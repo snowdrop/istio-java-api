@@ -163,6 +163,7 @@
     "mixer/adapter/rbac/config",
     "mixer/adapter/redisquota/config",
     "mixer/adapter/servicecontrol/config",
+    "mixer/adapter/signalfx/config",
     "mixer/adapter/solarwinds/config",
     "mixer/adapter/stackdriver/config",
     "mixer/adapter/statsd/config",
@@ -187,6 +188,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cbc1e2f166e64927c39d878a9082a8f8d3b957765daad6b1649a78eaa8efb752"
+  inputs-digest = "fa3fbe18522d9648ea935a2b3339248cad9440e94fa0686e3bb4ce1c3573908e"
   solver-name = "gps-cdcl"
   solver-version = 1
