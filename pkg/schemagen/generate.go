@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"reflect"
+	"sort"
 	"strings"
 )
 
@@ -28,6 +29,12 @@ type PackageDescriptor struct {
 	JavaPackage string
 	Prefix      string
 	Visited     bool
+}
+
+type CrdDescriptor struct {
+	Name    string
+	CrdType string
+	Visited bool
 }
 
 type schemaGenerator struct {
@@ -39,7 +46,7 @@ type schemaGenerator struct {
 	typeMap           map[reflect.Type]reflect.Type
 	unknownEnums      []string
 	unknownInterfaces []string
-	crds              map[string]bool
+	crds              map[string]CrdDescriptor
 }
 
 func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
@@ -52,12 +59,12 @@ func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
 	return descriptor, ok
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]bool, strict bool) (*JSONSchema, error) {
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]CrdDescriptor, strict bool) (*JSONSchema, error) {
 	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap, interfacesImpl, crds)
 	return g.generate(t, strict)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]bool) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]CrdDescriptor) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
@@ -225,8 +232,15 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		name = transformAdapterName(name, path)
 	}
 
-	if g.crds[strings.ToLower(name)] {
+	lower := strings.ToLower(name)
+	crdDesc, ok := g.crds[lower]
+	if ok {
 		name += "Spec"
+		g.crds[lower] = CrdDescriptor{
+			Name:    crdDesc.Name,
+			CrdType: crdDesc.CrdType,
+			Visited: true,
+		}
 	}
 
 	pkgDesc, ok := g.getPackage(path)
@@ -385,10 +399,18 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				unvisitedPkgs = append(unvisitedPkgs, pkgDesc.GoPackage)
 			}
 		}
+		unvisitedCRDs := make([]string, 0)
+		for crd, crdDesc := range g.crds {
+			if !crdDesc.Visited {
+				unvisitedCRDs = append(unvisitedCRDs, crd+": "+crdDesc.CrdType)
+			}
+		}
+		sort.Strings(unvisitedCRDs)
+		hasUnvisitedCRDs := len(unvisitedCRDs) > 0
 		hasUnvisitedPkgs := len(unvisitedPkgs) > 0
 		hasUnknownEnums := len(g.unknownEnums) > 0
 		hasUnknownInterfaces := len(g.unknownInterfaces) > 0
-		if hasUnknownEnums || hasUnvisitedPkgs || hasUnknownInterfaces {
+		if hasUnknownEnums || hasUnvisitedPkgs || hasUnknownInterfaces || hasUnvisitedCRDs {
 			var msg string
 			if hasUnknownEnums {
 				msg = msg + "\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
@@ -398,6 +420,9 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 			}
 			if hasUnvisitedPkgs {
 				msg = msg + "\nUnvisited packages:\n" + strings.Join(unvisitedPkgs, "\n")
+			}
+			if hasUnvisitedCRDs {
+				msg = msg + "\nUnvisited CRDs:\n" + strings.Join(unvisitedCRDs, "\n")
 			}
 
 			return &s, errors.New(msg)

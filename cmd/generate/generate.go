@@ -217,7 +217,7 @@ type classData struct {
 	Classes []class `json:"classes"`
 }
 
-func loadInterfacesData(crds map[string]bool) (map[string]string, map[string]string) {
+func loadInterfacesData(crds map[string]schemagen.CrdDescriptor) (map[string]string, map[string]string) {
 	impls := make(map[string]string)
 	interfaces := make(map[string]string)
 
@@ -235,7 +235,8 @@ func loadInterfacesData(crds map[string]bool) (map[string]string, map[string]str
 
 	for _, class := range classes.Classes {
 		className := class.Class
-		if crds[strings.ToLower(className[strings.LastIndex(className, ".")+1:])] {
+		_, ok := crds[strings.ToLower(className[strings.LastIndex(className, ".")+1:])]
+		if ok {
 			className += "Spec"
 		}
 
@@ -261,8 +262,8 @@ func loadInterfacesData(crds map[string]bool) (map[string]string, map[string]str
 	return impls, interfaces
 }
 
-func loadCRDs() map[string]bool {
-	crds := make(map[string]bool)
+func loadCRDs() map[string]schemagen.CrdDescriptor {
+	crds := make(map[string]schemagen.CrdDescriptor)
 
 	path := "istio-common/src/main/resources/istio-crd.properties"
 
@@ -279,8 +280,14 @@ func loadCRDs() map[string]bool {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		crd := strings.ToLower(line[:strings.IndexRune(line, '=')])
-		crds[crd] = true
+		split := strings.Split(line, "|")
+		crd := strings.ToLower(split[0][:strings.IndexRune(split[0], '=')])
+		crdType := strings.TrimSpace(split[1][strings.IndexRune(split[1], '=')+1:])
+		crds[crd] = schemagen.CrdDescriptor{
+			Name:    crd,
+			Visited: false,
+			CrdType: crdType,
+		}
 	}
 
 	return crds
