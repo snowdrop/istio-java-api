@@ -222,6 +222,11 @@
         <version>${sundrio.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.sundr</groupId>
+        <artifactId>transform-annotations</artifactId>
+        <version>${sundrio.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>

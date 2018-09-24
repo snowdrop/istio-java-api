@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.transform.annotations.VelocityTransformation;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -99,6 +101,11 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 .param("type", doneableClass)
                 .param("prefix", "Doneable")
                 .param("value", "done");
+
+        if (clazz.name().endsWith("Spec")) {
+            clazz.annotate(VelocityTransformations.class)
+                .annotationParam("value", VelocityTransformation.class).param("value", "/istio-resource.vm");
+        }
     }
 
     @Override
