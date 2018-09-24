@@ -46,6 +46,7 @@ import (
 	opa "istio.io/istio/mixer/adapter/opa/config"
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
 	rbac_adapter "istio.io/istio/mixer/adapter/rbac/config"
+	redisquota "istio.io/istio/mixer/adapter/redisquota/config"
 	servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
@@ -121,6 +122,7 @@ type Schema struct {
 	LinearBucketsDefinition            prometheus.Params_MetricInfo_BucketsDefinition_LinearBuckets
 	ExponentialBucketsDefinition       prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
 	Rbac                               rbac_adapter.Params
+	RedisQuota                         redisquota.Params
 	ServiceControl                     servicecontrol.Params
 	SolarWinds                         solarwinds.Params
 	SWLogInfo                          solarwinds.Params_LogInfo
@@ -292,6 +294,7 @@ func main() {
 		"adapter.prometheus.config.Params_MetricInfo_Kind":                     "me.snowdrop.istio.adapter.prometheus.Kind",
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.adapter.list.ListEntryType",
+		"adapter.redisquota.config.Params_QuotaAlgorithm":                      "me.snowdrop.istio.adapter.redisquota.QuotaAlgorithm",
 		"adapter.statsd.config.Params_MetricInfo_Type":                         "me.snowdrop.istio.adapter.statsd.Type",
 		"adapter.stdio.config.Params_Stream":                                   "me.snowdrop.istio.adapter.stdio.Stream",
 		"adapter.stdio.config.Params_Level":                                    "me.snowdrop.istio.adapter.stdio.Level",

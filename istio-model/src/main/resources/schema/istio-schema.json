@@ -561,6 +561,91 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.rbac.Rbac"
     },
+    "istio_adapter_redisquota_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "connectionPoolSize": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "quotas": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_redisquota_Params_Quota",
+            "javaType": "me.snowdrop.istio.adapter.redisquota.Quota"
+          }
+        },
+        "redisServerUrl": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.redisquota.Redisquota"
+    },
+    "istio_adapter_redisquota_Params_Override": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "dimensions": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "maxAmount": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.redisquota.Override"
+    },
+    "istio_adapter_redisquota_Params_Quota": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bucketDuration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "maxAmount": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "overrides": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_adapter_redisquota_Params_Override",
+            "javaType": "me.snowdrop.istio.adapter.redisquota.Override"
+          }
+        },
+        "rateLimitAlgorithm": {
+          "javaType": "me.snowdrop.istio.adapter.redisquota.QuotaAlgorithm"
+        },
+        "validDuration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.redisquota.Quota"
+    },
     "istio_adapter_servicecontrol_GcpServiceSetting": {
       "type": "object",
       "description": "",
@@ -4021,6 +4106,10 @@
     "rbacConfig": {
       "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig",
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RbacConfig"
+    },
+    "redisQuota": {
+      "$ref": "#/definitions/istio_adapter_redisquota_Params",
+      "javaType": "me.snowdrop.istio.adapter.redisquota.Redisquota"
     },
     "referencedAttributes": {
       "$ref": "#/definitions/istio_mixer_v1_ReferencedAttributes",
