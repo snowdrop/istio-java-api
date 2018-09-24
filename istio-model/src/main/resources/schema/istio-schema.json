@@ -3584,6 +3584,49 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Constraint"
     },
+    "istio_rbac_v1alpha1_RbacConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "exclusion": {
+          "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig_Target",
+          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
+        },
+        "inclusion": {
+          "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig_Target",
+          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
+        },
+        "mode": {
+          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Mode"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RbacConfig"
+    },
+    "istio_rbac_v1alpha1_RbacConfig_Target": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "namespaces": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "services": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
+    },
     "istio_rbac_v1alpha1_RoleRef": {
       "type": "object",
       "description": "",
@@ -3974,6 +4017,10 @@
     "rbac": {
       "$ref": "#/definitions/istio_adapter_rbac_Params",
       "javaType": "me.snowdrop.istio.adapter.rbac.Rbac"
+    },
+    "rbacConfig": {
+      "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig",
+      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RbacConfig"
     },
     "referencedAttributes": {
       "$ref": "#/definitions/istio_mixer_v1_ReferencedAttributes",

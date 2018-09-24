@@ -66,20 +66,20 @@ import (
 )
 
 type Schema struct {
-	MeshConfig           mesh.MeshConfig
-	ProxyConfig          mesh.ProxyConfig
-	Attributes           mixer.Attributes
-	AttributeValue       mixer.Attributes_AttributeValue
-	CheckRequest         mixer.CheckRequest
-	QuotaParams          mixer.CheckRequest_QuotaParams
-	CheckResponse        mixer.CheckResponse
-	QuotaResult          mixer.CheckResponse_QuotaResult
-	CompressedAttributes mixer.CompressedAttributes
-	ReferencedAttributes mixer.ReferencedAttributes
-	ReportRequest        mixer.ReportRequest
-	ReportResponse       mixer.ReportResponse
-	StringMap            mixer.StringMap
-	//RbacConfig                         rbac.RbacConfig
+	MeshConfig                         mesh.MeshConfig
+	ProxyConfig                        mesh.ProxyConfig
+	Attributes                         mixer.Attributes
+	AttributeValue                     mixer.Attributes_AttributeValue
+	CheckRequest                       mixer.CheckRequest
+	QuotaParams                        mixer.CheckRequest_QuotaParams
+	CheckResponse                      mixer.CheckResponse
+	QuotaResult                        mixer.CheckResponse_QuotaResult
+	CompressedAttributes               mixer.CompressedAttributes
+	ReferencedAttributes               mixer.ReferencedAttributes
+	ReportRequest                      mixer.ReportRequest
+	ReportResponse                     mixer.ReportResponse
+	StringMap                          mixer.StringMap
+	RbacConfig                         rbac.RbacConfig
 	ServiceRole                        rbac.ServiceRole
 	ServiceRoleBinding                 rbac.ServiceRoleBinding
 	EnvoyFilter                        networking.EnvoyFilter
@@ -287,16 +287,16 @@ func main() {
 		"istio.networking.v1alpha3.EnvoyFilter_InsertPosition_Index":           "me.snowdrop.istio.api.networking.v1alpha3.Index",
 		"istio.networking.v1alpha3.EnvoyFilter_Filter_FilterType":              "me.snowdrop.istio.api.networking.v1alpha3.FilterType",
 		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode",
-		//"istio.rbac.v1alpha1.RbacConfig_Mode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.Mode",
-		"adapter.circonus.config.Params_MetricInfo_Type":   "me.snowdrop.istio.adapter.circonus.Type",
-		"adapter.prometheus.config.Params_MetricInfo_Kind": "me.snowdrop.istio.adapter.prometheus.Kind",
-		"adapter.dogstatsd.config.Params_MetricInfo_Type":  "me.snowdrop.istio.adapter.dogstatsd.Type",
-		"adapter.list.config.Params_ListEntryType":         "me.snowdrop.istio.adapter.list.ListEntryType",
-		"adapter.statsd.config.Params_MetricInfo_Type":     "me.snowdrop.istio.adapter.statsd.Type",
-		"adapter.stdio.config.Params_Stream":               "me.snowdrop.istio.adapter.stdio.Stream",
-		"adapter.stdio.config.Params_Level":                "me.snowdrop.istio.adapter.stdio.Level",
-		"google.api.MetricDescriptor_MetricKind":           "me.snowdrop.istio.adapter.stackdriver.MetricKind",
-		"google.api.MetricDescriptor_ValueType":            "me.snowdrop.istio.adapter.stackdriver.ValueType",
+		"istio.rbac.v1alpha1.RbacConfig_Mode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.Mode",
+		"adapter.circonus.config.Params_MetricInfo_Type":                       "me.snowdrop.istio.adapter.circonus.Type",
+		"adapter.prometheus.config.Params_MetricInfo_Kind":                     "me.snowdrop.istio.adapter.prometheus.Kind",
+		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.adapter.dogstatsd.Type",
+		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.adapter.list.ListEntryType",
+		"adapter.statsd.config.Params_MetricInfo_Type":                         "me.snowdrop.istio.adapter.statsd.Type",
+		"adapter.stdio.config.Params_Stream":                                   "me.snowdrop.istio.adapter.stdio.Stream",
+		"adapter.stdio.config.Params_Level":                                    "me.snowdrop.istio.adapter.stdio.Level",
+		"google.api.MetricDescriptor_MetricKind":                               "me.snowdrop.istio.adapter.stackdriver.MetricKind",
+		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.adapter.stackdriver.ValueType",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
