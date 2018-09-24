@@ -544,6 +544,23 @@
       "additionalProperties": true,
       "javaType": "me.snowdrop.istio.adapter.prometheus.MetricsExpirationPolicy"
     },
+    "istio_adapter_rbac_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "cacheDuration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "configStoreUrl": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "me.snowdrop.istio.adapter.rbac.Rbac"
+    },
     "istio_adapter_servicecontrol_GcpServiceSetting": {
       "type": "object",
       "description": "",
@@ -3953,6 +3970,10 @@
     "quotaResult": {
       "$ref": "#/definitions/istio_mixer_v1_CheckResponse_QuotaResult",
       "javaType": "me.snowdrop.istio.api.mixer.v1.QuotaResult"
+    },
+    "rbac": {
+      "$ref": "#/definitions/istio_adapter_rbac_Params",
+      "javaType": "me.snowdrop.istio.adapter.rbac.Rbac"
     },
     "referencedAttributes": {
       "$ref": "#/definitions/istio_mixer_v1_ReferencedAttributes",
