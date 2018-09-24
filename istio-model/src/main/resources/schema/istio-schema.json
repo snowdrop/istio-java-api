@@ -850,7 +850,7 @@
       "description": "",
       "properties": {
         "creds": {
-          "javaType": "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds",
+          "javaType": "me.snowdrop.istio.adapter.stackdriver.StackdriverSpec.Creds",
           "isInterface": true
         },
         "endpoint": {
@@ -895,7 +895,7 @@
     "istio_adapter_stackdriver_Params_ApiKey": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds"
+        "me.snowdrop.istio.adapter.stackdriver.StackdriverSpec.Creds"
       ],
       "description": "",
       "properties": {
@@ -910,7 +910,7 @@
     "istio_adapter_stackdriver_Params_AppCredentials": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds"
+        "me.snowdrop.istio.adapter.stackdriver.StackdriverSpec.Creds"
       ],
       "description": "",
       "properties": {
@@ -1071,7 +1071,7 @@
     "istio_adapter_stackdriver_Params_ServiceAccountPath": {
       "type": "object",
       "javaInterfaces": [
-        "me.snowdrop.istio.adapter.stackdriver.Stackdriver.Creds"
+        "me.snowdrop.istio.adapter.stackdriver.StackdriverSpec.Creds"
       ],
       "description": "",
       "properties": {

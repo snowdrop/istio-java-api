@@ -16,10 +16,8 @@
 package schemagen
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -54,12 +52,12 @@ func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
 	return descriptor, ok
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, strict bool) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap, interfacesImpl)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]bool, strict bool) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap, interfacesImpl, crds)
 	return g.generate(t, strict)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]bool) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
@@ -72,34 +70,9 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 		enumMap:        enumMap,
 		interfacesMap:  interfacesMap,
 		interfacesimpl: interfacesImpl,
-		crds:           loadCRDs(),
+		crds:           crds,
 	}
 	return &g
-}
-
-func loadCRDs() map[string]bool {
-	crds := make(map[string]bool)
-
-	path := "istio-common/src/main/resources/istio-crd.properties"
-
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Println(err)
-		return crds
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		crd := strings.ToLower(line[:strings.IndexRune(line, '=')])
-		crds[crd] = true
-	}
-
-	return crds
 }
 
 func getFieldName(f reflect.StructField) string {
