@@ -90,8 +90,8 @@ spec:
         assertTrue(spec instanceof Metric);
 
         final Metric metric = (Metric) spec;
-        assertEquals("1", metric.getValue().getExpression());
-        final Map<String, TypedValue> dimensions = metric.getDimensions();
+        assertEquals("1", metric.getSpec().getValue().getExpression());
+        final Map<String, TypedValue> dimensions = metric.getSpec().getDimensions();
         assertEquals(4, dimensions.size());
         assertTrue(dimensions.containsKey("source"));
         assertEquals("source.service | \"unknown\"", dimensions.get("source").getExpression());

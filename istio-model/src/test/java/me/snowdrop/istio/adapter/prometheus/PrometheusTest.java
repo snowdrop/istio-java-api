@@ -75,8 +75,8 @@ spec:
         assertTrue(spec instanceof Prometheus);
 
         final Prometheus prometheus = (Prometheus) spec;
-        assertEquals(1, prometheus.getMetrics().size());
-        final MetricInfo metricInfo = prometheus.getMetrics().get(0);
+        assertEquals(1, prometheus.getSpec().getMetrics().size());
+        final MetricInfo metricInfo = prometheus.getSpec().getMetrics().get(0);
         assertEquals("recommendation_request_count", metricInfo.getName());
         assertEquals("recommendationrequestcount.metric.istio-system", metricInfo.getInstanceName());
         assertEquals(Kind.COUNTER, metricInfo.getKind());

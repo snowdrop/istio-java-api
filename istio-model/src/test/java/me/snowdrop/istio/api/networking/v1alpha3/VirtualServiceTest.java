@@ -336,8 +336,8 @@ spec:
          */
 
         final VirtualService virtualService = YAML.loadIstioResource(inputStream, VirtualService.class);
-        assertEquals("ratings.prod.svc.cluster.local", virtualService.getHosts().get(0));
-        final List<HTTPRoute> http = virtualService.getHttp();
+        assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
+        final List<HTTPRoute> http = virtualService.getSpec().getHttp();
         assertEquals(1, http.size());
         final HTTPRoute route = http.get(0);
         final List<DestinationWeight> weights = route.getRoute();

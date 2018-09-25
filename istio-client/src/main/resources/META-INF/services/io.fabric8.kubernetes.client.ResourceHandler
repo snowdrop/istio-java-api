@@ -1,0 +1,35 @@
+#
+# Copyright (C) 2018 Red Hat inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+me.snowdrop.istio.client.internal.handler.mixer.template.ApiKeyHandler
+me.snowdrop.istio.client.internal.handler.mixer.template.Authorization
+me.snowdrop.istio.client.internal.handler.mixer.template.CheckNothing
+me.snowdrop.istio.client.internal.handler.mixer.template.Edge
+me.snowdrop.istio.client.internal.handler.mixer.template.ListEntry
+me.snowdrop.istio.client.internal.handler.mixer.template.LogEntry
+me.snowdrop.istio.client.internal.handler.mixer.template.Metric
+me.snowdrop.istio.client.internal.handler.mixer.template.Quota
+me.snowdrop.istio.client.internal.handler.mixer.template.ReportNothing
+me.snowdrop.istio.client.internal.handler.mixer.template.TraceSpan
+me.snowdrop.istio.client.internal.handler.api.Policy
+me.snowdrop.istio.client.internal.handler.api.DestinationRule
+me.snowdrop.istio.client.internal.handler.api.EnvoyFilter
+me.snowdrop.istio.client.internal.handler.api.Gateway
+me.snowdrop.istio.client.internal.handler.api.ServiceEntry
+me.snowdrop.istio.client.internal.handler.api.VirtualService
+me.snowdrop.istio.client.internal.handler.api.Rule
+me.snowdrop.istio.client.internal.handler.api.ServiceRoleBinding
+me.snowdrop.istio.client.internal.handler.api.ServiceRole
+me.snowdrop.istio.client.internal.handler.api.ApiKey

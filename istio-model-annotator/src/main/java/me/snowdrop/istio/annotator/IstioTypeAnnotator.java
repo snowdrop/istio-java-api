@@ -103,8 +103,10 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 .param("value", "done");
 
         if (clazz.name().endsWith("Spec")) {
-            clazz.annotate(VelocityTransformations.class)
-                .annotationParam("value", VelocityTransformation.class).param("value", "/istio-resource.vm");
+            JAnnotationArrayMember arrayMember= clazz.annotate(VelocityTransformations.class)
+                    .paramArray("value");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
         }
     }
 
