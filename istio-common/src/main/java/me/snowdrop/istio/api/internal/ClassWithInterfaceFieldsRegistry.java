@@ -81,7 +81,7 @@ public class ClassWithInterfaceFieldsRegistry {
                         final String target = interfaceName.substring(0, 1).toLowerCase() + interfaceName.substring(1);
                         final String impl = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
-                        info = new InterfaceFieldInfo(target, impl + interfaceName);
+                        info = new ObjectFieldInfo(target, impl + interfaceName);
                     } else if (type.startsWith("map")) {
                         info = new MapFieldInfo(fieldName, type);
                     } else {
@@ -223,17 +223,6 @@ public class ClassWithInterfaceFieldsRegistry {
 
         protected JsonNode getTargetNode(JsonNode node, String fieldName) {
             return node.get(fieldName);
-        }
-    }
-
-    static class InterfaceFieldInfo extends ObjectFieldInfo {
-        private InterfaceFieldInfo(String target, String type) {
-            super(target, type);
-        }
-
-        @Override
-        protected JsonNode getTargetNode(JsonNode node, String fieldName) {
-            return node;
         }
     }
 

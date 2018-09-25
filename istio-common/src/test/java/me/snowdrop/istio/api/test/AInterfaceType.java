@@ -24,6 +24,10 @@ package me.snowdrop.istio.api.test;
 public class AInterfaceType implements Interface.InterfaceType {
     private String a;
 
+    public AInterfaceType(String a) {
+        this.a = a;
+    }
+
     public String getA() {
         return a;
     }
