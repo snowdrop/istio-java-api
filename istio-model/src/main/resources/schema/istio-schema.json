@@ -23,7 +23,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Status"
     },
     "istio_adapter_bypass_Params": {
@@ -43,7 +43,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.bypass.Bypass"
     },
     "istio_adapter_circonus_Params": {
@@ -68,7 +68,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.circonus.Circonus"
     },
     "istio_adapter_circonus_Params_MetricInfo": {
@@ -83,7 +83,7 @@
           "javaType": "me.snowdrop.istio.adapter.circonus.Type"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.circonus.MetricInfo"
     },
     "istio_adapter_denier_Params": {
@@ -104,7 +104,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.denier.Denier"
     },
     "istio_adapter_dogstatsd_Params": {
@@ -146,7 +146,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.dogstatsd.Dogstatsd"
     },
     "istio_adapter_dogstatsd_Params_MetricInfo": {
@@ -170,7 +170,7 @@
           "javaType": "me.snowdrop.istio.adapter.dogstatsd.Type"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.dogstatsd.MetricInfo"
     },
     "istio_adapter_fluentd_Params": {
@@ -186,7 +186,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.fluentd.Fluentd"
     },
     "istio_adapter_kubernetesenv_Params": {
@@ -203,7 +203,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.kubernetesenv.Kubernetesenv"
     },
     "istio_adapter_list_Params": {
@@ -249,7 +249,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.list.BaseKubernetesList"
     },
     "istio_adapter_memquota_Params": {
@@ -270,7 +270,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.memquota.Memquota"
     },
     "istio_adapter_memquota_Params_Override": {
@@ -297,7 +297,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.memquota.Override"
     },
     "istio_adapter_memquota_Params_Quota": {
@@ -327,7 +327,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.memquota.Quota"
     },
     "istio_adapter_opa_Params": {
@@ -351,7 +351,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.opa.Opa"
     },
     "istio_adapter_prometheus_Params": {
@@ -371,7 +371,7 @@
           "javaType": "me.snowdrop.istio.adapter.prometheus.MetricsExpirationPolicy"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.Prometheus"
     },
     "istio_adapter_prometheus_Params_MetricInfo": {
@@ -410,7 +410,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.MetricInfo"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition": {
@@ -422,7 +422,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.BucketsDefinition"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Explicit": {
@@ -438,7 +438,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.Explicit"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExplicitBuckets": {
@@ -453,7 +453,7 @@
           "javaType": "me.snowdrop.istio.adapter.prometheus.Explicit"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.ExplicitBucketsDefinition"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Exponential": {
@@ -473,7 +473,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.Exponential"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_ExponentialBuckets": {
@@ -488,7 +488,7 @@
           "javaType": "me.snowdrop.istio.adapter.prometheus.Exponential"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.ExponentialBucketsDefinition"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_Linear": {
@@ -508,7 +508,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.Linear"
     },
     "istio_adapter_prometheus_Params_MetricInfo_BucketsDefinition_LinearBuckets": {
@@ -523,7 +523,7 @@
           "javaType": "me.snowdrop.istio.adapter.prometheus.Linear"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.LinearBucketsDefinition"
     },
     "istio_adapter_prometheus_Params_MetricsExpirationPolicy": {
@@ -541,7 +541,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.prometheus.MetricsExpirationPolicy"
     },
     "istio_adapter_rbac_Params": {
@@ -558,7 +558,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.rbac.Rbac"
     },
     "istio_adapter_redisquota_Params": {
@@ -583,7 +583,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.redisquota.Redisquota"
     },
     "istio_adapter_redisquota_Params_Override": {
@@ -605,7 +605,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.redisquota.Override"
     },
     "istio_adapter_redisquota_Params_Quota": {
@@ -643,7 +643,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.redisquota.Quota"
     },
     "istio_adapter_servicecontrol_GcpServiceSetting": {
@@ -667,7 +667,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.servicecontrol.GcpServiceSetting"
     },
     "istio_adapter_servicecontrol_Params": {
@@ -691,7 +691,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.servicecontrol.Servicecontrol"
     },
     "istio_adapter_servicecontrol_Quota": {
@@ -711,7 +711,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.servicecontrol.Quota"
     },
     "istio_adapter_servicecontrol_RuntimeConfig": {
@@ -727,7 +727,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.servicecontrol.RuntimeConfig"
     },
     "istio_adapter_signalfx_Params": {
@@ -756,7 +756,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.signalfx.Signalfx"
     },
     "istio_adapter_signalfx_Params_MetricConfig": {
@@ -771,7 +771,7 @@
           "javaType": "me.snowdrop.istio.adapter.signalfx.Type"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.signalfx.MetricConfig"
     },
     "istio_adapter_solarwinds_Params": {
@@ -814,7 +814,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.solarwinds.Solarwinds"
     },
     "istio_adapter_solarwinds_Params_LogInfo": {
@@ -826,7 +826,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.solarwinds.LogInfo"
     },
     "istio_adapter_solarwinds_Params_MetricInfo": {
@@ -842,7 +842,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.solarwinds.MetricInfo"
     },
     "istio_adapter_stackdriver_Params": {
@@ -889,7 +889,7 @@
           "javaType": "me.snowdrop.istio.adapter.stackdriver.Trace"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.Stackdriver"
     },
     "istio_adapter_stackdriver_Params_ApiKey": {
@@ -904,7 +904,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.ApiKeyCreds"
     },
     "istio_adapter_stackdriver_Params_AppCredentials": {
@@ -919,7 +919,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.AppCredentialsCreds"
     },
     "istio_adapter_stackdriver_Params_LogInfo": {
@@ -947,7 +947,7 @@
           "javaType": "me.snowdrop.istio.adapter.stackdriver.SinkInfo"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.LogInfo"
     },
     "istio_adapter_stackdriver_Params_LogInfo_HttpRequestMapping": {
@@ -995,7 +995,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.HttpRequestMapping"
     },
     "istio_adapter_stackdriver_Params_LogInfo_SinkInfo": {
@@ -1031,7 +1031,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.SinkInfo"
     },
     "istio_adapter_stackdriver_Params_MetricInfo": {
@@ -1053,7 +1053,7 @@
           "javaType": "me.snowdrop.istio.adapter.stackdriver.ValueType"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.MetricInfo"
     },
     "istio_adapter_stackdriver_Params_MetricInfo_BucketsDefinition": {
@@ -1065,7 +1065,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.BucketsDefinition"
     },
     "istio_adapter_stackdriver_Params_ServiceAccountPath": {
@@ -1080,7 +1080,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.ServiceAccountPathCreds"
     },
     "istio_adapter_stackdriver_Params_Trace": {
@@ -1092,7 +1092,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stackdriver.Trace"
     },
     "istio_adapter_statsd_Params": {
@@ -1130,7 +1130,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.statsd.Statsd"
     },
     "istio_adapter_statsd_Params_MetricInfo": {
@@ -1145,7 +1145,7 @@
           "javaType": "me.snowdrop.istio.adapter.statsd.Type"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.statsd.MetricInfo"
     },
     "istio_adapter_stdio_Params": {
@@ -1191,7 +1191,7 @@
           "javaType": "java.util.Map\u003cString,Integer\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.adapter.stdio.Stdio"
     },
     "istio_authentication_v1alpha1_Jwt": {
@@ -1231,7 +1231,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.Jwt"
     },
     "istio_authentication_v1alpha1_MutualTls": {
@@ -1246,7 +1246,7 @@
           "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.Mode"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.MutualTls"
     },
     "istio_authentication_v1alpha1_OriginAuthenticationMethod": {
@@ -1258,7 +1258,7 @@
           "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.Jwt"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.OriginAuthenticationMethod"
     },
     "istio_authentication_v1alpha1_PeerAuthenticationMethod": {
@@ -1270,7 +1270,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PeerAuthenticationMethod"
     },
     "istio_authentication_v1alpha1_PeerAuthenticationMethod_Jwt": {
@@ -1285,7 +1285,7 @@
           "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.Jwt"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.JwtParams"
     },
     "istio_authentication_v1alpha1_PeerAuthenticationMethod_Mtls": {
@@ -1300,7 +1300,7 @@
           "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.MutualTls"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.MtlsParams"
     },
     "istio_authentication_v1alpha1_Policy": {
@@ -1343,7 +1343,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.Policy"
     },
     "istio_authentication_v1alpha1_PortSelector": {
@@ -1355,7 +1355,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector"
     },
     "istio_authentication_v1alpha1_TargetSelector": {
@@ -1375,7 +1375,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.TargetSelector"
     },
     "istio_mesh_v1alpha1_MeshConfig": {
@@ -1457,7 +1457,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.MeshConfig"
     },
     "istio_mesh_v1alpha1_MeshConfig_OutboundTrafficPolicy": {
@@ -1468,7 +1468,7 @@
           "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.Mode"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.OutboundTrafficPolicy"
     },
     "istio_mesh_v1alpha1_ProxyConfig": {
@@ -1546,7 +1546,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.ProxyConfig"
     },
     "istio_mixer_apikey_InstanceMsg": {
@@ -1578,7 +1578,7 @@
           "javaType": "me.snowdrop.istio.api.TimeStamp"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.apikey.ApiKey"
     },
     "istio_mixer_authorization_ActionMsg": {
@@ -1611,7 +1611,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.authorization.Action"
     },
     "istio_mixer_authorization_InstanceMsg": {
@@ -1631,7 +1631,7 @@
           "javaType": "me.snowdrop.istio.mixer.template.authorization.Subject"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.authorization.Authorization"
     },
     "istio_mixer_authorization_SubjectMsg": {
@@ -1656,7 +1656,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.authorization.Subject"
     },
     "istio_mixer_checknothing_InstanceMsg": {
@@ -1668,7 +1668,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.checknothing.CheckNothing"
     },
     "istio_mixer_edge_InstanceMsg": {
@@ -1724,7 +1724,7 @@
           "javaType": "me.snowdrop.istio.api.TimeStamp"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.edge.Edge"
     },
     "istio_mixer_listentry_InstanceMsg": {
@@ -1740,7 +1740,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.listentry.ListEntry"
     },
     "istio_mixer_logentry_InstanceMsg": {
@@ -1782,7 +1782,7 @@
           "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.logentry.LogEntry"
     },
     "istio_mixer_metric_InstanceMsg": {
@@ -1820,7 +1820,7 @@
           "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.metric.Metric"
     },
     "istio_mixer_quota_InstanceMsg": {
@@ -1841,7 +1841,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.quota.Quota"
     },
     "istio_mixer_reportnothing_InstanceMsg": {
@@ -1853,7 +1853,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.reportnothing.ReportNothing"
     },
     "istio_mixer_tracespan_InstanceMsg": {
@@ -1911,7 +1911,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.tracespan.TraceSpan"
     },
     "istio_mixer_v1_Attributes": {
@@ -1928,7 +1928,7 @@
           "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.Attributes"
     },
     "istio_mixer_v1_Attributes_AttributeValue": {
@@ -1940,7 +1940,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     },
     "istio_mixer_v1_CheckRequest": {
@@ -1969,7 +1969,7 @@
           "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.QuotaParams\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.CheckRequest"
     },
     "istio_mixer_v1_CheckRequest_QuotaParams": {
@@ -1986,7 +1986,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.QuotaParams"
     },
     "istio_mixer_v1_CheckResponse": {
@@ -2007,7 +2007,7 @@
           "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.QuotaResult\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.CheckResponse"
     },
     "istio_mixer_v1_CheckResponse_PreconditionResult": {
@@ -2036,7 +2036,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.PreconditionResult"
     },
     "istio_mixer_v1_CheckResponse_QuotaResult": {
@@ -2058,7 +2058,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.QuotaResult"
     },
     "istio_mixer_v1_CompressedAttributes": {
@@ -2148,7 +2148,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.CompressedAttributes"
     },
     "istio_mixer_v1_HeaderOperation": {
@@ -2167,7 +2167,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.HeaderOperation"
     },
     "istio_mixer_v1_ReferencedAttributes": {
@@ -2191,7 +2191,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.ReferencedAttributes"
     },
     "istio_mixer_v1_ReferencedAttributes_AttributeMatch": {
@@ -2214,7 +2214,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.AttributeMatch"
     },
     "istio_mixer_v1_ReportRequest": {
@@ -2242,13 +2242,13 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.ReportRequest"
     },
     "istio_mixer_v1_ReportResponse": {
       "type": "object",
       "description": "",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.ReportResponse"
     },
     "istio_mixer_v1_RouteDirective": {
@@ -2280,7 +2280,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.RouteDirective"
     },
     "istio_mixer_v1_StringMap": {
@@ -2297,7 +2297,7 @@
           "javaType": "java.util.Map\u003cString,Integer\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.StringMap"
     },
     "istio_networking_v1alpha3_ConnectionPoolSettings": {
@@ -2313,7 +2313,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPSettings"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConnectionPoolSettings"
     },
     "istio_networking_v1alpha3_ConnectionPoolSettings_HTTPSettings": {
@@ -2337,7 +2337,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPSettings"
     },
     "istio_networking_v1alpha3_ConnectionPoolSettings_TCPSettings": {
@@ -2353,7 +2353,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPSettings"
     },
     "istio_networking_v1alpha3_CorsPolicy": {
@@ -2401,7 +2401,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.CorsPolicy"
     },
     "istio_networking_v1alpha3_Destination": {
@@ -2421,7 +2421,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Destination"
     },
     "istio_networking_v1alpha3_DestinationRule": {
@@ -2445,7 +2445,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TrafficPolicy"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.DestinationRule"
     },
     "istio_networking_v1alpha3_DestinationWeight": {
@@ -2461,7 +2461,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.DestinationWeight"
     },
     "istio_networking_v1alpha3_EnvoyFilter": {
@@ -2486,7 +2486,7 @@
           "javaType": "java.util.Map\u003cString,String\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter"
     },
     "istio_networking_v1alpha3_EnvoyFilter_Filter": {
@@ -2513,7 +2513,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerMatch"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Filter"
     },
     "istio_networking_v1alpha3_EnvoyFilter_InsertPosition": {
@@ -2528,7 +2528,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.InsertPosition"
     },
     "istio_networking_v1alpha3_EnvoyFilter_ListenerMatch": {
@@ -2558,7 +2558,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerMatch"
     },
     "istio_networking_v1alpha3_Gateway": {
@@ -2583,7 +2583,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Gateway"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection": {
@@ -2599,7 +2599,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPFaultInjection"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Abort": {
@@ -2615,7 +2615,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Abort"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Abort_GrpcStatus": {
@@ -2630,7 +2630,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.GrpcStatusErrorType"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Abort_Http2Error": {
@@ -2645,7 +2645,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Http2ErrorErrorType"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Abort_HttpStatus": {
@@ -2660,7 +2660,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpStatusErrorType"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Delay": {
@@ -2676,7 +2676,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Delay_ExponentialDelay": {
@@ -2691,7 +2691,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ExponentialDelayHttpDelayType"
     },
     "istio_networking_v1alpha3_HTTPFaultInjection_Delay_FixedDelay": {
@@ -2706,7 +2706,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.FixedDelayHttpDelayType"
     },
     "istio_networking_v1alpha3_HTTPMatchRequest": {
@@ -2760,7 +2760,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequest"
     },
     "istio_networking_v1alpha3_HTTPRedirect": {
@@ -2776,7 +2776,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRedirect"
     },
     "istio_networking_v1alpha3_HTTPRetry": {
@@ -2792,7 +2792,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRetry"
     },
     "istio_networking_v1alpha3_HTTPRewrite": {
@@ -2808,7 +2808,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRewrite"
     },
     "istio_networking_v1alpha3_HTTPRoute": {
@@ -2881,7 +2881,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute"
     },
     "istio_networking_v1alpha3_L4MatchAttributes": {
@@ -2922,7 +2922,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.L4MatchAttributes"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings": {
@@ -2934,7 +2934,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHash": {
@@ -2946,7 +2946,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHash"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB": {
@@ -2963,7 +2963,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HTTPCookie": {
@@ -2984,7 +2984,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPCookie"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpCookie": {
@@ -2999,7 +2999,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPCookie"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpCookieHashKey"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName": {
@@ -3014,7 +3014,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpHeaderNameHashKey"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_UseSourceIp": {
@@ -3029,7 +3029,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.UseSourceIpHashKey"
     },
     "istio_networking_v1alpha3_LoadBalancerSettings_Simple": {
@@ -3043,7 +3043,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLB"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLbPolicy"
     },
     "istio_networking_v1alpha3_OutlierDetection": {
@@ -3067,7 +3067,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.OutlierDetection"
     },
     "istio_networking_v1alpha3_Port": {
@@ -3087,7 +3087,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
     },
     "istio_networking_v1alpha3_PortSelector": {
@@ -3099,7 +3099,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector"
     },
     "istio_networking_v1alpha3_PortSelector_Name": {
@@ -3114,7 +3114,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.NamePort"
     },
     "istio_networking_v1alpha3_PortSelector_Number": {
@@ -3129,7 +3129,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.NumberPort"
     },
     "istio_networking_v1alpha3_Server": {
@@ -3153,7 +3153,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptions"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Server"
     },
     "istio_networking_v1alpha3_Server_TLSOptions": {
@@ -3188,7 +3188,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptions"
     },
     "istio_networking_v1alpha3_ServiceEntry": {
@@ -3234,7 +3234,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryResolution"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry"
     },
     "istio_networking_v1alpha3_ServiceEntry_Endpoint": {
@@ -3264,7 +3264,7 @@
           "javaType": "java.util.Map\u003cString,Integer\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Endpoint"
     },
     "istio_networking_v1alpha3_StringMatch": {
@@ -3276,7 +3276,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
     },
     "istio_networking_v1alpha3_StringMatch_Exact": {
@@ -3291,7 +3291,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ExactMatchType"
     },
     "istio_networking_v1alpha3_StringMatch_Prefix": {
@@ -3306,7 +3306,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType"
     },
     "istio_networking_v1alpha3_StringMatch_Regex": {
@@ -3321,7 +3321,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.RegexMatchType"
     },
     "istio_networking_v1alpha3_Subset": {
@@ -3346,7 +3346,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TrafficPolicy"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Subset"
     },
     "istio_networking_v1alpha3_TCPRoute": {
@@ -3370,7 +3370,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPRoute"
     },
     "istio_networking_v1alpha3_TLSMatchAttributes": {
@@ -3419,7 +3419,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSMatchAttributes"
     },
     "istio_networking_v1alpha3_TLSRoute": {
@@ -3443,7 +3443,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSRoute"
     },
     "istio_networking_v1alpha3_TLSSettings": {
@@ -3478,7 +3478,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettings"
     },
     "istio_networking_v1alpha3_TrafficPolicy": {
@@ -3510,7 +3510,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettings"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TrafficPolicy"
     },
     "istio_networking_v1alpha3_TrafficPolicy_PortTrafficPolicy": {
@@ -3538,7 +3538,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettings"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortTrafficPolicy"
     },
     "istio_networking_v1alpha3_VirtualService": {
@@ -3586,7 +3586,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.VirtualService"
     },
     "istio_policy_v1beta1_Action": {
@@ -3606,7 +3606,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.policy.v1beta1.Action"
     },
     "istio_policy_v1beta1_Rule": {
@@ -3626,7 +3626,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.policy.v1beta1.Rule"
     },
     "istio_policy_v1beta1_TimeStamp": {
@@ -3638,7 +3638,7 @@
           "javaType": "me.snowdrop.istio.api.TimeStamp"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.TimeStamp"
     },
     "istio_policy_v1beta1_Value": {
@@ -3650,7 +3650,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     },
     "istio_rbac_v1alpha1_AccessRule": {
@@ -3690,7 +3690,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.AccessRule"
     },
     "istio_rbac_v1alpha1_AccessRule_Constraint": {
@@ -3710,7 +3710,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Constraint"
     },
     "istio_rbac_v1alpha1_RbacConfig": {
@@ -3729,7 +3729,7 @@
           "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Mode"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RbacConfig"
     },
     "istio_rbac_v1alpha1_RbacConfig_Target": {
@@ -3753,7 +3753,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
     },
     "istio_rbac_v1alpha1_RoleRef": {
@@ -3769,7 +3769,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RoleRef"
     },
     "istio_rbac_v1alpha1_ServiceRole": {
@@ -3785,7 +3785,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRole"
     },
     "istio_rbac_v1alpha1_ServiceRoleBinding": {
@@ -3808,7 +3808,7 @@
           }
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBinding"
     },
     "istio_rbac_v1alpha1_Subject": {
@@ -3833,7 +3833,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Subject"
     },
     "protobuf_duration_Duration": {
@@ -3850,7 +3850,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Duration"
     },
     "protobuf_types_Any": {
@@ -3866,7 +3866,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Any"
     },
     "protobuf_types_BoolValue": {
@@ -3878,7 +3878,7 @@
           "description": ""
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.BoolValue"
     },
     "protobuf_types_Duration": {
@@ -3895,7 +3895,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Duration"
     },
     "protobuf_types_Struct": {
@@ -3912,7 +3912,7 @@
           "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Struct"
     },
     "protobuf_types_Timestamp": {
@@ -3929,7 +3929,7 @@
           "javaType": "Long"
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.TimeStamp"
     },
     "protobuf_types_Value": {
@@ -3941,7 +3941,7 @@
           "isInterface": true
         }
       },
-      "additionalProperties": true,
+      "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     }
   },
@@ -4268,5 +4268,5 @@
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.VirtualService"
     }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }

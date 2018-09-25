@@ -605,7 +605,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 }
 
 func (g *schemaGenerator) generateObjectDescriptor(t reflect.Type) *JSONObjectDescriptor {
-	desc := JSONObjectDescriptor{AdditionalProperties: true}
+	desc := JSONObjectDescriptor{AdditionalProperties: false}
 	desc.Properties = g.getStructProperties(t)
 	return &desc
 }
