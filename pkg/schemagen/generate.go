@@ -225,21 +225,26 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	path := pkgPath(t)
 
-	// transform type name if needed
+	// transform type name if needed, checking if the type is a top-level one and thus a CRD
+	var isCRD = true
 	if strings.Contains(path, "template") {
-		name = transformTemplateName(name, path)
+		name, isCRD = transformTemplateName(name, path)
 	} else if strings.Contains(path, "adapter") {
-		name = transformAdapterName(name, path)
+		name, isCRD = transformAdapterName(name, path)
 	}
 
-	lower := strings.ToLower(name)
-	crdDesc, ok := g.crds[lower]
-	if ok {
-		name += "Spec"
-		g.crds[lower] = CrdDescriptor{
-			Name:    crdDesc.Name,
-			CrdType: crdDesc.CrdType,
-			Visited: true,
+	// if the type name is still marked as CRD, add Spec suffix to its name if it's a known CRD name
+	// we need this "double" check because some adapter/template classes have the same name as top-level CRDs (e.g. Quota)
+	if isCRD {
+		lower := strings.ToLower(name)
+		crdDesc, ok := g.crds[lower]
+		if ok {
+			name += "Spec"
+			g.crds[lower] = CrdDescriptor{
+				Name:    crdDesc.Name,
+				CrdType: crdDesc.CrdType,
+				Visited: true,
+			}
 		}
 	}
 
@@ -301,35 +306,38 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 }
 
-func transformTemplateName(original string, path string) string {
+func transformTemplateName(original string, path string) (string, bool) {
 	kind := "template"
 	var name = original
+	result := false
 	kindIndex := strings.Index(path, kind)
 	if kindIndex >= 0 && strings.Compare("InstanceMsg", name) == 0 {
 		// extract specific type name from path
 		extractedTypeName := path[kindIndex+len(kind)+1:]
 		name = strings.Title(extractedTypeName)
+		result = true
 	}
 
 	// same replacements should occur in IstioSpecRegistry.getCRDInfoFrom method
 	if strings.Contains(name, "entry") {
-		return strings.Replace(name, "entry", "Entry", -1)
+		return strings.Replace(name, "entry", "Entry", -1), result
 	} else if strings.Contains(name, "Msg") {
-		return strings.Replace(name, "Msg", "", -1)
+		return strings.Replace(name, "Msg", "", -1), result
 	} else if strings.Contains(name, "nothing") {
-		return strings.Replace(name, "nothing", "Nothing", -1)
+		return strings.Replace(name, "nothing", "Nothing", -1), result
 	} else if strings.Contains(name, "key") {
-		return strings.Replace(name, "key", "Key", -1)
+		return strings.Replace(name, "key", "Key", -1), result
 	} else if strings.Contains(name, "span") {
-		return strings.Replace(name, "span", "Span", -1)
+		return strings.Replace(name, "span", "Span", -1), result
 	} else {
-		return name
+		return name, result
 	}
 }
 
-func transformAdapterName(original string, path string) string {
+func transformAdapterName(original string, path string) (string, bool) {
 	kind := "adapter"
 	var name = original
+	result := false
 	kindIndex := strings.Index(path, kind)
 	if kindIndex >= 0 && strings.Compare("Params", name) == 0 {
 		// extract specific type name from path
@@ -339,6 +347,7 @@ func transformAdapterName(original string, path string) string {
 			extractedTypeName = extractedTypeName[:slashIndex]
 		}
 		name = strings.Title(extractedTypeName)
+		result = true
 	}
 
 	underscore := strings.IndexRune(name, '_')
@@ -346,7 +355,7 @@ func transformAdapterName(original string, path string) string {
 		name = name[underscore+1:]
 	}
 
-	return name
+	return name, result
 }
 
 func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, error) {
