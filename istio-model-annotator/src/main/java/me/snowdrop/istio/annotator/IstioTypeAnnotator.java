@@ -12,6 +12,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import com.sun.codemodel.JAnnotationUse;
+import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.VelocityTransformations;
 import io.sundr.transform.annotations.VelocityTransformation;
 
@@ -31,6 +34,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
+import me.snowdrop.istio.api.internal.IstioApiVersion;
 import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import org.jsonschema2pojo.GenerationConfig;
@@ -89,24 +93,39 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             clazz._implements(IstioSpec.class);
             clazz.annotate(IstioKind.class).param("name", kind.get());
         }
-
+        final Optional<String> version = IstioSpecRegistry.getIstioApiVersion(clazz.name());
+        if (version.isPresent()) {
+            clazz.annotate(IstioApiVersion.class).param("value", version.get());
+        }
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
-        clazz.annotate(Buildable.class)
+        try {
+
+        JAnnotationUse buildable = clazz.annotate(Buildable.class)
                 .param("editableEnabled", false)
                 .param("validationEnabled", true)
                 .param("generateBuilderPackage", true)
-                .param("builderPackage", BUILDER_PACKAGE)
-                .annotationParam("inline", Inline.class)
-                .param("type", doneableClass)
-                .param("prefix", "Doneable")
-                .param("value", "done");
+                .param("builderPackage", BUILDER_PACKAGE);
+
+            buildable.paramArray("inline").annotate(Inline.class)
+                    .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
+                    .param("prefix", "Doneable")
+                    .param("value", "done");
+
+           buildable.paramArray("refs").annotate(BuildableReference.class)
+                   .param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
+
+        } catch (JClassAlreadyExistsException e) {
+            e.printStackTrace();
+        }
 
         if (clazz.name().endsWith("Spec")) {
             JAnnotationArrayMember arrayMember= clazz.annotate(VelocityTransformations.class)
                     .paramArray("value");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm").param("outputPath", "crd.properties").param("gather", true);
+           // arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm").param("outputPath", "me/snowdrop/istio/api/model/IstioResourceMappingsProvider.java").param("gather", true);
         }
     }
 

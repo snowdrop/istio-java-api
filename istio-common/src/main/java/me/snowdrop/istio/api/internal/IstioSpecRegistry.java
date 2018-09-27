@@ -95,11 +95,13 @@ public class IstioSpecRegistry {
         }
 
 
-        return new CRDInfo(kind, name, packageName + className);
+        return new CRDInfo(kind, version, name, packageName + className);
     }
 
     static class CRDInfo {
         private final String kind;
+
+        private final String version;
 
         private final String crdName;
 
@@ -109,8 +111,9 @@ public class IstioSpecRegistry {
 
         private boolean visited;
 
-        public CRDInfo(String kind, String crdName, String className) {
+        public CRDInfo(String kind, String version, String crdName, String className) {
             this.kind = kind;
+            this.version = version;
             this.crdName = crdName;
             this.className = className;
         }
@@ -187,6 +190,21 @@ public class IstioSpecRegistry {
         if (crd != null) {
             crd.visited = true;
             return Optional.of(simpleClassName);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<String> getIstioApiVersion(String simpleClassName) {
+        if (simpleClassName.endsWith("Spec")) {
+            simpleClassName = simpleClassName.substring(0, simpleClassName.indexOf("Spec"));
+        }
+
+        CRDInfo crd = crdInfos.get(simpleClassName.toLowerCase());
+        if (crd != null) {
+            crd.visited = true;
+            String prefix = crd.crdName.substring(crd.crdName.indexOf(".") + 1);
+            return Optional.of(prefix + "/" + crd.version);
         } else {
             return Optional.empty();
         }

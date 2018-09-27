@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.snowdrop.istio.client.internal.operation.mixer;
+package me.snowdrop.istio.client.internal.operation.mixer.template;
 
 
 import io.fabric8.kubernetes.client.Config;
@@ -23,20 +23,20 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
 
-import me.snowdrop.istio.mixer.template.quota.DoneableQuota;
-import me.snowdrop.istio.mixer.template.quota.Quota;
-import me.snowdrop.istio.mixer.template.quota.QuotaList;
+import me.snowdrop.istio.mixer.template.listentry.DoneableListEntry;
+import me.snowdrop.istio.mixer.template.listentry.ListEntry;
+import me.snowdrop.istio.mixer.template.listentry.ListEntryList;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class QuotaOperationImpl extends HasMetadataOperation<Quota, QuotaList, DoneableQuota, Resource<Quota, DoneableQuota>> {
+public class ListEntryOperationImpl extends HasMetadataOperation<ListEntry, ListEntryList, DoneableListEntry, Resource<ListEntry, DoneableListEntry>> {
 
-  public QuotaOperationImpl(OkHttpClient client, Config config, String namespace) {
+  public ListEntryOperationImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public QuotaOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Quota item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "Quotas", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ListEntryOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ListEntry item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "ListEntrys", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.snowdrop.istio.client.internal.operation.mixer;
+package me.snowdrop.istio.client.internal.operation.mixer.template;
 
 
 import io.fabric8.kubernetes.client.Config;
@@ -23,20 +23,20 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
 
-import me.snowdrop.istio.mixer.template.logentry.DoneableLogEntry;
-import me.snowdrop.istio.mixer.template.logentry.LogEntry;
-import me.snowdrop.istio.mixer.template.logentry.LogEntryList;
+import me.snowdrop.istio.mixer.template.metric.DoneableMetric;
+import me.snowdrop.istio.mixer.template.metric.Metric;
+import me.snowdrop.istio.mixer.template.metric.MetricList;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class LogEntryOperationImpl extends HasMetadataOperation<LogEntry, LogEntryList, DoneableLogEntry, Resource<LogEntry, DoneableLogEntry>> {
+public class MetricOperationImpl extends HasMetadataOperation<Metric, MetricList, DoneableMetric, Resource<Metric, DoneableMetric>> {
 
-  public LogEntryOperationImpl(OkHttpClient client, Config config, String namespace) {
+  public MetricOperationImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public LogEntryOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, LogEntry item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "LogEntrys", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public MetricOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Metric item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "Metrics", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

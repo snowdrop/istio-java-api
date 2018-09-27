@@ -1,5 +1,6 @@
 #!/bin/bash
 
+MODEL_SRC="istio-model/src/main/java/me/snowdrop/istio"
 CLIENT_SRC="istio-client/src/main/gen/me/snowdrop/istio/clientv2"
 CLIENT_RES="istio-client/src/main/resources"
 
@@ -86,6 +87,23 @@ if [ ! -d ".git" ]; then
  exit 1
 fi
 
+function generate_mappings() {
+cat istio-model/src/main/resources/schema/istio-schema.json | grep Spec | awk -F "\"" '{print $4}' | sort | uniq | while read s
+ do
+  r=`echo ${s:0:-4}`
+  c=`echo $r | awk -F "." '{print $NF}'`
+  p=`echo $r | awk -F ".$c" '{print $1}'`
+
+  if [ -n "$c" ] && [ ${#c} -gt 2 ];  then
+    echo "$p#$c"
+  fi
+done
+}
+
+if [ ! -d ".git" ]; then
+ echo "Please execute from the project root!"
+ exit 1
+fi
 
 echo "Generating DSL interfaces"
 
@@ -102,4 +120,8 @@ echo "Generating Operation Implementations"
 generate_operations "adapter" ${CLIENT_SRC}/internal/operation/adapter
 generate_operations "mixer.template" ${CLIENT_SRC}/internal/operation/mixer
 generate_operations "api" ${CLIENT_SRC}/internal/operation/api
+
+echo "Generate Mappings"
+generate_mappings | ./scripts/mapping_provider_template.sh> ${MODEL_SRC}/IstioResourceMappingProvider.java
+
 

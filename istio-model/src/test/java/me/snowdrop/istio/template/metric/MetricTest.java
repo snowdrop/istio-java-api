@@ -21,6 +21,7 @@ package me.snowdrop.istio.template.metric;
 import java.io.InputStream;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.api.IstioSpec;
@@ -82,14 +83,13 @@ spec:
     public void loadingFromYAMLShouldWork() throws Exception {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream is = classloader.getResourceAsStream("metric.yaml");
-        final IstioResource metricRes = mapper.readValue(is, IstioResource.class);
+        final HasMetadata resource = mapper.readValue(is, HasMetadata.class);
 
-        assertEquals(metricRes.getKind(), "metric");
+        assertEquals(resource.getKind(), "metric");
 
-        final IstioSpec spec = metricRes.getSpec();
-        assertTrue(spec instanceof Metric);
+        assertTrue(resource instanceof Metric);
 
-        final Metric metric = (Metric) spec;
+        final Metric metric = (Metric) resource;
         assertEquals("1", metric.getSpec().getValue().getExpression());
         final Map<String, TypedValue> dimensions = metric.getSpec().getDimensions();
         assertEquals(4, dimensions.size());

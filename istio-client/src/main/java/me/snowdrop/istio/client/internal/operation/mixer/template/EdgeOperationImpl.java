@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.snowdrop.istio.client.internal.operation.mixer;
+package me.snowdrop.istio.client.internal.operation.mixer.template;
 
 
 import io.fabric8.kubernetes.client.Config;
@@ -23,20 +23,20 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
 
-import me.snowdrop.istio.mixer.template.apikey.DoneableApiKey;
-import me.snowdrop.istio.mixer.template.apikey.ApiKey;
-import me.snowdrop.istio.mixer.template.apikey.ApiKeyList;
+import me.snowdrop.istio.mixer.template.edge.DoneableEdge;
+import me.snowdrop.istio.mixer.template.edge.Edge;
+import me.snowdrop.istio.mixer.template.edge.EdgeList;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ApiKeyOperationImpl extends HasMetadataOperation<ApiKey, ApiKeyList, DoneableApiKey, Resource<ApiKey, DoneableApiKey>> {
+public class EdgeOperationImpl extends HasMetadataOperation<Edge, EdgeList, DoneableEdge, Resource<Edge, DoneableEdge>> {
 
-  public ApiKeyOperationImpl(OkHttpClient client, Config config, String namespace) {
+  public EdgeOperationImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public ApiKeyOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ApiKey item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "ApiKeys", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public EdgeOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Edge item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "Edges", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

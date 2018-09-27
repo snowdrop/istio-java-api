@@ -32,6 +32,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>transform-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>me.snowdrop</groupId>
       <artifactId>istio-model</artifactId>
       <version>${project.version}</version>

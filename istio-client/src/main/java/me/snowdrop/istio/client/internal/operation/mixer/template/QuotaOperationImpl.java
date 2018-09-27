@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.snowdrop.istio.client.internal.operation.mixer;
+package me.snowdrop.istio.client.internal.operation.mixer.template;
 
 
 import io.fabric8.kubernetes.client.Config;
@@ -23,20 +23,20 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
 
-import me.snowdrop.istio.mixer.template.tracespan.DoneableTraceSpan;
-import me.snowdrop.istio.mixer.template.tracespan.TraceSpan;
-import me.snowdrop.istio.mixer.template.tracespan.TraceSpanList;
+import me.snowdrop.istio.mixer.template.quota.DoneableQuota;
+import me.snowdrop.istio.mixer.template.quota.Quota;
+import me.snowdrop.istio.mixer.template.quota.QuotaList;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TraceSpanOperationImpl extends HasMetadataOperation<TraceSpan, TraceSpanList, DoneableTraceSpan, Resource<TraceSpan, DoneableTraceSpan>> {
+public class QuotaOperationImpl extends HasMetadataOperation<Quota, QuotaList, DoneableQuota, Resource<Quota, DoneableQuota>> {
 
-  public TraceSpanOperationImpl(OkHttpClient client, Config config, String namespace) {
+  public QuotaOperationImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public TraceSpanOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, TraceSpan item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "TraceSpans", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public QuotaOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Quota item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "Quotas", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

@@ -24,6 +24,14 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListMeta;
 
+#set ($version = "unknown")
+#set ($annotations = $model.annotations)
+#foreach ($annotation in $annotations)
+#if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
+#set ($version = $annotation.getParameters().get("value"))
+#end
+#end
+
 #set ($spec = $model.name)
 #set ($length = $spec.length())
 #set ($tindex = $length - 4)
@@ -55,7 +63,7 @@ public class ${resource}List implements KubernetesResource, KubernetesResourceLi
      */
     @NotNull
     @JsonProperty("apiVersion")
-    private String apiVersion = "v1";
+    private String apiVersion = "$version";
     /**
      *
      *

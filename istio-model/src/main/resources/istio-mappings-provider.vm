@@ -1,0 +1,43 @@
+package me.snowdrop.istio.api.model;
+
+import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import java.util.HashMap;
+import java.util.Map;
+
+#foreach ($key in ${model.keySet()})
+#set ($spec = $key)
+#set ($length = $spec.length())
+#set ($tindex = $length - 4)
+#set ($resource = $spec.substring(0, $tindex))
+import $resource;
+#end
+
+public class IstioResourceMappingsProvider implements KubernetesResourceMappingProvider {
+
+    public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
+
+    public IstioResourceMappingsProvider () {
+
+#foreach ($key in ${model.keySet()})
+#set ($spec = $key)
+#set ($length = $spec.length())
+#set ($tindex = $length - 4)
+#set ($resource = $spec.substring(0, $tindex))
+#set ($dindex = $resource.lastIndexOf(".")+1)
+#set ($c = $resource.substring($dindex))
+#set ($version = "unknwon")
+#set ($annotations = $model.annotations)
+#foreach ($annotation in $annotations)
+#if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
+#set ($version = $annotation.getParameters().get("value"))
+#end
+#end
+        mappings.put("$version#$c", ${c}.class);
+#end
+    }
+
+    public Map<String, Class<? extends KubernetesResource>> getMappings() {
+        return mappings;
+    }
+}

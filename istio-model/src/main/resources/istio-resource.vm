@@ -23,15 +23,19 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 
+#set ($version = "unknwon")
+#set ($annotations = $model.annotations)
+#foreach ($annotation in $annotations)
+#if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
+#set ($version = $annotation.getParameters().get("value"))
+#end
+#end
+
 #set ($spec = $model.name)
 #set ($length = $spec.length())
 #set ($tindex = $length - 4)
 #set ($resource = $spec.substring(0, $tindex))
 #set ($status = $resource + "Status")
-
-#set ($pkg = $model.packageName)
-#set ($pindex = $pkg.lastIndexOf(".") + 1)
-#set ($version = $pkg.substring($pindex))
 
 /**
  *
