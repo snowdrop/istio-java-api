@@ -23,6 +23,9 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 
+import me.snowdrop.istio.api.internal.IstioApiVersion;
+import me.snowdrop.istio.api.internal.IstioKind;
+
 #set ($version = "unknwon")
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
@@ -41,6 +44,8 @@ import io.sundr.builder.annotations.Inline;
  *
  *
  */
+@IstioKind(name = "$resource")
+@IstioApiVersion("$version")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
