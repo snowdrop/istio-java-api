@@ -2,21 +2,19 @@ package me.snowdrop.istio.client.it;
 
 import java.util.AbstractMap.SimpleEntry;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
 import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.networking.v1alpha3.Gateway;
-import me.snowdrop.istio.client.IstioClient;
-import me.snowdrop.istio.client.KubernetesAdapter;
+import me.snowdrop.istio.api.networking.v1alpha3.GatewayBuilder;
+import me.snowdrop.istio.api.networking.v1alpha3.GatewaySpec;
+import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.clientv2.DefaultIstioClient;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GatewayIT {
 
-    private final IstioClient istioClient
-            = new IstioClient(new KubernetesAdapter(new DefaultKubernetesClient()));
+    private final IstioClient istioClient = new DefaultIstioClient();
 
     /*
   apiVersion: networking.istio.io/v1alpha3
@@ -37,19 +35,19 @@ public class GatewayIT {
     @Test
     public void checkBasicGateway() {
         //given
-        final IstioResource gateway = new IstioResourceBuilder()
+        final Gateway gateway = new GatewayBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()
-                .withNewGatewaySpec()
+                .withNewSpec()
                 .addToSelector("istio", "ingressgateway")
                 .addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-                .endGatewaySpec()
+                .endSpec()
                 .build();
 
         //when
-        final IstioResource resultResource = istioClient.registerCustomResource(gateway);
+        final Gateway resultResource = istioClient.gateway().create(gateway);
 
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -63,18 +61,16 @@ public class GatewayIT {
         });
 
         //and
-        final IstioSpec resultSpec = resultResource.getSpec();
-        assertThat(resultSpec).isNotNull().isInstanceOf(Gateway.class);
+        final GatewaySpec resultSpec = resultResource.getSpec();
 
         //and
-        final Gateway resultGateway = (Gateway) resultSpec;
-        assertThat(resultGateway).satisfies(vs -> {
+        assertThat(resultSpec).satisfies(gs -> {
 
-            assertThat(resultGateway.getSelector())
+            assertThat(gs.getSelector())
                     .containsOnly(new SimpleEntry<>("istio", "ingressgateway"));
 
-            assertThat(resultGateway.getServers()).hasSize(1);
-            assertThat(resultGateway.getServers().get(0)).satisfies(server -> {
+            assertThat(gs.getServers()).hasSize(1);
+            assertThat(gs.getServers().get(0)).satisfies(server -> {
 
                 assertThat(server.getHosts()).containsExactly("httpbin.example.com");
                 assertThat(server.getPort()).isNotNull().satisfies(port -> {
@@ -88,7 +84,7 @@ public class GatewayIT {
         });
 
         //when
-        final Boolean deleteResult = istioClient.unregisterCustomResource(resultResource);
+        final Boolean deleteResult = istioClient.gateway().delete(resultResource);
 
         //then
         assertThat(deleteResult).isTrue();

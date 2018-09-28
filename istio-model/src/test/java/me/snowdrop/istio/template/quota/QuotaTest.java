@@ -18,10 +18,11 @@
  */
 package me.snowdrop.istio.template.quota;
 
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.api.cexl.TypedValue;
 import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
+import me.snowdrop.istio.mixer.template.quota.Quota;
+import me.snowdrop.istio.mixer.template.quota.QuotaBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 
@@ -48,23 +49,23 @@ spec:
     destinationVersion: destination.labels["version"] | "unknown"
          */
 
-        IstioResource quota = new IstioResourceBuilder()
+        Quota quota = new QuotaBuilder()
                 .withNewMetadata()
                 .withName("requestcount")
                 .withNamespace("istio-config-default")
                 .endMetadata()
-                .withNewQuotaQuotaSpec()
+                .withNewSpec()
                 .addToDimensions("source", new TypedValue(ValueType.STRING, "source.labels[\"app\"] | source.service | \"unknown\""))
                 .addToDimensions("sourceVersion", new TypedValue(ValueType.STRING, "source.labels[\"version\"] | \"unknown\""))
                 .addToDimensions("destination", new TypedValue(ValueType.STRING, "destination.labels[\"app\"] | destination.service | \"unknown\""))
                 .addToDimensions("destinationVersion", new TypedValue(ValueType.STRING, "destination.labels[\"version\"] \"unknown\""))
-                .endQuotaQuotaSpec()
+                .endSpec()
                 .build();
 
 
         final String output = mapper.writeValueAsString(quota);
 
-        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
+        HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
 
         assertEquals(quota, reloaded);
     }

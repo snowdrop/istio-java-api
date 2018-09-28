@@ -1,4 +1,3 @@
-
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -14,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.snowdrop.istio.client.internal.operation.adapter;
-
+package me.snowdrop.istio.client.internal.operation;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -23,20 +21,21 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
 
-import me.snowdrop.istio.adapter.prometheus.DoneablePrometheus;
-import me.snowdrop.istio.adapter.prometheus.Prometheus;
-import me.snowdrop.istio.adapter.prometheus.PrometheusList;
+import ${model.packageName}.Doneable${model.name};
+import ${model.packageName}.${model.name};
+import ${model.packageName}.${model.name}List;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class PrometheusOperationImpl extends HasMetadataOperation<Prometheus, PrometheusList, DoneablePrometheus, Resource<Prometheus, DoneablePrometheus>> {
 
-  public PrometheusOperationImpl(OkHttpClient client, Config config, String namespace) {
+public class ${model.name}OperationImpl extends HasMetadataOperation<${model.name}, ${model.name}List, Doneable${model.name}, Resource<${model.name}, Doneable${model.name}>> {
+
+public ${model.name}OperationImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public PrometheusOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Prometheus item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "Prometheuss", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ${model.name}OperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ${model.name} item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "${model.name}s", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

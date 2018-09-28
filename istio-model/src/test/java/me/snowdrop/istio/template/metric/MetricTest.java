@@ -22,11 +22,9 @@ import java.io.InputStream;
 import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
-import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.cexl.TypedValue;
 import me.snowdrop.istio.mixer.template.metric.Metric;
+import me.snowdrop.istio.mixer.template.metric.MetricBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 
@@ -56,12 +54,12 @@ spec:
   monitoredResourceType: '"UNSPECIFIED"'
      */
 
-        IstioResource resource = new IstioResourceBuilder()
+        Metric resource = new MetricBuilder()
                 .withNewMetadata()
                 .withName("requestsize")
                 .withNamespace("istio-config-default")
                 .endMetadata()
-                .withNewMetricSpec()
+                .withNewSpec()
                 .withValue(TypedValue.from("request.size | 0"))
                 .addToDimensions("sourceService", TypedValue.from("source.service | \"unknown\""))
                 .addToDimensions("sourceVersion", TypedValue.from("source.labels[\"version\"] | \"unknown\""))
@@ -69,12 +67,12 @@ spec:
                 .addToDimensions("destinationVersion", TypedValue.from("destination.labels[\"version\"] | \"unknown\""))
                 .addToDimensions("responseCode", TypedValue.from("response.code | 200"))
                 .withMonitoredResourceType("UNSPECIFIED")
-                .endMetricSpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(resource);
 
-        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
+        HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
 
         assertEquals(resource, reloaded);
     }
@@ -85,7 +83,7 @@ spec:
         InputStream is = classloader.getResourceAsStream("metric.yaml");
         final HasMetadata resource = mapper.readValue(is, HasMetadata.class);
 
-        assertEquals(resource.getKind(), "metric");
+        assertEquals(resource.getKind(), "Metric");
 
         assertTrue(resource instanceof Metric);
 

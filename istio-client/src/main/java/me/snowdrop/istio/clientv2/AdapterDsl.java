@@ -48,11 +48,9 @@ public interface AdapterDsl {
   MixedOperation<Denier,DenierList, DoneableDenier,Resource<Denier,DoneableDenier>> denier();
   MixedOperation<Fluentd,FluentdList, DoneableFluentd,Resource<Fluentd,DoneableFluentd>> fluentd();
   MixedOperation<Kubernetesenv,KubernetesenvList, DoneableKubernetesenv,Resource<Kubernetesenv,DoneableKubernetesenv>> kubernetesenv();
-  MixedOperation<me.snowdrop.istio.adapter.memquota.Quota, me.snowdrop.istio.adapter.memquota.QuotaList, me.snowdrop.istio.adapter.memquota.DoneableQuota,Resource<me.snowdrop.istio.adapter.memquota.Quota, me.snowdrop.istio.adapter.memquota.DoneableQuota>> quota();
   MixedOperation<Memquota,MemquotaList, DoneableMemquota,Resource<Memquota,DoneableMemquota>> memquota();
   MixedOperation<Opa,OpaList, DoneableOpa,Resource<Opa,DoneableOpa>> opa();
   MixedOperation<Prometheus,PrometheusList, DoneablePrometheus,Resource<Prometheus,DoneablePrometheus>> prometheus();
-  MixedOperation<me.snowdrop.istio.adapter.servicecontrol.Quota, me.snowdrop.istio.adapter.servicecontrol.QuotaList, me.snowdrop.istio.adapter.servicecontrol.DoneableQuota,Resource<me.snowdrop.istio.adapter.servicecontrol.Quota, me.snowdrop.istio.adapter.servicecontrol.DoneableQuota>> serviceControlQuota();
   MixedOperation<Servicecontrol,ServicecontrolList, DoneableServicecontrol,Resource<Servicecontrol,DoneableServicecontrol>> servicecontrol();
   MixedOperation<Solarwinds,SolarwindsList, DoneableSolarwinds,Resource<Solarwinds,DoneableSolarwinds>> solarwinds();
   MixedOperation<Stackdriver,StackdriverList, DoneableStackdriver,Resource<Stackdriver,DoneableStackdriver>> stackdriver();

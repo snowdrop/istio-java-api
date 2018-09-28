@@ -1,36 +1,24 @@
 package me.snowdrop.istio.client;
 
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioSpec;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
 import me.snowdrop.istio.api.networking.v1alpha3.DestinationRule;
 import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
 import me.snowdrop.istio.api.policy.v1beta1.Rule;
 import me.snowdrop.istio.mixer.template.metric.Metric;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getKindFor;
+import java.io.InputStream;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class IstioClientTest {
 
-    @Mock
-    Adapter adapter;
-
-    @Test
+     @Test
     public void shouldApplyMetricIstioResource() {
         checkInput("metric.yaml", Metric.class);
     }
@@ -55,41 +43,29 @@ public class IstioClientTest {
         checkInput("policy.yaml", Policy.class);
     }
 
-    private void checkInput(String inputFileName, Class<? extends IstioSpec> expectedSpecClass) {
-        // Given
-        final IstioClient client = new IstioClient(adapter);
-        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFileName);
+    private void checkInput(String inputFileName, Class<? extends HasMetadata> expectedSpecClass) {
+         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFileName);
+         KubernetesClient client = new DefaultKubernetesClient();
+         List<HasMetadata> result = client.load(inputStream).get();
 
-        // When
-        when(adapter.createCustomResources(any())).thenAnswer(invocation -> Collections.singletonList(invocation.getArgument(0)));
-
-        // Then
-        final List<IstioResource> result = client.registerCustomResources(inputStream);
         assertThat(result).isNotEmpty();
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getKind()).isEqualTo(getKindFor(expectedSpecClass));
-        verify(adapter, times(1)).createCustomResources(any(IstioResource.class));
+        try {
+            assertThat(result.get(0).getKind()).isEqualTo(expectedSpecClass.newInstance().getKind());
+        } catch  (Exception e) {
+            Assert.fail("Failed to read resource kind.");
+        }
     }
 
     @Test
     public void shouldApplyAllResourcesInAggregateDescriptor() {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("aggregate.yaml");
+         KubernetesClient client = new DefaultKubernetesClient();
+         List<HasMetadata> result = client.load(inputStream).get();
 
-        // Given
-        final IstioClient client = new IstioClient(adapter);
-        final InputStream aggregate = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("aggregate.yaml");
-
-
-        // When
-        when(adapter.createCustomResources(any())).thenAnswer(invocation -> Arrays.asList(invocation.getArguments()));
-
-        // Then
-        final List<IstioResource> result = client.registerCustomResources(aggregate);
         assertThat(result).isNotEmpty();
         assertThat(result.size()).isEqualTo(2);
-        assertThat(result.get(0).getKind()).isEqualTo(getKindFor(Metric.class));
-        assertThat(result.get(1).getKind()).isEqualTo(getKindFor(VirtualService.class));
-        verify(adapter, times(1)).createCustomResources(any());
+        assertThat(result.get(0).getKind()).isEqualTo(new Metric().getKind());
+        assertThat(result.get(1).getKind()).isEqualTo(new VirtualService().getKind());
     }
-
 }

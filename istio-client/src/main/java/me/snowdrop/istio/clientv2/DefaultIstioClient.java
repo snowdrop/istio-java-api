@@ -33,15 +33,15 @@ import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRole;
 import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBinding;
 import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBindingList;
 import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleList;
-import me.snowdrop.istio.client.internal.operation.api.DestinationRuleOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.EnvoyFilterOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.GatewayOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.PolicyOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.RuleOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.ServiceEntryOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.ServiceRoleBindingOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.ServiceRoleOperationImpl;
-import me.snowdrop.istio.client.internal.operation.api.VirtualServiceOperationImpl;
+import me.snowdrop.istio.client.internal.operation.DestinationRuleOperationImpl;
+import me.snowdrop.istio.client.internal.operation.EnvoyFilterOperationImpl;
+import me.snowdrop.istio.client.internal.operation.GatewayOperationImpl;
+import me.snowdrop.istio.client.internal.operation.PolicyOperationImpl;
+import me.snowdrop.istio.client.internal.operation.RuleOperationImpl;
+import me.snowdrop.istio.client.internal.operation.ServiceEntryOperationImpl;
+import me.snowdrop.istio.client.internal.operation.ServiceRoleBindingOperationImpl;
+import me.snowdrop.istio.client.internal.operation.ServiceRoleOperationImpl;
+import me.snowdrop.istio.client.internal.operation.VirtualServiceOperationImpl;
 import okhttp3.OkHttpClient;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {

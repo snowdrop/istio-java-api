@@ -21,7 +21,6 @@ import me.snowdrop.istio.adapter.kubernetesenv.DoneableKubernetesenv;
 import me.snowdrop.istio.adapter.kubernetesenv.Kubernetesenv;
 import me.snowdrop.istio.adapter.kubernetesenv.KubernetesenvList;
 import me.snowdrop.istio.adapter.memquota.DoneableMemquota;
-import me.snowdrop.istio.adapter.memquota.DoneableQuota;
 import me.snowdrop.istio.adapter.memquota.Memquota;
 import me.snowdrop.istio.adapter.memquota.MemquotaList;
 import me.snowdrop.istio.adapter.opa.DoneableOpa;
@@ -31,8 +30,6 @@ import me.snowdrop.istio.adapter.prometheus.DoneablePrometheus;
 import me.snowdrop.istio.adapter.prometheus.Prometheus;
 import me.snowdrop.istio.adapter.prometheus.PrometheusList;
 import me.snowdrop.istio.adapter.servicecontrol.DoneableServicecontrol;
-import me.snowdrop.istio.adapter.servicecontrol.Quota;
-import me.snowdrop.istio.adapter.servicecontrol.QuotaList;
 import me.snowdrop.istio.adapter.servicecontrol.Servicecontrol;
 import me.snowdrop.istio.adapter.servicecontrol.ServicecontrolList;
 import me.snowdrop.istio.adapter.solarwinds.DoneableSolarwinds;
@@ -47,21 +44,19 @@ import me.snowdrop.istio.adapter.statsd.StatsdList;
 import me.snowdrop.istio.adapter.stdio.DoneableStdio;
 import me.snowdrop.istio.adapter.stdio.Stdio;
 import me.snowdrop.istio.adapter.stdio.StdioList;
-import me.snowdrop.istio.client.internal.operation.adapter.BypassOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.CirconusOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.DenierOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.FluentdOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.KubernetesenvOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.MemquotaOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.OpaOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.PrometheusOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.QuotaOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.ServiceControlQuotaOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.ServicecontrolOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.SolarwindsOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.StackdriverOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.StatsdOperationImpl;
-import me.snowdrop.istio.client.internal.operation.adapter.StdioOperationImpl;
+import me.snowdrop.istio.client.internal.operation.BypassOperationImpl;
+import me.snowdrop.istio.client.internal.operation.CirconusOperationImpl;
+import me.snowdrop.istio.client.internal.operation.DenierOperationImpl;
+import me.snowdrop.istio.client.internal.operation.FluentdOperationImpl;
+import me.snowdrop.istio.client.internal.operation.KubernetesenvOperationImpl;
+import me.snowdrop.istio.client.internal.operation.MemquotaOperationImpl;
+import me.snowdrop.istio.client.internal.operation.OpaOperationImpl;
+import me.snowdrop.istio.client.internal.operation.PrometheusOperationImpl;
+import me.snowdrop.istio.client.internal.operation.ServicecontrolOperationImpl;
+import me.snowdrop.istio.client.internal.operation.SolarwindsOperationImpl;
+import me.snowdrop.istio.client.internal.operation.StackdriverOperationImpl;
+import me.snowdrop.istio.client.internal.operation.StatsdOperationImpl;
+import me.snowdrop.istio.client.internal.operation.StdioOperationImpl;
 import okhttp3.OkHttpClient;
 
 public class AdapterClient extends BaseClient implements AdapterDsl {
@@ -99,11 +94,6 @@ public class AdapterClient extends BaseClient implements AdapterDsl {
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.adapter.memquota.Quota, me.snowdrop.istio.adapter.memquota.QuotaList, DoneableQuota, Resource<me.snowdrop.istio.adapter.memquota.Quota, DoneableQuota>> quota() {
-        return new QuotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
-    }
-
-    @Override
     public MixedOperation<Memquota, MemquotaList, DoneableMemquota, Resource<Memquota, DoneableMemquota>> memquota() {
         return new MemquotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
     }
@@ -116,11 +106,6 @@ public class AdapterClient extends BaseClient implements AdapterDsl {
     @Override
     public MixedOperation<Prometheus, PrometheusList, DoneablePrometheus, Resource<Prometheus, DoneablePrometheus>> prometheus() {
         return new PrometheusOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
-    }
-
-    @Override
-    public MixedOperation<Quota, QuotaList, me.snowdrop.istio.adapter.servicecontrol.DoneableQuota, Resource<Quota, me.snowdrop.istio.adapter.servicecontrol.DoneableQuota>> serviceControlQuota() {
-        return new ServiceControlQuotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
     }
 
     @Override

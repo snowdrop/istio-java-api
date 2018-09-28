@@ -2,6 +2,7 @@ package me.snowdrop.istio.client;
 
 import java.util.List;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import me.snowdrop.istio.api.IstioResource;
 

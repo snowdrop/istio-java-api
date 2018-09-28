@@ -125,7 +125,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm").param("outputPath", "crd.properties").param("gather", true);
-           // arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm").param("outputPath", "me/snowdrop/istio/api/model/IstioResourceMappingsProvider.java").param("gather", true);
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm").param("outputPath", "me/snowdrop/istio/api/model/IstioResourceMappingsProvider.java").param("gather", true);
         }
     }
 
