@@ -2,6 +2,7 @@ package me.snowdrop.istio.client.it;
 
 import java.util.AbstractMap.SimpleEntry;
 
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.networking.v1alpha3.Gateway;
 import me.snowdrop.istio.api.networking.v1alpha3.GatewayBuilder;
