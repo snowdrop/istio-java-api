@@ -98,7 +98,7 @@ spec:
 
                 assertThat(dimensions).hasSize(4);
                 assertThat(dimensions).containsKeys("source", "destination", "version", "user_agent");
-                assertThat(dimensions.get("source").getExpression()).isEqualTo("source.service | \"unknown\"");
+                assertThat(dimensions.get("source").getExpression()).isEqualTo("source.service|\"unknown\"");
             });
 
         });
