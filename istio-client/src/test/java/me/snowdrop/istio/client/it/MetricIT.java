@@ -54,7 +54,6 @@ spec:
     public void checkBasicMetric() {
         //given
         final Metric metric = new MetricBuilder()
-                .withApiVersion("config.istio.io/v1alpha2")
                 .withNewMetadata()
                 .withName("recommendationrequestcount")
                 .endMetadata()

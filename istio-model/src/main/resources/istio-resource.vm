@@ -44,8 +44,8 @@ import me.snowdrop.istio.api.internal.IstioKind;
 
 #set ($kind = "$resource")
 #foreach ($annotation in $annotations)
-    #if ($annotation.getClassRef().getName().equals("IstioApiKind"))
-        #set ($kind = $annotation.getParameters().get("value"))
+    #if ($annotation.getClassRef().getName().equals("IstioKind"))
+        #set ($kind = $annotation.getParameters().get("name"))
     #end
 #end
 /**
@@ -85,7 +85,7 @@ public class $resource implements HasMetadata
      */
     @NotNull
     @JsonProperty("kind")
-    private String kind = "$resource";
+    private String kind = "$kind";
 
     /**
      *

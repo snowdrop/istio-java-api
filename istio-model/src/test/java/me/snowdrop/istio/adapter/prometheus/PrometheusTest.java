@@ -66,7 +66,7 @@ spec:
         InputStream is = classloader.getResourceAsStream("prometheus.yaml");
         final HasMetadata resource = mapper.readValue(is, HasMetadata.class);
 
-        assertEquals(resource.getKind(), "Prometheus");
+        assertEquals(resource.getKind(), "prometheus");
 
         assertTrue(resource instanceof me.snowdrop.istio.adapter.prometheus.Prometheus);
 

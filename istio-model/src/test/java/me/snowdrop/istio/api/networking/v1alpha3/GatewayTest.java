@@ -98,7 +98,6 @@ spec:
     @Test
     public void roundtripBasicGatewayShouldWork() throws Exception {
         final Gateway gateway = new GatewayBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()

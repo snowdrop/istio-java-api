@@ -83,7 +83,7 @@ spec:
         InputStream is = classloader.getResourceAsStream("metric.yaml");
         final HasMetadata resource = mapper.readValue(is, HasMetadata.class);
 
-        assertEquals(resource.getKind(), "Metric");
+        assertEquals(resource.getKind(), "metric");
 
         assertTrue(resource instanceof Metric);
 

@@ -1,5 +1,5 @@
 apiVersion: "config.istio.io/v1alpha2"
-kind: Prometheus
+kind: prometheus
 metadata:
   name: recommendationrequestcounthandler
   namespace: istio-system
