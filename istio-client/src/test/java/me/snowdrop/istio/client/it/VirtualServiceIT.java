@@ -195,7 +195,6 @@ http:
 
     //and
     final VirtualServiceSpec resultSpec = resultResource.getSpec();
-    assertThat(resultSpec).isNotNull().isInstanceOf(VirtualService.class);
 
     //and
     assertThat(resultSpec).satisfies(vs -> {
