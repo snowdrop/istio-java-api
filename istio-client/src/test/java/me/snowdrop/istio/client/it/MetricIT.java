@@ -43,7 +43,6 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: metric
 metadata:
   name: recommendationrequestcount
-  namespace: istio-system
 spec:
   value: "1"
   dimensions:
@@ -60,7 +59,6 @@ spec:
                 .withApiVersion("config.istio.io/v1alpha2")
                 .withNewMetadata()
                 .withName("recommendationrequestcount")
-                .withNamespace("istio-system")
                 .endMetadata()
                 .withNewMetricSpec()
                 .withNewValue().withExpression("1").endValue()
