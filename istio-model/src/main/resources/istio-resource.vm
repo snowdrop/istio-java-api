@@ -34,7 +34,7 @@ import me.snowdrop.istio.api.internal.IstioKind;
 #set ($resource = $spec.substring(0, $tindex))
 #set ($status = $resource + "Status")
 
-#set ($version = "unknwon")
+#set ($version = "unknown")
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
     #if ($annotation.getClassRef().getName().equals("IstioApiVersion"))

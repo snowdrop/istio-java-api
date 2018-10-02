@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.Watcher;
 
 import okhttp3.OkHttpClient;
 
-#set ($version = "unknwon")
+#set ($version = "unknown")
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
 #if ($annotation.getClassRef().getName().equals("IstioApiVersion"))

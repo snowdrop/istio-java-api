@@ -30,7 +30,7 @@ import ${model.packageName}.Doneable${model.name};
 import java.util.Map;
 import java.util.TreeMap;
 
-#set ($version = "unknwon")
+#set ($version = "unknown")
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
 #if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
