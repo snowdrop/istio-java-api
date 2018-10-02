@@ -21,7 +21,7 @@
 
   <groupId>me.snowdrop</groupId>
   <artifactId>istio-java-api</artifactId>
-  <version>0.14-SNAPSHOT</version>
+  <version>1.0.0.Alpha1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
 
