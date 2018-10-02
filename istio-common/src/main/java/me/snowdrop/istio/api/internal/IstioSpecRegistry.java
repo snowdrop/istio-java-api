@@ -42,7 +42,7 @@ public class IstioSpecRegistry {
 
         crdInfos.putAll(crdFile.entrySet().stream().collect(
                 Collectors.toMap(
-                        e -> String.valueOf(e.getKey()),
+                        e -> String.valueOf(e.getKey()).toLowerCase(),
                         e -> getCRDInfoFrom(e))
         ));
     }
@@ -95,11 +95,13 @@ public class IstioSpecRegistry {
         }
 
 
-        return new CRDInfo(kind, name, packageName + className);
+        return new CRDInfo(kind, version, name, packageName + className);
     }
 
     static class CRDInfo {
         private final String kind;
+
+        private final String version;
 
         private final String crdName;
 
@@ -109,8 +111,9 @@ public class IstioSpecRegistry {
 
         private boolean visited;
 
-        public CRDInfo(String kind, String crdName, String className) {
+        public CRDInfo(String kind, String version, String crdName, String className) {
             this.kind = kind;
+            this.version = version;
             this.crdName = crdName;
             this.className = className;
         }
@@ -179,19 +182,35 @@ public class IstioSpecRegistry {
     }
 
     public static Optional<String> getIstioKind(String simpleClassName) {
-        CRDInfo crd = crdInfos.get(simpleClassName);
+        final String key = getCRDKeyFrom(simpleClassName);
+
+        CRDInfo crd = crdInfos.get(key);
         if (crd != null) {
             crd.visited = true;
-            return Optional.of(simpleClassName);
+            return Optional.of(crd.kind);
         } else {
-            final String lowerSimpleClassName = simpleClassName.toLowerCase();
-            crd = crdInfos.get(lowerSimpleClassName);
-            if (crd != null) {
-                crd.visited = true;
-                return Optional.of(lowerSimpleClassName);
-            } else {
-                return Optional.empty();
-            }
+            return Optional.empty();
+        }
+    }
+
+    private static String getCRDKeyFrom(String simpleClassName) {
+        String key = simpleClassName;
+        if (simpleClassName.endsWith("Spec")) {
+            key = simpleClassName.substring(0, simpleClassName.indexOf("Spec"));
+        }
+        return key.toLowerCase();
+    }
+
+    public static Optional<String> getIstioApiVersion(String simpleClassName) {
+        final String key = getCRDKeyFrom(simpleClassName);
+
+        CRDInfo crd = crdInfos.get(key);
+        if (crd != null) {
+            crd.visited = true;
+            String prefix = crd.crdName.substring(crd.crdName.indexOf(".") + 1);
+            return Optional.of(prefix + "/" + crd.version);
+        } else {
+            return Optional.empty();
         }
     }
 

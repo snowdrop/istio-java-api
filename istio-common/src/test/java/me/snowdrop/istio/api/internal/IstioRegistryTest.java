@@ -16,13 +16,20 @@
  *
  *
  */
-package me.snowdrop.istio.api;
+package me.snowdrop.istio.api.internal;
 
-import java.io.Serializable;
+import org.junit.Test;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public interface IstioResource extends HasMetadata, Serializable {
+/**
+ * @author <a href="claprun@redhat.com">Christophe Laprun</a>
+ */
+public class IstioRegistryTest {
 
-    IstioSpec getSpec();
+    @Test
+    public void shouldReturnKindWithProperCase() {
+        assertThat(IstioSpecRegistry.getIstioKind("Metric").get()).isEqualTo("metric");
+        assertThat(IstioSpecRegistry.getIstioKind("Gateway").get()).isEqualTo("Gateway");
+    }
 }

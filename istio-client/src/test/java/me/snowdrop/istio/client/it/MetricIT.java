@@ -18,25 +18,23 @@
  */
 package me.snowdrop.istio.client.it;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
-import me.snowdrop.istio.api.IstioSpec;
-import me.snowdrop.istio.api.cexl.AttributeVocabulary;
-import me.snowdrop.istio.api.cexl.TypedValue;
-import me.snowdrop.istio.client.IstioClient;
-import me.snowdrop.istio.client.KubernetesAdapter;
-import me.snowdrop.istio.mixer.template.metric.Metric;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import me.snowdrop.istio.api.cexl.AttributeVocabulary;
+import me.snowdrop.istio.api.cexl.TypedValue;
+import me.snowdrop.istio.clientv2.DefaultIstioClient;
+import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.mixer.template.metric.Metric;
+import me.snowdrop.istio.mixer.template.metric.MetricBuilder;
+import me.snowdrop.istio.mixer.template.metric.MetricSpec;
+import org.junit.Test;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class MetricIT {
-    private final IstioClient istioClient
-            = new IstioClient(new KubernetesAdapter(new DefaultKubernetesClient()));
+    private final IstioClient istioClient = new DefaultIstioClient();
 
     /*
 apiVersion: "config.istio.io/v1alpha2"
@@ -55,23 +53,22 @@ spec:
     @Test
     public void checkBasicMetric() {
         //given
-        final IstioResource metric = new IstioResourceBuilder()
-                .withApiVersion("config.istio.io/v1alpha2")
+        final Metric metric = new MetricBuilder()
                 .withNewMetadata()
                 .withName("recommendationrequestcount")
                 .endMetadata()
-                .withNewMetricSpec()
+                .withNewSpec()
                 .withNewValue().withExpression("1").endValue()
                 .addToDimensions("source", TypedValue.from(AttributeVocabulary.source_service + "|\"unknown\""))
                 .addToDimensions("destination", TypedValue.from(AttributeVocabulary.destination_service + "|\"unknown \""))
                 .addToDimensions("version", TypedValue.from(AttributeVocabulary.destination_labels + "[\"version\"] | \"unknown\""))
                 .addToDimensions("user_agent", TypedValue.from(AttributeVocabulary.request_headers + "[\"user-agent\"]|\"unknown\""))
                 .withMonitoredResourceType("UNSPECIFIED")
-                .endMetricSpec()
+                .endSpec()
                 .build();
 
         //when
-        final IstioResource resultResource = istioClient.registerCustomResource(metric);
+        final Metric resultResource = istioClient.mixer().metric().create(metric);
 
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -85,12 +82,11 @@ spec:
         });
 
         //and
-        final IstioSpec resultSpec = resultResource.getSpec();
-        assertThat(resultSpec).isNotNull().isInstanceOf(Metric.class);
+        final MetricSpec resultSpec = resultResource.getSpec();
 
         //and
 
-        assertThat((Metric) resultSpec).satisfies(ms -> {
+        assertThat(resultSpec).satisfies(ms -> {
 
             assertThat(ms.getValue().getExpression()).isEqualTo("1");
 
@@ -104,7 +100,7 @@ spec:
         });
 
         //when
-        final Boolean deleteResult = istioClient.unregisterCustomResource(resultResource);
+        final Boolean deleteResult = istioClient.mixer().metric().delete(metric);
 
         //then
         assertThat(deleteResult).isTrue();

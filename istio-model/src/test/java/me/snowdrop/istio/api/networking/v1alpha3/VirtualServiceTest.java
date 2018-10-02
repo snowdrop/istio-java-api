@@ -24,10 +24,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.tests.BaseIstioTest;
-import me.snowdrop.istio.util.YAML;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -58,12 +56,11 @@ spec:
 
     @Test
     public void checkBasicVirtualService() throws Exception {
-        final IstioResource virtualService = new IstioResourceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+        final VirtualService virtualService = new VirtualServiceBuilder()
                 .withNewMetadata()
                 .withName("details")
                 .endMetadata()
-                .withNewVirtualServiceSpec()
+                .withNewSpec()
                 .withHosts("details")
                 .addNewHttp()
                 .addNewRoute()
@@ -73,7 +70,7 @@ spec:
                 .endDestination()
                 .endRoute()
                 .endHttp()
-                .endVirtualServiceSpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(virtualService);
@@ -137,10 +134,9 @@ spec:
     @Test
     public void checkVirtualServiceWithMatch() throws IOException {
         final String reviewsHost = "reviews.prod.svc.cluster.local";
-        final IstioResource resource = new IstioResourceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+        final VirtualService resource = new VirtualServiceBuilder()
                 .withNewMetadata().withName("reviews-route").endMetadata()
-                .withNewVirtualServiceSpec()
+                .withNewSpec()
                 .addToHosts(reviewsHost)
                 .addNewHttp()
                 .addNewMatch().withNewUri().withNewPrefixMatchType("/wpcatalog").endUri().endMatch()
@@ -155,12 +151,12 @@ spec:
                 .withNewDestination().withHost(reviewsHost).withSubset("v1").endDestination()
                 .endRoute()
                 .endHttp()
-                .endVirtualServiceSpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(resource);
 
-        assertEquals(resource, mapper.readValue(output, IstioResource.class));
+        assertEquals(resource, mapper.readValue(output, HasMetadata.class));
 
         Yaml parser = new Yaml();
         final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
@@ -226,10 +222,9 @@ spec:
     @Test
     public void checkVirtualServiceWithPortSelector() throws IOException {
         final String reviewsHost = "reviews.prod.svc.cluster.local";
-        final IstioResource resource = new IstioResourceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+        final VirtualService resource = new VirtualServiceBuilder()
                 .withNewMetadata().withName("reviews-route").endMetadata()
-                .withNewVirtualServiceSpec()
+                .withNewSpec()
                 .addToHosts(reviewsHost)
                 .addNewHttp()
                 .addNewRoute()
@@ -243,12 +238,12 @@ spec:
                 .withNewNumber(9090).endNumberPort().endPort().endDestination()
                 .endRoute()
                 .endHttp()
-                .endVirtualServiceSpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(resource);
 
-        assertEquals(resource, mapper.readValue(output, IstioResource.class));
+        assertEquals(resource, mapper.readValue(output, HasMetadata.class));
 
         Yaml parser = new Yaml();
         final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
@@ -292,28 +287,28 @@ spec:
 
     @Test
     public void roundtripBasicVirtualServiceShouldWork() throws Exception {
-        final IstioResource virtualService = new IstioResourceBuilder()
+        final VirtualService virtualService = new VirtualServiceBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata()
                 .withName("details")
                 .endMetadata()
-                .withNewVirtualServiceSpec()
+                .withNewSpec()
                 .withHosts("details")
                 .addNewHttp()
                 .addNewRoute().withNewDestination().withHost("details").withSubset("v1").endDestination().endRoute()
                 .endHttp()
-                .endVirtualServiceSpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(virtualService);
 
-        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
+        HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
 
         assertEquals(virtualService, reloaded);
     }
 
     @Test
-    public void loadingFromYAMLShouldWork() {
+    public void loadingFromYAMLShouldWork() throws Exception {
         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service.yaml");
 
         /*
@@ -335,9 +330,9 @@ spec:
          httpStatus: 400
          */
 
-        final VirtualService virtualService = YAML.loadIstioResource(inputStream, VirtualService.class);
-        assertEquals("ratings.prod.svc.cluster.local", virtualService.getHosts().get(0));
-        final List<HTTPRoute> http = virtualService.getHttp();
+        final VirtualService virtualService = mapper.readValue(inputStream, VirtualService.class);
+        assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
+        final List<HTTPRoute> http = virtualService.getSpec().getHttp();
         assertEquals(1, http.size());
         final HTTPRoute route = http.get(0);
         final List<DestinationWeight> weights = route.getRoute();

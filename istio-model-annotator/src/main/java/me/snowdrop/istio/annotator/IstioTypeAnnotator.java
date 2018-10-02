@@ -19,16 +19,21 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
+import io.sundr.transform.annotations.VelocityTransformation;
+import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.IstioSpec;
 import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
+import me.snowdrop.istio.api.internal.IstioApiVersion;
 import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import org.jsonschema2pojo.GenerationConfig;
@@ -43,7 +48,15 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
 
+    private static final String OBJECT_META_CLASS_NAME = "io.fabric8.kubernetes.api.model.ObjectMeta";
+
+    protected static final String IS_INTERFACE_FIELD = "isInterface";
+
+    protected static final String JAVA_TYPE_FIELD = "javaType";
+
     private final JDefinedClass doneableClass;
+
+    private final JDefinedClass objectMetaClass;
 
     static {
         final String strict = System.getenv("ISTIO_STRICT");
@@ -59,10 +72,13 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
+        String className = DONEABLE_CLASS_NAME;
         try {
-            doneableClass = new JCodeModel()._class(DONEABLE_CLASS_NAME);
+            doneableClass = new JCodeModel()._class(className);
+            className = OBJECT_META_CLASS_NAME;
+            objectMetaClass = new JCodeModel()._class(className);
         } catch (JClassAlreadyExistsException e) {
-            throw new IllegalStateException("Couldn't load " + DONEABLE_CLASS_NAME);
+            throw new IllegalStateException("Couldn't load " + className);
         }
     }
 
@@ -87,28 +103,44 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             clazz._implements(IstioSpec.class);
             clazz.annotate(IstioKind.class).param("name", kind.get());
         }
-
+        final Optional<String> version = IstioSpecRegistry.getIstioApiVersion(clazz.name());
+        if (version.isPresent()) {
+            clazz.annotate(IstioApiVersion.class).param("value", version.get());
+        }
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
-        clazz.annotate(Buildable.class)
+        JAnnotationUse buildable = clazz.annotate(Buildable.class)
                 .param("editableEnabled", false)
                 .param("validationEnabled", true)
                 .param("generateBuilderPackage", true)
-                .param("builderPackage", BUILDER_PACKAGE)
-                .annotationParam("inline", Inline.class)
+                .param("builderPackage", BUILDER_PACKAGE);
+
+        buildable.paramArray("inline").annotate(Inline.class)
                 .param("type", doneableClass)
                 .param("prefix", "Doneable")
                 .param("value", "done");
+
+        buildable.paramArray("refs").annotate(BuildableReference.class)
+                .param("value", objectMetaClass);
+
+        if (clazz.name().endsWith("Spec")) {
+            JAnnotationArrayMember arrayMember= clazz.annotate(VelocityTransformations.class)
+                    .paramArray("value");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm").param("outputPath", "crd.properties").param("gather", true);
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm").param("outputPath", "me/snowdrop/istio/api/model/IstioResourceMappingsProvider.java").param("gather", true);
+        }
     }
 
     @Override
     public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
         super.propertyField(field, clazz, propertyName, propertyNode);
-        if (propertyNode.hasNonNull("isInterface")) {
+        if (propertyNode.hasNonNull(IS_INTERFACE_FIELD)) {
             field.annotate(JsonUnwrapped.class);
 
             // todo: fix me, this won't work if a type has several fields using interfaces
-            String interfaceFQN = propertyNode.get("javaType").asText();
+            String interfaceFQN = propertyNode.get(JAVA_TYPE_FIELD).asText();
 
             // create interface if we haven't done it yet
             try {

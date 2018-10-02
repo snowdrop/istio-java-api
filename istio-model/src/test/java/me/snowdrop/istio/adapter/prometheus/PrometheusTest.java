@@ -8,9 +8,8 @@ package me.snowdrop.istio.adapter.prometheus;
 
 import java.io.InputStream;
 
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
-import me.snowdrop.istio.api.IstioSpec;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 
@@ -41,42 +40,39 @@ spec:
     - version
      */
 
-        IstioResource resource = new IstioResourceBuilder()
+        Prometheus prometheus = new PrometheusBuilder()
                 .withNewMetadata()
                 .withName("recommendationrequestcounthandler")
                 .withNamespace("istio-system")
                 .endMetadata()
-                .withNewPrometheusSpec()
-                .addNewMetric()
-                .withName("recommendation_request_count")
-                .withInstanceName("recommendationrequestcount.metric.istio-system")
-                .withKind(Kind.COUNTER)
-                .addToLabelNames("source", "destination", "user_agent", "version")
-                .endMetric()
-                .endPrometheusSpec()
+                .withNewSpec()
+                    .addNewMetric()
+                        .withKind(Kind.COUNTER)
+                        .withInstanceName("recommendationrequestcount.metric.istio-system")
+                        .addToLabelNames("source", "destination", "user_agent", "version")
+                    .endMetric()
+                .endSpec()
                 .build();
 
-        final String output = mapper.writeValueAsString(resource);
 
-        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
-
-        assertEquals(resource, reloaded);
+        final String output = mapper.writeValueAsString(prometheus);
+        KubernetesResource reloaded = mapper.readValue(output, KubernetesResource.class);
+        assertEquals(prometheus, reloaded);
     }
 
     @Test
     public void loadingFromYAMLShouldWork() throws Exception {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream is = classloader.getResourceAsStream("prometheus.yaml");
-        final IstioResource metricRes = mapper.readValue(is, IstioResource.class);
+        final HasMetadata resource = mapper.readValue(is, HasMetadata.class);
 
-        assertEquals(metricRes.getKind(), "prometheus");
+        assertEquals(resource.getKind(), "prometheus");
 
-        final IstioSpec spec = metricRes.getSpec();
-        assertTrue(spec instanceof Prometheus);
+        assertTrue(resource instanceof me.snowdrop.istio.adapter.prometheus.Prometheus);
 
-        final Prometheus prometheus = (Prometheus) spec;
-        assertEquals(1, prometheus.getMetrics().size());
-        final MetricInfo metricInfo = prometheus.getMetrics().get(0);
+        final Prometheus prometheus = (Prometheus) resource;
+        assertEquals(1, prometheus.getSpec().getMetrics().size());
+        final MetricInfo metricInfo = prometheus.getSpec().getMetrics().get(0);
         assertEquals("recommendation_request_count", metricInfo.getName());
         assertEquals("recommendationrequestcount.metric.istio-system", metricInfo.getInstanceName());
         assertEquals(Kind.COUNTER, metricInfo.getKind());

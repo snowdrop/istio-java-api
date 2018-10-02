@@ -1,0 +1,7 @@
+#foreach ($key in ${model.keySet()})
+#set ($spec = $key)
+#set ($length = $spec.length())
+#set ($tindex = $length - 4)
+#set ($resource = $spec.substring(0, $tindex))
+$resource
+#end

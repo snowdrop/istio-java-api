@@ -21,11 +21,10 @@ package me.snowdrop.istio.template.metric;
 import java.io.InputStream;
 import java.util.Map;
 
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
-import me.snowdrop.istio.api.IstioSpec;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.api.cexl.TypedValue;
 import me.snowdrop.istio.mixer.template.metric.Metric;
+import me.snowdrop.istio.mixer.template.metric.MetricBuilder;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 
@@ -55,12 +54,12 @@ spec:
   monitoredResourceType: '"UNSPECIFIED"'
      */
 
-        IstioResource resource = new IstioResourceBuilder()
+        Metric resource = new MetricBuilder()
                 .withNewMetadata()
                 .withName("requestsize")
                 .withNamespace("istio-config-default")
                 .endMetadata()
-                .withNewMetricSpec()
+                .withNewSpec()
                 .withValue(TypedValue.from("request.size | 0"))
                 .addToDimensions("sourceService", TypedValue.from("source.service | \"unknown\""))
                 .addToDimensions("sourceVersion", TypedValue.from("source.labels[\"version\"] | \"unknown\""))
@@ -68,12 +67,12 @@ spec:
                 .addToDimensions("destinationVersion", TypedValue.from("destination.labels[\"version\"] | \"unknown\""))
                 .addToDimensions("responseCode", TypedValue.from("response.code | 200"))
                 .withMonitoredResourceType("UNSPECIFIED")
-                .endMetricSpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(resource);
 
-        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
+        HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
 
         assertEquals(resource, reloaded);
     }
@@ -82,16 +81,15 @@ spec:
     public void loadingFromYAMLShouldWork() throws Exception {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream is = classloader.getResourceAsStream("metric.yaml");
-        final IstioResource metricRes = mapper.readValue(is, IstioResource.class);
+        final HasMetadata resource = mapper.readValue(is, HasMetadata.class);
 
-        assertEquals(metricRes.getKind(), "metric");
+        assertEquals(resource.getKind(), "metric");
 
-        final IstioSpec spec = metricRes.getSpec();
-        assertTrue(spec instanceof Metric);
+        assertTrue(resource instanceof Metric);
 
-        final Metric metric = (Metric) spec;
-        assertEquals("1", metric.getValue().getExpression());
-        final Map<String, TypedValue> dimensions = metric.getDimensions();
+        final Metric metric = (Metric) resource;
+        assertEquals("1", metric.getSpec().getValue().getExpression());
+        final Map<String, TypedValue> dimensions = metric.getSpec().getDimensions();
         assertEquals(4, dimensions.size());
         assertTrue(dimensions.containsKey("source"));
         assertEquals("source.service | \"unknown\"", dimensions.get("source").getExpression());

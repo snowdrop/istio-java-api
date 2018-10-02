@@ -1,66 +1,73 @@
+package ${model.packageName};
 
-/*
- * *
- *  * Copyright (C) 2018 Red Hat, Inc.
- *  *
- *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  * you may not use this file except in compliance with the License.
- *  * You may obtain a copy of the License at
- *  *
- *  *         http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
- *
- *
- */
-
-package me.snowdrop.istio.api;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListMeta;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.validators.CheckObjectMeta;
+import io.fabric8.kubernetes.api.model.Doneable;
 
+import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.Inline;
+
+import me.snowdrop.istio.api.internal.IstioApiVersion;
+import me.snowdrop.istio.api.internal.IstioKind;
+
+
+
+#set ($spec = $model.name)
+#set ($length = $spec.length())
+#set ($tindex = $length - 4)
+#set ($resource = $spec.substring(0, $tindex))
+#set ($status = $resource + "Status")
+
+#set ($version = "unknown")
+#set ($annotations = $model.annotations)
+#foreach ($annotation in $annotations)
+    #if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
+        #set ($version = $annotation.getParameters().get("value"))
+    #end
+#end
+
+#set ($kind = "$resource")
+#foreach ($annotation in $annotations)
+    #if ($annotation.getClassRef().getName().equals("IstioKind"))
+        #set ($kind = $annotation.getParameters().get("name"))
+    #end
+#end
 /**
  *
  *
  */
+@IstioKind(name = "$kind")
+@IstioApiVersion("$version")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-        "apiVersion",
-        "kind",
-        "metadata",
-        "items"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec",
+    "status"
 })
+@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @ToString
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
-public class IstioResourceList implements KubernetesResource, KubernetesResourceList
+public class $resource implements HasMetadata
 {
 
     /**
@@ -70,14 +77,7 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
      */
     @NotNull
     @JsonProperty("apiVersion")
-    private String apiVersion = "config.istio.io/v1alpha2";
-    /**
-     *
-     *
-     */
-    @JsonProperty("items")
-    @Valid
-    private List<IstioResource> items = new ArrayList<IstioResource>();
+    private String apiVersion = "$version";
     /**
      *
      * (Required)
@@ -85,14 +85,24 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
      */
     @NotNull
     @JsonProperty("kind")
-    private String kind = "IstioResourceList";
+    private String kind = "$kind";
+
     /**
      *
      *
      */
     @JsonProperty("metadata")
     @Valid
-    private ListMeta metadata;
+    @CheckObjectMeta(regexp = "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$", max = 253)
+    private ObjectMeta metadata;
+    /**
+     *
+     *
+     */
+    @JsonProperty("spec")
+    @Valid
+    private $spec spec;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -100,7 +110,7 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
      * No args constructor for use in serialization
      *
      */
-    public IstioResourceList() {
+    public $resource() {
     }
 
     /**
@@ -108,13 +118,13 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
      * @param metadata
      * @param apiVersion
      * @param kind
-     * @param items
+     * @param spec
      */
-    public IstioResourceList(String apiVersion, List<IstioResource> items, String kind, ListMeta metadata) {
+    public $resource(String apiVersion, String kind, ObjectMeta metadata, $spec spec) {
         this.apiVersion = apiVersion;
-        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
+        this.spec = spec;
     }
 
     /**
@@ -139,28 +149,6 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
-    }
-
-    /**
-     *
-     *
-     * @return
-     *     The items
-     */
-    @JsonProperty("items")
-    public List<IstioResource> getItems() {
-        return items;
-    }
-
-    /**
-     *
-     *
-     * @param items
-     *     The items
-     */
-    @JsonProperty("items")
-    public void setItems(List<IstioResource> items) {
-        this.items = items;
     }
 
     /**
@@ -194,7 +182,7 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
      *     The metadata
      */
     @JsonProperty("metadata")
-    public ListMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
@@ -205,8 +193,30 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
      *     The metadata
      */
     @JsonProperty("metadata")
-    public void setMetadata(ListMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
+    }
+
+    /**
+     *
+     *
+     * @return
+     *     The spec
+     */
+    @JsonProperty("spec")
+    public $spec getSpec() {
+        return spec;
+    }
+
+    /**
+     *
+     *
+     * @param spec
+     *     The spec
+     */
+    @JsonProperty("spec")
+    public void setSpec($spec spec) {
+        this.spec = spec;
     }
 
     @JsonAnyGetter

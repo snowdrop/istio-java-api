@@ -217,7 +217,7 @@ type classData struct {
 	Classes []class `json:"classes"`
 }
 
-func loadInterfacesData() (map[string]string, map[string]string) {
+func loadInterfacesData(crds map[string]schemagen.CrdDescriptor) (map[string]string, map[string]string) {
 	impls := make(map[string]string)
 	interfaces := make(map[string]string)
 
@@ -235,6 +235,11 @@ func loadInterfacesData() (map[string]string, map[string]string) {
 
 	for _, class := range classes.Classes {
 		className := class.Class
+		_, ok := crds[strings.ToLower(className[strings.LastIndex(className, ".")+1:])]
+		if ok {
+			className += "Spec"
+		}
+
 		//var interfaceName = className[:strings.LastIndex(className, ".")+1]
 		var interfaceName = className + "." // to define inner classes for interface fields
 		var interfaceSet = false
@@ -257,11 +262,43 @@ func loadInterfacesData() (map[string]string, map[string]string) {
 	return impls, interfaces
 }
 
+func loadCRDs() map[string]schemagen.CrdDescriptor {
+	crds := make(map[string]schemagen.CrdDescriptor)
+
+	path := "istio-common/src/main/resources/istio-crd.properties"
+
+	file, err := os.Open(path)
+	if err != nil {
+		fmt.Println(err)
+		return crds
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		split := strings.Split(line, "|")
+		crd := strings.ToLower(split[0][:strings.IndexRune(split[0], '=')])
+		crdType := strings.TrimSpace(split[1][strings.IndexRune(split[1], '=')+1:])
+		crds[crd] = schemagen.CrdDescriptor{
+			Name:    crd,
+			Visited: false,
+			CrdType: crdType,
+		}
+	}
+
+	return crds
+}
+
 func main() {
 	strict := flag.Bool("strict", false, "Toggle strict mode to check for missing types")
 	flag.Parse()
 
-	interfacesImpl, interfacesMap := loadInterfacesData()
+	crds := loadCRDs()
+	interfacesImpl, interfacesMap := loadInterfacesData(crds)
 
 	packages := readDescriptors()
 
@@ -305,7 +342,7 @@ func main() {
 		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.adapter.stackdriver.ValueType",
 	}
 
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, *strict)
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, crds, *strict)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(-1)

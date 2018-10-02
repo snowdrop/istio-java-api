@@ -7,7 +7,9 @@ import me.snowdrop.istio.api.IstioResource;
 
 public interface Adapter {
     List<IstioResource> createCustomResources(IstioResource... resources);
+
     List<IstioResource> createOrReplaceCustomResources(IstioResource... resources);
+
     Boolean deleteCustomResources(IstioResource resource);
 
     KubernetesClient getKubernetesClient();

@@ -1,0 +1,3 @@
+#foreach ($m in ${model.values()})
+me.snowdrop.istio.client.internal.handler.${m.name}Handler
+#end

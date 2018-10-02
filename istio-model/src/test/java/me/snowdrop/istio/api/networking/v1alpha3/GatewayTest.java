@@ -22,8 +22,7 @@ package me.snowdrop.istio.api.networking.v1alpha3;
 import java.util.List;
 import java.util.Map;
 
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -52,15 +51,14 @@ spec:
 
     @Test
     public void checkBasicGateway() throws Exception {
-        final IstioResource gateway = new IstioResourceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+        final Gateway gateway = new GatewayBuilder()
                 .withNewMetadata()
-                .withName("httpbin-gateway")
+                    .withName("httpbin-gateway")
                 .endMetadata()
-                .withNewGatewaySpec()
+                .withNewSpec()
                 .addToSelector("istio", "ingressgateway")
                 .addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-                .endGatewaySpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(gateway);
@@ -99,20 +97,19 @@ spec:
 
     @Test
     public void roundtripBasicGatewayShouldWork() throws Exception {
-        final IstioResource gateway = new IstioResourceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+        final Gateway gateway = new GatewayBuilder()
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()
-                .withNewGatewaySpec()
+                .withNewSpec()
                 .addToSelector("istio", "ingressgateway")
                 .addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-                .endGatewaySpec()
+                .endSpec()
                 .build();
 
         final String output = mapper.writeValueAsString(gateway);
 
-        IstioResource reloaded = mapper.readValue(output, IstioResource.class);
+        HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
 
         assertEquals(gateway, reloaded);
     }
