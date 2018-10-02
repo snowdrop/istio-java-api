@@ -189,7 +189,7 @@ public class IstioSpecRegistry {
         CRDInfo crd = crdInfos.get(simpleClassName.toLowerCase());
         if (crd != null) {
             crd.visited = true;
-            return Optional.of(simpleClassName);
+            return Optional.of(crd.kind);
         } else {
             return Optional.empty();
         }
