@@ -18,6 +18,7 @@
  */
 package me.snowdrop.istio.client.it;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import me.snowdrop.istio.api.cexl.AttributeVocabulary;
@@ -33,7 +34,6 @@ import org.junit.Test;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class MetricIT {
-
     private final IstioClient istioClient = new DefaultIstioClient();
 
     /*
