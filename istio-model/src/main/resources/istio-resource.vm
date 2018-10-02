@@ -26,13 +26,7 @@ import io.sundr.builder.annotations.Inline;
 import me.snowdrop.istio.api.internal.IstioApiVersion;
 import me.snowdrop.istio.api.internal.IstioKind;
 
-#set ($version = "unknwon")
-#set ($annotations = $model.annotations)
-#foreach ($annotation in $annotations)
-#if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
-#set ($version = $annotation.getParameters().get("value"))
-#end
-#end
+
 
 #set ($spec = $model.name)
 #set ($length = $spec.length())
@@ -40,11 +34,25 @@ import me.snowdrop.istio.api.internal.IstioKind;
 #set ($resource = $spec.substring(0, $tindex))
 #set ($status = $resource + "Status")
 
+#set ($version = "unknwon")
+#set ($annotations = $model.annotations)
+#foreach ($annotation in $annotations)
+    #if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
+        #set ($version = $annotation.getParameters().get("value"))
+    #end
+#end
+
+#set ($kind = "$resource")
+#foreach ($annotation in $annotations)
+    #if ($annotation.getClassRef().getName().equals("IstioApiKind"))
+        #set ($kind = $annotation.getParameters().get("value"))
+    #end
+#end
 /**
  *
  *
  */
-@IstioKind(name = "$resource")
+@IstioKind(name = "$kind")
 @IstioApiVersion("$version")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
