@@ -13,23 +13,22 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.sun.codemodel.JAnnotationUse;
-import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.VelocityTransformations;
-import io.sundr.transform.annotations.VelocityTransformation;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
+import io.sundr.transform.annotations.VelocityTransformation;
+import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.IstioSpec;
@@ -49,7 +48,15 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
 
+    private static final String OBJECT_META_CLASS_NAME = "io.fabric8.kubernetes.api.model.ObjectMeta";
+
+    protected static final String IS_INTERFACE_FIELD = "isInterface";
+
+    protected static final String JAVA_TYPE_FIELD = "javaType";
+
     private final JDefinedClass doneableClass;
+
+    private final JDefinedClass objectMetaClass;
 
     static {
         final String strict = System.getenv("ISTIO_STRICT");
@@ -65,10 +72,13 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     public IstioTypeAnnotator(GenerationConfig generationConfig) {
         super(generationConfig);
+        String className = DONEABLE_CLASS_NAME;
         try {
-            doneableClass = new JCodeModel()._class(DONEABLE_CLASS_NAME);
+            doneableClass = new JCodeModel()._class(className);
+            className = OBJECT_META_CLASS_NAME;
+            objectMetaClass = new JCodeModel()._class(className);
         } catch (JClassAlreadyExistsException e) {
-            throw new IllegalStateException("Couldn't load " + DONEABLE_CLASS_NAME);
+            throw new IllegalStateException("Couldn't load " + className);
         }
     }
 
@@ -99,25 +109,19 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         }
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
-        try {
-
         JAnnotationUse buildable = clazz.annotate(Buildable.class)
                 .param("editableEnabled", false)
                 .param("validationEnabled", true)
                 .param("generateBuilderPackage", true)
                 .param("builderPackage", BUILDER_PACKAGE);
 
-            buildable.paramArray("inline").annotate(Inline.class)
-                    .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-                    .param("prefix", "Doneable")
-                    .param("value", "done");
+        buildable.paramArray("inline").annotate(Inline.class)
+                .param("type", doneableClass)
+                .param("prefix", "Doneable")
+                .param("value", "done");
 
-           buildable.paramArray("refs").annotate(BuildableReference.class)
-                   .param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
-
-        } catch (JClassAlreadyExistsException e) {
-            e.printStackTrace();
-        }
+        buildable.paramArray("refs").annotate(BuildableReference.class)
+                .param("value", objectMetaClass);
 
         if (clazz.name().endsWith("Spec")) {
             JAnnotationArrayMember arrayMember= clazz.annotate(VelocityTransformations.class)
@@ -132,11 +136,11 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
     @Override
     public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
         super.propertyField(field, clazz, propertyName, propertyNode);
-        if (propertyNode.hasNonNull("isInterface")) {
+        if (propertyNode.hasNonNull(IS_INTERFACE_FIELD)) {
             field.annotate(JsonUnwrapped.class);
 
             // todo: fix me, this won't work if a type has several fields using interfaces
-            String interfaceFQN = propertyNode.get("javaType").asText();
+            String interfaceFQN = propertyNode.get(JAVA_TYPE_FIELD).asText();
 
             // create interface if we haven't done it yet
             try {

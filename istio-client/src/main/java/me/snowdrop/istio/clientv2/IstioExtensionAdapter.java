@@ -15,37 +15,38 @@
  */
 package me.snowdrop.istio.clientv2;
 
-import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ExtensionAdapter;
-import okhttp3.OkHttpClient;
-
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.ExtensionAdapter;
+import okhttp3.OkHttpClient;
+
 public class IstioExtensionAdapter implements ExtensionAdapter<IstioClient> {
 
-    static final ConcurrentMap<URL, Boolean> IS_ISTIO = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_ISTIO_APIGROUPS = new ConcurrentHashMap<>();
-    
-	@Override
-	public Class<IstioClient> getExtensionType() {
-		return IstioClient.class;
-	}
+    private static final ConcurrentMap<URL, Boolean> IS_ISTIO = new ConcurrentHashMap<>();
 
-	@Override
-	public Boolean isAdaptable(Client client) {
-		return isIstioAvailable(client);
-	}
+    private static final ConcurrentMap<URL, Boolean> USES_ISTIO_APIGROUPS = new ConcurrentHashMap<>();
 
-	@Override
-	public IstioClient adapt(Client client) {
-            return new DefaultIstioClient(client.adapt(OkHttpClient.class), client.getConfiguration());
-	}
+    @Override
+    public Class<IstioClient> getExtensionType() {
+        return IstioClient.class;
+    }
 
-	private boolean isIstioAvailable(Client client) {
+    @Override
+    public Boolean isAdaptable(Client client) {
+        return isIstioAvailable(client);
+    }
+
+    @Override
+    public IstioClient adapt(Client client) {
+        return new DefaultIstioClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    }
+
+    private boolean isIstioAvailable(Client client) {
         URL masterUrl = client.getMasterUrl();
         if (IS_ISTIO.containsKey(masterUrl)) {
             return IS_ISTIO.get(masterUrl);
