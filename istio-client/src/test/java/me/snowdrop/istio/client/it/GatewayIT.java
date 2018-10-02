@@ -1,17 +1,14 @@
 package me.snowdrop.istio.client.it;
 
-import java.util.AbstractMap.SimpleEntry;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import me.snowdrop.istio.api.IstioSpec;
+import java.util.AbstractMap.SimpleEntry;
 import me.snowdrop.istio.api.networking.v1alpha3.Gateway;
 import me.snowdrop.istio.api.networking.v1alpha3.GatewayBuilder;
 import me.snowdrop.istio.api.networking.v1alpha3.GatewaySpec;
-import me.snowdrop.istio.clientv2.IstioClient;
 import me.snowdrop.istio.clientv2.DefaultIstioClient;
+import me.snowdrop.istio.clientv2.IstioClient;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class GatewayIT {
 
