@@ -43,16 +43,18 @@ import me.snowdrop.istio.api.internal.IstioKind;
 #end
 
 #set ($kind = "$resource")
+#set ($plural = "$kind" + "s")
 #foreach ($annotation in $annotations)
     #if ($annotation.getClassRef().getName().equals("IstioKind"))
         #set ($kind = $annotation.getParameters().get("name"))
+        #set ($plural = $annotation.getParameters().get("plural"))
     #end
 #end
 /**
  *
  *
  */
-@IstioKind(name = "$kind")
+@IstioKind(name = "$kind", plural = "$plural")
 @IstioApiVersion("$version")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")

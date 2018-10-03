@@ -101,7 +101,8 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
         if (kind.isPresent()) {
             clazz._implements(IstioSpec.class);
-            clazz.annotate(IstioKind.class).param("name", kind.get());
+            final String plural = IstioSpecRegistry.getIstioKindPlural(clazz.name()).orElse(kind + "s");
+            clazz.annotate(IstioKind.class).param("name", kind.get()).param("plural", plural);
         }
         final Optional<String> version = IstioSpecRegistry.getIstioApiVersion(clazz.name());
         if (version.isPresent()) {

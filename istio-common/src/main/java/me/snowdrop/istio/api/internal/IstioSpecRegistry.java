@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import me.snowdrop.istio.api.IstioSpec;
 
 /**
@@ -147,6 +146,15 @@ public class IstioSpecRegistry {
             return crdName.substring(beginIndex + 1, crdName.indexOf('.', beginIndex + 1));
         }
 
+        String getPlural() {
+            return getPlural(crdName);
+        }
+
+        static String getPlural(String crdName) {
+            final int endIndex = crdName.indexOf('.');
+            return crdName.substring(0, endIndex);
+        }
+
         boolean isUnvisited() {
             return !visited;
         }
@@ -188,6 +196,17 @@ public class IstioSpecRegistry {
         if (crd != null) {
             crd.visited = true;
             return Optional.of(crd.kind);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<String> getIstioKindPlural(String simpleClassName) {
+        final String key = getCRDKeyFrom(simpleClassName);
+
+        CRDInfo crd = crdInfos.get(key);
+        if (crd != null) {
+            return Optional.of(crd.getPlural());
         } else {
             return Optional.empty();
         }
