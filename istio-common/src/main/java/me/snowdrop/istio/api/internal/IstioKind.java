@@ -18,4 +18,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface IstioKind {
     String name();
+    String plural();
 }
