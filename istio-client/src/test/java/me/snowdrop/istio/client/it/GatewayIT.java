@@ -6,8 +6,8 @@ import java.util.AbstractMap.SimpleEntry;
 import me.snowdrop.istio.api.networking.v1alpha3.Gateway;
 import me.snowdrop.istio.api.networking.v1alpha3.GatewayBuilder;
 import me.snowdrop.istio.api.networking.v1alpha3.GatewaySpec;
-import me.snowdrop.istio.clientv2.DefaultIstioClient;
-import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.client.DefaultIstioClient;
+import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
 
 public class GatewayIT {

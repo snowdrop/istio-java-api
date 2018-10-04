@@ -13,6 +13,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
+@Deprecated
 public class IstioClientFactory {
     public static IstioClient defaultClient(Config config) {
         KubernetesClient client = new DefaultKubernetesClient(config);

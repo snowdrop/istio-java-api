@@ -1,82 +1,45 @@
 package me.snowdrop.istio.client;
 
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.List;
-
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import me.snowdrop.istio.api.DoneableIstioResource;
+import io.fabric8.kubernetes.client.Client;
 import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.IstioResourceList;
-import me.snowdrop.istio.api.internal.IstioSpecRegistry;
-import me.snowdrop.istio.util.Utils;
-import me.snowdrop.istio.util.YAML;
+import java.util.List;
+import java.io.InputStream;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import java.util.Collection;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 
-public class IstioClient {
+public interface IstioClient extends Client, IstioDsl {
 
-    private final Adapter client;
+    AdapterDsl adapter();
+    MixerDsl mixer();
 
-    public IstioClient(Adapter client) {
-        this.client = client;
-    }
+    public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is);
 
-    public List<IstioResource> registerCustomResources(final String specFileAsString) {
-        List<IstioResource> results = YAML.loadIstioResources(specFileAsString, IstioResource.class);
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item);
 
-        switch (results.size()) {
-            case 0:
-                return Collections.emptyList();
-            case 1:
-                return client.createCustomResources(results.get(0));
-            default:
-                return client.createCustomResources(results.toArray(new IstioResource[results.size()]));
-        }
-    }
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items);
 
-    public List<IstioResource> registerCustomResources(final InputStream resource) {
-        return registerCustomResources(Utils.writeStreamToString(resource));
-    }
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items);
 
-    public List<IstioResource> getResources(final String kind) {
-        final String crdName = IstioSpecRegistry.getCRDNameFor(kind)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unknown kind %s", kind)));
+    public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s);
 
-        final KubernetesClient client = getKubernetesClient();
-        final CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().withName(crdName).get();
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata item);
 
-        if (customResourceDefinition == null) {
-            throw new IllegalArgumentException(String.format("Custom Resource Definition %s is not found in cluster %s",
-                    crdName, client.getMasterUrl()));
-        }
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s);
 
-        final KubernetesResourceList list = client.customResources(customResourceDefinition, IstioResource.class, IstioResourceList.class, DoneableIstioResource.class)
-                .inNamespace(client.getNamespace())
-                .list();
-        return list.getItems();
-    }
 
-    public List<IstioResource> getResourcesLike(final IstioResource resource) {
-        if (resource == null) {
-            return Collections.emptyList();
-        }
-        return getResources(resource.getKind());
-    }
+    public List<IstioResource> registerCustomResources(final String specFileAsString);
+    public List<IstioResource> registerCustomResources(final InputStream resource);
+    
+    public List<IstioResource> getResourcesLike(final IstioResource resource);
+    
+    public IstioResource registerCustomResource(final IstioResource resource);
 
-    public IstioResource registerCustomResource(final IstioResource resource) {
-        return client.createCustomResources(resource).get(0);
-    }
+    public IstioResource registerOrUpdateCustomResource(final IstioResource resource);
 
-    public IstioResource registerOrUpdateCustomResource(final IstioResource resource) {
-        return client.createOrReplaceCustomResources(resource).get(0);
-    }
+    public Boolean unregisterCustomResource(final IstioResource istioResource);
 
-    public Boolean unregisterCustomResource(final IstioResource istioResource) {
-        return client.deleteCustomResources(istioResource);
-    }
-
-    public KubernetesClient getKubernetesClient() {
-        return client.getKubernetesClient();
-    }
 }

@@ -11,6 +11,7 @@ import me.snowdrop.istio.api.DoneableIstioResource;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 
+@Deprecated
 public class KubernetesAdapter implements Adapter {
 
     private KubernetesClient client;

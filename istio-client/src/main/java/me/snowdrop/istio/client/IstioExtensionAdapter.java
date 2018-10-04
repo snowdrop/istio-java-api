@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 import java.net.URL;
 import java.util.List;

@@ -1,4 +1,4 @@
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import me.snowdrop.istio.api.authentication.v1alpha1.Policy;

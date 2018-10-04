@@ -1,4 +1,4 @@
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;

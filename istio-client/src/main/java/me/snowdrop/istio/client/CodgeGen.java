@@ -1,4 +1,4 @@
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 import io.sundr.codegen.annotations.ResourceSelector;
 import io.sundr.transform.annotations.VelocityTransformation;

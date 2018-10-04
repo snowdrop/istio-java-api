@@ -8,8 +8,8 @@ import me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType;
 import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
 import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceBuilder;
 import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec;
-import me.snowdrop.istio.clientv2.DefaultIstioClient;
-import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.client.DefaultIstioClient;
+import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

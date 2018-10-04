@@ -1,4 +1,4 @@
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
@@ -43,6 +43,20 @@ import me.snowdrop.istio.client.internal.operation.ServiceRoleBindingOperationIm
 import me.snowdrop.istio.client.internal.operation.ServiceRoleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.VirtualServiceOperationImpl;
 import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import me.snowdrop.istio.api.IstioResource;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import java.io.InputStream;
+import java.util.ArrayList;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
 
@@ -126,4 +140,81 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     public MixedOperation<ServiceRole, ServiceRoleList, DoneableServiceRole, Resource<ServiceRole, DoneableServiceRole>> serviceRole() {
         return new ServiceRoleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
     }
+
+    //Generic methods for handling resources
+  @Override
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), is, null, false) {
+    };
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), item, null, null, -1, false) {
+    };
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
+    return resourceList(new KubernetesListBuilder().withItems(items).build());
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
+    return resourceList(new KubernetesListBuilder().withItems(new ArrayList<HasMetadata>(items)).build());
+  }
+
+  @Override
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), s, null, null, -1, false) {
+    };
+  }
+
+
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), item, -1, false) {
+    };
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), s, -1, false) {
+    };
+  }
+
+
+    //Compatibility
+    public List<IstioResource> registerCustomResources(final String specFileAsString) {
+        return resourceList(specFileAsString).createOrReplace()
+            .stream()
+            .filter(r -> r instanceof IstioResource)
+            .map(r -> (IstioResource)r)
+            .collect(Collectors.toList());
+    }
+
+    public List<IstioResource> registerCustomResources(final InputStream resource) {
+        return load(resource).createOrReplace()
+            .stream()
+            .filter(r -> r instanceof IstioResource)
+            .map(r -> (IstioResource)r)
+            .collect(Collectors.toList());
+    }
+    
+    public List<IstioResource> getResourcesLike(final IstioResource resource) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public IstioResource registerCustomResource(final IstioResource resource) {
+        return (IstioResource)resource(resource).createOrReplace();
+    }
+
+    public IstioResource registerOrUpdateCustomResource(final IstioResource resource) {
+        return (IstioResource)resource(resource).createOrReplace();
+    }
+
+    public Boolean unregisterCustomResource(final IstioResource istioResource) {
+        return resource(istioResource).delete();
+    }
+
 }
