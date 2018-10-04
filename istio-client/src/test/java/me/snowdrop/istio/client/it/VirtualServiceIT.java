@@ -1,8 +1,11 @@
 package me.snowdrop.istio.client.it;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
+import java.util.List;
 import me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute;
+import me.snowdrop.istio.api.networking.v1alpha3.HttpStatusErrorType;
 import me.snowdrop.istio.api.networking.v1alpha3.NumberPort;
 import me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType;
 import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
@@ -11,9 +14,6 @@ import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec;
 import me.snowdrop.istio.clientv2.DefaultIstioClient;
 import me.snowdrop.istio.clientv2.IstioClient;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 public class VirtualServiceIT {
 
@@ -226,6 +226,100 @@ http:
               tuple(NumberPort.class, 9090),
               tuple(NumberPort.class, 9090)
           );
+
+      //when
+      final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
+
+      //then
+      assertThat(deleteResult).isTrue();
+    });
+  }
+
+  /*
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings-route
+spec:
+  hosts:
+  - ratings.prod.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: ratings.prod.svc.cluster.local
+        subset: v1
+    fault:
+      abort:
+        percent: 10
+        httpStatus: 400
+   */
+  @Test
+  public void checkVirtualServiceAbort() {
+    final String ratingsHost = "ratings.prod.svc.cluster.local";
+    final VirtualService virtualService = new VirtualServiceBuilder()
+        .withApiVersion("networking.istio.io/v1alpha3")
+        .withNewMetadata().withName("ratings-route").endMetadata()
+        .withNewSpec()
+        .addToHosts(ratingsHost)
+        .addNewHttp()
+        .addNewRoute()
+        .withNewDestination().withHost(ratingsHost).withSubset("v1")
+        .endDestination()
+        .endRoute()
+        .withNewFault()
+        .withNewAbort()
+        .withPercent(10)
+        .withNewHttpStatusErrorType(400)
+        .endAbort()
+        .endFault()
+        .endHttp()
+        .endSpec()
+        .build();
+
+    //when
+    final VirtualService resultResource = istioClient.virtualService().create(virtualService);
+
+    //then
+    assertThat(resultResource).isNotNull().satisfies(istioResource -> {
+
+      assertThat(istioResource.getKind()).isEqualTo("VirtualService");
+
+      assertThat(istioResource)
+          .extracting("metadata")
+          .extracting("name")
+          .containsOnly("ratings-route");
+    });
+
+    //and
+    final VirtualServiceSpec resultSpec = resultResource.getSpec();
+
+    //and
+    assertThat(resultSpec).satisfies(vs -> {
+
+      assertThat(vs.getHosts()).containsExactly(ratingsHost);
+
+      final List<HTTPRoute> httpList = vs.getHttp();
+      assertThat(httpList).hasSize(1);
+
+      //assert the host and subset were set correctly
+      assertThat(httpList)
+          .flatExtracting("route")
+          .extracting("destination")
+          .extracting("host", "subset")
+          .containsOnly(
+              tuple(ratingsHost, "v1")
+          );
+
+      //assert the fault was correctly set
+      assertThat(httpList.get(0).getFault().getAbort()).satisfies(a -> {
+
+        assertThat(a.getPercent()).isEqualTo(10);
+        assertThat(a.getErrorType())
+            .isInstanceOfSatisfying(
+                HttpStatusErrorType.class,
+                e -> assertThat(e.getHttpStatus()).isEqualTo(400)
+            );
+      });
 
       //when
       final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
