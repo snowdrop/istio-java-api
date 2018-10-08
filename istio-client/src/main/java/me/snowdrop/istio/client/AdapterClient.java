@@ -1,4 +1,4 @@
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
@@ -59,6 +59,7 @@ import me.snowdrop.istio.client.internal.operation.StatsdOperationImpl;
 import me.snowdrop.istio.client.internal.operation.StdioOperationImpl;
 import okhttp3.OkHttpClient;
 
+@Deprecated
 public class AdapterClient extends BaseClient implements AdapterDsl {
 
     public AdapterClient() throws KubernetesClientException {

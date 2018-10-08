@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 public interface NamespacedIstioClient extends IstioClient,
         GenericIstioClient<NamespacedIstioClient> {

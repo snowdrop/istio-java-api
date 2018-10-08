@@ -9,8 +9,8 @@ import me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleBuilder;
 import me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleSpec;
 import me.snowdrop.istio.api.networking.v1alpha3.Subset;
 import me.snowdrop.istio.api.networking.v1alpha3.TLSSettingsMode;
-import me.snowdrop.istio.clientv2.DefaultIstioClient;
-import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.client.DefaultIstioClient;
+import me.snowdrop.istio.client.IstioClient;
 import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
 

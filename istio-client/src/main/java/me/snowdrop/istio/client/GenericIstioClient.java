@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.snowdrop.istio.clientv2;
+package me.snowdrop.istio.client;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;

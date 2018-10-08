@@ -6,8 +6,8 @@ import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
 import me.snowdrop.istio.api.authentication.v1alpha1.PolicyBuilder;
 import me.snowdrop.istio.api.authentication.v1alpha1.PolicySpec;
 import me.snowdrop.istio.api.authentication.v1alpha1.TargetSelectorBuilder;
-import me.snowdrop.istio.clientv2.DefaultIstioClient;
-import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.client.DefaultIstioClient;
+import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
 
 public class PolicyIT {

@@ -23,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import me.snowdrop.istio.api.cexl.AttributeVocabulary;
 import me.snowdrop.istio.api.cexl.TypedValue;
-import me.snowdrop.istio.clientv2.DefaultIstioClient;
-import me.snowdrop.istio.clientv2.IstioClient;
+import me.snowdrop.istio.client.DefaultIstioClient;
+import me.snowdrop.istio.client.IstioClient;
 import me.snowdrop.istio.mixer.template.metric.Metric;
 import me.snowdrop.istio.mixer.template.metric.MetricBuilder;
 import me.snowdrop.istio.mixer.template.metric.MetricSpec;

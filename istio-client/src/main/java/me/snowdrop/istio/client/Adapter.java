@@ -5,6 +5,7 @@ import java.util.List;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import me.snowdrop.istio.api.IstioResource;
 
+@Deprecated
 public interface Adapter {
     List<IstioResource> createCustomResources(IstioResource... resources);
 
