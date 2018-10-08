@@ -57,6 +57,8 @@ import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGet
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import io.fabric8.kubernetes.client.WithRequestCallable;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
 
@@ -71,20 +73,25 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     public DefaultIstioClient(OkHttpClient httpClient, Config configuration) {
         super(httpClient, configuration);
     }
+
     @Override
     public NamespacedIstioClient inAnyNamespace() {
-        return null;
+        return inNamespace(null);
     }
 
     @Override
-    public NamespacedIstioClient inNamespace(String name) {
-        return null;
+    public NamespacedIstioClient inNamespace(String namespace) {
+        Config updated = new ConfigBuilder(getConfiguration())
+                .withNamespace(namespace)
+                .build();
+
+        return new DefaultIstioClient(getHttpClient(), updated);
     }
 
     @Override
     public FunctionCallable<NamespacedIstioClient> withRequestConfig(RequestConfig requestConfig) {
-        return null;
-    }
+        return new WithRequestCallable<NamespacedIstioClient>(this, requestConfig);
+    }    
 
     @Override
     public AdapterDsl adapter() {
@@ -216,5 +223,4 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     public Boolean unregisterCustomResource(final IstioResource istioResource) {
         return resource(istioResource).delete();
     }
-
 }
