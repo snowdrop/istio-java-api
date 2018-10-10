@@ -1,0 +1,10 @@
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: basic-policy
+spec:
+  targets:
+    - ports:
+        - number: 443
+          name: https
+          protocol: HTTPS
