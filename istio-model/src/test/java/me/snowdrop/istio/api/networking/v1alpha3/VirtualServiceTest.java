@@ -330,7 +330,7 @@ spec:
          httpStatus: 400
          */
 
-        final VirtualService virtualService = mapper.readValue(inputStream, VirtualService.class);
+        final VirtualService virtualService = mapper.readValue(inputStream, me.snowdrop.istio.api.networking.v1alpha3.VirtualService.class);
         assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
         final List<HTTPRoute> http = virtualService.getSpec().getHttp();
         assertEquals(1, http.size());
@@ -344,5 +344,30 @@ spec:
         final Abort abort = route.getFault().getAbort();
         assertEquals(10, abort.getPercent().intValue());
         assertEquals(400, ((HttpStatusErrorType) abort.getErrorType()).getHttpStatus().intValue());
+    }
+
+    @Test
+    public void loadingFromYAML() throws Exception {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service-48.yaml");
+        final VirtualService virtualService = mapper.readValue(inputStream, VirtualService.class);
+
+        /*
+        ...
+        spec:
+  hosts:
+    - recommendation
+  http:
+    - match:
+        - headers:
+            baggage-user-agent:
+              regex: .*DarkLaunch.*
+
+              ...
+         */
+        final Map<String, StringMatch> headers = virtualService.getSpec().getHttp().get(0).getMatch().get(0).getHeaders();
+        final StringMatch stringMatch = headers.get("baggage-user-agent");
+        assertEquals(RegexMatchType.class, stringMatch.getMatchType().getClass());
+        RegexMatchType regex = (RegexMatchType) stringMatch.getMatchType();
+        assertEquals(".*DarkLaunch.*", regex.getRegex());
     }
 }

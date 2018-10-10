@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -93,8 +94,14 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        final Class<?> classToDeserialize = property != null ? property.getType().getRawClass() :
-                ctxt.getContextualType().getRawClass();
+        final Class<?> classToDeserialize;
+        if (property != null) {
+            final JavaType type = property.getType();
+            classToDeserialize = type.isMapLikeType() ? type.getContentType().getRawClass() : type.getRawClass();
+        } else {
+            classToDeserialize = ctxt.getContextualType().getRawClass();
+        }
+
         return new ClassWithInterfaceFieldsDeserializer(classToDeserialize.getName());
     }
 
