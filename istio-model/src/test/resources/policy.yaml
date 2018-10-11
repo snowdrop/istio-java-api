@@ -4,7 +4,7 @@ metadata:
   name: basic-policy
 spec:
   targets:
-    - ports:
+    - name: productpage
+      ports:
+        - name: https
         - number: 443
-          name: https
-          protocol: HTTPS
