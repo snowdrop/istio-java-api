@@ -347,8 +347,8 @@ spec:
     }
 
     @Test
-    public void loadingFromYAML() throws Exception {
-        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service-48.yaml");
+    public void loadingFromYAMLIssue48() throws Exception {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service-issue48.yaml");
         final VirtualService virtualService = mapper.readValue(inputStream, VirtualService.class);
 
         /*
