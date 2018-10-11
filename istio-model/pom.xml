@@ -136,7 +136,7 @@
           <targetVersion>1.8</targetVersion>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
           <inclusionLevel>NON_EMPTY</inclusionLevel>
-          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources/jsonschema2pojo</outputDirectory>
           <customAnnotator>me.snowdrop.istio.annotator.IstioTypeAnnotator</customAnnotator>
           <annotationStyle>none</annotationStyle>
         </configuration>
@@ -165,10 +165,10 @@
             <configuration>
               <target>
                 <echo>removing the duplicate / useless generated classes</echo>
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/Duration.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/IstioSchema.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/TimeStamp.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/me/snowdrop/istio/api/cexl/TypedValue.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/jsonschema2pojo/me/snowdrop/istio/api/Duration.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/jsonschema2pojo/me/snowdrop/istio/api/IstioSchema.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/jsonschema2pojo/me/snowdrop/istio/api/TimeStamp.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/jsonschema2pojo/me/snowdrop/istio/api/cexl/TypedValue.java" verbose="true" />
               </target>
             </configuration>
             <goals>
@@ -224,7 +224,7 @@
             <configuration>
               <sources>
                 <source>${project.build.directory}/generated-sources/annotations</source>
-                <source>${project.build.directory}/generated-sources/</source>
+                <source>${project.build.directory}/generated-sources/jsonschema2pojo</source>
                 <!--
                 Useful when locally generating ANTLR parser classes (outside of maven) e.g. to work on CEXLTypeResolver.
                 Note that project won't compile with locally generated classes since we then have duplicated classes with
