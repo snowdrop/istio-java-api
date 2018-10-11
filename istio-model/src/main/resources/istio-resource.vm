@@ -105,9 +105,6 @@ public class $resource implements HasMetadata
     @Valid
     private $spec spec;
 
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
     /**
      * No args constructor for use in serialization
      *
@@ -220,15 +217,4 @@ public class $resource implements HasMetadata
     public void setSpec($spec spec) {
         this.spec = spec;
     }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
 }

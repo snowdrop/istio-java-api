@@ -86,8 +86,6 @@ public class ${resource}List implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("metadata")
     @Valid
     private ListMeta metadata;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -201,15 +199,4 @@ public class ${resource}List implements KubernetesResource, KubernetesResourceLi
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
 }
