@@ -97,7 +97,7 @@ public class ClassWithInterfaceFieldsDeserializer extends JsonDeserializer imple
         final Class<?> classToDeserialize;
         if (property != null) {
             final JavaType type = property.getType();
-            classToDeserialize = type.isMapLikeType() ? type.getContentType().getRawClass() : type.getRawClass();
+            classToDeserialize = type.isContainerType() ? type.getContentType().getRawClass() : type.getRawClass();
         } else {
             classToDeserialize = ctxt.getContextualType().getRawClass();
         }
