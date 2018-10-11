@@ -16,19 +16,30 @@
  *
  *
  */
-package me.snowdrop.istio.adapter.statsd;
+package me.snowdrop.istio.mixer.adapter.signalfx;
 
 /**
+ * Describes what kind of metric this is.
+ *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public enum Type {
-    UNKNOWN(0),
+    /**
+     * None is the default and is invalid
+     */
+    NONE(0),
 
+    /**
+     * Values with the same set of dimensions will be added together
+     * as a continuously incrementing value.
+     */
     COUNTER(1),
 
-    GAUGE(2),
-
-    DISTRIBUTION(3);
+    /**
+     * A histogram distribution.  This will result in several metrics
+     * emitted for each unique set of dimensions.
+     */
+    HISTOGRAM(2);
 
     private final int intValue;
 

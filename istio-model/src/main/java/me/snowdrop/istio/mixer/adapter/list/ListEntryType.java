@@ -4,7 +4,7 @@
  * Licensed under the Eclipse Public License version 1.0, available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package me.snowdrop.istio.adapter.list;
+package me.snowdrop.istio.mixer.adapter.list;
 
 /**
  * Determines the type of list that the adapter is consulting.

@@ -16,34 +16,42 @@
  *
  *
  */
-package me.snowdrop.istio.adapter.signalfx;
+package me.snowdrop.istio.mixer.adapter.stackdriver;
 
 /**
- * Describes what kind of metric this is.
+ * The kind of measurement. It describes how the data is reported.
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum Type {
-    /**
-     * None is the default and is invalid
-     */
-    NONE(0),
+public enum MetricKind {
 
     /**
-     * Values with the same set of dimensions will be added together
-     * as a continuously incrementing value.
+     * Do not use this default value.
      */
-    COUNTER(1),
+    METRIC_KIND_UNSPECIFIED(0),
 
     /**
-     * A histogram distribution.  This will result in several metrics
-     * emitted for each unique set of dimensions.
+     * An instantaneous measurement of a value.
      */
-    HISTOGRAM(2);
+    GAUGE(1),
+
+    /**
+     * The change in a value during a time interval.
+     */
+    DELTA(2),
+
+    /**
+     * A value accumulated over a time interval.  Cumulative
+     * measurements in a time series should have the same start time
+     * and increasing end times, until an event resets the cumulative
+     * value to zero and sets a new start time for the following
+     * points.
+     */
+    CUMULATIVE(3);
 
     private final int intValue;
 
-    Type(int intValue) {
+    MetricKind(int intValue) {
         this.intValue = intValue;
     }
 

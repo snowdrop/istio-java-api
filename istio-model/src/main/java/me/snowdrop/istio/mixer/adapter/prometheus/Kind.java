@@ -16,53 +16,22 @@
  *
  *
  */
-package me.snowdrop.istio.adapter.stackdriver;
+package me.snowdrop.istio.mixer.adapter.prometheus;
 
 /**
+ * Describes what kind of metric this is.
+ *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum ValueType {
-
-    /**
-     * Do not use this default value.
-     */
-    VALUE_TYPE_UNSPECIFIED(0),
-
-    /**
-     * The value is a boolean.
-     * This value type can be used only if the metric kind is `GAUGE`.
-     */
-    BOOL(1),
-
-    /**
-     * The value is a signed 64-bit integer.
-     */
-    INT64(2),
-
-    /**
-     * The value is a double precision floating point number.
-     */
-    DOUBLE(3),
-
-    /**
-     * The value is a text string.
-     * This value type can be used only if the metric kind is `GAUGE`.
-     */
-    STRING(4),
-
-    /**
-     * The value is a [`Distribution`][google.api.Distribution].
-     */
-    DISTRIBUTION(5),
-
-    /**
-     * The value is money.
-     */
-    MONEY(6);
+public enum Kind {
+    UNSPECIFIED(0),
+    GAUGE(1),
+    COUNTER(2),
+    DISTRIBUTION(3);
 
     private final int intValue;
 
-    ValueType(int intValue) {
+    Kind(int intValue) {
         this.intValue = intValue;
     }
 

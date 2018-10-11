@@ -24,23 +24,16 @@ func main() {
 	kind := os.Args[1]
 
 	var pkgPrefix, jsonPrefix string
-	var pkgAssemblyStrategy, jsonAssemblyStrategy func(prefix string, component string) string
 	switch kind {
 	case "api":
 		pkgPrefix = projectPkgPrefix + "api."
 		jsonPrefix = projectJsonPrefix
-		pkgAssemblyStrategy = concatenate
-		jsonAssemblyStrategy = concatenate
 	case "adapter":
-		pkgPrefix = projectPkgPrefix + "adapter."
+		pkgPrefix = projectPkgPrefix + "mixer.adapter."
 		jsonPrefix = projectJsonPrefix + "adapter_"
-		pkgAssemblyStrategy = concatenate
-		jsonAssemblyStrategy = concatenate
 	case "template":
 		pkgPrefix = projectPkgPrefix + "mixer.template."
 		jsonPrefix = projectJsonPrefix + "mixer_"
-		pkgAssemblyStrategy = concatenate
-		jsonAssemblyStrategy = concatenate
 	}
 
 	//istio.io/api/networking/v1alpha3
@@ -64,8 +57,8 @@ func main() {
 			}
 		}
 
-		fmt.Println(line + "," + pkgAssemblyStrategy(pkgPrefix, component) + "," +
-			jsonAssemblyStrategy(jsonPrefix, strings.Replace(component, ".", "_", -1)) + "_")
+		fmt.Println(line + "," + pkgPrefix + component + "," +
+			jsonPrefix + strings.Replace(component, ".", "_", -1) + "_")
 	}
 
 	if err := scanner.Err(); err != nil {

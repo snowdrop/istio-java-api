@@ -16,23 +16,28 @@
  *
  *
  */
-package me.snowdrop.istio.adapter.stdio;
+package me.snowdrop.istio.mixer.adapter.redisquota;
 
 /**
- * Importance level for individual items output by this adapter.
+ * Algorithms for rate-limiting
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum Level {
-    INFO(0),
+public enum QuotaAlgorithm {
+    /**
+     * FIXED_WINDOW The fixed window approach can allow 2x peak specified rate, whereas the rolling-window doesn't.
+     */
+    FIXED_WINDOW(0),
 
-    WARNING(1),
-
-    ERROR(2);
+    /**
+     * ROLLING_WINDOW The rolling window algorithm's additional precision comes at the cost of increased redis resource
+     * usage.
+     */
+    ROLLING_WINDOW(1);
 
     private final int intValue;
 
-    Level(int intValue) {
+    QuotaAlgorithm(int intValue) {
         this.intValue = intValue;
     }
 

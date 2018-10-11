@@ -16,42 +16,37 @@
  *
  *
  */
-package me.snowdrop.istio.adapter.stackdriver;
+package me.snowdrop.istio.mixer.adapter.stdio;
 
 /**
- * The kind of measurement. It describes how the data is reported.
+ * Stream is used to select between different log output sinks.
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum MetricKind {
+public enum Stream {
+    /**
+     * Output to the Mixer process' standard output stream. This is the default value.
+     */
+    STDOUT(0),
 
     /**
-     * Do not use this default value.
+     * Output to the Mixer process' standard error stream.
      */
-    METRIC_KIND_UNSPECIFIED(0),
+    STDERR(1),
 
     /**
-     * An instantaneous measurement of a value.
+     * Output to a specific file.
      */
-    GAUGE(1),
+    FILE(2),
 
     /**
-     * The change in a value during a time interval.
+     * Output to a specific rotating file, controlled by the various file rotation options.
      */
-    DELTA(2),
-
-    /**
-     * A value accumulated over a time interval.  Cumulative
-     * measurements in a time series should have the same start time
-     * and increasing end times, until an event resets the cumulative
-     * value to zero and sets a new start time for the following
-     * points.
-     */
-    CUMULATIVE(3);
+    ROTATED_FILE(3);
 
     private final int intValue;
 
-    MetricKind(int intValue) {
+    Stream(int intValue) {
         this.intValue = intValue;
     }
 

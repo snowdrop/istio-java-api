@@ -16,37 +16,23 @@
  *
  *
  */
-package me.snowdrop.istio.adapter.stdio;
+package me.snowdrop.istio.mixer.adapter.stdio;
 
 /**
- * Stream is used to select between different log output sinks.
+ * Importance level for individual items output by this adapter.
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum Stream {
-    /**
-     * Output to the Mixer process' standard output stream. This is the default value.
-     */
-    STDOUT(0),
+public enum Level {
+    INFO(0),
 
-    /**
-     * Output to the Mixer process' standard error stream.
-     */
-    STDERR(1),
+    WARNING(1),
 
-    /**
-     * Output to a specific file.
-     */
-    FILE(2),
-
-    /**
-     * Output to a specific rotating file, controlled by the various file rotation options.
-     */
-    ROTATED_FILE(3);
+    ERROR(2);
 
     private final int intValue;
 
-    Stream(int intValue) {
+    Level(int intValue) {
         this.intValue = intValue;
     }
 
