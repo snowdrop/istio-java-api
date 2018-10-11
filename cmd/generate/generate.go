@@ -87,6 +87,8 @@ type Schema struct {
 	EnvoyFilter                        networking.EnvoyFilter
 	Rule                               policy.Rule
 	Policy                             authentication.Policy
+	AuthNamePortSelector               authentication.PortSelector_Name
+	AuthNumberPortSelector             authentication.PortSelector_Number
 	JwtPeerAuthenticationMethod        authentication.PeerAuthenticationMethod_Jwt
 	MtlsPeerAuthenticationMethod       authentication.PeerAuthenticationMethod_Mtls
 	Gateway                            networking.Gateway
@@ -241,8 +243,10 @@ func loadInterfacesData(crds map[string]schemagen.CrdDescriptor) (map[string]str
 		}
 
 		//var interfaceName = className[:strings.LastIndex(className, ".")+1]
-		var interfaceName = className + "." // to define inner classes for interface fields
-		var interfaceSet = false
+
+		pkgName := className[len("me.snowdrop.istio.") : strings.LastIndex(className, ".")+1]
+		interfaceName := className + "." // to define inner classes for interface fields
+		interfaceSet := false
 		for key, field := range class.Fields {
 			if strings.HasPrefix(field, "is") {
 				lastUnderscore := strings.LastIndex(field, "_")
@@ -253,8 +257,8 @@ func loadInterfacesData(crds map[string]schemagen.CrdDescriptor) (map[string]str
 				}
 
 				impl := field[2:lastUnderscore+1] + strings.Title(key)
-				impls[impl] = interfaceName
-				interfaces[field] = interfaceName
+				impls[pkgName+impl] = interfaceName
+				interfaces[pkgName+field] = interfaceName
 			}
 		}
 	}

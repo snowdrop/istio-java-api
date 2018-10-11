@@ -42,7 +42,7 @@ type schemaGenerator struct {
 	packages          map[string]PackageDescriptor
 	enumMap           map[string]string
 	interfacesMap     map[string]string
-	interfacesimpl    map[string]string
+	interfacesImpls   map[string]string
 	typeMap           map[reflect.Type]reflect.Type
 	unknownEnums      []string
 	unknownInterfaces []string
@@ -71,13 +71,13 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 	}
 
 	g := schemaGenerator{
-		types:          make(map[reflect.Type]*JSONObjectDescriptor),
-		packages:       pkgMap,
-		typeMap:        typeMap,
-		enumMap:        enumMap,
-		interfacesMap:  interfacesMap,
-		interfacesimpl: interfacesImpl,
-		crds:           crds,
+		types:           make(map[reflect.Type]*JSONObjectDescriptor),
+		packages:        pkgMap,
+		typeMap:         typeMap,
+		enumMap:         enumMap,
+		interfacesMap:   interfacesMap,
+		interfacesImpls: interfacesImpl,
+		crds:            crds,
 	}
 	return &g
 }
@@ -213,7 +213,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	underscore := strings.LastIndex(name, "_")
 	if underscore >= 0 {
 		// check if we have an interface which we should rename
-		interfaceFQN, ok := g.interfacesimpl[name]
+		interfaceName := getQualifiedInterfaceName(t)
+		interfaceFQN, ok := g.interfacesImpls[interfaceName]
 		if ok {
 			dot := strings.LastIndex(interfaceFQN, ".")
 			interfaceName := interfaceFQN[dot+1:]
@@ -382,8 +383,8 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				Type: "object",
 			}
 
-			typeName := k.Name()
-			i, ok := g.interfacesimpl[typeName]
+			interfaceName := getQualifiedInterfaceName(k)
+			i, ok := g.interfacesImpls[interfaceName]
 			if ok {
 				descriptor.JavaInterfaces = []string{i}
 			}
@@ -439,6 +440,17 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	}
 
 	return &s, nil
+}
+
+func getQualifiedInterfaceName(k reflect.Type) string {
+	typeName := k.Name()
+	path := strings.TrimPrefix(pkgPath(k), "istio.io/")
+	if strings.Contains(path, "adapter") {
+		path = strings.TrimPrefix(path, "istio/")
+		path = strings.Replace(path, "/config", "", 1)
+	}
+	path = strings.Replace(path, "/", ".", -1) + "." + typeName
+	return path
 }
 
 func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, humanReadableFieldName string) JSONPropertyDescriptor {
@@ -540,7 +552,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 			},
 		}
 	case reflect.Interface:
-		name := t.Name()
+		name := getQualifiedInterfaceName(t)
 		interfaceType, ok := g.interfacesMap[name]
 		if !ok {
 			g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)

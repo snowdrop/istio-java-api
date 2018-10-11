@@ -1061,7 +1061,7 @@
       "description": "",
       "properties": {
         "definition": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.prometheus.BucketsDefinition.Definition",
+          "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.BucketsDefinition.Definition",
           "isInterface": true
         }
       },
@@ -1351,12 +1351,42 @@
       "description": "",
       "properties": {
         "port": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector.Port",
+          "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector.Port",
           "isInterface": true
         }
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector"
+    },
+    "istio_authentication_v1alpha1_PortSelector_Name": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector.Port"
+      ],
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.NamePort"
+    },
+    "istio_authentication_v1alpha1_PortSelector_Number": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector.Port"
+      ],
+      "description": "",
+      "properties": {
+        "number": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.NumberPort"
     },
     "istio_authentication_v1alpha1_TargetSelector": {
       "type": "object",
@@ -3958,6 +3988,14 @@
     "attributes": {
       "$ref": "#/definitions/istio_mixer_v1_Attributes",
       "javaType": "me.snowdrop.istio.api.mixer.v1.Attributes"
+    },
+    "authNamePortSelector": {
+      "$ref": "#/definitions/istio_authentication_v1alpha1_PortSelector_Name",
+      "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.NamePort"
+    },
+    "authNumberPortSelector": {
+      "$ref": "#/definitions/istio_authentication_v1alpha1_PortSelector_Number",
+      "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.NumberPort"
     },
     "authorization": {
       "$ref": "#/definitions/istio_mixer_authorization_InstanceMsg",
