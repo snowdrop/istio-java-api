@@ -442,13 +442,24 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	return &s, nil
 }
 
+// Compute a qualified name formatted as expected by interface maps to check for candidate interfaces
 func getQualifiedInterfaceName(k reflect.Type) string {
 	typeName := k.Name()
+	// first get the pkg path for the type and remove the istio.io prefix
 	path := strings.TrimPrefix(pkgPath(k), "istio.io/")
-	if strings.Contains(path, "adapter") {
+
+	// if we're looking at an adapter or template type, we need to remove the "istio" prefix
+	isAdapter := strings.Contains(path, "adapter")
+	isTemplate := strings.Contains(path, "template")
+	if isAdapter || isTemplate {
 		path = strings.TrimPrefix(path, "istio/")
-		path = strings.Replace(path, "/config", "", 1)
+
+		// if we're dealing with an adapter, we also need to remove the trailing "config" package
+		if isAdapter {
+			path = strings.Replace(path, "/config", "", 1)
+		}
 	}
+	// finally we replace the path separators by '.' to match the Java package name as defined in generate/generate#loadInterfacesData
 	path = strings.Replace(path, "/", ".", -1) + "." + typeName
 	return path
 }

@@ -242,8 +242,8 @@ func loadInterfacesData(crds map[string]schemagen.CrdDescriptor) (map[string]str
 			className += "Spec"
 		}
 
-		//var interfaceName = className[:strings.LastIndex(className, ".")+1]
-
+		// we need to qualify the interface name to avoid collisions: we use the Java package name minus the "me.snowdrop.istio" prefix
+		// note that this qualifying must match was is done in schemagen/generate#getQualifiedInterfaceName
 		pkgName := className[len("me.snowdrop.istio.") : strings.LastIndex(className, ".")+1]
 		interfaceName := className + "." // to define inner classes for interface fields
 		interfaceSet := false
