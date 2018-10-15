@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.validators.CheckObjectMeta;
 import io.fabric8.kubernetes.api.model.Doneable;
@@ -23,6 +22,7 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 
+import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.internal.IstioApiVersion;
 import me.snowdrop.istio.api.internal.IstioKind;
 
@@ -69,7 +69,7 @@ import me.snowdrop.istio.api.internal.IstioKind;
 @ToString
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
-public class $resource implements HasMetadata
+public class $resource implements IstioResource
 {
 
     /**
