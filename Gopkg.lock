@@ -144,8 +144,8 @@
     "policy/v1beta1",
     "rbac/v1alpha1"
   ]
-  revision = "76349c53b87f03f1e610b3aa3843dba3c38138d7"
-  version = "1.0.2"
+  revision = "6bf9d6613f65c2754a3d90ae916e1806e9d74175"
+  version = "1.0.4"
 
 [[projects]]
   name = "istio.io/istio"
@@ -182,12 +182,12 @@
     "mixer/template/reportnothing",
     "mixer/template/tracespan"
   ]
-  revision = "42773aacced474d97159902d20579a25b1f98106"
-  version = "1.0.2"
+  revision = "d5cb99f479ad9da88eebb8bb3637b17c323bc50b"
+  version = "1.0.4"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fa3fbe18522d9648ea935a2b3339248cad9440e94fa0686e3bb4ce1c3573908e"
+  inputs-digest = "b7df7cee6e1c70d4c6e9b19890a5ca103a60a45498b8e3a89eeec3023db4aaa3"
   solver-name = "gps-cdcl"
   solver-version = 1

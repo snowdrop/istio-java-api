@@ -26,12 +26,13 @@
 
 
 [[constraint]]
-  branch = "release-1.0"
+#  branch = "release-1.0"
   name = "istio.io/api"
+  version = "1.0.4"
 
 [[constraint]]
   name = "istio.io/istio"
-  version = "1.0.2"
+  version = "1.0.4"
 
 [prune]
   go-tests = true

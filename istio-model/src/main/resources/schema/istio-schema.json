@@ -1466,6 +1466,10 @@
           "$ref": "#/definitions/istio_mesh_v1alpha1_MeshConfig_OutboundTrafficPolicy",
           "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.OutboundTrafficPolicy"
         },
+        "policyCheckFailOpen": {
+          "type": "boolean",
+          "description": ""
+        },
         "proxyHttpPort": {
           "type": "integer",
           "description": ""
