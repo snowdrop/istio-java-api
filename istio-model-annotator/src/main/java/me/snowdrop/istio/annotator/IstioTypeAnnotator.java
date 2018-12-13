@@ -7,6 +7,7 @@
 package me.snowdrop.istio.annotator;
 
 import java.io.Serializable;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -129,8 +130,12 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                     .paramArray("value");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm").param("outputPath", "crd.properties").param("gather", true);
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm").param("outputPath", "me/snowdrop/istio/api/model/IstioResourceMappingsProvider.java").param("gather", true);
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm")
+                    .param("outputPath", "crd.properties").param("gather", true);
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm")
+                    .param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
+                            "IstioResourceMappingsProvider.java").toString())
+                    .param("gather", true);
         }
     }
 
