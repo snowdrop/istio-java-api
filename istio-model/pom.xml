@@ -69,6 +69,12 @@
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
