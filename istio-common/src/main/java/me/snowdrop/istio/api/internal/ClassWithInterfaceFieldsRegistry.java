@@ -20,6 +20,8 @@ package me.snowdrop.istio.api.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -211,12 +213,31 @@ public class ClassWithInterfaceFieldsRegistry {
             super(target, type);
         }
 
+//        Object deserialize(JsonNode node, String fieldName, Class targetClass, DeserializationContext ctxt) throws IOException {
+//            final String type = getFieldClassFQN(targetClass, type());
+//            try {
+//                final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
+//                return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
+//            } catch (ClassNotFoundException | JsonProcessingException e) {
+//                throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClass.getName() + "' class", e);
+//            }
+//        }
+
         Object deserialize(JsonNode node, String fieldName, Class targetClass, DeserializationContext ctxt) throws IOException {
             final String type = getFieldClassFQN(targetClass, type());
             try {
+                System.out.println("targetClass = " + targetClass + " fieldName = " + fieldName);
                 final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
-                return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
-            } catch (ClassNotFoundException | JsonProcessingException e) {
+
+                if(doesObjectContainField(targetClass, fieldName)){
+                    return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
+                }else{
+                    final Class<?> childFieldClass = fieldClass.getDeclaredField(fieldName).getType();
+                    Object childObject = ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), childFieldClass);
+                    return fieldClass.getDeclaredConstructor(childFieldClass).newInstance(childObject);
+                }
+            } catch (ClassNotFoundException | JsonProcessingException | NoSuchFieldException | NoSuchMethodException |
+                    InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClass.getName() + "' class", e);
             }
         }
@@ -224,6 +245,15 @@ public class ClassWithInterfaceFieldsRegistry {
         protected JsonNode getTargetNode(JsonNode node, String fieldName) {
             return node.get(fieldName);
         }
+    }
+
+    public static boolean doesObjectContainField(Class<?> objectClass, String fieldName) {
+        for (Field field : objectClass.getFields()) {
+            if (field.getName().equals(fieldName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String getFieldClassFQN(Class targetClass, String type) {
