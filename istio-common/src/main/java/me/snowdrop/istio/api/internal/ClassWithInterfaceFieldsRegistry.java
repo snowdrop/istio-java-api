@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -218,11 +220,28 @@ public class ClassWithInterfaceFieldsRegistry {
             try {
                 final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
 
-                if(doesClassContainField(targetClass, fieldName)){
-                    return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
-                }else{
+                // check if we have embedded interface field, in which case the target field won't be declared on the target
+                // class but rather on the class pointed to by the field
+                // e.g. given:
+                // trafficPolicy:
+                //        loadBalancer:
+                //          simple: ROUND_ROBIN
+                // LoadBalancerSettings (loadBalancer field) doesn't have a `simple` field, this is just an unwrapped
+                // implementation of the LbPolicy interface, so we need to check the type of the `simple` field and deserialize
+                // the node as an instance of that class instead.
+                final Optional<Field> field = getField(targetClass, fieldName);
+                final ObjectCodec codec = ctxt.getParser().getCodec();
+                if (field.isPresent()) {
+                    // if field is present, deserialize it with the specified field class
+                    return codec.treeToValue(getTargetNode(node, fieldName), fieldClass);
+                } else {
+                    // otherwise, get the type of the field
                     final Class<?> childFieldClass = fieldClass.getDeclaredField(fieldName).getType();
-                    Object childObject = ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), childFieldClass);
+                    // deserialize the field using that new class
+                    Object childObject = codec.treeToValue(getTargetNode(node, fieldName), childFieldClass);
+                    // finally, build the instance assigning it the deserialized child field
+                    // NOTE: this only works if the interface implementation only has one field (since otherwise, there won't
+                    // be a single-argument constructor accepting an instance of the newly created instance
                     return fieldClass.getDeclaredConstructor(childFieldClass).newInstance(childObject);
                 }
             } catch (ClassNotFoundException | JsonProcessingException | NoSuchFieldException | NoSuchMethodException |
@@ -236,15 +255,14 @@ public class ClassWithInterfaceFieldsRegistry {
         }
     }
 
-    public static boolean doesClassContainField(Class<?> objectClass, String fieldName) {
-        for (Field field : objectClass.getFields()) {
-            if (field.getName().equals(fieldName)) {
-                return true;
-            }
+    private static Optional<Field> getField(Class<?> objectClass, String fieldName) {
+        try {
+            return Optional.of(objectClass.getField(fieldName));
+        } catch (NoSuchFieldException e) {
+            return Optional.empty();
         }
-        return false;
     }
-
+    
     private static String getFieldClassFQN(Class targetClass, String type) {
         // if type contains a '.', we have a fully qualified target type so use it, otherwise use the target
         // class package
