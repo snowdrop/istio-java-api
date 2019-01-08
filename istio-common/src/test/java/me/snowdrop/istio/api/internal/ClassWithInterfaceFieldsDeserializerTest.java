@@ -22,10 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import me.snowdrop.istio.api.test.AInterfaceType;
+import me.snowdrop.istio.api.test.*;
 import me.snowdrop.istio.api.test.Class;
-import me.snowdrop.istio.api.test.Interface;
-import me.snowdrop.istio.api.test.Simple;
+import me.snowdrop.istio.api.test.Enum;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,6 +55,17 @@ public class ClassWithInterfaceFieldsDeserializerTest {
         assertThat(interfaceType).isExactlyInstanceOf(AInterfaceType.class);
         final AInterfaceType a = (AInterfaceType) interfaceType;
         assertThat(a.getA()).isEqualTo("foo");
+    }
+
+    @Test
+    public void shouldDeserializeInterfaceWithEnum() throws IOException {
+        final InputStream dataIs = Thread.currentThread().getContextClassLoader().getResourceAsStream("interface-with-enum.yml");
+        final Interface value = mapper.readValue(dataIs, Interface.class);
+        assertThat(value).isNotNull();
+        final Interface.InterfaceType interfaceType = value.getInterfaceType();
+        assertThat(interfaceType).isExactlyInstanceOf(EInterfaceType.class);
+        final EInterfaceType a = (EInterfaceType) interfaceType;
+        assertThat(a.getE()).isEqualTo(Enum.A);
     }
 
     @Test

@@ -20,6 +20,8 @@ package me.snowdrop.istio.api.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -215,8 +217,16 @@ public class ClassWithInterfaceFieldsRegistry {
             final String type = getFieldClassFQN(targetClass, type());
             try {
                 final Class<?> fieldClass = Thread.currentThread().getContextClassLoader().loadClass(type);
-                return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
-            } catch (ClassNotFoundException | JsonProcessingException e) {
+
+                if(doesClassContainField(targetClass, fieldName)){
+                    return ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), fieldClass);
+                }else{
+                    final Class<?> childFieldClass = fieldClass.getDeclaredField(fieldName).getType();
+                    Object childObject = ctxt.getParser().getCodec().treeToValue(getTargetNode(node, fieldName), childFieldClass);
+                    return fieldClass.getDeclaredConstructor(childFieldClass).newInstance(childObject);
+                }
+            } catch (ClassNotFoundException | JsonProcessingException | NoSuchFieldException | NoSuchMethodException |
+                    InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException("Unsupported type '" + type + "' for field '" + fieldName + "' on '" + targetClass.getName() + "' class", e);
             }
         }
@@ -224,6 +234,15 @@ public class ClassWithInterfaceFieldsRegistry {
         protected JsonNode getTargetNode(JsonNode node, String fieldName) {
             return node.get(fieldName);
         }
+    }
+
+    public static boolean doesClassContainField(Class<?> objectClass, String fieldName) {
+        for (Field field : objectClass.getFields()) {
+            if (field.getName().equals(fieldName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String getFieldClassFQN(Class targetClass, String type) {
