@@ -182,12 +182,12 @@
     "mixer/template/reportnothing",
     "mixer/template/tracespan"
   ]
-  revision = "d5cb99f479ad9da88eebb8bb3637b17c323bc50b"
-  version = "1.0.4"
+  revision = "c1707e45e71c75d74bf3a5dec8c7086f32f32fad"
+  version = "1.0.5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b7df7cee6e1c70d4c6e9b19890a5ca103a60a45498b8e3a89eeec3023db4aaa3"
+  inputs-digest = "04dd607cf493d076ef992417c6176c86acd64c5f8fedd0e5b167fc5b70556539"
   solver-name = "gps-cdcl"
   solver-version = 1
