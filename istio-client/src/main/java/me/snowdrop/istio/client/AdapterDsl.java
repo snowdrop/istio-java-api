@@ -26,6 +26,9 @@ import me.snowdrop.istio.mixer.adapter.opa.OpaList;
 import me.snowdrop.istio.mixer.adapter.prometheus.DoneablePrometheus;
 import me.snowdrop.istio.mixer.adapter.prometheus.Prometheus;
 import me.snowdrop.istio.mixer.adapter.prometheus.PrometheusList;
+import me.snowdrop.istio.mixer.adapter.redisquota.Redisquota;
+import me.snowdrop.istio.mixer.adapter.redisquota.RedisquotaList;
+import me.snowdrop.istio.mixer.adapter.redisquota.DoneableRedisquota;
 import me.snowdrop.istio.mixer.adapter.servicecontrol.DoneableServicecontrol;
 import me.snowdrop.istio.mixer.adapter.servicecontrol.Servicecontrol;
 import me.snowdrop.istio.mixer.adapter.servicecontrol.ServicecontrolList;
@@ -51,6 +54,7 @@ public interface AdapterDsl {
   MixedOperation<Memquota,MemquotaList, DoneableMemquota,Resource<Memquota,DoneableMemquota>> memquota();
   MixedOperation<Opa,OpaList, DoneableOpa,Resource<Opa,DoneableOpa>> opa();
   MixedOperation<Prometheus,PrometheusList, DoneablePrometheus,Resource<Prometheus,DoneablePrometheus>> prometheus();
+  MixedOperation<Redisquota,RedisquotaList, DoneableRedisquota,Resource<Redisquota, DoneableRedisquota>> redisquota();
   MixedOperation<Servicecontrol,ServicecontrolList, DoneableServicecontrol,Resource<Servicecontrol,DoneableServicecontrol>> servicecontrol();
   MixedOperation<Solarwinds,SolarwindsList, DoneableSolarwinds,Resource<Solarwinds,DoneableSolarwinds>> solarwinds();
   MixedOperation<Stackdriver,StackdriverList, DoneableStackdriver,Resource<Stackdriver,DoneableStackdriver>> stackdriver();
