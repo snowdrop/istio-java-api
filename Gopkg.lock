@@ -50,6 +50,56 @@
   revision = "b7773ae218740a7be65057fc60b366a49b538a44"
 
 [[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
+
+[[projects]]
+  name = "github.com/natefinch/lumberjack"
+  packages = ["."]
+  revision = "a96e63847dc3c67d17befa69c303767e2f84e54f"
+  version = "v2.1"
+
+[[projects]]
+  name = "github.com/spf13/cobra"
+  packages = ["."]
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
+
+[[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
+
+[[projects]]
+  name = "go.uber.org/atomic"
+  packages = ["."]
+  revision = "1ea20fb1cbb1cc08cbd0d913a96dead89aa18289"
+  version = "v1.3.2"
+
+[[projects]]
+  name = "go.uber.org/multierr"
+  packages = ["."]
+  revision = "3c4937480c32f4c13a875a1829af76c98ca3d40a"
+  version = "v1.1.0"
+
+[[projects]]
+  name = "go.uber.org/zap"
+  packages = [
+    ".",
+    "buffer",
+    "internal/bufferpool",
+    "internal/color",
+    "internal/exit",
+    "zapcore",
+    "zapgrpc"
+  ]
+  revision = "ff33455a0e382e8a81d14dd7c922020b6b5e7982"
+  version = "v1.9.1"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = [
@@ -62,6 +112,12 @@
     "trace"
   ]
   revision = "2491c5de3490fced2f6cff376127c667efeed857"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  revision = "81d4e9dc473e5e8c933f2aaeba2a3d81efb9aed2"
 
 [[projects]]
   branch = "master"
@@ -103,15 +159,23 @@
     "balancer",
     "balancer/base",
     "balancer/roundrobin",
-    "channelz",
+    "binarylog/grpc_binarylog_v1",
     "codes",
     "connectivity",
     "credentials",
+    "credentials/internal",
     "encoding",
     "encoding/proto",
-    "grpclb/grpc_lb_v1/messages",
     "grpclog",
     "internal",
+    "internal/backoff",
+    "internal/binarylog",
+    "internal/channelz",
+    "internal/envconfig",
+    "internal/grpcrand",
+    "internal/grpcsync",
+    "internal/syscall",
+    "internal/transport",
     "keepalive",
     "metadata",
     "naming",
@@ -121,11 +185,10 @@
     "resolver/passthrough",
     "stats",
     "status",
-    "tap",
-    "transport"
+    "tap"
   ]
-  revision = "41344da2231b913fa3d983840a57a6b1b7b631a1"
-  version = "v1.12.0"
+  revision = "3507fb8e1a5ad030303c106fef3a47c9fdad16ad"
+  version = "v1.19.1"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
@@ -144,8 +207,8 @@
     "policy/v1beta1",
     "rbac/v1alpha1"
   ]
-  revision = "6bf9d6613f65c2754a3d90ae916e1806e9d74175"
-  version = "1.0.4"
+  revision = "db16d82d3672586b4beec10c1af0643d518cb454"
+  version = "1.1.2"
 
 [[projects]]
   name = "istio.io/istio"
@@ -162,13 +225,13 @@
     "mixer/adapter/prometheus/config",
     "mixer/adapter/rbac/config",
     "mixer/adapter/redisquota/config",
-    "mixer/adapter/servicecontrol/config",
     "mixer/adapter/signalfx/config",
     "mixer/adapter/solarwinds/config",
     "mixer/adapter/stackdriver/config",
     "mixer/adapter/statsd/config",
     "mixer/adapter/stdio/config",
     "mixer/pkg/adapter",
+    "mixer/pkg/attribute",
     "mixer/pkg/pool",
     "mixer/pkg/status",
     "mixer/template/apikey",
@@ -180,14 +243,15 @@
     "mixer/template/metric",
     "mixer/template/quota",
     "mixer/template/reportnothing",
-    "mixer/template/tracespan"
+    "mixer/template/tracespan",
+    "pkg/log"
   ]
-  revision = "c1707e45e71c75d74bf3a5dec8c7086f32f32fad"
-  version = "1.0.5"
+  revision = "2b1331886076df103179e3da5dc9077fed59c989"
+  version = "1.1.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "04dd607cf493d076ef992417c6176c86acd64c5f8fedd0e5b167fc5b70556539"
+  inputs-digest = "5755c5eb8a8230f457344135cc1b6c4b26643e72553c99f93b093cdb46f7224a"
   solver-name = "gps-cdcl"
   solver-version = 1
