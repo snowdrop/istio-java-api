@@ -47,7 +47,6 @@ import (
 	prometheus "istio.io/istio/mixer/adapter/prometheus/config"
 	rbac_adapter "istio.io/istio/mixer/adapter/rbac/config"
 	redisquota "istio.io/istio/mixer/adapter/redisquota/config"
-	servicecontrol "istio.io/istio/mixer/adapter/servicecontrol/config"
 	signalfx "istio.io/istio/mixer/adapter/signalfx/config"
 	solarwinds "istio.io/istio/mixer/adapter/solarwinds/config"
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
@@ -126,7 +125,6 @@ type Schema struct {
 	ExponentialBucketsDefinition       prometheus.Params_MetricInfo_BucketsDefinition_ExponentialBuckets
 	Rbac                               rbac_adapter.Params
 	RedisQuota                         redisquota.Params
-	ServiceControl                     servicecontrol.Params
 	SignalFX                           signalfx.Params
 	SolarWinds                         solarwinds.Params
 	SWLogInfo                          solarwinds.Params_LogInfo
