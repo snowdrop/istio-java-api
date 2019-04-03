@@ -58,51 +58,51 @@ public class MixerClient extends BaseClient implements MixerDsl {
 
     @Override
     public MixedOperation<ApiKey, ApiKeyList, DoneableApiKey, Resource<ApiKey, DoneableApiKey>> apiKey() {
-        return new ApiKeyOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ApiKeyOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Authorization, AuthorizationList, DoneableAuthorization, Resource<Authorization, DoneableAuthorization>> authorization() {
-        return new AuthorizationOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new AuthorizationOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<CheckNothing, CheckNothingList, DoneableCheckNothing, Resource<CheckNothing, DoneableCheckNothing>> checkNothing() {
-        return new CheckNothingOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new CheckNothingOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Edge, EdgeList, DoneableEdge, Resource<Edge, DoneableEdge>> edge() {
-        return new EdgeOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new EdgeOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ListEntry, ListEntryList, DoneableListEntry, Resource<ListEntry, DoneableListEntry>> listEntry() {
-        return new ListEntryOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ListEntryOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<LogEntry, LogEntryList, DoneableLogEntry, Resource<LogEntry, DoneableLogEntry>> logEntry() {
-        return new LogEntryOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new LogEntryOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Metric, MetricList, DoneableMetric, Resource<Metric, DoneableMetric>> metric() {
-        return new MetricOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new MetricOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Quota, QuotaList, DoneableQuota, Resource<Quota, DoneableQuota>> quota() {
-        return new QuotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new QuotaOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ReportNothing, ReportNothingList, DoneableReportNothing, Resource<ReportNothing, DoneableReportNothing>> reportNothing() {
-        return new ReportNothingOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ReportNothingOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<TraceSpan, TraceSpanList, DoneableTraceSpan, Resource<TraceSpan, DoneableTraceSpan>> traceSpan() {
-        return new TraceSpanOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new TraceSpanOperationImpl(getHttpClient(), getConfiguration());
     }
 }

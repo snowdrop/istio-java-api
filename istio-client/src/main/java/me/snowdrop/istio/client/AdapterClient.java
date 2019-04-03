@@ -75,71 +75,71 @@ public class AdapterClient extends BaseClient implements AdapterDsl {
 
     @Override
     public MixedOperation<Bypass, BypassList, DoneableBypass, Resource<Bypass, DoneableBypass>> bypass() {
-        return new BypassOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new BypassOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Circonus, CirconusList, DoneableCirconus, Resource<Circonus, DoneableCirconus>> circonus() {
-        return new CirconusOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new CirconusOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Denier, DenierList, DoneableDenier, Resource<Denier, DoneableDenier>> denier() {
-        return new DenierOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new DenierOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Fluentd, FluentdList, DoneableFluentd, Resource<Fluentd, DoneableFluentd>> fluentd() {
-        return new FluentdOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new FluentdOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Kubernetesenv, KubernetesenvList, DoneableKubernetesenv, Resource<Kubernetesenv, DoneableKubernetesenv>> kubernetesenv() {
-        return new KubernetesenvOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new KubernetesenvOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Memquota, MemquotaList, DoneableMemquota, Resource<Memquota, DoneableMemquota>> memquota() {
-        return new MemquotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new MemquotaOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Opa, OpaList, DoneableOpa, Resource<Opa, DoneableOpa>> opa() {
-        return new OpaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new OpaOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Prometheus, PrometheusList, DoneablePrometheus, Resource<Prometheus, DoneablePrometheus>> prometheus() {
-        return new PrometheusOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new PrometheusOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Redisquota, RedisquotaList, DoneableRedisquota, Resource<Redisquota, DoneableRedisquota>> redisquota() {
-        return new RedisquotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new RedisquotaOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Servicecontrol, ServicecontrolList, DoneableServicecontrol, Resource<Servicecontrol, DoneableServicecontrol>> servicecontrol() {
-        return new ServicecontrolOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServicecontrolOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Solarwinds, SolarwindsList, DoneableSolarwinds, Resource<Solarwinds, DoneableSolarwinds>> solarwinds() {
-        return new SolarwindsOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new SolarwindsOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Stackdriver, StackdriverList, DoneableStackdriver, Resource<Stackdriver, DoneableStackdriver>> stackdriver() {
-        return new StackdriverOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new StackdriverOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Statsd, StatsdList, DoneableStatsd, Resource<Statsd, DoneableStatsd>> statsd() {
-        return new StatsdOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new StatsdOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Stdio, StdioList, DoneableStdio, Resource<Stdio, DoneableStdio>> stdio() {
-        return new StdioOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new StdioOperationImpl(getHttpClient(), getConfiguration());
     }
 }

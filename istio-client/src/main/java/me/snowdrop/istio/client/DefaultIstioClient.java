@@ -105,47 +105,47 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
 
     @Override
     public MixedOperation<Policy, PolicyList, DoneablePolicy, Resource<Policy, DoneablePolicy>> policy() {
-        return new PolicyOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new PolicyOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<DestinationRule, DestinationRuleList, DoneableDestinationRule, Resource<DestinationRule, DoneableDestinationRule>> destinationRule() {
-        return new DestinationRuleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new DestinationRuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<EnvoyFilter, EnvoyFilterList, DoneableEnvoyFilter, Resource<EnvoyFilter, DoneableEnvoyFilter>> envoyFilter() {
-        return new EnvoyFilterOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new EnvoyFilterOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Gateway, GatewayList, DoneableGateway, Resource<Gateway, DoneableGateway>> gateway() {
-        return new GatewayOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new GatewayOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ServiceEntry, ServiceEntryList, DoneableServiceEntry, Resource<ServiceEntry, DoneableServiceEntry>> serviceEntry() {
-        return new ServiceEntryOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServiceEntryOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<VirtualService, VirtualServiceList, DoneableVirtualService, Resource<VirtualService, DoneableVirtualService>> virtualService() {
-        return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Rule, RuleList, DoneableRule, Resource<Rule, DoneableRule>> rule() {
-        return new RuleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new RuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ServiceRoleBinding, ServiceRoleBindingList, DoneableServiceRoleBinding, Resource<ServiceRoleBinding, DoneableServiceRoleBinding>> serviceRoleBinding() {
-        return new ServiceRoleBindingOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServiceRoleBindingOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ServiceRole, ServiceRoleList, DoneableServiceRole, Resource<ServiceRole, DoneableServiceRole>> serviceRole() {
-        return new ServiceRoleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServiceRoleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     //Generic methods for handling resources

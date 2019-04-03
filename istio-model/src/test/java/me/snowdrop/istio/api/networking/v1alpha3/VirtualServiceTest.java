@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.SerializationConfig;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
@@ -229,13 +230,13 @@ spec:
                 .addNewHttp()
                 .addNewRoute()
                 .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort().withNewNumberPort()
-                .withNewNumber(9090).endNumberPort().endPort().endDestination()
+                .withNumber(9090).endNumberPort().endPort().endDestination()
                 .endRoute()
                 .endHttp()
                 .addNewHttp()
                 .addNewRoute()
                 .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort().withNewNumberPort()
-                .withNewNumber(9090).endNumberPort().endPort().endDestination()
+                .withNumber(9090).endNumberPort().endPort().endDestination()
                 .endRoute()
                 .endHttp()
                 .endSpec()
