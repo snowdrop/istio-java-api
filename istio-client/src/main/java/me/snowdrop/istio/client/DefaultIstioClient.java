@@ -1,11 +1,28 @@
 package me.snowdrop.istio.client;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.authentication.v1alpha1.DoneablePolicy;
 import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
 import me.snowdrop.istio.api.authentication.v1alpha1.PolicyList;
@@ -43,22 +60,6 @@ import me.snowdrop.istio.client.internal.operation.ServiceRoleBindingOperationIm
 import me.snowdrop.istio.client.internal.operation.ServiceRoleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.VirtualServiceOperationImpl;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import me.snowdrop.istio.api.IstioResource;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import java.io.InputStream;
-import java.util.ArrayList;
-import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import io.fabric8.kubernetes.client.WithRequestCallable;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
 
@@ -105,47 +106,47 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
 
     @Override
     public MixedOperation<Policy, PolicyList, DoneablePolicy, Resource<Policy, DoneablePolicy>> policy() {
-        return new PolicyOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new PolicyOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<DestinationRule, DestinationRuleList, DoneableDestinationRule, Resource<DestinationRule, DoneableDestinationRule>> destinationRule() {
-        return new DestinationRuleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new DestinationRuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<EnvoyFilter, EnvoyFilterList, DoneableEnvoyFilter, Resource<EnvoyFilter, DoneableEnvoyFilter>> envoyFilter() {
-        return new EnvoyFilterOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new EnvoyFilterOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Gateway, GatewayList, DoneableGateway, Resource<Gateway, DoneableGateway>> gateway() {
-        return new GatewayOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new GatewayOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ServiceEntry, ServiceEntryList, DoneableServiceEntry, Resource<ServiceEntry, DoneableServiceEntry>> serviceEntry() {
-        return new ServiceEntryOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServiceEntryOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<VirtualService, VirtualServiceList, DoneableVirtualService, Resource<VirtualService, DoneableVirtualService>> virtualService() {
-        return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<Rule, RuleList, DoneableRule, Resource<Rule, DoneableRule>> rule() {
-        return new RuleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new RuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ServiceRoleBinding, ServiceRoleBindingList, DoneableServiceRoleBinding, Resource<ServiceRoleBinding, DoneableServiceRoleBinding>> serviceRoleBinding() {
-        return new ServiceRoleBindingOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServiceRoleBindingOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
     public MixedOperation<ServiceRole, ServiceRoleList, DoneableServiceRole, Resource<ServiceRole, DoneableServiceRole>> serviceRole() {
-        return new ServiceRoleOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
+        return new ServiceRoleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     //Generic methods for handling resources
