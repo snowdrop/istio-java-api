@@ -411,16 +411,16 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 		if hasUnknownEnums || hasUnvisitedPkgs || hasUnknownInterfaces || hasUnvisitedCRDs {
 			var msg string
 			if hasUnknownEnums {
-				msg = msg + "\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
+				msg = msg + "\n\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
 			}
 			if hasUnknownInterfaces {
-				msg = msg + "\nUnknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
+				msg = msg + "\n\nUnknown interfaces:\n" + strings.Join(g.unknownInterfaces, "\n")
 			}
 			if hasUnvisitedPkgs {
-				msg = msg + "\nUnvisited packages:\n" + strings.Join(unvisitedPkgs, "\n")
+				msg = msg + "\n\nUnvisited packages:\n" + strings.Join(unvisitedPkgs, "\n")
 			}
 			if hasUnvisitedCRDs {
-				msg = msg + "\nUnvisited CRDs:\n" + strings.Join(unvisitedCRDs, "\n")
+				msg = msg + "\n\nUnvisited CRDs:\n" + strings.Join(unvisitedCRDs, "\n")
 			}
 
 			return &s, errors.New(msg)
