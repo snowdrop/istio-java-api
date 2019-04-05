@@ -28,13 +28,6 @@ import (
 	networking "istio.io/api/networking/v1alpha3"
 	policy "istio.io/api/policy/v1beta1"
 	rbac "istio.io/api/rbac/v1alpha1"
-	"istio.io/istio/mixer/template/edge"
-	"log"
-	"os"
-	"reflect"
-	"strings"
-	"time"
-
 	bypass "istio.io/istio/mixer/adapter/bypass/config"
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
@@ -55,12 +48,17 @@ import (
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
+	"istio.io/istio/mixer/template/edge"
 	"istio.io/istio/mixer/template/listentry"
 	"istio.io/istio/mixer/template/logentry"
 	"istio.io/istio/mixer/template/metric"
 	"istio.io/istio/mixer/template/quota"
 	"istio.io/istio/mixer/template/reportnothing"
 	"istio.io/istio/mixer/template/tracespan"
+	"log"
+	"os"
+	"reflect"
+	"strings"
 
 	"bufio"
 	"github.com/snowdrop/istio-java-api/pkg/schemagen"
@@ -304,11 +302,6 @@ func main() {
 
 	packages := readDescriptors()
 
-	typeMap := map[reflect.Type]reflect.Type{
-		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
-		reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
-	}
-
 	enumMap := map[string]string{
 		"istio.authentication.v1alpha1.PrincipalBinding":                       "me.snowdrop.istio.api.authentication.v1alpha1.PrincipalBinding",
 		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.authentication.v1alpha1.Mode",
@@ -344,7 +337,7 @@ func main() {
 		"google.api.MetricDescriptor_ValueType":                                "me.snowdrop.istio.mixer.adapter.stackdriver.ValueType",
 	}
 
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, crds, *strict)
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, enumMap, interfacesMap, interfacesImpl, crds, *strict)
 	if err != nil {
 		fmt.Fprint(os.Stderr, err)
 		os.Exit(1)
