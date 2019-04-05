@@ -24,8 +24,7 @@ CRD_FILE=$(DECL_DIR)/istio-crd.properties
 all: build
 
 strict:
-	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go
-	./generate -strict > $(SCHEMA_DIR)/istio-schema.json
+	go run ./cmd/generate/generate.go -strict > $(SCHEMA_DIR)/istio-schema.json
 	ISTIO_STRICT=true mvn clean install
 
 clean:
@@ -38,8 +37,7 @@ packages:
 	./scripts/generate_package_info.sh
 
 schema:
-	CGO_ENABLED=0 go build -a ./cmd/generate/generate.go
-	./generate > $(SCHEMA_DIR)/istio-schema.json
+	go run ./cmd/generate/generate.go > $(SCHEMA_DIR)/istio-schema.json
 
 build: schema
 	./mvnw clean install
