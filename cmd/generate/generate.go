@@ -350,11 +350,6 @@ func main() {
 		os.Exit(-1)
 	}
 
-	args := os.Args[1:]
-	if len(args) < 1 || args[0] != "validation" {
-		schema.Resources = nil
-	}
-
 	b, err := json.Marshal(&schema)
 	if err != nil {
 		log.Fatal(err)

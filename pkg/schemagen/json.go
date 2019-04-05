@@ -22,7 +22,6 @@ type JSONSchema struct {
 	Definitions map[string]JSONPropertyDescriptor `json:"definitions"`
 	JSONDescriptor
 	*JSONObjectDescriptor
-	Resources map[string]*JSONObjectDescriptor `json:"resources,omitempty"`
 }
 
 type JSONDescriptor struct {

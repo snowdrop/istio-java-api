@@ -149,11 +149,6 @@ func escapedQualifiedName(path string) string {
 	return prefix
 }
 
-func (g *schemaGenerator) resourceDetails(t reflect.Type) string {
-	var name = strings.ToLower(t.Name())
-	return name
-}
-
 func (g *schemaGenerator) generateReferenceFrom(typeName string) string {
 	return "#/definitions/" + typeName
 }
@@ -374,11 +369,9 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	s.JSONObjectDescriptor = g.generateObjectDescriptor(t)
 	if len(g.types) > 0 {
 		s.Definitions = make(map[string]JSONPropertyDescriptor)
-		s.Resources = make(map[string]*JSONObjectDescriptor)
 
 		for k, v := range g.types {
 			name := g.qualifiedName(k)
-			resource := g.resourceDetails(k)
 			descriptor := &JSONDescriptor{
 				Type: "object",
 			}
@@ -397,7 +390,6 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				},
 			}
 			s.Definitions[name] = value
-			s.Resources[resource] = v
 		}
 	}
 
