@@ -346,8 +346,8 @@ func main() {
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, enumMap, interfacesMap, interfacesImpl, crds, *strict)
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(-1)
+		fmt.Fprint(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	b, err := json.Marshal(&schema)
