@@ -287,8 +287,6 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			switch name {
 			case "Time":
 				return "String" // todo: fix me?
-			case "BoolValue":
-				return "java.lang.Boolean"
 			default:
 				if len(name) == 0 && t.NumField() == 0 {
 					return "Object"
