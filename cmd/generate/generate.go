@@ -340,6 +340,7 @@ func main() {
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, enumMap, interfacesMap, interfacesImpl, crds, *strict)
 	if err != nil {
 		fmt.Fprint(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, "\n")
 		os.Exit(1)
 	}
 
