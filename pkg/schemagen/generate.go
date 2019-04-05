@@ -43,7 +43,6 @@ type schemaGenerator struct {
 	enumMap           map[string]string
 	interfacesMap     map[string]string
 	interfacesImpls   map[string]string
-	typeMap           map[reflect.Type]reflect.Type
 	unknownEnums      []string
 	unknownInterfaces []string
 	crds              map[string]CrdDescriptor
@@ -59,12 +58,12 @@ func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
 	return descriptor, ok
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]CrdDescriptor, strict bool) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap, enumMap, interfacesMap, interfacesImpl, crds)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]CrdDescriptor, strict bool) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, enumMap, interfacesMap, interfacesImpl, crds)
 	return g.generate(t, strict)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]CrdDescriptor) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, enumMap map[string]string, interfacesMap map[string]string, interfacesImpl map[string]string, crds map[string]CrdDescriptor) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
@@ -73,7 +72,6 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 	g := schemaGenerator{
 		types:           make(map[reflect.Type]*JSONObjectDescriptor),
 		packages:        pkgMap,
-		typeMap:         typeMap,
 		enumMap:         enumMap,
 		interfacesMap:   interfacesMap,
 		interfacesImpls: interfacesImpl,
@@ -460,10 +458,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
-	tt, ok := g.typeMap[t]
-	if ok {
-		t = tt
-	}
+
 	switch t.Kind() {
 	case reflect.Bool:
 		return JSONPropertyDescriptor{
