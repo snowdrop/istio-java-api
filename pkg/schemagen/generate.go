@@ -22,6 +22,7 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+	"time"
 )
 
 type PackageDescriptor struct {
@@ -452,9 +453,17 @@ func getQualifiedInterfaceName(k reflect.Type) string {
 	return path
 }
 
+var timeType = reflect.TypeOf(time.Time{})
+var stringType = reflect.TypeOf("")
+
 func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, humanReadableFieldName string) JSONPropertyDescriptor {
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
+	}
+
+	// specific handling of time.Time properties converted as strings
+	if t == timeType {
+		t = stringType
 	}
 
 	switch t.Kind() {
