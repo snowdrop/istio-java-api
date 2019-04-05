@@ -1,7 +1,6 @@
 # Currently ignored interfaces (or mapped to TypedValue):
 # isAttributes_AttributeValue_Value field value in istio.io/api/mixer/v1/Attributes_AttributeValue
 # isValue_Kind field kind in github.com/gogo/protobuf/types/Value
-# isParams_Creds field creds in istio.io/istio/mixer/adapter/stackdriver/config/Params
 # isValue_Value field value in istio.io/api/policy/v1beta1/Value
 classes:
   - class: me.snowdrop.istio.api.networking.v1alpha3.Abort
@@ -63,3 +62,14 @@ classes:
       metricInfo: map<String,MetricInfo>
       logInfo: map<String,LogInfo>
       trace: me.snowdrop.istio.mixer.adapter.stackdriver.Trace
+  - class: me.snowdrop.istio.api.mesh.v1alpha1.Tracing
+    fields:
+      zipkin: isTracing_Tracer
+      lightstep: isTracing_Tracer
+      datadog: isTracing_Tracer
+  - class: me.snowdrop.istio.api.authentication.v1alpha1.StringMatch
+    fields:
+      exact: isStringMatch_MatchType
+      prefix: isStringMatch_MatchType
+      regex: isStringMatch_MatchType
+      suffix: isStringMatch_MatchType

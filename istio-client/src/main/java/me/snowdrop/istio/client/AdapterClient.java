@@ -14,7 +14,6 @@ import me.snowdrop.istio.client.internal.operation.MemquotaOperationImpl;
 import me.snowdrop.istio.client.internal.operation.OpaOperationImpl;
 import me.snowdrop.istio.client.internal.operation.PrometheusOperationImpl;
 import me.snowdrop.istio.client.internal.operation.RedisquotaOperationImpl;
-import me.snowdrop.istio.client.internal.operation.ServicecontrolOperationImpl;
 import me.snowdrop.istio.client.internal.operation.SolarwindsOperationImpl;
 import me.snowdrop.istio.client.internal.operation.StackdriverOperationImpl;
 import me.snowdrop.istio.client.internal.operation.StatsdOperationImpl;
@@ -43,12 +42,9 @@ import me.snowdrop.istio.mixer.adapter.opa.OpaList;
 import me.snowdrop.istio.mixer.adapter.prometheus.DoneablePrometheus;
 import me.snowdrop.istio.mixer.adapter.prometheus.Prometheus;
 import me.snowdrop.istio.mixer.adapter.prometheus.PrometheusList;
+import me.snowdrop.istio.mixer.adapter.redisquota.DoneableRedisquota;
 import me.snowdrop.istio.mixer.adapter.redisquota.Redisquota;
 import me.snowdrop.istio.mixer.adapter.redisquota.RedisquotaList;
-import me.snowdrop.istio.mixer.adapter.redisquota.DoneableRedisquota;
-import me.snowdrop.istio.mixer.adapter.servicecontrol.DoneableServicecontrol;
-import me.snowdrop.istio.mixer.adapter.servicecontrol.Servicecontrol;
-import me.snowdrop.istio.mixer.adapter.servicecontrol.ServicecontrolList;
 import me.snowdrop.istio.mixer.adapter.solarwinds.DoneableSolarwinds;
 import me.snowdrop.istio.mixer.adapter.solarwinds.Solarwinds;
 import me.snowdrop.istio.mixer.adapter.solarwinds.SolarwindsList;
@@ -116,11 +112,6 @@ public class AdapterClient extends BaseClient implements AdapterDsl {
     @Override
     public MixedOperation<Redisquota, RedisquotaList, DoneableRedisquota, Resource<Redisquota, DoneableRedisquota>> redisquota() {
         return new RedisquotaOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
-    }
-
-    @Override
-    public MixedOperation<Servicecontrol, ServicecontrolList, DoneableServicecontrol, Resource<Servicecontrol, DoneableServicecontrol>> servicecontrol() {
-        return new ServicecontrolOperationImpl(getHttpClient(), getConfiguration(), getNamespace());
     }
 
     @Override

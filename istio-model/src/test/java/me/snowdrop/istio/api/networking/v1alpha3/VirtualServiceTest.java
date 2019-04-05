@@ -335,11 +335,11 @@ spec:
         final List<HTTPRoute> http = virtualService.getSpec().getHttp();
         assertEquals(1, http.size());
         final HTTPRoute route = http.get(0);
-        final List<DestinationWeight> weights = route.getRoute();
-        assertEquals(1, weights.size());
-        final DestinationWeight weight = weights.get(0);
-        assertEquals("ratings.prod.svc.cluster.local", weight.getDestination().getHost());
-        assertEquals("v1", weight.getDestination().getSubset());
+        final List<HTTPRouteDestination> destinations = route.getRoute();
+        assertEquals(1, destinations.size());
+        final Destination destination = destinations.get(0).getDestination();
+        assertEquals("ratings.prod.svc.cluster.local", destination.getHost());
+        assertEquals("v1", destination.getSubset());
         assertNull(route.getFault().getDelay());
         final Abort abort = route.getFault().getAbort();
         assertEquals(10, abort.getPercent().intValue());

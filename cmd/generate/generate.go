@@ -107,6 +107,7 @@ type Schema struct {
 	HttpStatusAbort                    networking.HTTPFaultInjection_Abort_HttpStatus
 	ServiceEntry                       networking.ServiceEntry
 	VirtualService                     networking.VirtualService
+	Sidecar                            networking.Sidecar
 	Bypass                             bypass.Params
 	Circonus                           circonus.Params
 	Denier                             denier.Params
@@ -305,6 +306,7 @@ func main() {
 	enumMap := map[string]string{
 		"istio.authentication.v1alpha1.PrincipalBinding":                       "me.snowdrop.istio.api.authentication.v1alpha1.PrincipalBinding",
 		"istio.authentication.v1alpha1.MutualTls_Mode":                         "me.snowdrop.istio.api.authentication.v1alpha1.Mode",
+		"istio.mesh.v1alpha1.MeshConfig_AccessLogEncoding":                     "me.snowdrop.istio.api.mesh.v1alpha1.AccessLogEncoding",
 		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":                 "me.snowdrop.istio.api.mesh.v1alpha1.IngressControllerMode",
 		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                            "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy",
 		"istio.mesh.v1alpha1.AuthenticationPolicy":                             "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy",
@@ -312,8 +314,11 @@ func main() {
 		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode":            "me.snowdrop.istio.api.mesh.v1alpha1.Mode",
 		"istio.mixer.v1.HeaderOperation_Operation":                             "me.snowdrop.istio.api.mixer.v1.Operation",
 		"istio.mixer.v1.ReferencedAttributes_Condition":                        "me.snowdrop.istio.api.mixer.v1.Condition",
+		"istio.mixer.v1.ReportRequest_RepeatedAttributesSemantics":             "me.snowdrop.istio.api.mixer.v1.RepeatedAttributesSemantics",
 		"istio.mixer.v1.config.descriptor.ValueType":                           "me.snowdrop.istio.api.mixer.v1.config.descriptor.ValueType",
+		"istio.networking.v1alpha3.CaptureMode":                                "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode",
 		"istio.networking.v1alpha3.Server_TLSOptions_TLSmode":                  "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsMode",
+		"istio.networking.v1alpha3.Server_TLSOptions_TLSProtocol":              "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol",
 		"istio.networking.v1alpha3.TLSSettings_TLSmode":                        "me.snowdrop.istio.api.networking.v1alpha3.TLSSettingsMode",
 		"istio.networking.v1alpha3.ServiceEntry_Location":                      "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryLocation",
 		"istio.networking.v1alpha3.ServiceEntry_Resolution":                    "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryResolution",
@@ -322,6 +327,8 @@ func main() {
 		"istio.networking.v1alpha3.EnvoyFilter_ListenerMatch_ListenerProtocol": "me.snowdrop.istio.api.networking.v1alpha3.ListenerProtocol",
 		"istio.networking.v1alpha3.EnvoyFilter_InsertPosition_Index":           "me.snowdrop.istio.api.networking.v1alpha3.Index",
 		"istio.networking.v1alpha3.EnvoyFilter_Filter_FilterType":              "me.snowdrop.istio.api.networking.v1alpha3.FilterType",
+		"istio.policy.v1beta1.Rule_HeaderOperationTemplate_Operation":          "me.snowdrop.istio.api.policy.v1beta1.Operation",
+		"istio.policy.v1beta1.FractionalPercent_DenominatorType":               "me.snowdrop.istio.api.policy.v1beta1.DenominatorType",
 		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode",
 		"istio.rbac.v1alpha1.RbacConfig_Mode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.Mode",
 		"adapter.circonus.config.Params_MetricInfo_Type":                       "me.snowdrop.istio.mixer.adapter.circonus.Type",
