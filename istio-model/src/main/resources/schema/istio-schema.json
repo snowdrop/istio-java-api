@@ -86,6 +86,67 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.circonus.MetricInfo"
     },
+    "istio_adapter_cloudwatch_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "logGroupName": {
+          "type": "string",
+          "description": ""
+        },
+        "logStreamName": {
+          "type": "string",
+          "description": ""
+        },
+        "logs": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_cloudwatch_Params_LogInfo",
+            "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo\u003e"
+        },
+        "metricInfo": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_adapter_cloudwatch_Params_MetricDatum",
+            "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum"
+          },
+          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum\u003e"
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.CloudwatchSpec"
+    },
+    "istio_adapter_cloudwatch_Params_LogInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "payloadTemplate": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo"
+    },
+    "istio_adapter_cloudwatch_Params_MetricDatum": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "unit": {
+          "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.Unit"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum"
+    },
     "istio_adapter_denier_Params": {
       "type": "object",
       "description": "",
@@ -1149,6 +1210,22 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.stdio.StdioSpec"
+    },
+    "istio_adapter_zipkin_Params": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "sampleProbability": {
+          "type": "number",
+          "description": ""
+        },
+        "url": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.mixer.adapter.zipkin.ZipkinSpec"
     },
     "istio_authentication_v1alpha1_Jwt": {
       "type": "object",
@@ -4836,6 +4913,14 @@
       "$ref": "#/definitions/istio_adapter_bypass_Params",
       "javaType": "me.snowdrop.istio.mixer.adapter.bypass.BypassSpec"
     },
+    "cWLogInfo": {
+      "$ref": "#/definitions/istio_adapter_cloudwatch_Params_LogInfo",
+      "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo"
+    },
+    "cWMetricDatum": {
+      "$ref": "#/definitions/istio_adapter_cloudwatch_Params_MetricDatum",
+      "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum"
+    },
     "checkNothing": {
       "$ref": "#/definitions/istio_mixer_checknothing_InstanceMsg",
       "javaType": "me.snowdrop.istio.mixer.template.checknothing.CheckNothingSpec"
@@ -4851,6 +4936,10 @@
     "circonus": {
       "$ref": "#/definitions/istio_adapter_circonus_Params",
       "javaType": "me.snowdrop.istio.mixer.adapter.circonus.CirconusSpec"
+    },
+    "cloudWatch": {
+      "$ref": "#/definitions/istio_adapter_cloudwatch_Params",
+      "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.CloudwatchSpec"
     },
     "compressedAttributes": {
       "$ref": "#/definitions/istio_mixer_v1_CompressedAttributes",
@@ -5135,6 +5224,10 @@
     "virtualService": {
       "$ref": "#/definitions/istio_networking_v1alpha3_VirtualService",
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec"
+    },
+    "zipkin": {
+      "$ref": "#/definitions/istio_adapter_zipkin_Params",
+      "javaType": "me.snowdrop.istio.mixer.adapter.zipkin.ZipkinSpec"
     }
   },
   "additionalProperties": false

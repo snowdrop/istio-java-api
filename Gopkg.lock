@@ -215,6 +215,7 @@
   packages = [
     "mixer/adapter/bypass/config",
     "mixer/adapter/circonus/config",
+    "mixer/adapter/cloudwatch/config",
     "mixer/adapter/denier/config",
     "mixer/adapter/dogstatsd/config",
     "mixer/adapter/fluentd/config",
@@ -230,6 +231,7 @@
     "mixer/adapter/stackdriver/config",
     "mixer/adapter/statsd/config",
     "mixer/adapter/stdio/config",
+    "mixer/adapter/zipkin/config",
     "mixer/pkg/adapter",
     "mixer/pkg/attribute",
     "mixer/pkg/pool",
@@ -252,6 +254,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6c722ae766c0bf1ee494e3b207f5f0c93832629a82f3c4a26d9e812dadce5dad"
+  inputs-digest = "fd37b57bc9d103c5575028c8fd1f1d16b0e93aa50bd8b05c5f135a57363c2504"
   solver-name = "gps-cdcl"
   solver-version = 1

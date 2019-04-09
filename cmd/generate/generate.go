@@ -30,6 +30,7 @@ import (
 	rbac "istio.io/api/rbac/v1alpha1"
 	bypass "istio.io/istio/mixer/adapter/bypass/config"
 	circonus "istio.io/istio/mixer/adapter/circonus/config"
+	cloudwatch "istio.io/istio/mixer/adapter/cloudwatch/config"
 	denier "istio.io/istio/mixer/adapter/denier/config"
 	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd/config"
 	fluentd "istio.io/istio/mixer/adapter/fluentd/config"
@@ -45,6 +46,7 @@ import (
 	stackdriver "istio.io/istio/mixer/adapter/stackdriver/config"
 	statsd "istio.io/istio/mixer/adapter/statsd/config"
 	stdio "istio.io/istio/mixer/adapter/stdio/config"
+	zipkin "istio.io/istio/mixer/adapter/zipkin/config"
 	"istio.io/istio/mixer/template/apikey"
 	"istio.io/istio/mixer/template/authorization"
 	"istio.io/istio/mixer/template/checknothing"
@@ -110,6 +112,9 @@ type Schema struct {
 	Sidecar                            networking.Sidecar
 	Bypass                             bypass.Params
 	Circonus                           circonus.Params
+	CloudWatch                         cloudwatch.Params
+	CWMetricDatum                      cloudwatch.Params_MetricDatum
+	CWLogInfo                          cloudwatch.Params_LogInfo
 	Denier                             denier.Params
 	Dogstatsd                          dogstatsd.Params
 	DSMetricInfo                       dogstatsd.Params_MetricInfo
@@ -137,6 +142,7 @@ type Schema struct {
 	Statsd                             statsd.Params
 	StatsdMetricInfo                   statsd.Params_MetricInfo
 	Stdio                              stdio.Params
+	Zipkin                             zipkin.Params
 	APIKey                             apikey.InstanceMsg
 	Authorization                      authorization.InstanceMsg
 	CheckNothing                       checknothing.InstanceMsg
@@ -332,6 +338,7 @@ func main() {
 		"istio.rbac.v1alpha1.EnforcementMode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode",
 		"istio.rbac.v1alpha1.RbacConfig_Mode":                                  "me.snowdrop.istio.api.rbac.v1alpha1.Mode",
 		"adapter.circonus.config.Params_MetricInfo_Type":                       "me.snowdrop.istio.mixer.adapter.circonus.Type",
+		"adapter.cloudwatch.config.Params_MetricDatum_Unit":                    "me.snowdrop.istio.mixer.adapter.cloudwatch.Unit",
 		"adapter.prometheus.config.Params_MetricInfo_Kind":                     "me.snowdrop.istio.mixer.adapter.prometheus.Kind",
 		"adapter.dogstatsd.config.Params_MetricInfo_Type":                      "me.snowdrop.istio.mixer.adapter.dogstatsd.Type",
 		"adapter.list.config.Params_ListEntryType":                             "me.snowdrop.istio.mixer.adapter.list.ListEntryType",
