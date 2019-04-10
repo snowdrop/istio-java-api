@@ -51,9 +51,9 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
     private static final String OBJECT_META_CLASS_NAME = "io.fabric8.kubernetes.api.model.ObjectMeta";
 
-    protected static final String IS_INTERFACE_FIELD = "isInterface";
+    private static final String IS_INTERFACE_FIELD = "isInterface";
 
-    protected static final String JAVA_TYPE_FIELD = "javaType";
+    private static final String EXISTING_JAVA_TYPE_FIELD = "existingJavaType";
 
     private final JDefinedClass doneableClass;
 
@@ -146,7 +146,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             field.annotate(JsonUnwrapped.class);
 
             // todo: fix me, this won't work if a type has several fields using interfaces
-            String interfaceFQN = propertyNode.get(JAVA_TYPE_FIELD).asText();
+            String interfaceFQN = propertyNode.get(EXISTING_JAVA_TYPE_FIELD).asText();
 
             // create interface if we haven't done it yet
             try {
