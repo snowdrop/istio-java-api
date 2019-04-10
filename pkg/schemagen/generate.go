@@ -538,7 +538,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 				MapValueType: g.getPropertyDescriptor(t.Elem(), desc, ""),
 			},
 			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">",
+				ExistingJavaType: "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">",
 			},
 		}
 	case reflect.Struct:
@@ -566,8 +566,8 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 
 		return JSONPropertyDescriptor{
 			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType:    interfaceType,
-				IsInterface: true,
+				ExistingJavaType: interfaceType,
+				IsInterface:      true,
 			},
 		}
 	}
@@ -603,7 +603,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 			_, javaType := g.generateEnumTypeAccumulatingUnknown(enum, humanReadableFieldName)
 			prop = JSONPropertyDescriptor{
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: javaType,
+					ExistingJavaType: javaType,
 				},
 			}
 		} else {

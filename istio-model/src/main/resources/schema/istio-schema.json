@@ -80,7 +80,7 @@
           "description": ""
         },
         "type": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.circonus.Type"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.circonus.Type"
         }
       },
       "additionalProperties": false,
@@ -105,7 +105,7 @@
             "$ref": "#/definitions/istio_adapter_cloudwatch_Params_LogInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.cloudwatch.LogInfo\u003e"
         },
         "metricInfo": {
           "type": "object",
@@ -114,7 +114,7 @@
             "$ref": "#/definitions/istio_adapter_cloudwatch_Params_MetricDatum",
             "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.cloudwatch.MetricDatum\u003e"
         },
         "namespace": {
           "type": "string",
@@ -141,7 +141,7 @@
       "description": "",
       "properties": {
         "unit": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.Unit"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.Unit"
         }
       },
       "additionalProperties": false,
@@ -187,7 +187,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "metrics": {
           "type": "object",
@@ -196,7 +196,7 @@
             "$ref": "#/definitions/istio_adapter_dogstatsd_Params_MetricInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.dogstatsd.MetricInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.dogstatsd.MetricInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.dogstatsd.MetricInfo\u003e"
         },
         "prefix": {
           "type": "string",
@@ -225,10 +225,10 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "type": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.dogstatsd.Type"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.dogstatsd.Type"
         }
       },
       "additionalProperties": false,
@@ -309,7 +309,7 @@
           "description": ""
         },
         "entryType": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.list.ListEntryType"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.list.ListEntryType"
         },
         "overrides": {
           "type": "array",
@@ -369,7 +369,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "maxAmount": {
           "type": "integer",
@@ -476,7 +476,7 @@
           "description": ""
         },
         "kind": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.prometheus.Kind"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.prometheus.Kind"
         },
         "labelNames": {
           "type": "array",
@@ -503,7 +503,7 @@
       "description": "",
       "properties": {
         "definition": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.prometheus.BucketsDefinition.Definition",
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.prometheus.BucketsDefinition.Definition",
           "isInterface": true
         }
       },
@@ -682,7 +682,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "maxAmount": {
           "type": "integer",
@@ -720,7 +720,7 @@
           }
         },
         "rateLimitAlgorithm": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.redisquota.QuotaAlgorithm"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.redisquota.QuotaAlgorithm"
         },
         "validDuration": {
           "type": "integer",
@@ -785,7 +785,7 @@
           "description": ""
         },
         "type": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.signalfx.Type"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.signalfx.Type"
         }
       },
       "additionalProperties": false,
@@ -810,7 +810,7 @@
             "$ref": "#/definitions/istio_adapter_solarwinds_Params_LogInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.solarwinds.LogInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.solarwinds.LogInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.solarwinds.LogInfo\u003e"
         },
         "metrics": {
           "type": "object",
@@ -819,7 +819,7 @@
             "$ref": "#/definitions/istio_adapter_solarwinds_Params_MetricInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.solarwinds.MetricInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.solarwinds.MetricInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.solarwinds.MetricInfo\u003e"
         },
         "papertrailLocalRetentionDuration": {
           "type": "integer",
@@ -867,7 +867,7 @@
       "description": "",
       "properties": {
         "creds": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.StackdriverSpec.Creds",
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stackdriver.StackdriverSpec.Creds",
           "isInterface": true
         },
         "endpoint": {
@@ -881,7 +881,7 @@
             "$ref": "#/definitions/istio_adapter_stackdriver_Params_LogInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.LogInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.stackdriver.LogInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.stackdriver.LogInfo\u003e"
         },
         "metricInfo": {
           "type": "object",
@@ -890,7 +890,7 @@
             "$ref": "#/definitions/istio_adapter_stackdriver_Params_MetricInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.MetricInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.stackdriver.MetricInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.stackdriver.MetricInfo\u003e"
         },
         "projectId": {
           "type": "string",
@@ -1060,14 +1060,14 @@
           "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.BucketsDefinition"
         },
         "kind": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.MetricKind"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stackdriver.MetricKind"
         },
         "metricType": {
           "type": "string",
           "description": ""
         },
         "value": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.ValueType"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stackdriver.ValueType"
         }
       },
       "additionalProperties": false,
@@ -1078,7 +1078,7 @@
       "description": "",
       "properties": {
         "definition": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.BucketsDefinition.Definition",
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stackdriver.BucketsDefinition.Definition",
           "isInterface": true
         }
       },
@@ -1136,7 +1136,7 @@
             "$ref": "#/definitions/istio_adapter_statsd_Params_MetricInfo",
             "javaType": "me.snowdrop.istio.mixer.adapter.statsd.MetricInfo"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.statsd.MetricInfo\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.mixer.adapter.statsd.MetricInfo\u003e"
         },
         "prefix": {
           "type": "string",
@@ -1159,7 +1159,7 @@
           "description": ""
         },
         "type": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.statsd.Type"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.statsd.Type"
         }
       },
       "additionalProperties": false,
@@ -1170,7 +1170,7 @@
       "description": "",
       "properties": {
         "logStream": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stdio.Stream"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stdio.Stream"
         },
         "maxDaysBeforeRotation": {
           "type": "integer",
@@ -1185,14 +1185,14 @@
           "description": ""
         },
         "metricLevel": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stdio.Level"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stdio.Level"
         },
         "outputAsJson": {
           "type": "boolean",
           "description": ""
         },
         "outputLevel": {
-          "javaType": "me.snowdrop.istio.mixer.adapter.stdio.Level"
+          "existingJavaType": "me.snowdrop.istio.mixer.adapter.stdio.Level"
         },
         "outputPath": {
           "type": "string",
@@ -1205,7 +1205,7 @@
             "type": "integer",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Integer\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
         }
       },
       "additionalProperties": false,
@@ -1308,7 +1308,7 @@
           "description": ""
         },
         "mode": {
-          "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.Mode"
+          "existingJavaType": "me.snowdrop.istio.api.authentication.v1alpha1.Mode"
         }
       },
       "additionalProperties": false,
@@ -1331,7 +1331,7 @@
       "description": "",
       "properties": {
         "params": {
-          "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PeerAuthenticationMethod.Params",
+          "existingJavaType": "me.snowdrop.istio.api.authentication.v1alpha1.PeerAuthenticationMethod.Params",
           "isInterface": true
         }
       },
@@ -1397,7 +1397,7 @@
           }
         },
         "principalBinding": {
-          "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PrincipalBinding"
+          "existingJavaType": "me.snowdrop.istio.api.authentication.v1alpha1.PrincipalBinding"
         },
         "targets": {
           "type": "array",
@@ -1416,7 +1416,7 @@
       "description": "",
       "properties": {
         "port": {
-          "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector.Port",
+          "existingJavaType": "me.snowdrop.istio.api.authentication.v1alpha1.PortSelector.Port",
           "isInterface": true
         }
       },
@@ -1458,7 +1458,7 @@
       "description": "",
       "properties": {
         "matchType": {
-          "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.StringMatch.MatchType",
+          "existingJavaType": "me.snowdrop.istio.api.authentication.v1alpha1.StringMatch.MatchType",
           "isInterface": true
         }
       },
@@ -1476,7 +1476,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "name": {
           "type": "string",
@@ -1549,7 +1549,7 @@
             "type": "integer",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Integer\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
         }
       },
       "additionalProperties": false,
@@ -1576,7 +1576,7 @@
       "description": "",
       "properties": {
         "accessLogEncoding": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.AccessLogEncoding"
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.AccessLogEncoding"
         },
         "accessLogFile": {
           "type": "string",
@@ -1587,7 +1587,7 @@
           "description": ""
         },
         "authPolicy": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy"
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy"
         },
         "configSources": {
           "type": "array",
@@ -1654,7 +1654,7 @@
           "description": ""
         },
         "ingressControllerMode": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.IngressControllerMode"
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.IngressControllerMode"
         },
         "ingressService": {
           "type": "string",
@@ -1733,7 +1733,7 @@
       "description": "",
       "properties": {
         "mode": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.Mode"
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.Mode"
         }
       },
       "additionalProperties": false,
@@ -1764,7 +1764,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         },
         "controlPlaneAuthPolicy": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy"
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy"
         },
         "customConfigFile": {
           "type": "string",
@@ -1787,7 +1787,7 @@
           "description": ""
         },
         "interceptionMode": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.InboundInterceptionMode"
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.InboundInterceptionMode"
         },
         "parentShutdownDuration": {
           "$ref": "#/definitions/protobuf_types_Duration",
@@ -1830,7 +1830,7 @@
       "description": "",
       "properties": {
         "tracer": {
-          "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.Tracing.Tracer",
+          "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.Tracing.Tracer",
           "isInterface": true
         }
       },
@@ -1892,7 +1892,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "service": {
           "type": "string",
@@ -1937,7 +1937,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "user": {
           "type": "string",
@@ -2050,7 +2050,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "monitoredResourceType": {
           "type": "string",
@@ -2075,7 +2075,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": false,
@@ -2092,7 +2092,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "monitoredResourceDimensions": {
           "type": "object",
@@ -2101,7 +2101,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "monitoredResourceType": {
           "type": "string",
@@ -2130,7 +2130,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "name": {
           "type": "string",
@@ -2236,7 +2236,7 @@
             "$ref": "#/definitions/istio_policy_v1beta1_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         },
         "startTime": {
           "$ref": "#/definitions/istio_policy_v1beta1_TimeStamp",
@@ -2261,7 +2261,7 @@
             "$ref": "#/definitions/istio_mixer_v1_Attributes_AttributeValue",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": false,
@@ -2272,7 +2272,7 @@
       "description": "",
       "properties": {
         "value": {
-          "javaType": "me.snowdrop.istio.api.cexl.TypedValue",
+          "existingJavaType": "me.snowdrop.istio.api.cexl.TypedValue",
           "isInterface": true
         }
       },
@@ -2302,7 +2302,7 @@
             "$ref": "#/definitions/istio_mixer_v1_CheckRequest_QuotaParams",
             "javaType": "me.snowdrop.istio.api.mixer.v1.QuotaParams"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.QuotaParams\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.QuotaParams\u003e"
         }
       },
       "additionalProperties": false,
@@ -2340,7 +2340,7 @@
             "$ref": "#/definitions/istio_mixer_v1_CheckResponse_QuotaResult",
             "javaType": "me.snowdrop.istio.api.mixer.v1.QuotaResult"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.QuotaResult\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.QuotaResult\u003e"
         }
       },
       "additionalProperties": false,
@@ -2408,7 +2408,7 @@
             "type": "boolean",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Boolean\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Boolean\u003e"
         },
         "bytes": {
           "type": "object",
@@ -2417,7 +2417,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "doubles": {
           "type": "object",
@@ -2426,7 +2426,7 @@
             "type": "number",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Double\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Double\u003e"
         },
         "durations": {
           "type": "object",
@@ -2436,7 +2436,7 @@
             "description": "",
             "javaType": "Long"
           },
-          "javaType": "java.util.Map\u003cString,Long\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Long\u003e"
         },
         "int64s": {
           "type": "object",
@@ -2446,7 +2446,7 @@
             "description": "",
             "javaType": "Long"
           },
-          "javaType": "java.util.Map\u003cString,Long\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Long\u003e"
         },
         "stringMaps": {
           "type": "object",
@@ -2455,7 +2455,7 @@
             "$ref": "#/definitions/istio_mixer_v1_StringMap",
             "javaType": "me.snowdrop.istio.api.mixer.v1.StringMap"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.StringMap\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.mixer.v1.StringMap\u003e"
         },
         "strings": {
           "type": "object",
@@ -2464,7 +2464,7 @@
             "type": "integer",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Integer\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
         },
         "timestamps": {
           "type": "object",
@@ -2473,7 +2473,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "words": {
           "type": "array",
@@ -2496,7 +2496,7 @@
           "description": ""
         },
         "operation": {
-          "javaType": "me.snowdrop.istio.api.mixer.v1.Operation"
+          "existingJavaType": "me.snowdrop.istio.api.mixer.v1.Operation"
         },
         "value": {
           "type": "string",
@@ -2535,7 +2535,7 @@
       "description": "",
       "properties": {
         "condition": {
-          "javaType": "me.snowdrop.istio.api.mixer.v1.Condition"
+          "existingJavaType": "me.snowdrop.istio.api.mixer.v1.Condition"
         },
         "mapKey": {
           "type": "integer",
@@ -2578,7 +2578,7 @@
           "description": ""
         },
         "repeatedAttributesSemantics": {
-          "javaType": "me.snowdrop.istio.api.mixer.v1.RepeatedAttributesSemantics"
+          "existingJavaType": "me.snowdrop.istio.api.mixer.v1.RepeatedAttributesSemantics"
         }
       },
       "additionalProperties": false,
@@ -2633,7 +2633,7 @@
             "type": "integer",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Integer\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
         }
       },
       "additionalProperties": false,
@@ -2838,7 +2838,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         }
       },
       "additionalProperties": false,
@@ -2857,7 +2857,7 @@
           "description": ""
         },
         "filterType": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.FilterType"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.FilterType"
         },
         "insertPosition": {
           "$ref": "#/definitions/istio_networking_v1alpha3_EnvoyFilter_InsertPosition",
@@ -2876,7 +2876,7 @@
       "description": "",
       "properties": {
         "index": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Index"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Index"
         },
         "relativeTo": {
           "type": "string",
@@ -2899,10 +2899,10 @@
           }
         },
         "listenerProtocol": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerProtocol"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerProtocol"
         },
         "listenerType": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerType"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerType"
         },
         "portNamePrefix": {
           "type": "string",
@@ -2927,7 +2927,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "servers": {
           "type": "array",
@@ -2962,7 +2962,7 @@
       "description": "",
       "properties": {
         "errorType": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Abort.ErrorType",
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Abort.ErrorType",
           "isInterface": true
         },
         "percent": {
@@ -3027,7 +3027,7 @@
       "description": "",
       "properties": {
         "httpDelayType": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay.HttpDelayType",
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay.HttpDelayType",
           "isInterface": true
         },
         "percent": {
@@ -3095,7 +3095,7 @@
             "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
             "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.networking.v1alpha3.StringMatch\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.networking.v1alpha3.StringMatch\u003e"
         },
         "method": {
           "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
@@ -3116,7 +3116,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "uri": {
           "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
@@ -3189,7 +3189,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "appendRequestHeaders": {
           "type": "object",
@@ -3198,7 +3198,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "appendResponseHeaders": {
           "type": "object",
@@ -3207,7 +3207,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "corsPolicy": {
           "$ref": "#/definitions/istio_networking_v1alpha3_CorsPolicy",
@@ -3292,7 +3292,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "appendResponseHeaders": {
           "type": "object",
@@ -3301,7 +3301,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "destination": {
           "$ref": "#/definitions/istio_networking_v1alpha3_Destination",
@@ -3362,7 +3362,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "remove": {
           "type": "array",
@@ -3379,7 +3379,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         }
       },
       "additionalProperties": false,
@@ -3394,7 +3394,7 @@
           "description": ""
         },
         "captureMode": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode"
         },
         "hosts": {
           "type": "array",
@@ -3421,7 +3421,7 @@
           "description": ""
         },
         "captureMode": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode"
         },
         "defaultEndpoint": {
           "type": "string",
@@ -3466,7 +3466,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "sourceSubnet": {
           "type": "string",
@@ -3481,7 +3481,7 @@
       "description": "",
       "properties": {
         "lbPolicy": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings.LbPolicy",
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings.LbPolicy",
           "isInterface": true
         }
       },
@@ -3505,7 +3505,7 @@
       "description": "",
       "properties": {
         "hashKey": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB.HashKey",
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB.HashKey",
           "isInterface": true
         },
         "minimumRingSize": {
@@ -3591,7 +3591,7 @@
       "description": "",
       "properties": {
         "simple": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLB"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLB"
         }
       },
       "additionalProperties": false,
@@ -3662,7 +3662,7 @@
       "description": "",
       "properties": {
         "port": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector.Port",
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector.Port",
           "isInterface": true
         }
       },
@@ -3772,13 +3772,13 @@
           "description": ""
         },
         "maxProtocolVersion": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol"
         },
         "minProtocolVersion": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol"
         },
         "mode": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsMode"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsMode"
         },
         "privateKey": {
           "type": "string",
@@ -3837,7 +3837,7 @@
           }
         },
         "location": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryLocation"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryLocation"
         },
         "ports": {
           "type": "array",
@@ -3848,7 +3848,7 @@
           }
         },
         "resolution": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryResolution"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryResolution"
         },
         "subjectAltNames": {
           "type": "array",
@@ -3877,7 +3877,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "locality": {
           "type": "string",
@@ -3894,7 +3894,7 @@
             "type": "integer",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,Integer\u003e"
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
         },
         "weight": {
           "type": "integer",
@@ -3937,7 +3937,7 @@
       "description": "",
       "properties": {
         "matchType": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch.MatchType",
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch.MatchType",
           "isInterface": true
         }
       },
@@ -4000,7 +4000,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "name": {
           "type": "string",
@@ -4077,7 +4077,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "sourceSubnet": {
           "type": "string",
@@ -4124,7 +4124,7 @@
           "description": ""
         },
         "mode": {
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettingsMode"
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettingsMode"
         },
         "privateKey": {
           "type": "string",
@@ -4273,7 +4273,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         }
       },
       "additionalProperties": false,
@@ -4308,7 +4308,7 @@
       "description": "",
       "properties": {
         "denominator": {
-          "javaType": "me.snowdrop.istio.api.policy.v1beta1.DenominatorType"
+          "existingJavaType": "me.snowdrop.istio.api.policy.v1beta1.DenominatorType"
         },
         "numerator": {
           "type": "integer",
@@ -4422,7 +4422,7 @@
           "description": ""
         },
         "operation": {
-          "javaType": "me.snowdrop.istio.api.policy.v1beta1.Operation"
+          "existingJavaType": "me.snowdrop.istio.api.policy.v1beta1.Operation"
         },
         "values": {
           "type": "array",
@@ -4469,7 +4469,7 @@
       "description": "",
       "properties": {
         "value": {
-          "javaType": "me.snowdrop.istio.api.cexl.TypedValue",
+          "existingJavaType": "me.snowdrop.istio.api.cexl.TypedValue",
           "isInterface": true
         }
       },
@@ -4581,7 +4581,7 @@
       "description": "",
       "properties": {
         "enforcementMode": {
-          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode"
+          "existingJavaType": "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode"
         },
         "exclusion": {
           "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig_Target",
@@ -4592,7 +4592,7 @@
           "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
         },
         "mode": {
-          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Mode"
+          "existingJavaType": "me.snowdrop.istio.api.rbac.v1alpha1.Mode"
         }
       },
       "additionalProperties": false,
@@ -4667,7 +4667,7 @@
       "description": "",
       "properties": {
         "mode": {
-          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode"
+          "existingJavaType": "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode"
         },
         "roleRef": {
           "$ref": "#/definitions/istio_rbac_v1alpha1_RoleRef",
@@ -4764,7 +4764,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "user": {
           "type": "string",
@@ -4785,7 +4785,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         }
       },
       "additionalProperties": false,
@@ -4847,7 +4847,7 @@
             "$ref": "#/definitions/protobuf_types_Value",
             "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
           },
-          "javaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
         }
       },
       "additionalProperties": false,
@@ -4875,7 +4875,7 @@
       "description": "",
       "properties": {
         "kind": {
-          "javaType": "me.snowdrop.istio.api.Kind",
+          "existingJavaType": "me.snowdrop.istio.api.Kind",
           "isInterface": true
         }
       },
