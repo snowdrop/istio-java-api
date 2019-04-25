@@ -37,6 +37,7 @@ packages:
 	./scripts/generate_package_info.sh
 
 schema:
+	grep version Gopkg.toml | cut -d= -f2 | cut -d'"' -f2 | tr -d '[:space:]' > .circleci/ISTIO.VERSION
 	go run ./cmd/generate/generate.go > $(SCHEMA_DIR)/istio-schema.json
 
 build: schema
