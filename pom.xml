@@ -164,11 +164,11 @@
     <validation-api.version>2.0.0.Final</validation-api.version>
     <k8s-client.majorVersion>4</k8s-client.majorVersion>
     <k8s-client.minorVersion>2</k8s-client.minorVersion>
-    <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.0</kubernetes-client.version>
+    <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.2</kubernetes-client.version>
     <junit.version>4.12</junit.version>
     <mockito.version>2.13.0</mockito.version>
     <assertj.version>3.9.0</assertj.version>
-    <sundrio.version>0.17.2</sundrio.version>
+    <sundrio.version>0.18.0</sundrio.version>
     <lombok.version>1.18.2</lombok.version>
   </properties>
 
