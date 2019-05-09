@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
 import me.snowdrop.istio.api.networking.v1alpha3.DestinationRule;
@@ -46,7 +44,7 @@ public class IstioClientTest {
 
     private void checkInput(String inputFileName, Class<? extends IstioResource> expectedSpecClass) {
          final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFileName);
-         KubernetesClient client = new DefaultKubernetesClient();
+        IstioClient client = new DefaultIstioClient();
          List<HasMetadata> result = client.load(inputStream).get();
 
         assertThat(result).isNotEmpty();
@@ -61,7 +59,7 @@ public class IstioClientTest {
     @Test
     public void shouldApplyAllResourcesInAggregateDescriptor() {
         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("aggregate.yaml");
-         KubernetesClient client = new DefaultKubernetesClient();
+        IstioClient client = new DefaultIstioClient();
          List<HasMetadata> result = client.load(inputStream).get();
 
         assertThat(result).isNotEmpty();
