@@ -1,14 +1,15 @@
 package me.snowdrop.istio.client.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
 import me.snowdrop.istio.api.authentication.v1alpha1.PolicyBuilder;
+import me.snowdrop.istio.api.authentication.v1alpha1.PolicyList;
 import me.snowdrop.istio.api.authentication.v1alpha1.PolicySpec;
 import me.snowdrop.istio.api.authentication.v1alpha1.TargetSelectorBuilder;
 import me.snowdrop.istio.client.DefaultIstioClient;
 import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PolicyIT {
 
@@ -27,7 +28,6 @@ public class PolicyIT {
     public void checkBasicPolicy() {
         //given
         final Policy policy = new PolicyBuilder()
-                .withApiVersion("authentication.istio.io/v1alpha1")
                 .withNewMetadata()
                 .withName("basic-policy")
                 .endMetadata()
@@ -61,6 +61,10 @@ public class PolicyIT {
                 assertThat(ts.getName()).isEqualTo("service-a")
             );
         });
+
+
+        final PolicyList list = istioClient.policy().list();
+        assertThat(list.getItems()).contains(resultResource);
 
         //when
         final Boolean deleteResult = istioClient.policy().delete(resultResource);
