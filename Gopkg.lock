@@ -248,12 +248,12 @@
     "mixer/template/tracespan",
     "pkg/log"
   ]
-  revision = "bc7465793cbff4c4189639b3f404e21c517cbdc6"
-  version = "1.1.4"
+  revision = "9b6d31b74d1c0cc9358cc82d395b53f71393326b"
+  version = "1.1.5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f86215ee5a092d5ee009907f3c0df3631ee21b43a4e4263b5d7bbbe75214aaf5"
+  inputs-digest = "d9ba79936efc475f4574d82de70eeea1f0324833e8273f7bacac689fec2a9173"
   solver-name = "gps-cdcl"
   solver-version = 1
