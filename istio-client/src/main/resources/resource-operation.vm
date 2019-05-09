@@ -50,9 +50,9 @@ public class ${model.name}OperationImpl extends HasMetadataOperation<${model.nam
   }
 
   public ${model.name}OperationImpl(OperationContext context) {
-    super(context.withApiGroupName("$apiGroupName")
-      .withApiGroupVersion("$apiGroupVersion")
-      .withPlural("#pluralize ($model.name.toLowerCase())"));
+    super(context.withApiGroupName("$apiGroup")
+      .withApiGroupVersion("$apiVersion")
+      .withPlural("$plural"));
     this.type = ${model.name}.class;
     this.listType = ${model.name}List.class;
     this.doneableType = Doneable${model.name}.class;

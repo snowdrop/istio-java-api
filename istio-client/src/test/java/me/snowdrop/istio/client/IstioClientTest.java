@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IstioClientTest {
 
-     @Test
+    @Test
     public void shouldApplyMetricIstioResource() {
         checkInput("metric.yaml", Metric.class);
     }
@@ -43,15 +43,15 @@ public class IstioClientTest {
     }
 
     private void checkInput(String inputFileName, Class<? extends IstioResource> expectedSpecClass) {
-         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFileName);
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFileName);
         IstioClient client = new DefaultIstioClient();
-         List<HasMetadata> result = client.load(inputStream).get();
+        List<HasMetadata> result = client.load(inputStream).get();
 
         assertThat(result).isNotEmpty();
         assertThat(result.size()).isEqualTo(1);
         try {
             assertThat(result.get(0).getKind()).isEqualTo(expectedSpecClass.newInstance().getKind());
-        } catch  (Exception e) {
+        } catch (Exception e) {
             Assert.fail("Failed to read resource kind.");
         }
     }
@@ -60,7 +60,7 @@ public class IstioClientTest {
     public void shouldApplyAllResourcesInAggregateDescriptor() {
         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("aggregate.yaml");
         IstioClient client = new DefaultIstioClient();
-         List<HasMetadata> result = client.load(inputStream).get();
+        List<HasMetadata> result = client.load(inputStream).get();
 
         assertThat(result).isNotEmpty();
         assertThat(result.size()).isEqualTo(2);
