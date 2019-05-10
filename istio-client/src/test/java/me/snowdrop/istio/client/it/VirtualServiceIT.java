@@ -259,25 +259,22 @@ public class VirtualServiceIT {
     @Test
     public void checkVirtualServiceAbort() {
         final String ratingsHost = "ratings.prod.svc.cluster.local";
-        final VirtualService virtualService = new VirtualServiceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+        final VirtualService virtualService = istioClient.virtualService()
+            .createNew()
                 .withNewMetadata().withName("ratings-route").endMetadata()
                 .withNewSpec()
-                .addToHosts(ratingsHost)
+            .addNewHost(ratingsHost)
                 .addNewHttp()
-                .addNewRoute()
-                .withNewDestination().withHost(ratingsHost).withSubset("v1")
-                .endDestination()
-                .endRoute()
                 .withNewFault()
                 .withNewAbort()
-                .withPercent(10)
-                .withNewHttpStatusErrorType(400)
+            .withNewPercentage(10.).withNewHttpStatusErrorType(400)
                 .endAbort()
                 .endFault()
+            .addNewRoute()
+            .withNewDestination().withHost(ratingsHost).withSubset("v1").endDestination()
+            .endRoute()
                 .endHttp()
-                .endSpec()
-                .build();
+            .endSpec().done();
 
         //when
         final VirtualService resultResource = istioClient.virtualService().create(virtualService);
@@ -315,8 +312,8 @@ public class VirtualServiceIT {
 
             //assert the fault was correctly set
             assertThat(httpList.get(0).getFault().getAbort()).satisfies(a -> {
-
-                assertThat(a.getPercent()).isEqualTo(10);
+    
+                assertThat(a.getPercentage().getValue()).isEqualTo(10.);
                 assertThat(a.getErrorType())
                         .isInstanceOfSatisfying(
                                 HttpStatusErrorType.class,
