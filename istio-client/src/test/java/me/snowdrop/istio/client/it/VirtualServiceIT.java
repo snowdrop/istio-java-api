@@ -259,7 +259,7 @@ public class VirtualServiceIT {
     @Test
     public void checkVirtualServiceAbort() {
         final String ratingsHost = "ratings.prod.svc.cluster.local";
-        final VirtualService virtualService = istioClient.virtualService()
+        final VirtualService resultResource = istioClient.virtualService()
             .createNew()
                 .withNewMetadata().withName("ratings-route").endMetadata()
                 .withNewSpec()
@@ -275,10 +275,7 @@ public class VirtualServiceIT {
             .endRoute()
                 .endHttp()
             .endSpec().done();
-
-        //when
-        final VirtualService resultResource = istioClient.virtualService().create(virtualService);
-
+    
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
 

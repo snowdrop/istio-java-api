@@ -257,7 +257,7 @@ public class ClassWithInterfaceFieldsRegistry {
 
     private static Optional<Field> getField(Class<?> objectClass, String fieldName) {
         try {
-            return Optional.of(objectClass.getField(fieldName));
+            return Optional.of(objectClass.getDeclaredField(fieldName));
         } catch (NoSuchFieldException e) {
             return Optional.empty();
         }
