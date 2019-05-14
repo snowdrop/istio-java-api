@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews-route
+spec:
+  gateways:
+    - in-gateway
+  hosts:
+    - reviews.prod.svc.cluster.local
+  http:
+    - match:
+        - uri:
+            exact: /onboard
+        - uri:
+            exact: /offboard
+      route:
+        - destination:
+            host: reviews.prod.svc.cluster.local
+            port:
+              number: 9080
+    - match:
+        - headers:
+            tenantid:
+              exact: coke
+      route:
+        - destination:
+            host: service-coke
+            port:
+              number: 8080
