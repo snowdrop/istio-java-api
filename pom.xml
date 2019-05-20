@@ -168,7 +168,7 @@
     <junit.version>4.12</junit.version>
     <mockito.version>2.13.0</mockito.version>
     <assertj.version>3.9.0</assertj.version>
-    <sundrio.version>0.18.0</sundrio.version>
+    <sundrio.version>0.19.0</sundrio.version>
     <lombok.version>1.18.2</lombok.version>
   </properties>
 

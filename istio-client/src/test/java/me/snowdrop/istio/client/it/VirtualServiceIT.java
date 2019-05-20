@@ -378,9 +378,8 @@ public class VirtualServiceIT {
 
 			done = istioClient.virtualService().withName("reviews-route")
 					.edit().editSpec()
-					.editMatchingHttp(h -> h.hasMatchingMatch(m -> m.hasHeaders() && m.getHeaders().equals(matchMap)) && h.hasMatchingRoute(r -> r.buildDestination().getHost().equals("service-coke")))
-					.removeFromMatch(req)
-					.endHttp().endSpec().done();
+					.removeMatchingFromHttp(h -> h.hasMatchingMatch(m -> m.hasHeaders() && m.getHeaders().equals(matchMap)) && h.hasMatchingRoute(r -> r.buildDestination().getHost().equals("service-coke")))
+					.endSpec().done();
 
 			assertThat(done.getSpec().getHttp())
 					.flatExtracting(HTTPRoute::getMatch)
