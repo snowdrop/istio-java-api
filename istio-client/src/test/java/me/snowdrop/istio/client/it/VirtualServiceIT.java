@@ -1,24 +1,34 @@
 package me.snowdrop.istio.client.it;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.networking.v1alpha3.*;
-import me.snowdrop.istio.client.DefaultIstioClient;
-import me.snowdrop.istio.client.IstioClient;
-import org.junit.Test;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import me.snowdrop.istio.api.IstioResource;
+import me.snowdrop.istio.api.networking.v1alpha3.ExactMatchType;
+import me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequest;
+import me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequestBuilder;
+import me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute;
+import me.snowdrop.istio.api.networking.v1alpha3.HttpStatusErrorType;
+import me.snowdrop.istio.api.networking.v1alpha3.NumberPort;
+import me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType;
+import me.snowdrop.istio.api.networking.v1alpha3.StringMatch;
+import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
+import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceBuilder;
+import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec;
+import me.snowdrop.istio.client.DefaultIstioClient;
+import me.snowdrop.istio.client.IstioClient;
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
 public class VirtualServiceIT {
-
+    
     private final IstioClient istioClient = new DefaultIstioClient();
-
+    
     /*
   apiVersion: networking.istio.io/v1alpha3
   kind: VirtualService
@@ -49,89 +59,89 @@ public class VirtualServiceIT {
         //given
         final String reviewsHost = "reviews.prod.svc.cluster.local";
         final VirtualService virtualService = new VirtualServiceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
-                .withNewMetadata().withName("reviews-route").endMetadata()
-                .withNewSpec()
-                .addToHosts(reviewsHost)
-                .addNewHttp()
-                .addNewMatch().withNewUri().withNewPrefixMatchType("/wpcatalog").endUri().endMatch()
-                .addNewMatch().withNewUri().withNewPrefixMatchType("/consumercatalog").endUri().endMatch()
-                .withNewRewrite().withUri("/newcatalog").endRewrite()
-                .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v2").endDestination()
-                .endRoute()
-                .endHttp()
-                .addNewHttp()
-                .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v1").endDestination()
-                .endRoute()
-                .endHttp()
-                .endSpec()
-                .build();
-
+            .withApiVersion("networking.istio.io/v1alpha3")
+            .withNewMetadata().withName("reviews-route").endMetadata()
+            .withNewSpec()
+            .addToHosts(reviewsHost)
+            .addNewHttp()
+            .addNewMatch().withNewUri().withNewPrefixMatchType("/wpcatalog").endUri().endMatch()
+            .addNewMatch().withNewUri().withNewPrefixMatchType("/consumercatalog").endUri().endMatch()
+            .withNewRewrite().withUri("/newcatalog").endRewrite()
+            .addNewRoute()
+            .withNewDestination().withHost(reviewsHost).withSubset("v2").endDestination()
+            .endRoute()
+            .endHttp()
+            .addNewHttp()
+            .addNewRoute()
+            .withNewDestination().withHost(reviewsHost).withSubset("v1").endDestination()
+            .endRoute()
+            .endHttp()
+            .endSpec()
+            .build();
+        
         //when
         final VirtualService resultResource = istioClient.virtualService().create(virtualService);
-
+    
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
-
+    
             assertThat(istioResource.getKind()).isEqualTo("VirtualService");
-
+    
             assertThat(istioResource)
-                    .extracting("metadata")
-                    .extracting("name")
-                    .containsOnly("reviews-route");
+                .extracting("metadata")
+                .extracting("name")
+                .containsOnly("reviews-route");
         });
-
+    
         //and
         final VirtualServiceSpec resultVirtualServiceSpec = resultResource.getSpec();
         assertThat(resultVirtualServiceSpec).satisfies(vs -> {
-
+    
             assertThat(vs.getHosts()).containsExactly(reviewsHost);
             assertThat(vs.getGateways()).isEmpty();
-
+    
             final List<HTTPRoute> httpList = vs.getHttp();
             assertThat(httpList).hasSize(2);
             assertThat(httpList.get(0)).satisfies(http -> {
-
+    
                 assertThat(http)
-                        .extracting("rewrite")
-                        .extracting("uri")
-                        .containsOnly("/newcatalog");
-
+                    .extracting("rewrite")
+                    .extracting("uri")
+                    .containsOnly("/newcatalog");
+                
                 assertThat(http.getMatch())
-                        .extracting("uri")
-                        .extracting("matchType")
-                        .extracting("class", "prefix")
-                        .containsOnly(
-                                tuple(PrefixMatchType.class, "/wpcatalog"),
-                                tuple(PrefixMatchType.class, "/consumercatalog")
-                        );
-
+                    .extracting("uri")
+                    .extracting("matchType")
+                    .extracting("class", "prefix")
+                    .containsOnly(
+                        tuple(PrefixMatchType.class, "/wpcatalog"),
+                        tuple(PrefixMatchType.class, "/consumercatalog")
+                    );
+                
                 assertThat(http.getRoute())
-                        .hasSize(1)
-                        .extracting("destination")
-                        .extracting("host", "subset")
-                        .containsOnly(tuple("reviews.prod.svc.cluster.local", "v2"));
+                    .hasSize(1)
+                    .extracting("destination")
+                    .extracting("host", "subset")
+                    .containsOnly(tuple("reviews.prod.svc.cluster.local", "v2"));
             });
-
+    
             assertThat(httpList.get(1)).satisfies(http -> {
-
+        
                 assertThat(http.getRoute())
-                        .hasSize(1)
-                        .extracting("destination")
-                        .extracting("host", "subset")
-                        .containsOnly(tuple("reviews.prod.svc.cluster.local", "v1"));
+                    .hasSize(1)
+                    .extracting("destination")
+                    .extracting("host", "subset")
+                    .containsOnly(tuple("reviews.prod.svc.cluster.local", "v1"));
             });
-
+    
             //when
             final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
-
+    
             //then
             assertThat(deleteResult).isTrue();
         });
     }
-
+    
     /*
   apiVersion: "networking.istio.io/v1alpha3"
   kind: "VirtualService"
@@ -158,83 +168,83 @@ public class VirtualServiceIT {
     public void checkVirtualServiceWithPortSelector() {
         final String reviewsHost = "reviews.prod.svc.cluster.local";
         final VirtualService virtualService = new VirtualServiceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
-                .withNewMetadata().withName("reviews-route2").endMetadata()
-                .withNewSpec()
-                .addToHosts(reviewsHost)
-                .addNewHttp()
-                .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
-                .withNewNumberPort()
-                .withNumber(9090).endNumberPort().endPort().endDestination()
-                .endRoute()
-                .endHttp()
-                .addNewHttp()
-                .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
-                .withNewNumberPort()
-                .withNumber(9090).endNumberPort().endPort().endDestination()
-                .endRoute()
-                .endHttp()
-                .endSpec()
-                .build();
-
+            .withApiVersion("networking.istio.io/v1alpha3")
+            .withNewMetadata().withName("reviews-route2").endMetadata()
+            .withNewSpec()
+            .addToHosts(reviewsHost)
+            .addNewHttp()
+            .addNewRoute()
+            .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
+            .withNewNumberPort()
+            .withNumber(9090).endNumberPort().endPort().endDestination()
+            .endRoute()
+            .endHttp()
+            .addNewHttp()
+            .addNewRoute()
+            .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
+            .withNewNumberPort()
+            .withNumber(9090).endNumberPort().endPort().endDestination()
+            .endRoute()
+            .endHttp()
+            .endSpec()
+            .build();
+        
         //when
         final VirtualService resultResource = istioClient.virtualService().create(virtualService);
-
+    
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
-
+    
             assertThat(istioResource.getKind()).isEqualTo("VirtualService");
-
+    
             assertThat(istioResource)
-                    .extracting("metadata")
-                    .extracting("name")
-                    .containsOnly("reviews-route2");
+                .extracting("metadata")
+                .extracting("name")
+                .containsOnly("reviews-route2");
         });
-
+    
         //and
         final VirtualServiceSpec resultSpec = resultResource.getSpec();
-
+    
         //and
         assertThat(resultSpec).satisfies(vs -> {
-
+    
             assertThat(vs.getHosts()).containsExactly(reviewsHost);
             assertThat(vs.getGateways()).isEmpty();
-
+    
             final List<HTTPRoute> httpList = vs.getHttp();
             assertThat(httpList).hasSize(2);
-
+    
             //assert the host and subset were set correctly
             assertThat(httpList)
-                    .flatExtracting("route")
-                    .extracting("destination")
-                    .extracting("host", "subset")
-                    .containsOnly(
-                            tuple("reviews.prod.svc.cluster.local", "v1"),
-                            tuple("reviews.prod.svc.cluster.local", "v2")
-                    );
-
+                .flatExtracting("route")
+                .extracting("destination")
+                .extracting("host", "subset")
+                .containsOnly(
+                    tuple("reviews.prod.svc.cluster.local", "v1"),
+                    tuple("reviews.prod.svc.cluster.local", "v2")
+                );
+            
             //assert the port was correctly
             assertThat(httpList)
-                    .flatExtracting("route")
-                    .extracting("destination")
-                    .extracting("port")
-                    .extracting("port")
-                    .extracting("class", "number")
-                    .containsOnly(
-                            tuple(NumberPort.class, 9090),
-                            tuple(NumberPort.class, 9090)
-                    );
-
+                .flatExtracting("route")
+                .extracting("destination")
+                .extracting("port")
+                .extracting("port")
+                .extracting("class", "number")
+                .containsOnly(
+                    tuple(NumberPort.class, 9090),
+                    tuple(NumberPort.class, 9090)
+                );
+            
             //when
             final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
-
+    
             //then
             assertThat(deleteResult).isTrue();
         });
     }
-
+    
     /*
   apiVersion: networking.istio.io/v1alpha3
   kind: VirtualService
@@ -258,75 +268,77 @@ public class VirtualServiceIT {
         final String ratingsHost = "ratings.prod.svc.cluster.local";
         final VirtualService resultResource = istioClient.virtualService()
             .createNew()
-                .withNewMetadata().withName("ratings-route").endMetadata()
-                .withNewSpec()
+            .withNewMetadata().withName("ratings-route").endMetadata()
+            .withNewSpec()
             .addNewHost(ratingsHost)
-                .addNewHttp()
-                .withNewFault()
-                .withNewAbort()
+            .addNewHttp()
+            .withNewFault()
+            .withNewAbort()
             .withNewPercentage(10.).withNewHttpStatusErrorType(400)
-                .endAbort()
-                .endFault()
+            .endAbort()
+            .endFault()
             .addNewRoute()
             .withNewDestination().withHost(ratingsHost).withSubset("v1").endDestination()
             .endRoute()
-                .endHttp()
+            .endHttp()
             .endSpec().done();
     
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
-
+    
             assertThat(istioResource.getKind()).isEqualTo("VirtualService");
-
+    
             assertThat(istioResource)
-                    .extracting("metadata")
-                    .extracting("name")
-                    .containsOnly("ratings-route");
+                .extracting("metadata")
+                .extracting("name")
+                .containsOnly("ratings-route");
         });
-
+    
         //and
         final VirtualServiceSpec resultSpec = resultResource.getSpec();
-
+    
         //and
         assertThat(resultSpec).satisfies(vs -> {
-
+    
             assertThat(vs.getHosts()).containsExactly(ratingsHost);
-
+    
             final List<HTTPRoute> httpList = vs.getHttp();
             assertThat(httpList).hasSize(1);
-
+    
             //assert the host and subset were set correctly
             assertThat(httpList)
-                    .flatExtracting("route")
-                    .extracting("destination")
-                    .extracting("host", "subset")
-                    .containsOnly(
-                            tuple(ratingsHost, "v1")
-                    );
-
+                .flatExtracting("route")
+                .extracting("destination")
+                .extracting("host", "subset")
+                .containsOnly(
+                    tuple(ratingsHost, "v1")
+                );
+            
             //assert the fault was correctly set
             assertThat(httpList.get(0).getFault().getAbort()).satisfies(a -> {
     
                 assertThat(a.getPercentage().getValue()).isEqualTo(10.);
                 assertThat(a.getErrorType())
-                        .isInstanceOfSatisfying(
-                                HttpStatusErrorType.class,
-                                e -> assertThat(e.getHttpStatus()).isEqualTo(400)
-                        );
+                    .isInstanceOfSatisfying(
+                        HttpStatusErrorType.class,
+                        e -> assertThat(e.getHttpStatus()).isEqualTo(400)
+                    );
             });
-
+    
             //when
             final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
-
+    
             //then
             assertThat(deleteResult).isTrue();
         });
     }
-
+    
     @Test
     public void checkThatRegisterResourceWorksProperly() {
-        final String ratingsHost = "ratings.prod.svc.cluster.local";
-        final VirtualService virtualService = new VirtualServiceBuilder()
+        IstioResource resource = null;
+        try {
+            final String ratingsHost = "ratings.prod.svc.cluster.local";
+            final VirtualService virtualService = new VirtualServiceBuilder()
                 .withApiVersion("networking.istio.io/v1alpha3")
                 .withNewMetadata().withName("ratings-route").endMetadata()
                 .withNewSpec()
@@ -345,49 +357,62 @@ public class VirtualServiceIT {
                 .endHttp()
                 .endSpec()
                 .build();
-
-
-        final IstioResource resource = istioClient.registerCustomResource(virtualService);
-        assertThat(resource).isNotNull().satisfies(r -> assertThat(r.getSpec()).isInstanceOf(VirtualServiceSpec.class));
-        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service.yaml");
-        final List<IstioResource> resources = istioClient.registerCustomResources(inputStream);
-        assertThat(resources).isNotNull().satisfies(list -> {
-            assertThat(list.size()).isEqualTo(1);
-            final IstioResource r = list.get(0);
-            assertThat(r.getSpec()).isInstanceOf(VirtualServiceSpec.class);
-        });
+            
+            
+            resource = istioClient.registerCustomResource(virtualService);
+            assertThat(resource).isNotNull().satisfies(r -> assertThat(r.getSpec()).isInstanceOf(VirtualServiceSpec.class));
+        } finally {
+            if (resource != null) {
+                istioClient.virtualService().delete((VirtualService) resource);
+            }
+        }
+        
+        List<IstioResource> resources = null;
+        try {
+            final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service.yaml");
+            resources = istioClient.registerCustomResources(inputStream);
+            assertThat(resources).isNotNull().satisfies(list -> {
+                assertThat(list.size()).isEqualTo(1);
+                final IstioResource r = list.get(0);
+                assertThat(r.getSpec()).isInstanceOf(VirtualServiceSpec.class);
+            });
+        } finally {
+            if (resources != null) {
+                istioClient.virtualService().delete((VirtualService) resources.get(0));
+            }
+        }
     }
-
-	@Test
-	public void checkThatEditingMatchWorksProperly() {
-		final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service-with-matches.yaml");
-		IstioClient client = new DefaultIstioClient();
-		List<HasMetadata> result = client.load(inputStream).createOrReplace();
-
-		VirtualService done = null;
-		try {
-			assertThat(result).isNotEmpty();
-			assertThat(result.size()).isEqualTo(1);
-			final HasMetadata hasMetadata = result.get(0);
-			assertThat(hasMetadata).isInstanceOf(VirtualService.class);
-
-			Map<String, StringMatch> matchMap = new HashMap<>();
-			matchMap.put("tenantid", new StringMatch(new ExactMatchType("coke")));
-			HTTPMatchRequest req = new HTTPMatchRequestBuilder().withHeaders(matchMap)
-					.build();
-
-			done = istioClient.virtualService().withName("reviews-route")
-					.edit().editSpec()
-					.removeMatchingFromHttp(h -> h.hasMatchingMatch(m -> m.hasHeaders() && m.getHeaders().equals(matchMap)) && h.hasMatchingRoute(r -> r.buildDestination().getHost().equals("service-coke")))
-					.endSpec().done();
-
-			assertThat(done.getSpec().getHttp())
-					.flatExtracting(HTTPRoute::getMatch)
-					.doesNotContain(req);
-		} finally {
-			if (done != null) {
-				istioClient.virtualService().delete();
-			}
-		}
-	}
+    
+    @Test
+    public void checkThatEditingMatchWorksProperly() {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service-with-matches.yaml");
+        IstioClient client = new DefaultIstioClient();
+        List<HasMetadata> result = client.load(inputStream).createOrReplace();
+        
+        VirtualService done = null;
+        try {
+            assertThat(result).isNotEmpty();
+            assertThat(result.size()).isEqualTo(1);
+            final HasMetadata hasMetadata = result.get(0);
+            assertThat(hasMetadata).isInstanceOf(VirtualService.class);
+            
+            Map<String, StringMatch> matchMap = new HashMap<>();
+            matchMap.put("tenantid", new StringMatch(new ExactMatchType("coke")));
+            HTTPMatchRequest req = new HTTPMatchRequestBuilder().withHeaders(matchMap)
+                .build();
+            
+            done = istioClient.virtualService().withName("reviews-route")
+                .edit().editSpec()
+                .removeMatchingFromHttp(h -> h.hasMatchingMatch(m -> m.hasHeaders() && m.getHeaders().equals(matchMap)) && h.hasMatchingRoute(r -> r.buildDestination().getHost().equals("service-coke")))
+                .endSpec().done();
+            
+            assertThat(done.getSpec().getHttp())
+                .flatExtracting(HTTPRoute::getMatch)
+                .doesNotContain(req);
+        } finally {
+            if (done != null) {
+                istioClient.virtualService().delete(done);
+            }
+        }
+    }
 }
