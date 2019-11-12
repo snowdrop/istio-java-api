@@ -113,7 +113,6 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         clazz.annotate(EqualsAndHashCode.class);
         JAnnotationUse buildable = clazz.annotate(Buildable.class)
                 .param("editableEnabled", false)
-                .param("validationEnabled", true)
                 .param("generateBuilderPackage", true)
                 .param("builderPackage", BUILDER_PACKAGE);
 

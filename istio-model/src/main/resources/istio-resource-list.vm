@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,15 +42,15 @@ import io.fabric8.kubernetes.api.model.ListMeta;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "items"
+"apiVersion",
+"kind",
+"metadata",
+"items"
 })
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class ${resource}List implements KubernetesResource, KubernetesResourceList
 {
 
@@ -61,7 +59,6 @@ public class ${resource}List implements KubernetesResource, KubernetesResourceLi
      * (Required)
      *
      */
-    @NotNull
     @JsonProperty("apiVersion")
     private String apiVersion = "$version";
     /**
@@ -69,14 +66,12 @@ public class ${resource}List implements KubernetesResource, KubernetesResourceLi
      *
      */
     @JsonProperty("items")
-    @Valid
     private List<${resource}> items = new ArrayList<${resource}>();
     /**
      *
      * (Required)
      *
      */
-    @NotNull
     @JsonProperty("kind")
     private String kind = "${resource}List";
     /**
@@ -84,7 +79,6 @@ public class ${resource}List implements KubernetesResource, KubernetesResourceLi
      *
      */
     @JsonProperty("metadata")
-    @Valid
     private ListMeta metadata;
 
     /**
