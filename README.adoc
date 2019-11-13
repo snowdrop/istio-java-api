@@ -22,66 +22,33 @@ build simply using `mvn clean install` as the project contains a pre-generated v
 re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a
 Go programming environment.
 
-=== Initial setup
-
-In particular, you will need to https://golang.org/doc/install[install Go] and check the code for this project within your
-`$GOPATH/src` hierarchy:
-
-```bash
-cd $GOPATH/src
-mkdir -p github.com/snowdrop
-cd github.com/snowdrop
-git clone git@github.com:snowdrop/istio-java-api.git
-cd istio-java-api
-```
-
 === Building the Java API
 
-Run `make`. This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
-`istio-model/src/main/resources/schema/istio-schema.json`. A Maven build is then issued using the `jsonschema2pojo` Maven plugin
-to generate Java classes in `istio-model/target/generated-sources` and generate a Jar file containing the compiled version of
-these classes along with the JSON schema, ready to be used.
+You will need to https://golang.org/doc/install[install Go] and `make`.
+Run `make`.
+This will build the `generate` command line tool from Go and then run it to generate a JSON Schema in
+`istio-model/src/main/resources/schema/istio-schema.json`.
+A Maven build is then issued using the `jsonschema2pojo` Maven plugin to generate Java classes in `istio-model/target/generated-sources` and generate a Jar file containing the compiled version of these classes along with the JSON schema, ready to be used.
 
-You can *clean* everything using `make clean`, only *generate the schema* using `make schema` or only generate the Java classes
-from an already generated schema such as the provided one using `mvn clean install`.
-
-If any of the Go files are changed in such a way that new imports are required, you will need to run `dep ensure`
-at the top level of the project in order to update the `vendor` information otherwise you might run into issues
-when building the project.
+You can *clean* everything using `make clean`, only *generate the schema* using `make schema` or only generate the Java classes from an already generated schema such as the provided one using `mvn clean install`.
 
 === Updating the Java API when Istio is updated
 
 NOTE: The process is not completely reproduceable at this time. :(
 
 ```bash
-# download istio and api source
-go get -u istio.io/istio
-go get -u istio.io/api
-cd $GOPATH/src/istio.io/istio
-# checkout the istio version
-git checkout <istio version>
-# look for the constraint on the istio.io/api version in Gopkg.toml, which the following should help with:
-grep -C 3 "istio.io/api" $GOPATH/src/istio.io/istio/Gopkg.toml | grep -A 3 "constraint"
-cd $GOPATH/src/istio.io/api
-# checkout the associated api version
-git checkout <api version>
-cd $GOPATH/src/github.com/snowdrop/istio-java-api
-# log in to an OpenShift cluster with the target Istio version installed
-oc login ...
 # rebuild crd list and packages
-make crd
-make packages
+make metadata
 # build using strict mode
 make strict
+# fix any issue, iterate… :)
 ```
 
 You can also re-generate the properties files that are used to determine which
 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes Custom Resource Definitions (CRDs)]
-are specified by Istio. These files are located in `istio-common/src/main/resources/`, one for each kind of supported CRDs
-and can be generated using `make crd`. Right now, though, this command requires installing the
-https://docs.openshift.org/latest/cli_reference/get_started_cli.html[OpenShift Client] and an active administrative connection
-(via `oc login`) to an OpenShift cluster on which Istio is installed.
-
-You can also re-generate the CSV file that is used to map Istio Go packages to Java packages. The file is located at
-`istio-common/src/main/resources/packages.csv` and can be generated using `make packages`.
+are specified by Istio.
+These files are located in `istio-common/src/main/resources/`, one for each kind of supported CRDs and can be generated using `make metadata`.
+You can also re-generate the CSV file that is used to map Istio Go packages to Java packages.
+The file is located at
+`istio-common/src/main/resources/packages.csv` and can be generated using `make metadata`.
 
