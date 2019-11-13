@@ -40,7 +40,7 @@ jobs:
           oc adm policy add-scc-to-user privileged -z istio-pilot-service-account -n istio-system
 
           # perform actual Istio deployment
-          istioVersion=$(grep version Gopkg.toml | cut -d= -f2 | cut -d'"' -f2 | tr -d '[:space:]')
+          istioVersion=$(grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
           istioArchive="istio-${istioVersion}-linux.tar.gz"
           istioRelease="https://github.com/istio/istio/releases/download/${istioVersion}/${istioArchive}"
           curl -L ${istioRelease} > ${istioArchive}
