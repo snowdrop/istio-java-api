@@ -31,7 +31,7 @@ clean:
 	./mvnw clean
 
 metadata:
-	./scripts/generate_package_info.sh
+	./scripts/generate_metadata.sh
 
 schema:
 	go run ./cmd/generate/generate.go > $(SCHEMA_DIR)/istio-schema.json
