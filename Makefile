@@ -30,10 +30,7 @@ strict:
 clean:
 	./mvnw clean
 
-crd:
-	oc get crd -o=jsonpath="{range .items[*]}{.spec.names.kind}={.metadata.name}| istio={.metadata.labels.istio}| version={.spec.version}{'\n'}{end}" |grep istio.io > $(CRD_FILE)
-
-packages:
+metadata:
 	./scripts/generate_package_info.sh
 
 schema:
