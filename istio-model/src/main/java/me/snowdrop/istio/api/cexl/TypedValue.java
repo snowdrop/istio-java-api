@@ -32,7 +32,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", generateBuilderPackage = true, editableEnabled = false, validationEnabled = true)
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", generateBuilderPackage = true, editableEnabled = false)
 @EqualsAndHashCode
 @ToString
 @JsonSerialize(using = TypedValue.TypedValueSerializer.class)

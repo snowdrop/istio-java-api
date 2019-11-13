@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -47,64 +45,50 @@ import lombok.ToString;
 
 /**
  *
- *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-        "apiVersion",
-        "kind",
-        "metadata",
-        "items"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "items"
 })
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
-public class IstioResourceList implements KubernetesResource, KubernetesResourceList
-{
-
+@Buildable(editableEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+public class IstioResourceList implements KubernetesResource, KubernetesResourceList {
+    
     /**
-     *
      * (Required)
-     *
      */
-    @NotNull
     @JsonProperty("apiVersion")
     private String apiVersion = "config.istio.io/v1alpha2";
     /**
      *
-     *
      */
     @JsonProperty("items")
-    @Valid
     private List<IstioResource> items = new ArrayList<IstioResource>();
     /**
-     *
      * (Required)
-     *
      */
-    @NotNull
     @JsonProperty("kind")
     private String kind = "IstioResourceList";
     /**
      *
-     *
      */
     @JsonProperty("metadata")
-    @Valid
     private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
+    
     /**
      * No args constructor for use in serialization
-     *
      */
     public IstioResourceList() {
     }
-
+    
     /**
-     *
      * @param metadata
      * @param apiVersion
      * @param kind
@@ -116,107 +100,87 @@ public class IstioResourceList implements KubernetesResource, KubernetesResource
         this.kind = kind;
         this.metadata = metadata;
     }
-
+    
     /**
-     *
      * (Required)
      *
-     * @return
-     *     The apiVersion
+     * @return The apiVersion
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
-
+    
     /**
-     *
      * (Required)
      *
-     * @param apiVersion
-     *     The apiVersion
+     * @param apiVersion The apiVersion
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
-
+    
     /**
-     *
-     *
-     * @return
-     *     The items
+     * @return The items
      */
     @JsonProperty("items")
     public List<IstioResource> getItems() {
         return items;
     }
-
+    
     /**
-     *
-     *
-     * @param items
-     *     The items
+     * @param items The items
      */
     @JsonProperty("items")
     public void setItems(List<IstioResource> items) {
         this.items = items;
     }
-
+    
     /**
-     *
      * (Required)
      *
-     * @return
-     *     The kind
+     * @return The kind
      */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
-
+    
     /**
-     *
      * (Required)
      *
-     * @param kind
-     *     The kind
+     * @param kind The kind
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
-
+    
     /**
-     *
-     *
-     * @return
-     *     The metadata
+     * @return The metadata
      */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
-
+    
     /**
-     *
-     *
-     * @param metadata
-     *     The metadata
+     * @param metadata The metadata
      */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
-
+    
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
-
+    
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
+    
 }

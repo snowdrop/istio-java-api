@@ -158,17 +158,16 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <jackson.majorVersion>2</jackson.majorVersion>
-    <jackson.minorVersion>9</jackson.minorVersion>
-    <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.4</jackson.version>
+    <jackson.minorVersion>10</jackson.minorVersion>
+    <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.1</jackson.version>
     <jsonschema2pojo.version>1.0.1</jsonschema2pojo.version>
-    <validation-api.version>2.0.0.Final</validation-api.version>
     <k8s-client.majorVersion>4</k8s-client.majorVersion>
-    <k8s-client.minorVersion>5</k8s-client.minorVersion>
+    <k8s-client.minorVersion>6</k8s-client.minorVersion>
     <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.2</kubernetes-client.version>
     <junit.version>4.12</junit.version>
     <mockito.version>2.13.0</mockito.version>
     <assertj.version>3.9.0</assertj.version>
-    <sundrio.version>0.19.0</sundrio.version>
+    <sundrio.version>0.19.2</sundrio.version>
     <lombok.version>1.18.2</lombok.version>
   </properties>
 
@@ -191,11 +190,6 @@
         <groupId>com.fasterxml.jackson.dataformat</groupId>
         <artifactId>jackson-dataformat-yaml</artifactId>
         <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>${validation-api.version}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>

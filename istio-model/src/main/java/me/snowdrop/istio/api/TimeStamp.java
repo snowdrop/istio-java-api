@@ -54,7 +54,7 @@ public class TimeStamp implements Serializable {
     public TimeStamp() {
     }
 
-    @Buildable(generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, validationEnabled = true)
+    @Buildable(generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
     public TimeStamp(Integer nanos, Long seconds) {
         this.nanos = nanos;
         this.seconds = seconds;

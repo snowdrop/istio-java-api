@@ -53,10 +53,6 @@
       <version>2.0.2</version>
     </dependency>
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model</artifactId>
     </dependency>
@@ -94,12 +90,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <version>1.19</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -152,7 +142,7 @@
           <sourceDirectory>${schema.dir}</sourceDirectory>
           <targetPackage>me.snowdrop.istio.api</targetPackage>
           <includeConstructors>true</includeConstructors>
-          <includeJsr303Annotations>true</includeJsr303Annotations>
+<!--          <includeJsr303Annotations>true</includeJsr303Annotations>-->
           <includeToString>false</includeToString>
           <serializable>true</serializable>
           <targetVersion>1.8</targetVersion>
