@@ -2667,6 +2667,10 @@
           "type": "integer",
           "description": ""
         },
+        "idleTimeout": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
         "maxRequestsPerConnection": {
           "type": "integer",
           "description": ""
