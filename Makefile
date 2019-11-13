@@ -20,7 +20,6 @@ PWD=$(shell pwd)
 SCHEMA_DIR=$(PWD)/istio-model/src/main/resources/schema
 DECL_DIR=$(PWD)/istio-common/src/main/resources
 CRD_FILE=$(DECL_DIR)/istio-crd.properties
-ISTIO_VERSION=$(shell grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
 
 all: build
 
@@ -44,4 +43,4 @@ build: schema
 	./mvnw clean install
 
 istio_version:
-	@echo $(ISTIO_VERSION)
+	@echo $(shell grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
