@@ -23,7 +23,7 @@ CRD_FILE=$(DECL_DIR)/istio-crd.properties
 
 all: build
 
-strict:
+strict: metadata
 	go run ./cmd/generate/generate.go -strict > $(SCHEMA_DIR)/istio-schema.json
 	ISTIO_STRICT=true mvn clean install
 
