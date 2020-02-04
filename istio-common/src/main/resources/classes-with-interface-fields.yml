@@ -18,7 +18,7 @@ classes:
   - class: me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings
     fields:
       simple: isLoadBalancerSettings_LbPolicy
-      consitentHash: isLoadBalancerSettings_LbPolicy
+      consistentHash: isLoadBalancerSettings_LbPolicy
   - class: me.snowdrop.istio.api.networking.v1alpha3.PortSelector
     fields:
       name: isPortSelector_Port
