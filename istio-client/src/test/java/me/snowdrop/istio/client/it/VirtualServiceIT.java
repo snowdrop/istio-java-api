@@ -7,17 +7,16 @@ import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.networking.v1alpha3.ExactMatchType;
-import me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequest;
-import me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequestBuilder;
-import me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute;
-import me.snowdrop.istio.api.networking.v1alpha3.HttpStatusErrorType;
-import me.snowdrop.istio.api.networking.v1alpha3.NumberPort;
-import me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType;
-import me.snowdrop.istio.api.networking.v1alpha3.StringMatch;
-import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
-import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceBuilder;
-import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec;
+import me.snowdrop.istio.api.networking.v1beta1.ExactMatchType;
+import me.snowdrop.istio.api.networking.v1beta1.HTTPMatchRequest;
+import me.snowdrop.istio.api.networking.v1beta1.HTTPMatchRequestBuilder;
+import me.snowdrop.istio.api.networking.v1beta1.HTTPRoute;
+import me.snowdrop.istio.api.networking.v1beta1.HttpStatusErrorType;
+import me.snowdrop.istio.api.networking.v1beta1.PrefixMatchType;
+import me.snowdrop.istio.api.networking.v1beta1.StringMatch;
+import me.snowdrop.istio.api.networking.v1beta1.VirtualService;
+import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceBuilder;
+import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceSpec;
 import me.snowdrop.istio.client.DefaultIstioClient;
 import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
@@ -30,7 +29,7 @@ public class VirtualServiceIT {
     private final IstioClient istioClient = new DefaultIstioClient();
     
     /*
-  apiVersion: networking.istio.io/v1alpha3
+  apiVersion: networking.istio.io/v1beta1
   kind: VirtualService
   metadata:
   name: reviews-route
@@ -59,7 +58,7 @@ public class VirtualServiceIT {
         //given
         final String reviewsHost = "reviews.prod.svc.cluster.local";
         final VirtualService virtualService = new VirtualServiceBuilder()
-            .withApiVersion("networking.istio.io/v1alpha3")
+            .withApiVersion("networking.istio.io/v1beta1")
             .withNewMetadata().withName("reviews-route").endMetadata()
             .withNewSpec()
             .addToHosts(reviewsHost)
@@ -143,7 +142,7 @@ public class VirtualServiceIT {
     }
     
     /*
-  apiVersion: "networking.istio.io/v1alpha3"
+  apiVersion: "networking.istio.io/v1beta1"
   kind: "VirtualService"
   metadata:
   name: "reviews-route"
@@ -168,22 +167,20 @@ public class VirtualServiceIT {
     public void checkVirtualServiceWithPortSelector() {
         final String reviewsHost = "reviews.prod.svc.cluster.local";
         final VirtualService virtualService = new VirtualServiceBuilder()
-            .withApiVersion("networking.istio.io/v1alpha3")
+            .withApiVersion("networking.istio.io/v1beta1")
             .withNewMetadata().withName("reviews-route2").endMetadata()
             .withNewSpec()
             .addToHosts(reviewsHost)
             .addNewHttp()
             .addNewRoute()
             .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
-            .withNewNumberPort()
-            .withNumber(9090).endNumberPort().endPort().endDestination()
+            .withNumber(9090).endPort().endDestination()
             .endRoute()
             .endHttp()
             .addNewHttp()
             .addNewRoute()
             .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
-            .withNewNumberPort()
-            .withNumber(9090).endNumberPort().endPort().endDestination()
+            .withNumber(9090).endPort().endDestination()
             .endRoute()
             .endHttp()
             .endSpec()
@@ -233,8 +230,8 @@ public class VirtualServiceIT {
                 .extracting("port")
                 .extracting("class", "number")
                 .containsOnly(
-                    tuple(NumberPort.class, 9090),
-                    tuple(NumberPort.class, 9090)
+                    tuple(Integer.class, 9090),
+                    tuple(Integer.class, 9090)
                 );
             
             //when
@@ -246,7 +243,7 @@ public class VirtualServiceIT {
     }
     
     /*
-  apiVersion: networking.istio.io/v1alpha3
+  apiVersion: networking.istio.io/v1beta1
   kind: VirtualService
   metadata:
     name: ratings-route
@@ -339,7 +336,7 @@ public class VirtualServiceIT {
         try {
             final String ratingsHost = "ratings.prod.svc.cluster.local";
             final VirtualService virtualService = new VirtualServiceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+                .withApiVersion("networking.istio.io/v1beta1")
                 .withNewMetadata().withName("ratings-route").endMetadata()
                 .withNewSpec()
                 .addToHosts(ratingsHost)
@@ -350,7 +347,9 @@ public class VirtualServiceIT {
                 .endRoute()
                 .withNewFault()
                 .withNewAbort()
-                .withPercent(10)
+                .withNewPercentage()
+                    .withValue(10.0)
+                    .endPercentage()
                 .withNewHttpStatusErrorType(400)
                 .endAbort()
                 .endFault()

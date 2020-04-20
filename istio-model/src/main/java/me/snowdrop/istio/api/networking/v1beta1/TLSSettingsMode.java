@@ -16,43 +16,42 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking.v1alpha3;
+package me.snowdrop.istio.api.networking.v1beta1;
 
 /**
+ * TLS connection mode
+ *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum SimpleLB {
+public enum TLSSettingsMode {
     /**
-     * Round Robin policy. Default
+     * Do not setup a TLS connection to the upstream endpoint.
      */
-    ROUND_ROBIN(0),
+    DISABLE(0),
 
     /**
-     * The least request load balancer uses an O(1) algorithm which selects
-     * two random healthy hosts and picks the host which has fewer active
-     * requests.
+     * Originate a TLS connection to the upstream endpoint.
      */
-    LEAST_CONN(1),
+    SIMPLE(1),
 
     /**
-     * The random load balancer selects a random healthy host. The random
-     * load balancer generally performs better than round robin if no health
-     * checking policy is configured.
+     * Secure connections to the upstream using mutual TLS by presenting
+     * client certificates for authentication.
      */
-    RANDOM(2),
+    MUTUAL(2),
 
     /**
-     * This option will forward the connection to the original IP address
-     * requested by the caller without doing any form of load
-     * balancing. This option must be used with care. It is meant for
-     * advanced use cases. Refer to Original Destination load balancer in
-     * Envoy for further details.
+     * Secure connections to the upstream using mutual TLS by presenting
+     * client certificates for authentication.
+     * Compared to Mutual mode, this mode uses certificates generated
+     * automatically by Istio for mTLS authentication. When this mode is
+     * used, all other fields in `TLSSettings` should be empty.
      */
-    PASSTHROUGH(3);
+    ISTIO_MUTUAL(3);
 
     private final int intValue;
 
-    SimpleLB(int intValue) {
+    TLSSettingsMode(int intValue) {
         this.intValue = intValue;
     }
 

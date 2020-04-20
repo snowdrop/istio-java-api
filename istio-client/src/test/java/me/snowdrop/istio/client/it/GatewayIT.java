@@ -3,9 +3,9 @@ package me.snowdrop.istio.client.it;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.AbstractMap.SimpleEntry;
-import me.snowdrop.istio.api.networking.v1alpha3.Gateway;
-import me.snowdrop.istio.api.networking.v1alpha3.GatewayBuilder;
-import me.snowdrop.istio.api.networking.v1alpha3.GatewaySpec;
+import me.snowdrop.istio.api.networking.v1beta1.Gateway;
+import me.snowdrop.istio.api.networking.v1beta1.GatewayBuilder;
+import me.snowdrop.istio.api.networking.v1beta1.GatewaySpec;
 import me.snowdrop.istio.client.DefaultIstioClient;
 import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class GatewayIT {
     private final IstioClient istioClient = new DefaultIstioClient();
 
     /*
-  apiVersion: networking.istio.io/v1alpha3
+  apiVersion: networking.istio.io/v1beta1
   kind: Gateway
   metadata:
   name: httpbin-gateway
@@ -34,7 +34,7 @@ public class GatewayIT {
     public void checkBasicGateway() {
         //given
         final Gateway gateway = new GatewayBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+                .withApiVersion("networking.istio.io/v1beta1")
                 .withNewMetadata()
                 .withName("httpbin-gateway")
                 .endMetadata()

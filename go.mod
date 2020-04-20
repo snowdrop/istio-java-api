@@ -10,11 +10,7 @@ require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible // indirect
 	github.com/spf13/cobra v0.0.5 // indirect
 	go.uber.org/zap v1.12.0 // indirect
-	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7 // indirect
 	golang.org/x/text v0.3.2 // indirect
-	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
-	google.golang.org/grpc v1.23.0 // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
-	istio.io/api v0.0.0-20190416154520-4a9a2a12a700 // istio 1.1.17
-	istio.io/istio v0.0.0-20191015182630-149c2fc74f0a // istio 1.1.17
+	istio.io/api v0.0.0-20200316215140-da46fe8e25be // istio 1.5.1
+	istio.io/istio v0.0.0-20200323201801-9d07e185b0dd // istio 1.5.1
 )
