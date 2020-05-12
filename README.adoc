@@ -1,12 +1,12 @@
 = istio-java-api
 
 A project to generate a Java API for https://istio.io[Istio]'s domain allowing, in particular, the generation of Istio deployment
-descriptors. This project is inspired by https://github.com/fabric8io/kubernetes-model[Fabric8's kubernetes-model] and relies on
+descriptors.This project is inspired by https://github.com/fabric8io/kubernetes-model[Fabric8's kubernetes-model] and relies on
 the same approach: a Go program uses Go reflection to generate a http://json-schema.org[JSON Schema] which is then used by
 https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] to generate Java classes. jsonschema2pojo is configured to use
 a custom annotator, `IstioTypeAnnotator` (found in the `istio-model-annotator` module), to add
 (https://github.com/fasterxml/jackson[Jackson], https://jcp.org/en/jsr/detail?id=380[Bean Validation - JSR 380] and
-https://github.com/sundrio/sundrio[sundrio] annotations. Sundrio is used generate idiomatic builder and DSL Java classes.
+https://github.com/sundrio/sundrio[sundrio] annotations.Sundrio is used generate idiomatic builder and DSL Java classes.
 Jackson is used to output JSON or YAML representation of the Java objects when needed.
 
 == Usage
@@ -18,7 +18,7 @@ and this API to send Istio artifacts to a running OpenShift cluster configured o
 == Building instructions
 
 If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can
-build simply using `mvn clean install` as the project contains a pre-generated version of the schema. If you need to
+build simply using `mvn clean install` as the project contains a pre-generated version of the schema.If you need to
 re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a
 Go programming environment.
 
@@ -34,15 +34,17 @@ You can *clean* everything using `make clean`, only *generate the schema* using 
 
 === Updating the Java API when Istio is updated
 
-NOTE: The process is not completely reproduceable at this time. :(
+NOTE: The process is not completely reproducible at this time.
+:(
 
-```bash
-# rebuild crd list and packages
+[source,bash]
+----
+# update to the latest istio version, rebuild crd list and packages
 make metadata
 # build using strict mode
 make strict
 # fix any issue, iterate… :)
-```
+----
 
 You can also re-generate the properties files that are used to determine which
 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes Custom Resource Definitions (CRDs)]
