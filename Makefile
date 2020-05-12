@@ -40,4 +40,4 @@ build: schema
 	./mvnw clean install
 
 istio_version:
-	@echo $(shell grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
+	./scripts/generate_metadata.sh version
