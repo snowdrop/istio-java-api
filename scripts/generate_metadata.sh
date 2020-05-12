@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 DECL_DIR=${PWD}/istio-common/src/main/resources
 CRD_FILE=${DECL_DIR}/istio-crd.properties
 APIS_TMP=${DECL_DIR}/apis_dir.tmp
