@@ -38,6 +38,10 @@ else
   echo "Istio version $ISTIO_VERSION is already present locally, using it"
 fi
 
+echo "Using Istio version ${ISTIO_VERSION}"
+go get istio.io/istio@"${ISTIO_VERSION}"
+go get istio.io/api@"${ISTIO_VERSION}"
+
 # Generate CRD information
 more "$ISTIO_DIR"/install/kubernetes/helm/istio-init/files/crd*.yaml |
   #  yq '"\(.spec.names.kind)=\(.metadata.name) | istio=\(.metadata.labels.istio // "") | version=\(.spec.versions[0].name)"' | # later CRD defs use versions instead of version
