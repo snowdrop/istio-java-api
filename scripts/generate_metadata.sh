@@ -12,7 +12,7 @@ sed -e '/##/q' ${PACKAGES_CSV} >${PACKAGES_CSV}.new
 rm ${PACKAGES_CSV}
 mv ${PACKAGES_CSV}.new ${PACKAGES_CSV}
 
-# Retrieve Istio vesion if not already done
+# Retrieve Istio version if not already done
 ISTIO_VERSION=$(grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
 ISTIO_DIR="istio-$ISTIO_VERSION"
 if [ ! -d "$ISTIO_DIR" ]; then
