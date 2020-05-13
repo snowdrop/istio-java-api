@@ -17,7 +17,7 @@
  *
  */
 
-package me.snowdrop.istio.api.networking.v1alpha3;
+package me.snowdrop.istio.api.networking.v1beta1;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertNull;
 public class VirtualServiceTest extends BaseIstioTest {
     /*
     ---
-apiVersion: "networking.istio.io/v1alpha3"
+apiVersion: "networking.istio.io/v1beta1"
 kind: "VirtualService"
 metadata:
   annotations: {}
@@ -107,7 +107,7 @@ spec:
     }
 
     /*
-        apiVersion: networking.istio.io/v1alpha3
+        apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: reviews-route
@@ -198,7 +198,7 @@ spec:
     }
 
     /*
-apiVersion: "networking.istio.io/v1alpha3"
+apiVersion: "networking.istio.io/v1beta1"
 kind: "VirtualService"
 metadata:
   name: "reviews-route"
@@ -228,14 +228,14 @@ spec:
                 .addToHosts(reviewsHost)
                 .addNewHttp()
                 .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort().withNewNumberPort()
-                .withNumber(9090).endNumberPort().endPort().endDestination()
+                .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
+                .withNumber(9090).endPort().endDestination()
                 .endRoute()
                 .endHttp()
                 .addNewHttp()
                 .addNewRoute()
-                .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort().withNewNumberPort()
-                .withNumber(9090).endNumberPort().endPort().endDestination()
+                .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
+                .withNumber(9090).endPort().endDestination()
                 .endRoute()
                 .endHttp()
                 .endSpec()
@@ -288,7 +288,7 @@ spec:
     @Test
     public void roundtripBasicVirtualServiceShouldWork() throws Exception {
         final VirtualService virtualService = new VirtualServiceBuilder()
-                .withApiVersion("networking.istio.io/v1alpha3")
+                .withApiVersion("networking.istio.io/v1beta1")
                 .withNewMetadata()
                 .withName("details")
                 .endMetadata()
@@ -312,7 +312,7 @@ spec:
         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service.yaml");
 
         /*
-        apiVersion: networking.istio.io/v1alpha3
+        apiVersion: networking.istio.io/v1beta1
  metadata:
  kind: VirtualService
    name: ratings-route
@@ -330,7 +330,7 @@ spec:
          httpStatus: 400
          */
 
-        final VirtualService virtualService = mapper.readValue(inputStream, me.snowdrop.istio.api.networking.v1alpha3.VirtualService.class);
+        final VirtualService virtualService = mapper.readValue(inputStream, me.snowdrop.istio.api.networking.v1beta1.VirtualService.class);
         assertEquals("ratings.prod.svc.cluster.local", virtualService.getSpec().getHosts().get(0));
         final List<HTTPRoute> http = virtualService.getSpec().getHttp();
         assertEquals(1, http.size());
@@ -342,7 +342,7 @@ spec:
         assertEquals("v1", destination.getSubset());
         assertNull(route.getFault().getDelay());
         final Abort abort = route.getFault().getAbort();
-        assertEquals(10, abort.getPercent().intValue());
+        assertEquals(10, abort.getPercentage().getValue().intValue());
         assertEquals(400, ((HttpStatusErrorType) abort.getErrorType()).getHttpStatus().intValue());
     }
 

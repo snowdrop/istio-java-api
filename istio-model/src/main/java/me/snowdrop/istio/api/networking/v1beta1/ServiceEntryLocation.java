@@ -17,25 +17,25 @@
  *
  */
 
-package me.snowdrop.istio.api.networking.v1alpha3;
+package me.snowdrop.istio.api.networking.v1beta1;
 
-public enum TLSOptionsMode {
+public enum ServiceEntryLocation {
     /**
-     * Forward the connection to the upstream server selected based on the SNI string presented by the client.
+     * Signifies that the service is external to the mesh.
+     * Typically used to indicate external services consumed through APIs.
      */
-    PASSTHROUGH(0),
+    MESH_EXTERNAL(0),
     /**
-     * Secure connections with standard TLS semantics.
+     * Signifies that the service is part of the mesh.
+     * Typically used to indicate services added explicitly
+     * as part of expanding the service mesh
+     * to include unmanaged infrastructure (e.g., VMs added to a Kubernetes based service mesh).
      */
-    SIMPLE(1),
-    /**
-     * Secure connections to the upstream using mutual TLS by presenting client certificates for authentication.
-     */
-    MUTUAL(2);
+    MESH_INTERNAL(1);
 
     private final int intValue;
 
-    TLSOptionsMode(int intValue) {
+    ServiceEntryLocation(int intValue) {
         this.intValue = intValue;
     }
 

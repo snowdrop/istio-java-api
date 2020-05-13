@@ -17,7 +17,7 @@
  *
  */
 
-package me.snowdrop.istio.api.networking.v1alpha3;
+package me.snowdrop.istio.api.networking.v1beta1;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertNotNull;
 public class GatewayTest extends BaseIstioTest {
     /*
     ---
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: httpbin-gateway
