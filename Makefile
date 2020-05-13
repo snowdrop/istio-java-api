@@ -25,7 +25,7 @@ all: build
 
 strict: metadata
 	go run ./cmd/generate/generate.go -strict > $(SCHEMA_DIR)/istio-schema.json
-	ISTIO_STRICT=true ./mvnw clean install
+	ISTIO_STRICT=true ./mvnw clean install -e
 
 clean:
 	./mvnw clean
@@ -40,4 +40,4 @@ build: schema
 	./mvnw clean install -e
 
 istio_version:
-	@echo $(shell grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
+	./scripts/generate_metadata.sh version
