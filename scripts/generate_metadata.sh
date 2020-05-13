@@ -33,7 +33,9 @@ fi
 ISTIO_DIR="istio-$ISTIO_VERSION"
 if [ ! -d "$ISTIO_DIR" ]; then
   # if istio version is not already downloaded, download it
-  curl -L https://git.io/getLatestIstio | ISTIO_VERSION="${ISTIO_VERSION}" sh -
+  curl -L https://github.com/istio/istio/archive/"${ISTIO_VERSION}".zip --output "${ISTIO_VERSION}".zip
+  unzip "${ISTIO_VERSION}".zip
+  rm -f "${ISTIO_VERSION}".zip
 else
   echo "Istio version $ISTIO_VERSION is already present locally, using it"
 fi
