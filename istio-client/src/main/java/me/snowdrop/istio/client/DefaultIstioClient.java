@@ -26,24 +26,21 @@ import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.authentication.v1alpha1.DoneablePolicy;
 import me.snowdrop.istio.api.authentication.v1alpha1.Policy;
 import me.snowdrop.istio.api.authentication.v1alpha1.PolicyList;
-import me.snowdrop.istio.api.networking.v1alpha3.DestinationRule;
-import me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList;
-import me.snowdrop.istio.api.networking.v1alpha3.DoneableDestinationRule;
+import me.snowdrop.istio.api.networking.v1beta1.DestinationRule;
+import me.snowdrop.istio.api.networking.v1beta1.DestinationRuleList;
+import me.snowdrop.istio.api.networking.v1beta1.DoneableDestinationRule;
 import me.snowdrop.istio.api.networking.v1alpha3.DoneableEnvoyFilter;
-import me.snowdrop.istio.api.networking.v1alpha3.DoneableGateway;
-import me.snowdrop.istio.api.networking.v1alpha3.DoneableServiceEntry;
-import me.snowdrop.istio.api.networking.v1alpha3.DoneableVirtualService;
+import me.snowdrop.istio.api.networking.v1beta1.DoneableGateway;
+import me.snowdrop.istio.api.networking.v1beta1.DoneableServiceEntry;
+import me.snowdrop.istio.api.networking.v1beta1.DoneableVirtualService;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilterList;
-import me.snowdrop.istio.api.networking.v1alpha3.Gateway;
-import me.snowdrop.istio.api.networking.v1alpha3.GatewayList;
-import me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry;
-import me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList;
-import me.snowdrop.istio.api.networking.v1alpha3.VirtualService;
-import me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList;
-import me.snowdrop.istio.api.policy.v1beta1.DoneableRule;
-import me.snowdrop.istio.api.policy.v1beta1.Rule;
-import me.snowdrop.istio.api.policy.v1beta1.RuleList;
+import me.snowdrop.istio.api.networking.v1beta1.Gateway;
+import me.snowdrop.istio.api.networking.v1beta1.GatewayList;
+import me.snowdrop.istio.api.networking.v1beta1.ServiceEntry;
+import me.snowdrop.istio.api.networking.v1beta1.ServiceEntryList;
+import me.snowdrop.istio.api.networking.v1beta1.VirtualService;
+import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceList;
 import me.snowdrop.istio.api.rbac.v1alpha1.DoneableServiceRole;
 import me.snowdrop.istio.api.rbac.v1alpha1.DoneableServiceRoleBinding;
 import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRole;
@@ -54,7 +51,6 @@ import me.snowdrop.istio.client.internal.operation.DestinationRuleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.EnvoyFilterOperationImpl;
 import me.snowdrop.istio.client.internal.operation.GatewayOperationImpl;
 import me.snowdrop.istio.client.internal.operation.PolicyOperationImpl;
-import me.snowdrop.istio.client.internal.operation.RuleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.ServiceEntryOperationImpl;
 import me.snowdrop.istio.client.internal.operation.ServiceRoleBindingOperationImpl;
 import me.snowdrop.istio.client.internal.operation.ServiceRoleOperationImpl;
@@ -92,16 +88,6 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     @Override
     public FunctionCallable<NamespacedIstioClient> withRequestConfig(RequestConfig requestConfig) {
         return new WithRequestCallable<NamespacedIstioClient>(this, requestConfig);
-    }    
-
-    @Override
-    public AdapterDsl adapter() {
-        return new AdapterClient(getHttpClient(), getConfiguration());
-    }
-
-    @Override
-    public MixerDsl mixer() {
-        return new MixerClient(getHttpClient(), getConfiguration());
     }
 
     @Override
@@ -132,11 +118,6 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     @Override
     public MixedOperation<VirtualService, VirtualServiceList, DoneableVirtualService, Resource<VirtualService, DoneableVirtualService>> virtualService() {
         return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
-    }
-
-    @Override
-    public MixedOperation<Rule, RuleList, DoneableRule, Resource<Rule, DoneableRule>> rule() {
-        return new RuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override

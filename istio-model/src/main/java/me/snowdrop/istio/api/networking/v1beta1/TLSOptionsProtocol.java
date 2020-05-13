@@ -16,37 +16,43 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking.v1alpha3;
+package me.snowdrop.istio.api.networking.v1beta1;
 
 /**
- * CaptureMode describes how traffic to a listener is expected to be
- * captured. Applicable only when the listener is bound to an IP.
+ * TLS protocol versions.
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum CaptureMode {
-    /**
-     * The default capture mode defined by the environment
-     */
-    CaptureMode_DEFAULT(0),
+public enum TLSOptionsProtocol {
 
     /**
-     * Capture traffic using IPtables redirection
+     * Automatically choose the optimal TLS version.
      */
-    CaptureMode_IPTABLES(1),
+    Server_TLSOptions_TLS_AUTO(0),
 
     /**
-     * No traffic capture. When used in egress listener, the application is
-     * expected to explicitly communicate with the listener port/unix
-     * domain socket. When used in ingress listener, care needs to be taken
-     * to ensure that the listener port is not in use by other processes on
-     * the host.
+     * TLS version 1.0
      */
-    CaptureMode_NONE(2);
+    Server_TLSOptions_TLSV1_0(1),
+
+    /**
+     * TLS version 1.1
+     */
+    Server_TLSOptions_TLSV1_1(2),
+
+    /**
+     * TLS version 1.2
+     */
+    Server_TLSOptions_TLSV1_2(3),
+
+    /**
+     * TLS version 1.3
+     */
+    Server_TLSOptions_TLSV1_3(4);
 
     private final int intValue;
 
-    CaptureMode(int intValue) {
+    TLSOptionsProtocol(int intValue) {
         this.intValue = intValue;
     }
 

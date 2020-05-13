@@ -1,9 +1,0 @@
-apiVersion: "config.istio.io/v1alpha2"
-kind: rule
-metadata:
-  name: denynameserviceaccess
-spec:
-  match: destination.labels["app"] == "spring-boot-istio-security-name" && source.labels["app"] == "spring-boot-istio-security-greeting"
-  actions:
-  - handler: denynameservicehandler.denier
-    instances: [ denynameservicerequest.checknothing ]

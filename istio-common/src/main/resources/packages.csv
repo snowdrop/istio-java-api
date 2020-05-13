@@ -1,45 +1,48 @@
-github.com/golang/protobuf/ptypes/duration       ,me.snowdrop.istio.api                         ,protobuf_duration_
-github.com/gogo/protobuf/types                   ,me.snowdrop.istio.api                         ,protobuf_types_
-github.com/golang/protobuf/ptypes/any            ,me.snowdrop.istio.api                         ,protobuf_any_
-github.com/gogo/googleapis/google/rpc            ,me.snowdrop.istio.api                         ,google_rpc_
+github.com/golang/protobuf/ptypes/duration              ,me.snowdrop.istio.api                         ,protobuf_duration_
+github.com/gogo/protobuf/types                          ,me.snowdrop.istio.api                         ,protobuf_types_
+github.com/golang/protobuf/ptypes/any                   ,me.snowdrop.istio.api                         ,protobuf_any_
+github.com/gogo/googleapis/google/rpc                   ,me.snowdrop.istio.api                         ,google_rpc_
+istio.io/gogo-genproto/googleapis/google/rpc            ,me.snowdrop.istio.api                         ,istio_io_gogo_genproto_googleapis_google_rpc_
 ## END MANUAL DEFINITIONS
 # api
-istio.io/api/authentication/v1alpha1             ,me.snowdrop.istio.api.authentication.v1alpha1 ,istio_authentication_v1alpha1_
-istio.io/api/mcp/v1alpha1                        ,me.snowdrop.istio.api.mcp.v1alpha1            ,istio_mcp_v1alpha1_
-istio.io/api/mesh/v1alpha1                       ,me.snowdrop.istio.api.mesh.v1alpha1           ,istio_mesh_v1alpha1_
-istio.io/api/mixer/v1                            ,me.snowdrop.istio.api.mixer.v1                ,istio_mixer_v1_
-istio.io/api/networking/v1alpha3                 ,me.snowdrop.istio.api.networking.v1alpha3     ,istio_networking_v1alpha3_
-istio.io/api/policy/v1beta1                      ,me.snowdrop.istio.api.policy.v1beta1          ,istio_policy_v1beta1_
-istio.io/api/rbac/v1alpha1                       ,me.snowdrop.istio.api.rbac.v1alpha1           ,istio_rbac_v1alpha1_
+istio.io/api/authentication/v1alpha1,me.snowdrop.istio.api.authentication.v1alpha1,istio_authentication_v1alpha1_
+istio.io/api/mcp/v1alpha1,me.snowdrop.istio.api.mcp.v1alpha1,istio_mcp_v1alpha1_
+istio.io/api/mesh/v1alpha1,me.snowdrop.istio.api.mesh.v1alpha1,istio_mesh_v1alpha1_
+istio.io/api/mixer/v1,me.snowdrop.istio.api.mixer.v1,istio_mixer_v1_
+istio.io/api/networking/v1alpha3,me.snowdrop.istio.api.networking.v1alpha3,istio_networking_v1alpha3_
+istio.io/api/networking/v1beta1,me.snowdrop.istio.api.networking.v1beta1,istio_networking_v1beta1_
+istio.io/api/operator/v1alpha1,me.snowdrop.istio.api.operator.v1alpha1,istio_operator_v1alpha1_
+istio.io/api/policy/v1beta1,me.snowdrop.istio.api.policy.v1beta1,istio_policy_v1beta1_
+istio.io/api/rbac/v1alpha1,me.snowdrop.istio.api.rbac.v1alpha1,istio_rbac_v1alpha1_
+istio.io/api/security/v1beta1,me.snowdrop.istio.api.security.v1beta1,istio_security_v1beta1_
+istio.io/api/type/v1beta1,me.snowdrop.istio.api.type.v1beta1,istio_type_v1beta1_
 # adapter
-istio.io/istio/mixer/adapter/bypass/config       ,me.snowdrop.istio.mixer.adapter.bypass        ,istio_adapter_bypass_
-istio.io/istio/mixer/adapter/circonus/config     ,me.snowdrop.istio.mixer.adapter.circonus      ,istio_adapter_circonus_
-istio.io/istio/mixer/adapter/cloudwatch/config   ,me.snowdrop.istio.mixer.adapter.cloudwatch    ,istio_adapter_cloudwatch_
-istio.io/istio/mixer/adapter/denier/config       ,me.snowdrop.istio.mixer.adapter.denier        ,istio_adapter_denier_
-istio.io/istio/mixer/adapter/dogstatsd/config    ,me.snowdrop.istio.mixer.adapter.dogstatsd     ,istio_adapter_dogstatsd_
-istio.io/istio/mixer/adapter/fluentd/config      ,me.snowdrop.istio.mixer.adapter.fluentd       ,istio_adapter_fluentd_
-istio.io/istio/mixer/adapter/kubernetesenv/config,me.snowdrop.istio.mixer.adapter.kubernetesenv ,istio_adapter_kubernetesenv_
-istio.io/istio/mixer/adapter/list/config         ,me.snowdrop.istio.mixer.adapter.list          ,istio_adapter_list_
-istio.io/istio/mixer/adapter/memquota/config     ,me.snowdrop.istio.mixer.adapter.memquota      ,istio_adapter_memquota_
-istio.io/istio/mixer/adapter/opa/config          ,me.snowdrop.istio.mixer.adapter.opa           ,istio_adapter_opa_
-istio.io/istio/mixer/adapter/prometheus/config   ,me.snowdrop.istio.mixer.adapter.prometheus    ,istio_adapter_prometheus_
-istio.io/istio/mixer/adapter/rbac/config         ,me.snowdrop.istio.mixer.adapter.rbac          ,istio_adapter_rbac_
-istio.io/istio/mixer/adapter/redisquota/config   ,me.snowdrop.istio.mixer.adapter.redisquota    ,istio_adapter_redisquota_
-istio.io/istio/mixer/adapter/signalfx/config     ,me.snowdrop.istio.mixer.adapter.signalfx      ,istio_adapter_signalfx_
-istio.io/istio/mixer/adapter/solarwinds/config   ,me.snowdrop.istio.mixer.adapter.solarwinds    ,istio_adapter_solarwinds_
-istio.io/istio/mixer/adapter/stackdriver/config  ,me.snowdrop.istio.mixer.adapter.stackdriver   ,istio_adapter_stackdriver_
-istio.io/istio/mixer/adapter/statsd/config       ,me.snowdrop.istio.mixer.adapter.statsd        ,istio_adapter_statsd_
-istio.io/istio/mixer/adapter/stdio/config        ,me.snowdrop.istio.mixer.adapter.stdio         ,istio_adapter_stdio_
-istio.io/istio/mixer/adapter/zipkin/config       ,me.snowdrop.istio.mixer.adapter.zipkin        ,istio_adapter_zipkin_
+istio.io/istio/mixer/adapter/bypass/config,me.snowdrop.istio.mixer.adapter.bypass,istio_adapter_bypass_
+istio.io/istio/mixer/adapter/circonus/config,me.snowdrop.istio.mixer.adapter.circonus,istio_adapter_circonus_
+istio.io/istio/mixer/adapter/cloudwatch/config,me.snowdrop.istio.mixer.adapter.cloudwatch,istio_adapter_cloudwatch_
+istio.io/istio/mixer/adapter/denier/config,me.snowdrop.istio.mixer.adapter.denier,istio_adapter_denier_
+istio.io/istio/mixer/adapter/dogstatsd/config,me.snowdrop.istio.mixer.adapter.dogstatsd,istio_adapter_dogstatsd_
+istio.io/istio/mixer/adapter/fluentd/config,me.snowdrop.istio.mixer.adapter.fluentd,istio_adapter_fluentd_
+istio.io/istio/mixer/adapter/kubernetesenv/config,me.snowdrop.istio.mixer.adapter.kubernetesenv,istio_adapter_kubernetesenv_
+istio.io/istio/mixer/adapter/list/config,me.snowdrop.istio.mixer.adapter.list,istio_adapter_list_
+istio.io/istio/mixer/adapter/memquota/config,me.snowdrop.istio.mixer.adapter.memquota,istio_adapter_memquota_
+istio.io/istio/mixer/adapter/opa/config,me.snowdrop.istio.mixer.adapter.opa,istio_adapter_opa_
+istio.io/istio/mixer/adapter/prometheus/config,me.snowdrop.istio.mixer.adapter.prometheus,istio_adapter_prometheus_
+istio.io/istio/mixer/adapter/redisquota/config,me.snowdrop.istio.mixer.adapter.redisquota,istio_adapter_redisquota_
+istio.io/istio/mixer/adapter/solarwinds/config,me.snowdrop.istio.mixer.adapter.solarwinds,istio_adapter_solarwinds_
+istio.io/istio/mixer/adapter/stackdriver/config,me.snowdrop.istio.mixer.adapter.stackdriver,istio_adapter_stackdriver_
+istio.io/istio/mixer/adapter/statsd/config,me.snowdrop.istio.mixer.adapter.statsd,istio_adapter_statsd_
+istio.io/istio/mixer/adapter/stdio/config,me.snowdrop.istio.mixer.adapter.stdio,istio_adapter_stdio_
+istio.io/istio/mixer/adapter/zipkin/config,me.snowdrop.istio.mixer.adapter.zipkin,istio_adapter_zipkin_
 # template
-istio.io/istio/mixer/template/apikey             ,me.snowdrop.istio.mixer.template.apikey       ,istio_mixer_apikey_
-istio.io/istio/mixer/template/authorization      ,me.snowdrop.istio.mixer.template.authorization,istio_mixer_authorization_
-istio.io/istio/mixer/template/checknothing       ,me.snowdrop.istio.mixer.template.checknothing ,istio_mixer_checknothing_
-istio.io/istio/mixer/template/edge               ,me.snowdrop.istio.mixer.template.edge         ,istio_mixer_edge_
-istio.io/istio/mixer/template/listentry          ,me.snowdrop.istio.mixer.template.listentry    ,istio_mixer_listentry_
-istio.io/istio/mixer/template/logentry           ,me.snowdrop.istio.mixer.template.logentry     ,istio_mixer_logentry_
-istio.io/istio/mixer/template/metric             ,me.snowdrop.istio.mixer.template.metric       ,istio_mixer_metric_
-istio.io/istio/mixer/template/quota              ,me.snowdrop.istio.mixer.template.quota        ,istio_mixer_quota_
-istio.io/istio/mixer/template/reportnothing      ,me.snowdrop.istio.mixer.template.reportnothing,istio_mixer_reportnothing_
-istio.io/istio/mixer/template/sample             ,me.snowdrop.istio.mixer.template.sample       ,istio_mixer_sample_
-istio.io/istio/mixer/template/tracespan          ,me.snowdrop.istio.mixer.template.tracespan    ,istio_mixer_tracespan_
+istio.io/istio/mixer/template/apikey,me.snowdrop.istio.mixer.template.apikey,istio_mixer_apikey_
+istio.io/istio/mixer/template/authorization,me.snowdrop.istio.mixer.template.authorization,istio_mixer_authorization_
+istio.io/istio/mixer/template/checknothing,me.snowdrop.istio.mixer.template.checknothing,istio_mixer_checknothing_
+istio.io/istio/mixer/template/edge,me.snowdrop.istio.mixer.template.edge,istio_mixer_edge_
+istio.io/istio/mixer/template/listentry,me.snowdrop.istio.mixer.template.listentry,istio_mixer_listentry_
+istio.io/istio/mixer/template/logentry,me.snowdrop.istio.mixer.template.logentry,istio_mixer_logentry_
+istio.io/istio/mixer/template/metric,me.snowdrop.istio.mixer.template.metric,istio_mixer_metric_
+istio.io/istio/mixer/template/quota,me.snowdrop.istio.mixer.template.quota,istio_mixer_quota_
+istio.io/istio/mixer/template/reportnothing,me.snowdrop.istio.mixer.template.reportnothing,istio_mixer_reportnothing_
+istio.io/istio/mixer/template/sample,me.snowdrop.istio.mixer.template.sample,istio_mixer_sample_
+istio.io/istio/mixer/template/tracespan,me.snowdrop.istio.mixer.template.tracespan,istio_mixer_tracespan_

@@ -17,7 +17,7 @@
  *
  */
 
-package me.snowdrop.istio.api.networking.v1alpha3;
+package me.snowdrop.istio.api.networking.v1beta1;
 
 public enum ServiceEntryResolution {
     /**
