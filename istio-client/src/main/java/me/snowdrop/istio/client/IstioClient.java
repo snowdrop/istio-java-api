@@ -14,10 +14,6 @@ import me.snowdrop.istio.api.IstioResource;
 
 public interface IstioClient extends Client, IstioDsl {
 
-    AdapterDsl adapter();
-
-    MixerDsl mixer();
-
     ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is);
 
     NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item);

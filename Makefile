@@ -37,7 +37,7 @@ schema:
 	go run ./cmd/generate/generate.go > $(SCHEMA_DIR)/istio-schema.json
 
 build: schema
-	./mvnw clean install
+	./mvnw clean install -e
 
 istio_version:
 	@echo $(shell grep istio.io/istio go.mod | cut -d'/' -f4 | cut -d' ' -f3 | tr -d '[:space:]')
