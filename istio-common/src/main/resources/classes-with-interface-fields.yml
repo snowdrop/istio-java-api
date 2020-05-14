@@ -74,3 +74,8 @@ classes:
       prefix: isStringMatch_MatchType
       regex: isStringMatch_MatchType
       suffix: isStringMatch_MatchType
+  - class: me.snowdrop.istio.api.networking.v1alpha3.EnvoyConfigObjectMatch
+    fields:
+      listener: isEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes
+      routeConfiguration: isEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes
+      cluster: isEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes
