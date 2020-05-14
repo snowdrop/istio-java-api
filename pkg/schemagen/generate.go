@@ -595,12 +595,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 			continue
 		}
 
-		// Skip dockerImageMetadata field
 		path := pkgPath(t)
-		if path == "github.com/openshift/origin/pkg/image/api/v1" && t.Name() == "Image" && name == "dockerImageMetadata" {
-			continue
-		}
-
 		humanReadableFieldName := field.Type.Name() + " field " + name + " in " + path + "/" + t.Name()
 
 		desc := getFieldDescription(field)
