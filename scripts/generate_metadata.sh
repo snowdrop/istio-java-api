@@ -30,6 +30,8 @@ elif [ -n "$1" ]; then
 else
   ISTIO_VERSION=$(istioVersion)
 fi
+
+echo "Using Istio version ${ISTIO_VERSION}"
 ISTIO_DIR="istio-$ISTIO_VERSION"
 if [ ! -d "$ISTIO_DIR" ]; then
   # if istio version is not already downloaded, download it
@@ -40,7 +42,6 @@ else
   echo "Istio version $ISTIO_VERSION is already present locally, using it"
 fi
 
-echo "Using Istio version ${ISTIO_VERSION}"
 go get istio.io/istio@"${ISTIO_VERSION}"
 go get istio.io/api@"${ISTIO_VERSION}"
 
