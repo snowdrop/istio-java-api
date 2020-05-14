@@ -560,7 +560,14 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 		name := getQualifiedInterfaceName(t)
 		interfaceType, ok := g.interfacesMap[name]
 		if !ok {
-			g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)
+			// special cases for AttributeValue and Value which are handled by TypedValue
+			switch name {
+			case "github.com.gogo.protobuf.types.isValue_Kind":
+			case "api.mixer.v1.isAttributes_AttributeValue_Value":
+			case "api.policy.v1beta1.isValue_Value":
+			default:
+				g.unknownInterfaces = append(g.unknownInterfaces, humanReadableFieldName)
+			}
 			interfaceType = g.javaType(t)
 		}
 
