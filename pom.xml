@@ -151,6 +151,7 @@
   </profiles>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler.plugin.version>3.7.0</compiler.plugin.version>
     <maven.compiler.argument.target>${maven.compiler.target}</maven.compiler.argument.target>
     <maven.compiler.argument.source>${maven.compiler.source}</maven.compiler.argument.source>
