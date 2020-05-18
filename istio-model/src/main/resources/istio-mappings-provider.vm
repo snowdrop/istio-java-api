@@ -5,14 +5,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import java.util.HashMap;
 import java.util.Map;
 
-#foreach ($key in ${model.keySet()})
-#set ($spec = $key)
-#set ($length = $spec.length())
-#set ($tindex = $length - 4)
-#set ($resource = $spec.substring(0, $tindex))
-import $resource;
-#end
-
 public class IstioResourceMappingsProvider implements KubernetesResourceMappingProvider {
 
     public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
@@ -20,12 +12,9 @@ public class IstioResourceMappingsProvider implements KubernetesResourceMappingP
     public IstioResourceMappingsProvider () {
 
 #foreach ($key in ${model.keySet()})
-#set ($spec = $key)
-#set ($length = $spec.length())
+#set ($length = $key.length())
 #set ($tindex = $length - 4)
-#set ($resource = $spec.substring(0, $tindex))
-#set ($dindex = $resource.lastIndexOf(".")+1)
-#set ($c = $resource.substring($dindex))
+#set ($resource = $key.substring(0, $tindex))
 #set ($version = "unknown")
 #set ($kind = "unknown")
 #set ($annotations = $model.get($key).annotations)
@@ -37,7 +26,7 @@ public class IstioResourceMappingsProvider implements KubernetesResourceMappingP
 #set ($kind = $annotation.getParameters().get("name"))
 #end
 #end
-        mappings.put("$version#$kind", ${c}.class);
+        mappings.put("$version#$kind", ${resource}.class);
 #end
     }
 
