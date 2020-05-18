@@ -16,7 +16,7 @@ classes:
       grpcStatus: isHTTPFaultInjection_Abort_ErrorType
       httpStatus: isHTTPFaultInjection_Abort_ErrorType
       http2Error: isHTTPFaultInjection_Abort_ErrorType
-      percentage: me.snowdrop.istio.api.networking.v1alpha3.Percent
+      percentage: me.snowdrop.istio.api.networking.v1beta1.Percent
   - class: me.snowdrop.istio.api.networking.v1alpha3.Delay
     fields:
       percent: integer
