@@ -29,7 +29,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.IstioSpec;
 
-import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDNameFor;
+import static me.snowdrop.istio.api.internal.IstioSpecRegistry.getCRDInfo;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -63,7 +63,8 @@ public class YAML {
 
                     if (resourceYaml.containsKey(KIND)) {
                         final String kind = (String) resourceYaml.get(KIND);
-                        getCRDNameFor(kind).orElseThrow(() -> new IllegalArgumentException(String.format("%s is not a known Istio resource.", kind)));
+                        final String version = (String) resourceYaml.get("version");
+                        getCRDInfo(kind, version).orElseThrow(() -> new IllegalArgumentException(String.format("%s/%s is not a known Istio resource.", kind, version)));
                         final IstioResource resource = objectMapper.convertValue(resourceYaml, IstioResource.class);
                         if (wantSpec) {
                             results.add(clazz.cast(resource.getSpec()));

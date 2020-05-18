@@ -29,7 +29,8 @@ public class IstioRegistryTest {
 
     @Test
     public void shouldReturnKindWithProperCase() {
-        assertThat(IstioSpecRegistry.getIstioKind("Metric").get()).isEqualTo("metric");
-        assertThat(IstioSpecRegistry.getIstioKind("Gateway").get()).isEqualTo("Gateway");
+        assertThat(IstioSpecRegistry.getCRDInfo("Handler", "v1alpha2").get().getKind()).isEqualTo("handler");
+        assertThat(IstioSpecRegistry.getCRDInfo("Gateway", "v1alpha3").get().getKind()).isEqualTo("Gateway");
+        assertThat(IstioSpecRegistry.getCRDInfo("Gateway", "v1beta1").get().getKind()).isEqualTo("Gateway");
     }
 }

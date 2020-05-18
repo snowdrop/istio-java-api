@@ -7,14 +7,11 @@ package me.snowdrop.istio.api.internal;
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
 import me.snowdrop.istio.api.IstioSpec;
+
+import java.io.InputStream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -39,15 +36,12 @@ public class IstioSpecRegistry {
             throw new RuntimeException("Couldn't load Istio CRD information from classpath", e);
         }
 
-        crdInfos.putAll(crdFile.entrySet().stream().collect(
-                Collectors.toMap(
-                        e -> String.valueOf(e.getKey()).toLowerCase(),
-                        e -> getCRDInfoFrom(e))
-        ));
+        crdInfos.putAll(crdFile.entrySet().stream().collect(Collectors.toMap(IstioSpecRegistry::getCRDKeyFrom, IstioSpecRegistry::getCRDInfoFrom)));
     }
 
     private static CRDInfo getCRDInfoFrom(Map.Entry<Object, Object> entry) {
-        final String kind = String.valueOf(entry.getKey());
+        final String[] versionAndClass = String.valueOf(entry.getKey()).split("\\.");
+        final String kind = versionAndClass[1];
 
         // compute class name based on CRD kind
         String className;
@@ -71,7 +65,7 @@ public class IstioSpecRegistry {
         final String[] crdDetail = String.valueOf(entry.getValue()).split("\\|");
         final String name = crdDetail[0].trim();
         final String istioLabel = crdDetail[1].trim().substring(crdDetail[1].lastIndexOf('='));
-        final String version = crdDetail[2].trim().substring(crdDetail[2].lastIndexOf('='));
+        final String version = versionAndClass[0];
 
         String packageName;
         switch (istioLabel) {
@@ -97,7 +91,7 @@ public class IstioSpecRegistry {
         return new CRDInfo(kind, version, name, packageName + className);
     }
 
-    static class CRDInfo {
+    public static class CRDInfo {
         private final String kind;
 
         private final String version;
@@ -119,8 +113,12 @@ public class IstioSpecRegistry {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             CRDInfo crdInfo = (CRDInfo) o;
 
@@ -137,7 +135,7 @@ public class IstioSpecRegistry {
             return kind + ":\t" + crdName + "\t=>\t" + className;
         }
 
-        String getGroup() {
+        public String getGroup() {
             return getGroup(crdName);
         }
 
@@ -146,8 +144,16 @@ public class IstioSpecRegistry {
             return crdName.substring(beginIndex + 1, crdName.indexOf('.', beginIndex + 1));
         }
 
-        String getPlural() {
+        public String getAPIVersion() {
+            return crdName.substring(crdName.indexOf(".") + 1) + "/" + version;
+        }
+
+        public String getPlural() {
             return getPlural(crdName);
+        }
+
+        public String getKind() {
+            return kind;
         }
 
         static String getPlural(String crdName) {
@@ -189,53 +195,30 @@ public class IstioSpecRegistry {
         }
     }
 
-    public static Optional<String> getIstioKind(String simpleClassName) {
-        final String key = getCRDKeyFrom(simpleClassName);
+    public static Optional<CRDInfo> getCRDInfo(String simpleClassName, String version) {
+        final String key = getCRDKeyFrom(simpleClassName, version);
 
         CRDInfo crd = crdInfos.get(key);
         if (crd != null) {
             crd.visited = true;
-            return Optional.of(crd.kind);
+            return Optional.of(crd);
         } else {
             return Optional.empty();
         }
     }
 
-    public static Optional<String> getIstioKindPlural(String simpleClassName) {
-        final String key = getCRDKeyFrom(simpleClassName);
-
-        CRDInfo crd = crdInfos.get(key);
-        if (crd != null) {
-            return Optional.of(crd.getPlural());
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    private static String getCRDKeyFrom(String simpleClassName) {
+    private static String getCRDKeyFrom(String simpleClassName, String version) {
         String key = simpleClassName;
         if (simpleClassName.endsWith("Spec")) {
             key = simpleClassName.substring(0, simpleClassName.indexOf("Spec"));
         }
+        key = version + key;
         return key.toLowerCase();
     }
 
-    public static Optional<String> getIstioApiVersion(String simpleClassName) {
-        final String key = getCRDKeyFrom(simpleClassName);
-
-        CRDInfo crd = crdInfos.get(key);
-        if (crd != null) {
-            crd.visited = true;
-            String prefix = crd.crdName.substring(crd.crdName.indexOf(".") + 1);
-            return Optional.of(prefix + "/" + crd.version);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<String> getCRDNameFor(String kind) {
-        final CRDInfo crdInfo = crdInfos.get(kind);
-        return crdInfo != null ? Optional.of(crdInfo.crdName) : Optional.empty();
+    private static String getCRDKeyFrom(Map.Entry<Object, Object> propEntry) {
+        final String[] versionAndClass = String.valueOf(propEntry.getKey()).split("\\.");
+        return getCRDKeyFrom(versionAndClass[1], versionAndClass[0]);
     }
 
     public static Set<String> getKnownKinds() {
