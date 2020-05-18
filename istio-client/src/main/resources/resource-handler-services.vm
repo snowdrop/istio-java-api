@@ -1,3 +1,9 @@
 #foreach ($m in ${model.values()})
-me.snowdrop.istio.client.internal.handler.${m.name}Handler
+    #set ($pkg = $m.packageName)
+    #set ($pkgParts = $pkg.split("\."))
+    #set ($pkgVersionIndex = $pkgParts.size() - 1)
+    #set ($pkgGroupIndex = $pkgParts.size() - 2)
+    #set ($pkgVersion = $pkgParts[$pkgVersionIndex])
+    #set ($pkgGroup = $pkgParts[$pkgGroupIndex])
+me.snowdrop.istio.client.internal.handler.${pkgGroup}.${pkgVersion}.${m.name}Handler
 #end

@@ -45,7 +45,7 @@ public class GatewayIT {
                 .build();
 
         //when
-        final Gateway resultResource = istioClient.gateway().create(gateway);
+        final Gateway resultResource = istioClient.v1beta1Gateway().create(gateway);
 
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -82,7 +82,7 @@ public class GatewayIT {
         });
 
         //when
-        final Boolean deleteResult = istioClient.gateway().delete(resultResource);
+        final Boolean deleteResult = istioClient.v1beta1Gateway().delete(resultResource);
 
         //then
         assertThat(deleteResult).isTrue();
