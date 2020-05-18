@@ -10,12 +10,28 @@ classes:
       httpStatus: isHTTPFaultInjection_Abort_ErrorType
       http2Error: isHTTPFaultInjection_Abort_ErrorType
       percentage: me.snowdrop.istio.api.networking.v1alpha3.Percent
+  - class: me.snowdrop.istio.api.networking.v1beta1.Abort
+    fields:
+      percent: integer
+      grpcStatus: isHTTPFaultInjection_Abort_ErrorType
+      httpStatus: isHTTPFaultInjection_Abort_ErrorType
+      http2Error: isHTTPFaultInjection_Abort_ErrorType
+      percentage: me.snowdrop.istio.api.networking.v1alpha3.Percent
   - class: me.snowdrop.istio.api.networking.v1alpha3.Delay
     fields:
       percent: integer
       exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
       fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
+  - class: me.snowdrop.istio.api.networking.v1beta1.Delay
+    fields:
+      percent: integer
+      exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
+      fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
   - class: me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings
+    fields:
+      simple: isLoadBalancerSettings_LbPolicy
+      consistentHash: isLoadBalancerSettings_LbPolicy
+  - class: me.snowdrop.istio.api.networking.v1beta1.LoadBalancerSettings
     fields:
       simple: isLoadBalancerSettings_LbPolicy
       consistentHash: isLoadBalancerSettings_LbPolicy
@@ -32,7 +48,18 @@ classes:
       exact: isStringMatch_MatchType
       prefix: isStringMatch_MatchType
       regex: isStringMatch_MatchType
+  - class: me.snowdrop.istio.api.networking.v1beta1.StringMatch
+    fields:
+      exact: isStringMatch_MatchType
+      prefix: isStringMatch_MatchType
+      regex: isStringMatch_MatchType
   - class: me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB
+    fields:
+      httpHeaderName: isLoadBalancerSettings_ConsistentHashLB_HashKey
+      httpCookie: isLoadBalancerSettings_ConsistentHashLB_HashKey
+      minimumRingSize: integer
+      useSourceIp: isLoadBalancerSettings_ConsistentHashLB_HashKey
+  - class: me.snowdrop.istio.api.networking.v1beta1.ConsistentHashLB
     fields:
       httpHeaderName: isLoadBalancerSettings_ConsistentHashLB_HashKey
       httpCookie: isLoadBalancerSettings_ConsistentHashLB_HashKey
