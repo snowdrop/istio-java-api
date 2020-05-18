@@ -220,25 +220,31 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	path := pkgPath(t)
 
-	// transform type name if needed, checking if the type is a top-level one and thus a CRD
-	var isCRD = true
-	if strings.Contains(path, "template") {
-		name, isCRD = transformTemplateName(name, path)
-	} else if strings.Contains(path, "adapter") {
-		name, isCRD = transformAdapterName(name, path)
-	}
+	if strings.Contains(path, "istio.io") {
+		// transform type name if needed, checking if the type is a top-level one and thus a CRD
+		var isCRD = true
+		if strings.Contains(path, "template") {
+			name, isCRD = transformTemplateName(name, path)
+		} else if strings.Contains(path, "adapter") {
+			name, isCRD = transformAdapterName(name, path)
+		}
 
-	// if the type name is still marked as CRD, add Spec suffix to its name if it's a known CRD name
-	// we need this "double" check because some adapter/template classes have the same name as top-level CRDs (e.g. Quota)
-	if isCRD {
-		lower := strings.ToLower(name)
-		crdDesc, ok := g.crds[lower]
-		if ok {
-			name += "Spec"
-			g.crds[lower] = CrdDescriptor{
-				Name:    crdDesc.Name,
-				CrdType: crdDesc.CrdType,
-				Visited: true,
+		// if the type name is still marked as CRD, add Spec suffix to its name if it's a known CRD name
+		// we need this "double" check because some adapter/template classes have the same name as top-level CRDs (e.g. Quota)
+		if isCRD {
+			// attempt to retrieve the version from the path
+			version := filepath.Base(path)
+			if strings.HasPrefix(version, "v") {
+				lower := version + "." + strings.ToLower(name)
+				crdDesc, ok := g.crds[lower]
+				if ok {
+					name += "Spec"
+					g.crds[lower] = CrdDescriptor{
+						Name:    crdDesc.Name,
+						CrdType: crdDesc.CrdType,
+						Visited: true,
+					}
+				}
 			}
 		}
 	}
