@@ -98,17 +98,19 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 annotationValue.param(key);
             }
         }
-
-        final Optional<String> kind = IstioSpecRegistry.getIstioKind(clazz.name());
-        if (kind.isPresent()) {
-            clazz._implements(IstioSpec.class);
-            final String plural = IstioSpecRegistry.getIstioKindPlural(clazz.name()).orElse(kind + "s");
-            clazz.annotate(IstioKind.class).param("name", kind.get()).param("plural", plural);
+    
+        final String pkgName = clazz.getPackage().name();
+        final int i = pkgName.lastIndexOf('.');
+        final String version = pkgName.substring(i + 1);
+        if (version.startsWith("v")) {
+            final Optional<IstioSpecRegistry.CRDInfo> kind = IstioSpecRegistry.getCRDInfo(clazz.name(), version);
+            kind.ifPresent(k -> {
+                clazz._implements(IstioSpec.class);
+                clazz.annotate(IstioKind.class).param("name", k.getKind()).param("plural", k.getPlural());
+                clazz.annotate(IstioApiVersion.class).param("value", k.getAPIVersion());
+            });
         }
-        final Optional<String> version = IstioSpecRegistry.getIstioApiVersion(clazz.name());
-        if (version.isPresent()) {
-            clazz.annotate(IstioApiVersion.class).param("value", version.get());
-        }
+        
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
         JAnnotationUse buildable = clazz.annotate(Buildable.class)
