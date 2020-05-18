@@ -2659,6 +2659,73 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.mixer.v1.StringMap"
     },
+    "istio_networking_v1alpha3_ConnectionPoolSettings": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "http": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_ConnectionPoolSettings_HTTPSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPSettings"
+        },
+        "tcp": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_ConnectionPoolSettings_TCPSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPSettings"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConnectionPoolSettings"
+    },
+    "istio_networking_v1alpha3_ConnectionPoolSettings_HTTPSettings": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "h2UpgradePolicy": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.H2UpgradePolicy"
+        },
+        "http1MaxPendingRequests": {
+          "type": "integer",
+          "description": ""
+        },
+        "http2MaxRequests": {
+          "type": "integer",
+          "description": ""
+        },
+        "idleTimeout": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
+        "maxRequestsPerConnection": {
+          "type": "integer",
+          "description": ""
+        },
+        "maxRetries": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPSettings"
+    },
+    "istio_networking_v1alpha3_ConnectionPoolSettings_TCPSettings": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "connectTimeout": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
+        "maxConnections": {
+          "type": "integer",
+          "description": ""
+        },
+        "tcpKeepalive": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_ConnectionPoolSettings_TCPSettings_TcpKeepalive",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TcpKeepalive"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPSettings"
+    },
     "istio_networking_v1alpha3_ConnectionPoolSettings_TCPSettings_TcpKeepalive": {
       "type": "object",
       "description": "",
@@ -2678,6 +2745,114 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TcpKeepalive"
+    },
+    "istio_networking_v1alpha3_CorsPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "allowCredentials": {
+          "$ref": "#/definitions/protobuf_types_BoolValue",
+          "javaType": "me.snowdrop.istio.api.BoolValue"
+        },
+        "allowHeaders": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "allowMethods": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "allowOrigins": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+          }
+        },
+        "deprecatedAllowOrigin": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "exposeHeaders": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "maxAge": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.CorsPolicy"
+    },
+    "istio_networking_v1alpha3_Destination": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_PortSelector",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector"
+        },
+        "subset": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Destination"
+    },
+    "istio_networking_v1alpha3_DestinationRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "exportTo": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "host": {
+          "type": "string",
+          "description": ""
+        },
+        "subsets": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_Subset",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Subset"
+          }
+        },
+        "trafficPolicy": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_TrafficPolicy",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TrafficPolicy"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleSpec"
     },
     "istio_networking_v1alpha3_EnvoyFilter": {
       "type": "object",
@@ -2862,6 +3037,642 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ProxyMatch"
     },
+    "istio_networking_v1alpha3_Gateway": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "selector": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "servers": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_Server",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Server"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.GatewaySpec"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "abort": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Abort",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Abort"
+        },
+        "delay": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Delay",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPFaultInjection"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Abort": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "errorType": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Abort.ErrorType",
+          "isInterface": true
+        },
+        "percentage": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Percent",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Percent"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Abort"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Abort_GrpcStatus": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.Abort.ErrorType"
+      ],
+      "description": "",
+      "properties": {
+        "grpcStatus": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.GrpcStatusErrorType"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Abort_Http2Error": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.Abort.ErrorType"
+      ],
+      "description": "",
+      "properties": {
+        "http2Error": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Http2ErrorErrorType"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Abort_HttpStatus": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.Abort.ErrorType"
+      ],
+      "description": "",
+      "properties": {
+        "httpStatus": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpStatusErrorType"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Delay": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "httpDelayType": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay.HttpDelayType",
+          "isInterface": true
+        },
+        "percent": {
+          "type": "integer",
+          "description": ""
+        },
+        "percentage": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Percent",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Percent"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Delay"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Delay_ExponentialDelay": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.Delay.HttpDelayType"
+      ],
+      "description": "",
+      "properties": {
+        "exponentialDelay": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ExponentialDelayHttpDelayType"
+    },
+    "istio_networking_v1alpha3_HTTPFaultInjection_Delay_FixedDelay": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.Delay.HttpDelayType"
+      ],
+      "description": "",
+      "properties": {
+        "fixedDelay": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.FixedDelayHttpDelayType"
+    },
+    "istio_networking_v1alpha3_HTTPMatchRequest": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authority": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+        },
+        "gateways": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "headers": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+          },
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.networking.v1alpha3.StringMatch\u003e"
+        },
+        "ignoreUriCase": {
+          "type": "boolean",
+          "description": ""
+        },
+        "method": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
+        },
+        "queryParams": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+          },
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.networking.v1alpha3.StringMatch\u003e"
+        },
+        "scheme": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+        },
+        "sourceLabels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "uri": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequest"
+    },
+    "istio_networking_v1alpha3_HTTPRedirect": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authority": {
+          "type": "string",
+          "description": ""
+        },
+        "redirectCode": {
+          "type": "integer",
+          "description": ""
+        },
+        "uri": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRedirect"
+    },
+    "istio_networking_v1alpha3_HTTPRetry": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attempts": {
+          "type": "integer",
+          "description": ""
+        },
+        "perTryTimeout": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
+        "retryOn": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRetry"
+    },
+    "istio_networking_v1alpha3_HTTPRewrite": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authority": {
+          "type": "string",
+          "description": ""
+        },
+        "uri": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRewrite"
+    },
+    "istio_networking_v1alpha3_HTTPRoute": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "corsPolicy": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_CorsPolicy",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.CorsPolicy"
+        },
+        "fault": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPFaultInjection"
+        },
+        "headers": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Headers",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Headers"
+        },
+        "match": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_HTTPMatchRequest",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPMatchRequest"
+          }
+        },
+        "mirror": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Destination",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Destination"
+        },
+        "mirrorPercent": {
+          "$ref": "#/definitions/protobuf_types_UInt32Value",
+          "javaType": "me.snowdrop.istio.api.UInt32Value"
+        },
+        "mirrorPercentage": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Percent",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Percent"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "redirect": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_HTTPRedirect",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRedirect"
+        },
+        "retries": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_HTTPRetry",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRetry"
+        },
+        "rewrite": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_HTTPRewrite",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRewrite"
+        },
+        "route": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_HTTPRouteDestination",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRouteDestination"
+          }
+        },
+        "timeout": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute"
+    },
+    "istio_networking_v1alpha3_HTTPRouteDestination": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destination": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Destination",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Destination"
+        },
+        "headers": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Headers",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Headers"
+        },
+        "weight": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRouteDestination"
+    },
+    "istio_networking_v1alpha3_Headers": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Headers_HeaderOperations",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HeaderOperations"
+        },
+        "response": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Headers_HeaderOperations",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HeaderOperations"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Headers"
+    },
+    "istio_networking_v1alpha3_Headers_HeaderOperations": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "add": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "remove": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "set": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HeaderOperations"
+    },
+    "istio_networking_v1alpha3_IstioEgressListener": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bind": {
+          "type": "string",
+          "description": ""
+        },
+        "captureMode": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode"
+        },
+        "hosts": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "port": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Port",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.IstioEgressListener"
+    },
+    "istio_networking_v1alpha3_IstioIngressListener": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bind": {
+          "type": "string",
+          "description": ""
+        },
+        "captureMode": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.CaptureMode"
+        },
+        "defaultEndpoint": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Port",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.IstioIngressListener"
+    },
+    "istio_networking_v1alpha3_L4MatchAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destinationSubnets": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "gateways": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
+        },
+        "sourceLabels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "sourceSubnet": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.L4MatchAttributes"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lbPolicy": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings.LbPolicy",
+          "isInterface": true
+        },
+        "localityLbSetting": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_LocalityLoadBalancerSetting",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.LocalityLoadBalancerSetting"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHash": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings.LbPolicy"
+      ],
+      "description": "",
+      "properties": {
+        "consistentHash": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLbPolicy"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "hashKey": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB.HashKey",
+          "isInterface": true
+        },
+        "minimumRingSize": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HTTPCookie": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "ttl": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPCookie"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpCookie": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB.HashKey"
+      ],
+      "description": "",
+      "properties": {
+        "httpCookie": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HTTPCookie",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPCookie"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpCookieHashKey"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB.HashKey"
+      ],
+      "description": "",
+      "properties": {
+        "httpHeaderName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpHeaderNameHashKey"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_UseSourceIp": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLB.HashKey"
+      ],
+      "description": "",
+      "properties": {
+        "useSourceIp": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.UseSourceIpHashKey"
+    },
+    "istio_networking_v1alpha3_LoadBalancerSettings_Simple": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings.LbPolicy"
+      ],
+      "description": "",
+      "properties": {
+        "simple": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLB"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLbPolicy"
+    },
     "istio_networking_v1alpha3_LocalityLoadBalancerSetting": {
       "type": "object",
       "description": "",
@@ -2927,6 +3738,525 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Failover"
     },
+    "istio_networking_v1alpha3_OutboundTrafficPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "mode": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.OutboundTrafficPolicyMode"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.OutboundTrafficPolicy"
+    },
+    "istio_networking_v1alpha3_OutlierDetection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "baseEjectionTime": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
+        "consecutive5xxErrors": {
+          "$ref": "#/definitions/protobuf_types_UInt32Value",
+          "javaType": "me.snowdrop.istio.api.UInt32Value"
+        },
+        "consecutiveErrors": {
+          "type": "integer",
+          "description": ""
+        },
+        "consecutiveGatewayErrors": {
+          "$ref": "#/definitions/protobuf_types_UInt32Value",
+          "javaType": "me.snowdrop.istio.api.UInt32Value"
+        },
+        "interval": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
+        },
+        "maxEjectionPercent": {
+          "type": "integer",
+          "description": ""
+        },
+        "minHealthPercent": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.OutlierDetection"
+    },
+    "istio_networking_v1alpha3_Percent": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Percent"
+    },
+    "istio_networking_v1alpha3_Port": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "number": {
+          "type": "integer",
+          "description": ""
+        },
+        "protocol": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
+    },
+    "istio_networking_v1alpha3_PortSelector": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "number": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector"
+    },
+    "istio_networking_v1alpha3_RouteDestination": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destination": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Destination",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Destination"
+        },
+        "weight": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.RouteDestination"
+    },
+    "istio_networking_v1alpha3_Server": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bind": {
+          "type": "string",
+          "description": ""
+        },
+        "defaultEndpoint": {
+          "type": "string",
+          "description": ""
+        },
+        "hosts": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "port": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Port",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
+        },
+        "tls": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_Server_TLSOptions",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptions"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Server"
+    },
+    "istio_networking_v1alpha3_Server_TLSOptions": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "caCertificates": {
+          "type": "string",
+          "description": ""
+        },
+        "cipherSuites": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "credentialName": {
+          "type": "string",
+          "description": ""
+        },
+        "httpsRedirect": {
+          "type": "boolean",
+          "description": ""
+        },
+        "maxProtocolVersion": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol"
+        },
+        "minProtocolVersion": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsProtocol"
+        },
+        "mode": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptionsMode"
+        },
+        "privateKey": {
+          "type": "string",
+          "description": ""
+        },
+        "serverCertificate": {
+          "type": "string",
+          "description": ""
+        },
+        "subjectAltNames": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "verifyCertificateHash": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "verifyCertificateSpki": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSOptions"
+    },
+    "istio_networking_v1alpha3_ServiceEntry": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "endpoints": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_ServiceEntry_Endpoint",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Endpoint"
+          }
+        },
+        "exportTo": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "hosts": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "location": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryLocation"
+        },
+        "ports": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_Port",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
+          }
+        },
+        "resolution": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryResolution"
+        },
+        "subjectAltNames": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntrySpec"
+    },
+    "istio_networking_v1alpha3_ServiceEntry_Endpoint": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": ""
+        },
+        "labels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "locality": {
+          "type": "string",
+          "description": ""
+        },
+        "network": {
+          "type": "string",
+          "description": ""
+        },
+        "ports": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "integer",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,Integer\u003e"
+        },
+        "weight": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Endpoint"
+    },
+    "istio_networking_v1alpha3_Sidecar": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "egress": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_IstioEgressListener",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.IstioEgressListener"
+          }
+        },
+        "ingress": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_IstioIngressListener",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.IstioIngressListener"
+          }
+        },
+        "outboundTrafficPolicy": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_OutboundTrafficPolicy",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.OutboundTrafficPolicy"
+        },
+        "workloadSelector": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_WorkloadSelector",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.WorkloadSelector"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SidecarSpec"
+    },
+    "istio_networking_v1alpha3_StringMatch": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "matchType": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch.MatchType",
+          "isInterface": true
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.StringMatch"
+    },
+    "istio_networking_v1alpha3_StringMatch_Exact": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.StringMatch.MatchType"
+      ],
+      "description": "",
+      "properties": {
+        "exact": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ExactMatchType"
+    },
+    "istio_networking_v1alpha3_StringMatch_Prefix": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.StringMatch.MatchType"
+      ],
+      "description": "",
+      "properties": {
+        "prefix": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType"
+    },
+    "istio_networking_v1alpha3_StringMatch_Regex": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.networking.v1alpha3.StringMatch.MatchType"
+      ],
+      "description": "",
+      "properties": {
+        "regex": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.RegexMatchType"
+    },
+    "istio_networking_v1alpha3_Subset": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "labels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "trafficPolicy": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_TrafficPolicy",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TrafficPolicy"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Subset"
+    },
+    "istio_networking_v1alpha3_TCPRoute": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "match": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_L4MatchAttributes",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.L4MatchAttributes"
+          }
+        },
+        "route": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_RouteDestination",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.RouteDestination"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPRoute"
+    },
+    "istio_networking_v1alpha3_TLSMatchAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "destinationSubnets": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "gateways": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
+        },
+        "sniHosts": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "sourceLabels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSMatchAttributes"
+    },
+    "istio_networking_v1alpha3_TLSRoute": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "match": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_TLSMatchAttributes",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSMatchAttributes"
+          }
+        },
+        "route": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_RouteDestination",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.RouteDestination"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSRoute"
+    },
     "istio_networking_v1alpha3_TLSSettings": {
       "type": "object",
       "description": "",
@@ -2961,6 +4291,122 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettings"
+    },
+    "istio_networking_v1alpha3_TrafficPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "connectionPool": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_ConnectionPoolSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConnectionPoolSettings"
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings"
+        },
+        "outlierDetection": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_OutlierDetection",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.OutlierDetection"
+        },
+        "portLevelSettings": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_TrafficPolicy_PortTrafficPolicy",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortTrafficPolicy"
+          }
+        },
+        "tls": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_TLSSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettings"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TrafficPolicy"
+    },
+    "istio_networking_v1alpha3_TrafficPolicy_PortTrafficPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "connectionPool": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_ConnectionPoolSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConnectionPoolSettings"
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings"
+        },
+        "outlierDetection": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_OutlierDetection",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.OutlierDetection"
+        },
+        "port": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_PortSelector",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector"
+        },
+        "tls": {
+          "$ref": "#/definitions/istio_networking_v1alpha3_TLSSettings",
+          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSSettings"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortTrafficPolicy"
+    },
+    "istio_networking_v1alpha3_VirtualService": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "exportTo": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "gateways": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "hosts": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "http": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_HTTPRoute",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HTTPRoute"
+          }
+        },
+        "tcp": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_TCPRoute",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TCPRoute"
+          }
+        },
+        "tls": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/istio_networking_v1alpha3_TLSRoute",
+            "javaType": "me.snowdrop.istio.api.networking.v1alpha3.TLSRoute"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec"
     },
     "istio_networking_v1alpha3_WorkloadSelector": {
       "type": "object",
@@ -3096,6 +4542,14 @@
           "items": {
             "$ref": "#/definitions/istio_networking_v1beta1_StringMatch",
             "javaType": "me.snowdrop.istio.api.networking.v1beta1.StringMatch"
+          }
+        },
+        "deprecatedAllowOrigin": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
           }
         },
         "exposeHeaders": {
@@ -4904,7 +6358,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/istio_security_v1beta1_Rule",
-            "javaType": "me.snowdrop.istio.api.security.v1beta1.RuleSpec"
+            "javaType": "me.snowdrop.istio.api.security.v1beta1.Rule"
           }
         },
         "selector": {
@@ -5045,7 +6499,7 @@
         }
       },
       "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.security.v1beta1.RuleSpec"
+      "javaType": "me.snowdrop.istio.api.security.v1beta1.Rule"
     },
     "istio_security_v1beta1_Rule_From": {
       "type": "object",
@@ -5585,6 +7039,82 @@
     "useSourceIpHashKey": {
       "$ref": "#/definitions/istio_networking_v1beta1_LoadBalancerSettings_ConsistentHashLB_UseSourceIp",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.UseSourceIpHashKey"
+    },
+    "v1Alpha3ConsistentHashLoadBalancerSettings": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHash",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ConsistentHashLbPolicy"
+    },
+    "v1Alpha3DestinationRule": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_DestinationRule",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleSpec"
+    },
+    "v1Alpha3ExactStringMatch": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch_Exact",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ExactMatchType"
+    },
+    "v1Alpha3ExponentialDelay": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Delay_ExponentialDelay",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ExponentialDelayHttpDelayType"
+    },
+    "v1Alpha3FixedDelay": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Delay_FixedDelay",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.FixedDelayHttpDelayType"
+    },
+    "v1Alpha3Gateway": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_Gateway",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.GatewaySpec"
+    },
+    "v1Alpha3GrpcStatusAbort": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Abort_GrpcStatus",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.GrpcStatusErrorType"
+    },
+    "v1Alpha3Http2ErrorAbort": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Abort_Http2Error",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Http2ErrorErrorType"
+    },
+    "v1Alpha3HttpCookieHashKey": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpCookie",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpCookieHashKey"
+    },
+    "v1Alpha3HttpHeaderNameHashKey": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpHeaderName",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpHeaderNameHashKey"
+    },
+    "v1Alpha3HttpStatusAbort": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_HTTPFaultInjection_Abort_HttpStatus",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.HttpStatusErrorType"
+    },
+    "v1Alpha3PrefixStringMatch": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch_Prefix",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PrefixMatchType"
+    },
+    "v1Alpha3RegexStringMatch": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_StringMatch_Regex",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.RegexMatchType"
+    },
+    "v1Alpha3ServiceEntry": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_ServiceEntry",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServiceEntrySpec"
+    },
+    "v1Alpha3Sidecar": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_Sidecar",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SidecarSpec"
+    },
+    "v1Alpha3SimpleLoadBalancerSettings": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_Simple",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLbPolicy"
+    },
+    "v1Alpha3UseSourceIpHashKey": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_UseSourceIp",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.UseSourceIpHashKey"
+    },
+    "v1Alpha3VPortSelector": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_PortSelector",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.PortSelector"
+    },
+    "v1Alpha3VirtualService": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_VirtualService",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec"
     },
     "vPortSelector": {
       "$ref": "#/definitions/istio_networking_v1beta1_PortSelector",
