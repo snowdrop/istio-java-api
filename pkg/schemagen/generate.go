@@ -584,6 +584,13 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 
 func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPropertyDescriptor {
 	props := map[string]JSONPropertyDescriptor{}
+
+	// specific handling for CorsPolicy.allowOrigin vs. allowOrigins
+	const corsPolicyTypeName = "CorsPolicy"
+	const allowOriginFieldName = "allowOrigin"
+	const renamedAllowOriginFieldName = "deprecatedAllowOrigin"
+	isCorsPolicy := t.Name() == corsPolicyTypeName
+
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		if len(field.PkgPath) > 0 { // Skip private fields
@@ -593,6 +600,11 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		// Skip unserialized fields
 		if name == "-" {
 			continue
+		}
+
+		// rename allowOrigin to deprecatedAllowOrigin on CorsPolicy
+		if isCorsPolicy && name == allowOriginFieldName {
+			name = renamedAllowOriginFieldName
 		}
 
 		path := pkgPath(t)
