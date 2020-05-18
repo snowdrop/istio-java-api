@@ -47,8 +47,7 @@ go get istio.io/api@"${ISTIO_VERSION}"
 
 # Generate CRD information
 cat "$ISTIO_DIR"/install/kubernetes/helm/istio-init/files/crd*.yaml |
-  yq -r '"\(.spec.names.kind)=\(.metadata.name) | istio=\(.metadata.labels.istio // "") | version=\(.spec.versions[-1].name)"' | # later CRD defs use versions instead of version
-#  yq -r '"\(.spec.names.kind)=\(.metadata.name)| istio=\(.metadata.labels.istio // "")| version=\(.spec.version)"' |
+  yq -r '.spec as $s | .metadata as $m | $s.versions[] | "\(.name).\($s.names.kind)=\($m.name) | istio=\($m.labels.istio // "")"' |
   grep istio.io |
   sort -f >"${CRD_FILE}"
 
