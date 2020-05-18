@@ -37,7 +37,7 @@ public class PolicyIT {
                 .build();
 
         //when
-        final Policy resultResource = istioClient.policy().create(policy);
+        final Policy resultResource = istioClient.v1alpha1Policy().create(policy);
 
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -63,11 +63,11 @@ public class PolicyIT {
         });
 
 
-        final PolicyList list = istioClient.policy().list();
+        final PolicyList list = istioClient.v1alpha1Policy().list();
         assertThat(list.getItems()).contains(resultResource);
 
         //when
-        final Boolean deleteResult = istioClient.policy().delete(resultResource);
+        final Boolean deleteResult = istioClient.v1alpha1Policy().delete(resultResource);
 
         //then
         assertThat(deleteResult).isTrue();

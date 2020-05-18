@@ -61,7 +61,7 @@ public class DestinationRuleIT {
                 .build();
 
         //when
-        final DestinationRule resultResource = istioClient.destinationRule().create(destinationRule);
+        final DestinationRule resultResource = istioClient.v1beta1DestinationRule().create(destinationRule);
 
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -101,7 +101,7 @@ public class DestinationRuleIT {
         });
 
         //when
-        final Boolean deleteResult = istioClient.destinationRule().delete(resultResource);
+        final Boolean deleteResult = istioClient.v1beta1DestinationRule().delete(resultResource);
 
         //then
         assertThat(deleteResult).isTrue();
