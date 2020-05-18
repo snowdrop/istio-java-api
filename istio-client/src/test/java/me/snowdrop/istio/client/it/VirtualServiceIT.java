@@ -79,7 +79,7 @@ public class VirtualServiceIT {
             .build();
         
         //when
-        final VirtualService resultResource = istioClient.virtualService().create(virtualService);
+        final VirtualService resultResource = istioClient.v1beta1VirtualService().create(virtualService);
     
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -134,7 +134,7 @@ public class VirtualServiceIT {
             });
     
             //when
-            final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
+            final Boolean deleteResult = istioClient.v1beta1VirtualService().delete(resultResource);
     
             //then
             assertThat(deleteResult).isTrue();
@@ -187,7 +187,7 @@ public class VirtualServiceIT {
             .build();
         
         //when
-        final VirtualService resultResource = istioClient.virtualService().create(virtualService);
+        final VirtualService resultResource = istioClient.v1beta1VirtualService().create(virtualService);
     
         //then
         assertThat(resultResource).isNotNull().satisfies(istioResource -> {
@@ -235,7 +235,7 @@ public class VirtualServiceIT {
                 );
             
             //when
-            final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
+            final Boolean deleteResult = istioClient.v1beta1VirtualService().delete(resultResource);
     
             //then
             assertThat(deleteResult).isTrue();
@@ -263,7 +263,7 @@ public class VirtualServiceIT {
     @Test
     public void checkVirtualServiceAbort() {
         final String ratingsHost = "ratings.prod.svc.cluster.local";
-        final VirtualService resultResource = istioClient.virtualService()
+        final VirtualService resultResource = istioClient.v1beta1VirtualService()
             .createNew()
             .withNewMetadata().withName("ratings-route").endMetadata()
             .withNewSpec()
@@ -323,7 +323,7 @@ public class VirtualServiceIT {
             });
     
             //when
-            final Boolean deleteResult = istioClient.virtualService().delete(resultResource);
+            final Boolean deleteResult = istioClient.v1beta1VirtualService().delete(resultResource);
     
             //then
             assertThat(deleteResult).isTrue();
@@ -362,7 +362,7 @@ public class VirtualServiceIT {
             assertThat(resource).isNotNull().satisfies(r -> assertThat(r.getSpec()).isInstanceOf(VirtualServiceSpec.class));
         } finally {
             if (resource != null) {
-                istioClient.virtualService().delete((VirtualService) resource);
+                istioClient.v1beta1VirtualService().delete((VirtualService) resource);
             }
         }
         
@@ -377,7 +377,7 @@ public class VirtualServiceIT {
             });
         } finally {
             if (resources != null) {
-                istioClient.virtualService().delete((VirtualService) resources.get(0));
+                istioClient.v1beta1VirtualService().delete((VirtualService) resources.get(0));
             }
         }
     }
@@ -400,7 +400,7 @@ public class VirtualServiceIT {
             HTTPMatchRequest req = new HTTPMatchRequestBuilder().withHeaders(matchMap)
                 .build();
             
-            done = istioClient.virtualService().withName("reviews-route")
+            done = istioClient.v1beta1VirtualService().withName("reviews-route")
                 .edit().editSpec()
                 .removeMatchingFromHttp(h -> h.hasMatchingMatch(m -> m.hasHeaders() && m.getHeaders().equals(matchMap)) && h.hasMatchingRoute(r -> r.buildDestination().getHost().equals("service-coke")))
                 .endSpec().done();
@@ -410,7 +410,7 @@ public class VirtualServiceIT {
                 .doesNotContain(req);
         } finally {
             if (done != null) {
-                istioClient.virtualService().delete(done);
+                istioClient.v1beta1VirtualService().delete(done);
             }
         }
     }
