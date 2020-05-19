@@ -265,6 +265,9 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "Timestamp":
 			return "me.snowdrop.istio.api.TimeStamp"
 		case "Value":
+			if strings.Contains(pkgDesc.GoPackage, "protobuf") {
+				return pkgDesc.JavaPackage + "." + name
+			}
 			return "me.snowdrop.istio.api.cexl.TypedValue"
 		case "AttributeValue":
 			return "me.snowdrop.istio.api.cexl.TypedValue"
@@ -440,20 +443,28 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 // Compute a qualified name formatted as expected by interface maps to check for candidate interfaces
 func getQualifiedInterfaceName(k reflect.Type) string {
 	typeName := k.Name()
-	// first get the pkg path for the type and remove the istio.io prefix
-	path := strings.TrimPrefix(pkgPath(k), "istio.io/")
+	path := pkgPath(k)
 
-	// if we're looking at an adapter or template type, we need to remove the "istio" prefix
-	isAdapter := strings.Contains(path, "adapter")
-	isTemplate := strings.Contains(path, "template")
-	if isAdapter || isTemplate {
-		path = strings.TrimPrefix(path, "istio/")
+	// special case for # isValue_Kind field kind in github.com/gogo/protobuf/types/Value
+	if strings.HasPrefix(path, "github.com/gogo/protobuf/types") {
+		path = "api"
+	} else {
+		// first get the pkg path for the type and remove the istio.io prefix
+		path = strings.TrimPrefix(path, "istio.io/")
 
-		// if we're dealing with an adapter, we also need to remove the trailing "config" package
-		if isAdapter {
-			path = strings.Replace(path, "/config", "", 1)
+		// if we're looking at an adapter or template type, we need to remove the "istio" prefix
+		isAdapter := strings.Contains(path, "adapter")
+		isTemplate := strings.Contains(path, "template")
+		if isAdapter || isTemplate {
+			path = strings.TrimPrefix(path, "istio/")
+
+			// if we're dealing with an adapter, we also need to remove the trailing "config" package
+			if isAdapter {
+				path = strings.Replace(path, "/config", "", 1)
+			}
 		}
 	}
+
 	// finally we replace the path separators by '.' to match the Java package name as defined in generate/generate#loadInterfacesData
 	path = strings.Replace(path, "/", ".", -1) + "." + typeName
 	return path
@@ -568,7 +579,6 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 		if !ok {
 			// special cases for AttributeValue and Value which are handled by TypedValue
 			switch name {
-			case "github.com.gogo.protobuf.types.isValue_Kind":
 			case "api.mixer.v1.isAttributes_AttributeValue_Value":
 			case "api.policy.v1beta1.isValue_Value":
 			default:
