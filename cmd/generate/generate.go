@@ -21,6 +21,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ghodss/yaml"
+	"github.com/gogo/protobuf/types"
 	"io/ioutil"
 	authentication "istio.io/api/authentication/v1alpha1"
 	mesh "istio.io/api/mesh/v1alpha1"
@@ -66,6 +67,14 @@ import (
 )
 
 type Schema struct {
+	Struct                                     types.Struct
+	Value                                      types.Value
+	BoolValue                                  types.Value_BoolValue
+	ListValue                                  types.Value_ListValue
+	NumberValue                                types.Value_NumberValue
+	NullValue                                  types.Value_NullValue
+	StringValue                                types.Value_StringValue
+	StructValue                                types.Value_StructValue
 	MeshConfig                                 mesh.MeshConfig
 	ProxyConfig                                mesh.ProxyConfig
 	Attributes                                 mixer.Attributes

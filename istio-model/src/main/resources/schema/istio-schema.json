@@ -6867,6 +6867,22 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Duration"
     },
+    "protobuf_types_ListValue": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "values": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/protobuf_types_Value",
+            "javaType": "me.snowdrop.istio.api.Value"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.ListValue"
+    },
     "protobuf_types_Struct": {
       "type": "object",
       "description": "",
@@ -6876,9 +6892,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/protobuf_types_Value",
-            "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
+            "javaType": "me.snowdrop.istio.api.Value"
           },
-          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.cexl.TypedValue\u003e"
+          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.Value\u003e"
         }
       },
       "additionalProperties": false,
@@ -6918,12 +6934,99 @@
       "description": "",
       "properties": {
         "kind": {
-          "existingJavaType": "me.snowdrop.istio.api.Kind",
+          "existingJavaType": "me.snowdrop.istio.api.Value.Kind",
           "isInterface": true
         }
       },
       "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
+      "javaType": "me.snowdrop.istio.api.Value"
+    },
+    "protobuf_types_Value_BoolValue": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.Value.Kind"
+      ],
+      "description": "",
+      "properties": {
+        "boolValue": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.BoolValueKind"
+    },
+    "protobuf_types_Value_ListValue": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.Value.Kind"
+      ],
+      "description": "",
+      "properties": {
+        "listValue": {
+          "$ref": "#/definitions/protobuf_types_ListValue",
+          "javaType": "me.snowdrop.istio.api.ListValue"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.ListValueKind"
+    },
+    "protobuf_types_Value_NullValue": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.Value.Kind"
+      ],
+      "description": "",
+      "properties": {
+        "nullValue": {}
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.NullValueKind"
+    },
+    "protobuf_types_Value_NumberValue": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.Value.Kind"
+      ],
+      "description": "",
+      "properties": {
+        "numberValue": {
+          "type": "number",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.NumberValueKind"
+    },
+    "protobuf_types_Value_StringValue": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.Value.Kind"
+      ],
+      "description": "",
+      "properties": {
+        "stringValue": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.StringValueKind"
+    },
+    "protobuf_types_Value_StructValue": {
+      "type": "object",
+      "javaInterfaces": [
+        "me.snowdrop.istio.api.Value.Kind"
+      ],
+      "description": "",
+      "properties": {
+        "structValue": {
+          "$ref": "#/definitions/protobuf_types_Struct",
+          "javaType": "me.snowdrop.istio.api.Struct"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.StructValueKind"
     }
   },
   "type": "object",
@@ -6955,6 +7058,10 @@
     "authorizationPolicy": {
       "$ref": "#/definitions/istio_security_v1beta1_AuthorizationPolicy",
       "javaType": "me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicySpec"
+    },
+    "boolValue": {
+      "$ref": "#/definitions/protobuf_types_Value_BoolValue",
+      "javaType": "me.snowdrop.istio.api.BoolValueKind"
     },
     "bypass": {
       "$ref": "#/definitions/istio_adapter_bypass_Params",
@@ -7092,6 +7199,10 @@
       "$ref": "#/definitions/istio_mixer_listentry_InstanceMsg",
       "javaType": "me.snowdrop.istio.mixer.template.listentry.ListEntry"
     },
+    "listValue": {
+      "$ref": "#/definitions/protobuf_types_Value_ListValue",
+      "javaType": "me.snowdrop.istio.api.ListValueKind"
+    },
     "listenerObjectTypes": {
       "$ref": "#/definitions/istio_networking_v1alpha3_EnvoyFilter_EnvoyConfigObjectMatch_Listener",
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ListenerObjectTypes"
@@ -7115,6 +7226,14 @@
     "mtlsPeerAuthenticationMethod": {
       "$ref": "#/definitions/istio_authentication_v1alpha1_PeerAuthenticationMethod_Mtls",
       "javaType": "me.snowdrop.istio.api.authentication.v1alpha1.MtlsParams"
+    },
+    "nullValue": {
+      "$ref": "#/definitions/protobuf_types_Value_NullValue",
+      "javaType": "me.snowdrop.istio.api.NullValueKind"
+    },
+    "numberValue": {
+      "$ref": "#/definitions/protobuf_types_Value_NumberValue",
+      "javaType": "me.snowdrop.istio.api.NumberValueKind"
     },
     "oPA": {
       "$ref": "#/definitions/istio_adapter_opa_Params",
@@ -7252,6 +7371,18 @@
       "$ref": "#/definitions/istio_mixer_v1_StringMap",
       "javaType": "me.snowdrop.istio.api.mixer.v1.StringMap"
     },
+    "stringValue": {
+      "$ref": "#/definitions/protobuf_types_Value_StringValue",
+      "javaType": "me.snowdrop.istio.api.StringValueKind"
+    },
+    "struct": {
+      "$ref": "#/definitions/protobuf_types_Struct",
+      "javaType": "me.snowdrop.istio.api.Struct"
+    },
+    "structValue": {
+      "$ref": "#/definitions/protobuf_types_Value_StructValue",
+      "javaType": "me.snowdrop.istio.api.StructValueKind"
+    },
     "traceSpan": {
       "$ref": "#/definitions/istio_mixer_tracespan_InstanceMsg",
       "javaType": "me.snowdrop.istio.mixer.template.tracespan.TraceSpan"
@@ -7339,6 +7470,10 @@
     "vPortSelector": {
       "$ref": "#/definitions/istio_networking_v1beta1_PortSelector",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.PortSelector"
+    },
+    "value": {
+      "$ref": "#/definitions/protobuf_types_Value",
+      "javaType": "me.snowdrop.istio.api.Value"
     },
     "virtualService": {
       "$ref": "#/definitions/istio_networking_v1beta1_VirtualService",
