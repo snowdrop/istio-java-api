@@ -394,6 +394,7 @@ func main() {
 		"adapter.stdio.config.Params_Level":                                               "me.snowdrop.istio.mixer.adapter.stdio.Level",
 		"google.api.MetricDescriptor_MetricKind":                                          "me.snowdrop.istio.mixer.adapter.stackdriver.MetricKind",
 		"google.api.MetricDescriptor_ValueType":                                           "me.snowdrop.istio.mixer.adapter.stackdriver.ValueType",
+		"google.protobuf.NullValue":                                                       "me.snowdrop.istio.api.NullValue",
 	}
 
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, enumMap, interfacesMap, interfacesImpl, crds, *strict)
