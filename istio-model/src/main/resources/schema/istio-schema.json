@@ -3218,7 +3218,9 @@
       "type": "object",
       "description": "",
       "properties": {
-        "action": {},
+        "action": {
+          "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Action"
+        },
         "name": {
           "type": "string",
           "description": ""
