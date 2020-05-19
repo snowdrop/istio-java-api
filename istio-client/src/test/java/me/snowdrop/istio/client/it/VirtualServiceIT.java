@@ -7,16 +7,7 @@ import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.networking.v1beta1.ExactMatchType;
-import me.snowdrop.istio.api.networking.v1beta1.HTTPMatchRequest;
-import me.snowdrop.istio.api.networking.v1beta1.HTTPMatchRequestBuilder;
-import me.snowdrop.istio.api.networking.v1beta1.HTTPRoute;
-import me.snowdrop.istio.api.networking.v1beta1.HttpStatusErrorType;
-import me.snowdrop.istio.api.networking.v1beta1.PrefixMatchType;
-import me.snowdrop.istio.api.networking.v1beta1.StringMatch;
-import me.snowdrop.istio.api.networking.v1beta1.VirtualService;
-import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceBuilder;
-import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceSpec;
+import me.snowdrop.istio.api.networking.v1beta1.*;
 import me.snowdrop.istio.client.DefaultIstioClient;
 import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
@@ -227,11 +218,10 @@ public class VirtualServiceIT {
                 .flatExtracting("route")
                 .extracting("destination")
                 .extracting("port")
-                .extracting("port")
-                .extracting("class", "number")
+                .extracting("number")
                 .containsOnly(
-                    tuple(Integer.class, 9090),
-                    tuple(Integer.class, 9090)
+                    9090,
+                    9090
                 );
             
             //when
