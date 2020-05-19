@@ -83,6 +83,9 @@ type Schema struct {
 	ServiceRole                                rbac.ServiceRole
 	ServiceRoleBinding                         rbac.ServiceRoleBinding
 	EnvoyFilter                                networkingv1alpha3.EnvoyFilter
+	ClusterObjectTypes                         networkingv1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_Cluster
+	ListenerObjectTypes                        networkingv1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_Listener
+	RouteConfigurationObjectTypes              networkingv1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration
 	V1Alpha3Gateway                            networkingv1alpha3.Gateway
 	V1Alpha3DestinationRule                    networkingv1alpha3.DestinationRule
 	V1Alpha3SimpleLoadBalancerSettings         networkingv1alpha3.LoadBalancerSettings_Simple
