@@ -40,4 +40,4 @@ build: schema
 	./mvnw clean install -e
 
 istio_version:
-	./scripts/generate_metadata.sh version
+	@./scripts/generate_metadata.sh version
