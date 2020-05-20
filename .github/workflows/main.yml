@@ -35,6 +35,7 @@ jobs:
         mkdir install && cd install
         kind create cluster --name istio-testing
         kubectl config use-context kind-istio-testing
+        kubectl config set-context --current --namespace=default
         curl -L https://istio.io/downloadIstio | sh -
         ./"istio-${istioVersion}"/bin/istioctl manifest apply --set profile=minimal
         cd ..
