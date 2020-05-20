@@ -26,11 +26,15 @@ jobs:
       with:
         version: v0.8.0
 
+    - name: Kubernetes CLI - kubectl
+       uses: steebchen/kubectl@v1.0.0
+
     - run: |
         cd $GITHUB_WORKSPACE
         istioVersion=$(make istio_version)
         mkdir install && cd install
-        kind create cluster --name istio-testing 
+        kind create cluster --name istio-testing
+        kubectl config use-context kind-istio-testing
         curl -L https://istio.io/downloadIstio | sh -
         ./"istio-${istioVersion}"/bin/istioctl manifest apply --set profile=minimal
         cd ..
