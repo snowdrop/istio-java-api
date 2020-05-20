@@ -39,4 +39,4 @@ jobs:
         curl -L https://istio.io/downloadIstio | sh -
         ./"istio-${istioVersion}"/bin/istioctl manifest apply --set profile=minimal
         cd ..
-        ./mvnw clean install -Pit
+        ./mvnw clean install -Pit -Dhttp2.disable=true
