@@ -26,10 +26,7 @@ jobs:
       uses: engineerd/setup-kind@v0.3.0
       with:
         version: v0.8.0
-    
-    - name: Kubernetes CLI - kubectl
-      uses: steebchen/kubectl@v1.0.0
-      
+
     - run: |
         cd $GITHUB_WORKSPACE
         istioVersion=$(make istio_version)
