@@ -9,11 +9,6 @@ ADAPTERS_TMP=${DECL_DIR}/adapters_dir.tmp
 TEMPLATES_TMP=${DECL_DIR}/templates_dir.tmp
 PACKAGES_CSV=${DECL_DIR}/packages.csv
 
-# Remove previously generated lines
-sed -e '/##/q' ${PACKAGES_CSV} >${PACKAGES_CSV}.new
-rm ${PACKAGES_CSV}
-mv ${PACKAGES_CSV}.new ${PACKAGES_CSV}
-
 function istioVersion() {
   istioVersion=$(curl -L -s https://api.github.com/repos/istio/istio/releases |
     grep tag_name | sed "s/ *\"tag_name\": *\"\\(.*\\)\",*/\\1/" |
@@ -30,6 +25,11 @@ elif [ -n "$1" ]; then
 else
   ISTIO_VERSION=$(istioVersion)
 fi
+
+# Remove previously generated lines
+sed -e '/##/q' ${PACKAGES_CSV} >${PACKAGES_CSV}.new
+rm ${PACKAGES_CSV}
+mv ${PACKAGES_CSV}.new ${PACKAGES_CSV}
 
 echo "Using Istio version ${ISTIO_VERSION}"
 ISTIO_DIR="istio-$ISTIO_VERSION"
