@@ -32,6 +32,6 @@ jobs:
         mkdir install && cd install
         kind create cluster --name istio-testing 
         curl -L https://istio.io/downloadIstio | sh -
-        /"istio-${istioVersion}"/bin/istioctl manifest apply --set profile=minimal
+        ./"istio-${istioVersion}"/bin/istioctl manifest apply --set profile=minimal
         cd ..
         ./mvnw clean install -Pit
