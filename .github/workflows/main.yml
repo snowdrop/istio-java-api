@@ -31,7 +31,7 @@ jobs:
 
     - run: |
         cd $GITHUB_WORKSPACE
-        istioVersion=$(make istio_version)
+        istioVersion="1.5.4"
         mkdir install && cd install
         kind create cluster --name istio-testing
         kubectl config use-context kind-istio-testing
