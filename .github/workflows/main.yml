@@ -36,7 +36,7 @@ jobs:
         kind create cluster --name istio-testing
         kubectl config use-context kind-istio-testing
         kubectl config set-context --current --namespace=default
-        curl -L https://istio.io/downloadIstio | sh -
+        curl -L https://istio.io/downloadIstio | ISTIO_VERSION="${istioVersion}" sh -
         ./"istio-${istioVersion}"/bin/istioctl manifest apply --set profile=minimal
         cd ..
         ./mvnw clean install -Pit -Dhttp2.disable=true
