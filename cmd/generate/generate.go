@@ -77,6 +77,10 @@ type Schema struct {
 	StructValue                                types.Value_StructValue
 	MeshConfig                                 mesh.MeshConfig
 	ProxyConfig                                mesh.ProxyConfig
+	CustomTag                                  mesh.Tracing_CustomTag
+	EnvironmentCustomTag                       mesh.Tracing_CustomTag_Environment
+	HeaderCustomTag                            mesh.Tracing_CustomTag_Header
+	LiteralCustomTag                           mesh.Tracing_CustomTag_Literal
 	Attributes                                 mixer.Attributes
 	AttributeValue                             mixer.Attributes_AttributeValue
 	CheckRequest                               mixer.CheckRequest
