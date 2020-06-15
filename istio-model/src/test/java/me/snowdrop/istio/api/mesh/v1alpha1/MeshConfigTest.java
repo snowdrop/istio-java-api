@@ -53,10 +53,6 @@ public class MeshConfigTest extends BaseIstioTest {
                 "\n" +
                 "#\n" +
                 "defaultConfig:\n" +
-                "  #\n" +
-                "  # TCP connection timeout between Envoy & the application, and between Envoys.\n" +
-                "  connectTimeout: 10s\n" +
-                "  #\n" +
                 "  ### ADVANCED SETTINGS #############\n" +
                 "  # Where should envoy's configuration be stored in the istio-proxy container\n" +
                 "  configPath: \"/etc/istio/proxy\"\n" +
@@ -104,7 +100,6 @@ public class MeshConfigTest extends BaseIstioTest {
         assertNotNull(meshConfig);
 
         final ProxyConfig config = meshConfig.getDefaultConfig();
-        assertEquals(10l, (long) config.getConnectTimeout().getSeconds());
         assertEquals(AuthenticationPolicy.NONE, config.getControlPlaneAuthPolicy());
         assertEquals("istio-pilot.istio-system:15007", config.getDiscoveryAddress());
         assertEquals("zipkin.istio-system:9411", config.getZipkinAddress());
@@ -121,7 +116,6 @@ public class MeshConfigTest extends BaseIstioTest {
                 "rdsRefreshDelay: 1s\n" +
                 "defaultConfig:\n" +
                 "  discoveryRefreshDelay: 1s\n" +
-                "  connectTimeout: 10s\n" +
                 "  configPath: \"/etc/istio/proxy\"\n" +
                 "  binaryPath: \"/usr/local/bin/envoy\"\n" +
                 "  serviceCluster: istio-proxy\n" +
