@@ -94,6 +94,11 @@ classes:
       zipkin: isTracing_Tracer
       lightstep: isTracing_Tracer
       datadog: isTracing_Tracer
+  - class: me.snowdrop.istio.api.mesh.v1alpha1.CustomTag
+    fields:
+      literal: isTracing_CustomTag_Type
+      environment: isTracing_CustomTag_Type
+      header: isTracing_CustomTag_Type
   - class: me.snowdrop.istio.api.authentication.v1alpha1.StringMatch
     fields:
       exact: isStringMatch_MatchType
