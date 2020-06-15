@@ -351,6 +351,7 @@ func main() {
 		"istio.mesh.v1alpha1.ProxyConfig_InboundInterceptionMode":                         "me.snowdrop.istio.api.mesh.v1alpha1.InboundInterceptionMode",
 		"istio.mesh.v1alpha1.MeshConfig_OutboundTrafficPolicy_Mode":                       "me.snowdrop.istio.api.mesh.v1alpha1.Mode",
 		"istio.mesh.v1alpha1.Resource":                                                    "me.snowdrop.istio.api.mesh.v1alpha1.Resource",
+		"istio.mesh.v1alpha1.Topology_ForwardClientCertDetails":                           "me.snowdrop.istio.api.mesh.v1alpha1.ForwardClientCertDetails",
 		"istio.mixer.v1.HeaderOperation_Operation":                                        "me.snowdrop.istio.api.mixer.v1.Operation",
 		"istio.mixer.v1.ReferencedAttributes_Condition":                                   "me.snowdrop.istio.api.mixer.v1.Condition",
 		"istio.mixer.v1.ReportRequest_RepeatedAttributesSemantics":                        "me.snowdrop.istio.api.mixer.v1.RepeatedAttributesSemantics",
