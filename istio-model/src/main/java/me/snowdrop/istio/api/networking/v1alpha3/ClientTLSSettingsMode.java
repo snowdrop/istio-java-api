@@ -1,6 +1,6 @@
 /*
- *
- *  * Copyright (C) 2019 Red Hat, Inc.
+ * *
+ *  * Copyright (C) 2018 Red Hat, Inc.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -16,43 +16,42 @@
  *
  *
  */
-package me.snowdrop.istio.api.networking.v1beta1;
+package me.snowdrop.istio.api.networking.v1alpha3;
 
 /**
- * TLS protocol versions.
+ * TLS connection mode
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum TLSOptionsProtocol {
+public enum ClientTLSSettingsMode {
+    /**
+     * Do not setup a TLS connection to the upstream endpoint.
+     */
+    DISABLE(0),
 
     /**
-     * Automatically choose the optimal TLS version.
+     * Originate a TLS connection to the upstream endpoint.
      */
-    Server_TLSOptions_TLS_AUTO(0),
+    SIMPLE(1),
 
     /**
-     * TLS version 1.0
+     * Secure connections to the upstream using mutual TLS by presenting
+     * client certificates for authentication.
      */
-    Server_TLSOptions_TLSV1_0(1),
+    MUTUAL(2),
 
     /**
-     * TLS version 1.1
+     * Secure connections to the upstream using mutual TLS by presenting
+     * client certificates for authentication.
+     * Compared to Mutual mode, this mode uses certificates generated
+     * automatically by Istio for mTLS authentication. When this mode is
+     * used, all other fields in `TLSSettings` should be empty.
      */
-    Server_TLSOptions_TLSV1_1(2),
-
-    /**
-     * TLS version 1.2
-     */
-    Server_TLSOptions_TLSV1_2(3),
-
-    /**
-     * TLS version 1.3
-     */
-    Server_TLSOptions_TLSV1_3(4);
+    ISTIO_MUTUAL(3);
 
     private final int intValue;
 
-    TLSOptionsProtocol(int intValue) {
+    ClientTLSSettingsMode(int intValue) {
         this.intValue = intValue;
     }
 
