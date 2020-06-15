@@ -1,18 +1,15 @@
 package me.snowdrop.istio.client.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-
-import java.util.HashMap;
-import me.snowdrop.istio.api.networking.v1beta1.DestinationRule;
-import me.snowdrop.istio.api.networking.v1beta1.DestinationRuleBuilder;
-import me.snowdrop.istio.api.networking.v1beta1.DestinationRuleSpec;
-import me.snowdrop.istio.api.networking.v1beta1.Subset;
-import me.snowdrop.istio.api.networking.v1beta1.TLSSettingsMode;
+import me.snowdrop.istio.api.networking.v1beta1.*;
 import me.snowdrop.istio.client.DefaultIstioClient;
 import me.snowdrop.istio.client.IstioClient;
 import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
+
+import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 public class DestinationRuleIT {
 
@@ -44,17 +41,17 @@ public class DestinationRuleIT {
                 .withNewMetadata()
                 .withName("rule")
                 .endMetadata()
-                .withNewSpec()
-                .withHost("somehost")
-                .addNewSubset().withName("a").withLabels(new HashMap<String, String>() {{
-                    put("version", "a");
-                }}).endSubset()
-                .addNewSubset().withName("b").withLabels(new HashMap<String, String>() {{
-                    put("version", "b");
-                }}).endSubset()
-                .withNewTrafficPolicy()
-                .withNewTls()
-                .withMode(TLSSettingsMode.DISABLE)
+              .withNewSpec()
+              .withHost("somehost")
+              .addNewSubset().withName("a").withLabels(new HashMap<String, String>() {{
+                  put("version", "a");
+              }}).endSubset()
+              .addNewSubset().withName("b").withLabels(new HashMap<String, String>() {{
+                  put("version", "b");
+              }}).endSubset()
+              .withNewTrafficPolicy()
+              .withNewTls()
+              .withMode(ClientTLSSettingsMode.DISABLE)
                 .endTls()
                 .endTrafficPolicy()
                 .endSpec()
@@ -82,9 +79,9 @@ public class DestinationRuleIT {
 
             assertThat(ps.getHost()).isEqualTo("somehost");
             assertThat(ps.getTrafficPolicy())
-                .extracting("tls")
-                .extracting("mode")
-                .containsOnly(TLSSettingsMode.DISABLE);
+                  .extracting("tls")
+                  .extracting("mode")
+                  .containsOnly(ClientTLSSettingsMode.DISABLE);
 
             assertThat(ps.getSubsets())
                 .extracting((Extractor<Subset, Object>) subset ->

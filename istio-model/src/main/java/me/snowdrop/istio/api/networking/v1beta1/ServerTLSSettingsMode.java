@@ -1,11 +1,10 @@
 package me.snowdrop.istio.api.networking.v1beta1;
 
-public enum TLSOptionsMode {
+public enum ServerTLSSettingsMode {
 
     /**
-     * The SNI string presented by the client will be used as the match
-     * criterion in a VirtualService TLS route to determine the
-     * destination service from the service registry.
+     * The SNI string presented by the client will be used as the match criterion in a VirtualService TLS route to
+     * determine the destination service from the service registry.
      */
     PASSTHROUGH(0),
 
@@ -46,7 +45,7 @@ public enum TLSOptionsMode {
 
     private final int intValue;
 
-    TLSOptionsMode(int intValue) {
+    ServerTLSSettingsMode(int intValue) {
         this.intValue = intValue;
     }
 

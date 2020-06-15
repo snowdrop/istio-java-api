@@ -23,7 +23,7 @@ package me.snowdrop.istio.api.networking.v1alpha3;
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum TLSOptionsProtocol {
+public enum ServerTLSSettingsProtocol {
 
     /**
      * Automatically choose the optimal TLS version.
@@ -52,7 +52,7 @@ public enum TLSOptionsProtocol {
 
     private final int intValue;
 
-    TLSOptionsProtocol(int intValue) {
+    ServerTLSSettingsProtocol(int intValue) {
         this.intValue = intValue;
     }
 
