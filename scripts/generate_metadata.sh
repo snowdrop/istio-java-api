@@ -34,22 +34,13 @@ mv ${PACKAGES_CSV}.new ${PACKAGES_CSV}
 echo "Using Istio version ${ISTIO_VERSION}"
 ISTIO_DIR="istio-$ISTIO_VERSION"
 if [ ! -d "$ISTIO_DIR" ]; then
-  # if istio version is not already downloaded, download it
-  curl -L https://github.com/istio/istio/archive/"${ISTIO_VERSION}".zip --output "${ISTIO_VERSION}".zip
-  unzip "${ISTIO_VERSION}".zip
-  rm -f "${ISTIO_VERSION}".zip
+  mkdir "${ISTIO_DIR}"
 else
   echo "Istio version $ISTIO_VERSION is already present locally, using it"
 fi
 
 go get istio.io/istio@"${ISTIO_VERSION}"
 go get istio.io/api@"${ISTIO_VERSION}"
-
-# Generate CRD information
-cat "$ISTIO_DIR"/install/kubernetes/helm/istio-init/files/crd*.yaml |
-  yq -r '.spec as $s | .metadata as $m | $s.versions[] | "\(.name).\($s.names.kind)=\($m.name) | istio=\($m.labels.istio // "")"' |
-  grep istio.io |
-  sort -f >"${CRD_FILE}"
 
 if [ ! -d "$ISTIO_DIR/api" ]; then
   pushd "${ISTIO_DIR}" || exit
@@ -62,6 +53,12 @@ if [ ! -d "$ISTIO_DIR/istio" ]; then
   git clone --depth 1 https://github.com/istio/istio.git --branch "${ISTIO_VERSION}" --single-branch 2>/dev/null
   popd || exit
 fi
+
+# Generate CRD information
+cat "$ISTIO_DIR"/api/kubernetes/customresourcedefinitions.gen.yaml |
+  yq -r '(.spec // empty) as $s | (.metadata // empty) as $m | $s.versions[] | "\(.name).\($s.names.kind)=\($m.name) | istio=\($m.labels.istio // "")"' |
+  grep istio.io |
+  sort -f >"${CRD_FILE}"
 
 ls -d "${ISTIO_DIR}"/api/*/v* | sed "s/${ISTIO_DIR}/istio.io/" >"${APIS_TMP}"
 ls -d "${ISTIO_DIR}"/istio/mixer/adapter/*/config | sed "s/${ISTIO_DIR}/istio.io/" >"${ADAPTERS_TMP}"
