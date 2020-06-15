@@ -23,7 +23,6 @@ import (
 	"github.com/ghodss/yaml"
 	"github.com/gogo/protobuf/types"
 	"io/ioutil"
-	authentication "istio.io/api/authentication/v1alpha1"
 	mesh "istio.io/api/mesh/v1alpha1"
 	mixer "istio.io/api/mixer/v1"
 	networkingv1alpha3 "istio.io/api/networking/v1alpha3"
@@ -118,11 +117,8 @@ type Schema struct {
 	V1Alpha3ServiceEntry                       networkingv1alpha3.ServiceEntry
 	V1Alpha3VirtualService                     networkingv1alpha3.VirtualService
 	V1Alpha3Sidecar                            networkingv1alpha3.Sidecar
-	Policy                                     authentication.Policy
-	AuthNamePortSelector                       authentication.PortSelector_Name
-	AuthNumberPortSelector                     authentication.PortSelector_Number
-	JwtPeerAuthenticationMethod                authentication.PeerAuthenticationMethod_Jwt
-	MtlsPeerAuthenticationMethod               authentication.PeerAuthenticationMethod_Mtls
+	PeerAuthentication                         security.PeerAuthentication
+	RequestAuthentication                      security.RequestAuthentication
 	Gateway                                    networking.Gateway
 	DestinationRule                            networking.DestinationRule
 	SimpleLoadBalancerSettings                 networking.LoadBalancerSettings_Simple
@@ -341,8 +337,6 @@ func main() {
 	packages := readDescriptors()
 
 	enumMap := map[string]string{
-		"istio.authentication.v1alpha1.PrincipalBinding":                                  "me.snowdrop.istio.api.authentication.v1alpha1.PrincipalBinding",
-		"istio.authentication.v1alpha1.MutualTls_Mode":                                    "me.snowdrop.istio.api.authentication.v1alpha1.Mode",
 		"istio.mesh.v1alpha1.MeshConfig_AccessLogEncoding":                                "me.snowdrop.istio.api.mesh.v1alpha1.AccessLogEncoding",
 		"istio.mesh.v1alpha1.MeshConfig_IngressControllerMode":                            "me.snowdrop.istio.api.mesh.v1alpha1.IngressControllerMode",
 		"istio.mesh.v1alpha1.MeshConfig_AuthPolicy":                                       "me.snowdrop.istio.api.mesh.v1alpha1.AuthenticationPolicy",
@@ -387,6 +381,7 @@ func main() {
 		"istio.rbac.v1alpha1.EnforcementMode":                                             "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode",
 		"istio.rbac.v1alpha1.RbacConfig_Mode":                                             "me.snowdrop.istio.api.rbac.v1alpha1.Mode",
 		"istio.security.v1beta1.AuthorizationPolicy_Action":                               "me.snowdrop.istio.api.security.v1beta1.Action",
+		"istio.security.v1beta1.PeerAuthentication_MutualTLS_Mode":                        "me.snowdrop.istio.api.security.v1beta1.Mode",
 		"adapter.circonus.config.Params_MetricInfo_Type":                                  "me.snowdrop.istio.mixer.adapter.circonus.Type",
 		"adapter.cloudwatch.config.Params_MetricDatum_Unit":                               "me.snowdrop.istio.mixer.adapter.cloudwatch.Unit",
 		"adapter.prometheus.config.Params_MetricInfo_Kind":                                "me.snowdrop.istio.mixer.adapter.prometheus.Kind",
