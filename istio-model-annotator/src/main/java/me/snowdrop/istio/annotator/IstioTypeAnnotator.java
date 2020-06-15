@@ -1,30 +1,16 @@
 /**
  * Copyright 2017 Red Hat, Inc. and/or its affiliates.
  * <p>
- * Licensed under the Eclipse Public License version 1.0, available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Licensed under the Eclipse Public License version 1.0, available at http://www.eclipse.org/legal/epl-v10.html
  */
 package me.snowdrop.istio.annotator;
-
-import java.io.Serializable;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JAnnotationUse;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.*;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
@@ -39,6 +25,10 @@ import me.snowdrop.istio.api.internal.IstioKind;
 import me.snowdrop.istio.api.internal.IstioSpecRegistry;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
+
+import java.io.Serializable;
+import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -94,11 +84,18 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         while (fields.hasNext()) {
             final Map.Entry<String, JsonNode> entry = fields.next();
             String key = entry.getKey();
-            if (!"apiVersion".equals(key) && !"kind".equals(key) && !"metadata".equals(key)) {
-                annotationValue.param(key);
+            switch (key) {
+                case "kind":
+                case "metadata":
+                case "apiVersion":
+                    break;
+                case "deprecatedAllowOrigin":
+                    key = "allowOrigin";
+                default:
+                    annotationValue.param(key);
             }
         }
-    
+
         final String pkgName = clazz.getPackage().name();
         final int i = pkgName.lastIndexOf('.');
         final String version = pkgName.substring(i + 1);
@@ -110,38 +107,39 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                 clazz.annotate(IstioApiVersion.class).param("value", k.getAPIVersion());
             });
         }
-        
+
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
         JAnnotationUse buildable = clazz.annotate(Buildable.class)
-                .param("editableEnabled", false)
-                .param("generateBuilderPackage", true)
-                .param("builderPackage", BUILDER_PACKAGE);
+              .param("editableEnabled", false)
+              .param("generateBuilderPackage", true)
+              .param("builderPackage", BUILDER_PACKAGE);
 
         buildable.paramArray("inline").annotate(Inline.class)
-                .param("type", doneableClass)
-                .param("prefix", "Doneable")
-                .param("value", "done");
+              .param("type", doneableClass)
+              .param("prefix", "Doneable")
+              .param("value", "done");
 
         buildable.paramArray("refs").annotate(BuildableReference.class)
-                .param("value", objectMetaClass);
+              .param("value", objectMetaClass);
 
         if (clazz.name().endsWith("Spec")) {
-            JAnnotationArrayMember arrayMember= clazz.annotate(VelocityTransformations.class)
-                    .paramArray("value");
+            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
+                  .paramArray("value");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm")
-                    .param("outputPath", "crd.properties").param("gather", true);
+                  .param("outputPath", "crd.properties").param("gather", true);
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm")
-                    .param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
-                            "IstioResourceMappingsProvider.java").toString())
-                    .param("gather", true);
+                  .param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
+                        "IstioResourceMappingsProvider.java").toString())
+                  .param("gather", true);
         }
     }
 
     @Override
     public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
+        propertyName = propertyName.equals("deprecatedAllowOrigin") ? "allowOrigin" : propertyName;
         super.propertyField(field, clazz, propertyName, propertyNode);
         if (propertyNode.hasNonNull(IS_INTERFACE_FIELD)) {
             field.annotate(JsonUnwrapped.class);
@@ -158,6 +156,14 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             }
             annotateIfNotDone(clazz, ClassWithInterfaceFieldsDeserializer.class);
         }
+    }
+
+    public void propertyGetter(JMethod getter, JDefinedClass clazz, String propertyName) {
+        // overridden to avoid annotating the getter
+    }
+
+    public void propertySetter(JMethod setter, JDefinedClass clazz, String propertyName) {
+        // overridden to avoid annotating the setter
     }
 
     private Set<JDefinedClass> annotated = new HashSet<>();
