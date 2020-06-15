@@ -23,7 +23,7 @@ package me.snowdrop.istio.api.networking.v1beta1;
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public enum TLSSettingsMode {
+public enum ClientTLSSettingsMode {
     /**
      * Do not setup a TLS connection to the upstream endpoint.
      */
@@ -51,7 +51,7 @@ public enum TLSSettingsMode {
 
     private final int intValue;
 
-    TLSSettingsMode(int intValue) {
+    ClientTLSSettingsMode(int intValue) {
         this.intValue = intValue;
     }
 
