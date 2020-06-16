@@ -7611,6 +7611,10 @@
       "$ref": "#/definitions/istio_networking_v1alpha3_VirtualService",
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceSpec"
     },
+    "v1Alpha3WorkloadEntry": {
+      "$ref": "#/definitions/istio_networking_v1alpha3_WorkloadEntry",
+      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.WorkloadEntrySpec"
+    },
     "vPortSelector": {
       "$ref": "#/definitions/istio_networking_v1beta1_PortSelector",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.PortSelector"
@@ -7622,6 +7626,10 @@
     "virtualService": {
       "$ref": "#/definitions/istio_networking_v1beta1_VirtualService",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.VirtualServiceSpec"
+    },
+    "workloadEntry": {
+      "$ref": "#/definitions/istio_networking_v1beta1_WorkloadEntry",
+      "javaType": "me.snowdrop.istio.api.networking.v1beta1.WorkloadEntrySpec"
     },
     "zipkin": {
       "$ref": "#/definitions/istio_adapter_zipkin_Params",
