@@ -117,6 +117,7 @@ type Schema struct {
 	V1Alpha3ServiceEntry                       networkingv1alpha3.ServiceEntry
 	V1Alpha3VirtualService                     networkingv1alpha3.VirtualService
 	V1Alpha3Sidecar                            networkingv1alpha3.Sidecar
+	V1Alpha3WorkloadEntry                      networkingv1alpha3.WorkloadEntry
 	PeerAuthentication                         security.PeerAuthentication
 	RequestAuthentication                      security.RequestAuthentication
 	Gateway                                    networking.Gateway
@@ -138,6 +139,7 @@ type Schema struct {
 	ServiceEntry                               networking.ServiceEntry
 	VirtualService                             networking.VirtualService
 	Sidecar                                    networking.Sidecar
+	WorkloadEntry                              networking.WorkloadEntry
 	Bypass                                     bypass.Params
 	Circonus                                   circonus.Params
 	CloudWatch                                 cloudwatch.Params
