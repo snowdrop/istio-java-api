@@ -8,6 +8,8 @@
 
 package $package;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
@@ -71,7 +73,7 @@ return new ${model.name}Builder(item);
 }
 
 @Override
-public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, ${model.name} item) {
+public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ${model.name} item) {
 return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).delete(item);
 }
 
@@ -83,6 +85,11 @@ return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace
 @Override
 public Watch watch(OkHttpClient client, Config config, String namespace, ${model.name} item, String resourceVersion, Watcher<${model.name}> watcher) {
 return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).watch(resourceVersion, watcher);
+}
+
+@Override
+public Watch watch(OkHttpClient client, Config config, String namespace, ${model.name} item, ListOptions listOptions, final Watcher<${model.name}> watcher) {
+return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).watch(listOptions, watcher);
 }
 
 @Override
