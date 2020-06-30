@@ -19,98 +19,98 @@
 
 package me.snowdrop.istio.api.networking.v1beta1;
 
-import java.util.List;
-import java.util.Map;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class GatewayTest extends BaseIstioTest {
-    /*
-    ---
-apiVersion: networking.istio.io/v1beta1
-kind: Gateway
-metadata:
-  name: httpbin-gateway
-spec:
-  selector:
-    istio: ingressgateway # use Istio default gateway implementation
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - "httpbin.example.com"
-     */
+	@Test
+	public void checkBasicGateway() throws Exception {
+		final Gateway gateway = new GatewayBuilder()
+				.withNewMetadata()
+				.withName("httpbin-gateway")
+				.endMetadata()
+				.withNewSpec()
+				.addToSelector("istio", "ingressgateway")
+				.addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
+				.addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS")
+				.withNewTls().withMode(ServerTLSSettingsMode.PASSTHROUGH).withMinProtocolVersion(ServerTLSSettingsProtocol.TLSV1_2).endTls()
+				.endServer()
+				.endSpec()
+				.build();
 
-    @Test
-    public void checkBasicGateway() throws Exception {
-        final Gateway gateway = new GatewayBuilder()
-                .withNewMetadata()
-                    .withName("httpbin-gateway")
-                .endMetadata()
-                .withNewSpec()
-                .addToSelector("istio", "ingressgateway")
-                .addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-                .endSpec()
-                .build();
+		final String output = mapper.writeValueAsString(gateway);
+		Yaml parser = new Yaml();
+		final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
 
-        final String output = mapper.writeValueAsString(gateway);
-        Yaml parser = new Yaml();
-        final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+		assertEquals("Gateway", reloaded.get("kind"));
 
-        assertEquals("Gateway", reloaded.get("kind"));
+		final Map metadata = reloaded.get("metadata");
+		assertNotNull(metadata);
+		assertEquals("httpbin-gateway", metadata.get("name"));
 
-        final Map metadata = reloaded.get("metadata");
-        assertNotNull(metadata);
-        assertEquals("httpbin-gateway", metadata.get("name"));
+		final Map<String, Map> spec = reloaded.get("spec");
+		assertNotNull(spec);
 
-        final Map<String, Map> spec = reloaded.get("spec");
-        assertNotNull(spec);
+		final Map<String, Map> selector = spec.get("selector");
+		assertNotNull(selector);
+		assertEquals("ingressgateway", selector.get("istio"));
 
-        final Map<String, Map> selector = spec.get("selector");
-        assertNotNull(selector);
-        assertEquals("ingressgateway", selector.get("istio"));
+		final List<Map> servers = (List) spec.get("servers");
+		assertNotNull(servers);
+		assertEquals(2, servers.size());
 
-        final List<Map> servers = (List) spec.get("servers");
-        assertNotNull(servers);
+		Map<String, Map> server = servers.get(0);
+		assertNotNull(server);
 
-        final Map<String, Map> server = servers.get(0);
-        assertNotNull(server);
+		Map<String, Map> port = server.get("port");
+		assertNotNull(port);
+		assertEquals(80, port.get("number"));
+		assertEquals("http", port.get("name"));
+		assertEquals("HTTP", port.get("protocol"));
 
-        final Map<String, Map> port = server.get("port");
-        assertNotNull(port);
-        assertEquals(80, port.get("number"));
-        assertEquals("http", port.get("name"));
-        assertEquals("HTTP", port.get("protocol"));
+		final List<Map> hosts = (List) server.get("hosts");
+		assertNotNull(hosts);
+		assertEquals("httpbin.example.com", hosts.get(0));
 
-        final List<Map> hosts = (List) server.get("hosts");
-        assertNotNull(hosts);
-        assertEquals("httpbin.example.com", hosts.get(0));
-    }
+		server = servers.get(1);
+		assertNotNull(server);
+		port = server.get("port");
+		assertNotNull(port);
+		assertEquals(443, port.get("number"));
+		assertEquals("tls-0", port.get("name"));
+		assertEquals("TLS", port.get("protocol"));
 
-    @Test
-    public void roundtripBasicGatewayShouldWork() throws Exception {
-        final Gateway gateway = new GatewayBuilder()
-                .withNewMetadata()
-                .withName("httpbin-gateway")
-                .endMetadata()
-                .withNewSpec()
-                .addToSelector("istio", "ingressgateway")
-                .addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-                .endSpec()
-                .build();
+		final Map<String, String> tls = server.get("tls");
+		assertEquals("TLSV1_2", tls.get("minProtocolVersion"));
+	}
 
-        final String output = mapper.writeValueAsString(gateway);
+	@Test
+	public void roundtripBasicGatewayShouldWork() throws Exception {
+		final Gateway gateway = new GatewayBuilder()
+				.withNewMetadata()
+				.withName("httpbin-gateway")
+				.endMetadata()
+				.withNewSpec()
+				.addToSelector("istio", "ingressgateway")
+				.addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
+				.addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS")
+				.withNewTls().withMode(ServerTLSSettingsMode.PASSTHROUGH).withMinProtocolVersion(ServerTLSSettingsProtocol.TLSV1_2).endTls()
+				.endServer()
+				.endSpec()
+				.build();
 
-        HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
+		final String output = mapper.writeValueAsString(gateway);
 
-        assertEquals(gateway, reloaded);
-    }
+		HasMetadata reloaded = mapper.readValue(output, HasMetadata.class);
+
+		assertEquals(gateway, reloaded);
+	}
 }
