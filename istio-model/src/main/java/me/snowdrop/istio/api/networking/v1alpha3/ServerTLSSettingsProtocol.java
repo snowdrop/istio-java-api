@@ -28,27 +28,27 @@ public enum ServerTLSSettingsProtocol {
     /**
      * Automatically choose the optimal TLS version.
      */
-    Server_TLSOptions_TLS_AUTO(0),
+    TLS_AUTO(0),
 
     /**
      * TLS version 1.0
      */
-    Server_TLSOptions_TLSV1_0(1),
+    TLSV1_0(1),
 
     /**
      * TLS version 1.1
      */
-    Server_TLSOptions_TLSV1_1(2),
+    TLSV1_1(2),
 
     /**
      * TLS version 1.2
      */
-    Server_TLSOptions_TLSV1_2(3),
+    TLSV1_2(3),
 
     /**
      * TLS version 1.3
      */
-    Server_TLSOptions_TLSV1_3(4);
+    TLSV1_3(4);
 
     private final int intValue;
 

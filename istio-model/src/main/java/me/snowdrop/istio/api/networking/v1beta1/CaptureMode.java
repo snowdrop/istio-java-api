@@ -19,8 +19,8 @@
 package me.snowdrop.istio.api.networking.v1beta1;
 
 /**
- * CaptureMode describes how traffic to a listener is expected to be
- * captured. Applicable only when the listener is bound to an IP.
+ * CaptureMode describes how traffic to a listener is expected to be captured. Applicable only when the listener is
+ * bound to an IP.
  *
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
@@ -28,12 +28,12 @@ public enum CaptureMode {
     /**
      * The default capture mode defined by the environment
      */
-    CaptureMode_DEFAULT(0),
+    DEFAULT(0),
 
     /**
      * Capture traffic using IPtables redirection
      */
-    CaptureMode_IPTABLES(1),
+    IPTABLES(1),
 
     /**
      * No traffic capture. When used in egress listener, the application is
@@ -42,7 +42,7 @@ public enum CaptureMode {
      * to ensure that the listener port is not in use by other processes on
      * the host.
      */
-    CaptureMode_NONE(2);
+    NONE(2);
 
     private final int intValue;
 
