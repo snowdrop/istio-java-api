@@ -6230,6 +6230,67 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.WorkloadSelector"
     },
+    "istio_policy_v1beta1_Authentication": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authType": {
+          "existingJavaType": "me.snowdrop.istio.api.policy.v1beta1.Authentication.AuthType",
+          "isInterface": true
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.policy.v1beta1.Authentication"
+    },
+    "istio_policy_v1beta1_Connection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": ""
+        },
+        "authentication": {
+          "$ref": "#/definitions/istio_policy_v1beta1_Authentication",
+          "javaType": "me.snowdrop.istio.api.policy.v1beta1.Authentication"
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.policy.v1beta1.Connection"
+    },
+    "istio_policy_v1beta1_Handler": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "adapter": {
+          "type": "string",
+          "description": ""
+        },
+        "compiledAdapter": {
+          "type": "string",
+          "description": ""
+        },
+        "connection": {
+          "$ref": "#/definitions/istio_policy_v1beta1_Connection",
+          "javaType": "me.snowdrop.istio.api.policy.v1beta1.Connection"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "$ref": "#/definitions/protobuf_types_Struct",
+          "javaType": "me.snowdrop.istio.api.Struct"
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.policy.v1beta1.Handler"
+    },
     "istio_policy_v1beta1_IPAddress": {
       "type": "object",
       "description": "",
@@ -6241,6 +6302,39 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.policy.v1beta1.IPAddress"
+    },
+    "istio_policy_v1beta1_Instance": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "attributeBindings": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "compiledTemplate": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "$ref": "#/definitions/protobuf_types_Struct",
+          "javaType": "me.snowdrop.istio.api.Struct"
+        },
+        "template": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.policy.v1beta1.Instance"
     },
     "istio_policy_v1beta1_TimeStamp": {
       "type": "object",
@@ -7303,6 +7397,10 @@
       "$ref": "#/definitions/istio_networking_v1beta1_HTTPFaultInjection_Abort_GrpcStatus",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.GrpcStatusErrorType"
     },
+    "handler": {
+      "$ref": "#/definitions/istio_policy_v1beta1_Handler",
+      "javaType": "me.snowdrop.istio.api.policy.v1beta1.Handler"
+    },
     "headerCustomTag": {
       "$ref": "#/definitions/istio_mesh_v1alpha1_Tracing_CustomTag_Header",
       "javaType": "me.snowdrop.istio.api.mesh.v1alpha1.HeaderType"
@@ -7322,6 +7420,10 @@
     "httpStatusAbort": {
       "$ref": "#/definitions/istio_networking_v1beta1_HTTPFaultInjection_Abort_HttpStatus",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.HttpStatusErrorType"
+    },
+    "instance": {
+      "$ref": "#/definitions/istio_policy_v1beta1_Instance",
+      "javaType": "me.snowdrop.istio.api.policy.v1beta1.Instance"
     },
     "kubernetesEnv": {
       "$ref": "#/definitions/istio_adapter_kubernetesenv_Params",
