@@ -118,3 +118,7 @@ classes:
       boolValue: isValue_Kind
       structValue: isValue_Kind
       listValue: isValue_Kind
+  - class: me.snowdrop.istio.api.policy.v1beta1.Authentication
+    fields:
+      tls: isAuthentication_AuthType
+      mutual: isAuthentication_AuthType

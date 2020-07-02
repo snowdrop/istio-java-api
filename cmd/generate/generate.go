@@ -27,6 +27,7 @@ import (
 	mixer "istio.io/api/mixer/v1"
 	networkingv1alpha3 "istio.io/api/networking/v1alpha3"
 	networking "istio.io/api/networking/v1beta1"
+	policy "istio.io/api/policy/v1beta1"
 	rbac "istio.io/api/rbac/v1alpha1"
 	security "istio.io/api/security/v1beta1"
 	bypass "istio.io/istio/mixer/adapter/bypass/config"
@@ -182,6 +183,8 @@ type Schema struct {
 	ReportNothing                              reportnothing.InstanceMsg
 	TraceSpan                                  tracespan.InstanceMsg
 	AuthorizationPolicy                        security.AuthorizationPolicy
+	Instance                                   policy.Instance
+	Handler                                    policy.Handler
 }
 
 // code adapted from https://kgrz.io/reading-files-in-go-an-overview.html#scanning-comma-seperated-string
