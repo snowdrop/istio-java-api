@@ -43,15 +43,15 @@ go get istio.io/istio@"${ISTIO_VERSION}"
 go get istio.io/api@"${ISTIO_VERSION}"
 
 if [ ! -d "$ISTIO_DIR/api" ]; then
-  pushd "${ISTIO_DIR}" || exit
+  pushd "${ISTIO_DIR}" >/dev/null || exit
   git clone --depth 1 https://github.com/istio/api.git --branch "${ISTIO_VERSION}" --single-branch 2>/dev/null
-  popd || exit
+  popd >/dev/null || exit
 fi
 
 if [ ! -d "$ISTIO_DIR/istio" ]; then
-  pushd "${ISTIO_DIR}" || exit
+  pushd "${ISTIO_DIR}" >/dev/null || exit
   git clone --depth 1 https://github.com/istio/istio.git --branch "${ISTIO_VERSION}" --single-branch 2>/dev/null
-  popd || exit
+  popd >/dev/null || exit
 fi
 
 # Generate CRD information
