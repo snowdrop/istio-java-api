@@ -18,6 +18,8 @@ package schemagen
 import (
 	"errors"
 	"fmt"
+	"istio.io/istio/mixer/adapter/metadata"
+	"istio.io/istio/mixer/template"
 	"path/filepath"
 	"reflect"
 	"sort"
@@ -373,6 +375,35 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 		},
 	}
 	s.JSONObjectDescriptor = g.generateObjectDescriptor(t)
+
+	adapterInfos := metadata.InfoMap()
+	adaptersEnum := JSONPropertyDescriptor{
+		JSONDescriptor: &JSONDescriptor{Type: "string"},
+		JavaTypeDescriptor: &JavaTypeDescriptor{
+			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedAdapters",
+		},
+	}
+	for name, info := range adapterInfos {
+		// todo: the Params we previously enumerated are recorded under the DefaultConfig field which we should be able to introspect
+		config := info.DefaultConfig
+		property := g.getPropertyDescriptor(reflect.TypeOf(config), name, name)
+		s.JSONObjectDescriptor.Properties[name] = property
+		adaptersEnum.Enum = append(adaptersEnum.Enum, name)
+	}
+	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedAdapters"] = adaptersEnum
+
+	templateInfos := template.SupportedTmplInfo
+	templatesEnum := JSONPropertyDescriptor{
+		JSONDescriptor: &JSONDescriptor{Type: "string"},
+		JavaTypeDescriptor: &JavaTypeDescriptor{
+			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates",
+		},
+	}
+	for name := range templateInfos {
+		templatesEnum.Enum = append(templatesEnum.Enum, name)
+	}
+	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedTemplates"] = templatesEnum
+
 	if len(g.types) > 0 {
 		s.Definitions = make(map[string]JSONPropertyDescriptor)
 
@@ -396,6 +427,10 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				},
 			}
 			s.Definitions[name] = value
+
+			if _, ok = s.JSONObjectDescriptor.Properties[name]; !ok {
+				s.JSONObjectDescriptor.Properties[name] = g.getPropertyDescriptor(k, name, name)
+			}
 		}
 	}
 
@@ -561,7 +596,6 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 	case reflect.Struct:
 		definedType, ok := g.types[t]
 		if !ok {
-			g.types[t] = &JSONObjectDescriptor{}
 			definedType = g.generateObjectDescriptor(t)
 			g.types[t] = definedType
 		}
@@ -624,7 +658,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		}
 
 		path := pkgPath(t)
-		humanReadableFieldName := field.Type.Name() + " field " + name + " in " + path + "/" + t.Name()
+		humanReadableFieldName := fmt.Sprintf("'%s' field in %s/%s", name, path, t.Name())
 
 		desc := getFieldDescription(field)
 		enum := getFieldEnum(field)
