@@ -118,7 +118,7 @@ INT_LIT
 
 
 STRING_LIT
-    : '"' ([a-zA-Z.\-_] | DECIMAL_DIGIT | [ \t])* '"'
+    : '"' ([a-zA-Z.\-_!?] | DECIMAL_DIGIT | [ \t])* '"'
     ;
 
 
