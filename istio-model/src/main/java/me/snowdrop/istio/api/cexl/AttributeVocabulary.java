@@ -1,10 +1,11 @@
 /**
  * Copyright 2018 Red Hat, Inc. and/or its affiliates.
  * <p>
- * Licensed under the Eclipse Public License version 1.0, available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Licensed under the Eclipse Public License version 1.0, available at http://www.eclipse.org/legal/epl-v10.html
  */
 package me.snowdrop.istio.api.cexl;
+
+import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
 
 import java.util.Collections;
 import java.util.Map;
@@ -12,618 +13,374 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
-
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 public class AttributeVocabulary {
-    private static final Map<String, AttributeInfo> ATTRIBUTE_INFO_MAP = new ConcurrentHashMap<>();
-
-    public static Optional<AttributeInfo> getInfoFor(String attributeName) {
-        return Optional.ofNullable(ATTRIBUTE_INFO_MAP.get(attributeName));
-    }
-
-    public static class AttributeInfo {
-        public final String name;
-        public final ValueType type;
-        public final String description;
-        public final String example;
-
-        private AttributeInfo(String name, String istioType, String description, String example) {
-            this.name = name;
-            this.type = ValueType.valueOf(istioType.toUpperCase());
-            this.description = description;
-            this.example = example;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            AttributeInfo info = (AttributeInfo) o;
-
-            if (!name.equals(info.name)) return false;
-            return type == info.type;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = name.hashCode();
-            result = 31 * result + type.hashCode();
-            return result;
-        }
-    }
-
-    public static Set<String> getKnownAttributes() {
-        return Collections.unmodifiableSet(ATTRIBUTE_INFO_MAP.keySet());
-    }
-
-
-    /**
-     * source.ip attribute with expected type: ip_address
-     * Client IP address.
-     * Example: 10.0.0.117
-     */
-    public static final String source_ip = "source.ip";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_ip, new AttributeInfo(source_ip, "ip_address", "Client IP address.", "10.0.0.117"));
-    }
-
-    /**
-     * source.service attribute with expected type: string
-     * The fully qualified name of the service that the client belongs to.
-     * Example: redis-master.my-namespace.svc.cluster.local
-     */
-    public static final String source_service = "source.service";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_service, new AttributeInfo(source_service, "string", "The fully qualified name of the service that the client belongs to.", "redis-master.my-namespace.svc.cluster.local"));
-    }
-
-    /**
-     * source.name attribute with expected type: string
-     * The short name part of the source service.
-     * Example: redis-master
-     */
-    public static final String source_name = "source.name";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_name, new AttributeInfo(source_name, "string", "The short name part of the source service.", "redis-master"));
-    }
-
-    /**
-     * source.namespace attribute with expected type: string
-     * The namespace part of the source service.
-     * Example: my-namespace
-     */
-    public static final String source_namespace = "source.namespace";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_namespace, new AttributeInfo(source_namespace, "string", "The namespace part of the source service.", "my-namespace"));
-    }
-
-    /**
-     * source.domain attribute with expected type: string
-     * The domain suffix part of the source service, excluding the name and the namespace.
-     * Example: svc.cluster.local
-     */
-    public static final String source_domain = "source.domain";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_domain, new AttributeInfo(source_domain, "string", "The domain suffix part of the source service, excluding the name and the namespace.", "svc.cluster.local"));
-    }
-
-    /**
-     * source.uid attribute with expected type: string
-     * Platform-specific unique identifier for the client instance of the source service.
-     * Example: kubernetes://redis-master-2353460263-1ecey.my-namespace
-     */
-    public static final String source_uid = "source.uid";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_uid, new AttributeInfo(source_uid, "string", "Platform-specific unique identifier for the client instance of the source service.", "kubernetes://redis-master-2353460263-1ecey.my-namespace"));
-    }
-
-    /**
-     * source.labels attribute with expected type: map[string, string]
-     * A map of key-value pairs attached to the client instance.
-     * Example: version =&gt; v1
-     */
-    public static final String source_labels = "source.labels";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_labels, new AttributeInfo(source_labels, ValueType.STRING_MAP.name(), "A map of key-value pairs attached to the client instance.", "version => v1"));
-    }
-
-    /**
-     * source.user attribute with expected type: string
-     * The identity of the immediate sender of the request, authenticated by mTLS.
-     * Example: service-account-foo
-     */
-    public static final String source_user = "source.user";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(source_user, new AttributeInfo(source_user, "string", "The identity of the immediate sender of the request, authenticated by mTLS.", "service-account-foo"));
-    }
-
-    /**
-     * destination.ip attribute with expected type: ip_address
-     * Server IP address.
-     * Example: 10.0.0.104
-     */
-    public static final String destination_ip = "destination.ip";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_ip, new AttributeInfo(destination_ip, "ip_address", "Server IP address.", "10.0.0.104"));
-    }
-
-    /**
-     * destination.port attribute with expected type: int64
-     * The recipient port on the server IP address.
-     * Example: 8080
-     */
-    public static final String destination_port = "destination.port";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_port, new AttributeInfo(destination_port, "int64", "The recipient port on the server IP address.", "8080"));
-    }
-
-    /**
-     * destination.service attribute with expected type: string
-     * The fully qualified name of the service that the server belongs to.
-     * Example: my-svc.my-namespace.svc.cluster.local
-     */
-    public static final String destination_service = "destination.service";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_service, new AttributeInfo(destination_service, "string", "The fully qualified name of the service that the server belongs to.", "my-svc.my-namespace.svc.cluster.local"));
-    }
-
-    /**
-     * destination.name attribute with expected type: string
-     * The short name part of the destination service.
-     * Example: my-svc
-     */
-    public static final String destination_name = "destination.name";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_name, new AttributeInfo(destination_name, "string", "The short name part of the destination service.", "my-svc"));
-    }
-
-    /**
-     * destination.namespace attribute with expected type: string
-     * The namespace part of the destination service.
-     * Example: my-namespace
-     */
-    public static final String destination_namespace = "destination.namespace";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_namespace, new AttributeInfo(destination_namespace, "string", "The namespace part of the destination service.", "my-namespace"));
-    }
-
-    /**
-     * destination.domain attribute with expected type: string
-     * The domain suffix part of the destination service, excluding the name and the namespace.
-     * Example: svc.cluster.local
-     */
-    public static final String destination_domain = "destination.domain";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_domain, new AttributeInfo(destination_domain, "string", "The domain suffix part of the destination service, excluding the name and the namespace.", "svc.cluster.local"));
-    }
-
-    /**
-     * destination.uid attribute with expected type: string
-     * Platform-specific unique identifier for the server instance of the destination service.
-     * Example: kubernetes://my-svc-234443-5sffe.my-namespace
-     */
-    public static final String destination_uid = "destination.uid";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_uid, new AttributeInfo(destination_uid, "string", "Platform-specific unique identifier for the server instance of the destination service.", "kubernetes://my-svc-234443-5sffe.my-namespace"));
-    }
-
-    /**
-     * destination.labels attribute with expected type: map[string, string]
-     * A map of key-value pairs attached to the server instance.
-     * Example: version =&gt; v2
-     */
-    public static final String destination_labels = "destination.labels";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_labels, new AttributeInfo(destination_labels, ValueType.STRING_MAP.name(), "A map of key-value pairs attached to the server instance.", "version => v2"));
-    }
-
-    /**
-     * destination.user attribute with expected type: string
-     * The user running the destination application.
-     * Example: service-account
-     */
-    public static final String destination_user = "destination.user";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(destination_user, new AttributeInfo(destination_user, "string", "The user running the destination application.", "service-account"));
-    }
-
-    /**
-     * request.headers attribute with expected type: map[string, string]
-     * HTTP request headers. For gRPC, its metadata will be here.
-     * Example:
-     */
-    public static final String request_headers = "request.headers";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_headers, new AttributeInfo(request_headers, ValueType.STRING_MAP.name(), "HTTP request headers. For gRPC, its metadata will be here.", ""));
-    }
-
-    /**
-     * request.id attribute with expected type: string
-     * An ID for the request with statistically low probability of collision.
-     * Example:
-     */
-    public static final String request_id = "request.id";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_id, new AttributeInfo(request_id, "string", "An ID for the request with statistically low probability of collision.", ""));
-    }
-
-    /**
-     * request.path attribute with expected type: string
-     * The HTTP URL path including query string
-     * Example:
-     */
-    public static final String request_path = "request.path";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_path, new AttributeInfo(request_path, "string", "The HTTP URL path including query string", ""));
-    }
-
-    /**
-     * request.host attribute with expected type: string
-     * HTTP/1.x host header or HTTP/2 authority header.
-     * Example: redis-master:3337
-     */
-    public static final String request_host = "request.host";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_host, new AttributeInfo(request_host, "string", "HTTP/1.x host header or HTTP/2 authority header.", "redis-master:3337"));
-    }
-
-    /**
-     * request.method attribute with expected type: string
-     * The HTTP method.
-     * Example:
-     */
-    public static final String request_method = "request.method";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_method, new AttributeInfo(request_method, "string", "The HTTP method.", ""));
-    }
-
-    /**
-     * request.reason attribute with expected type: string
-     * The request reason used by auditing systems.
-     * Example:
-     */
-    public static final String request_reason = "request.reason";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_reason, new AttributeInfo(request_reason, "string", "The request reason used by auditing systems.", ""));
-    }
-
-    /**
-     * request.referer attribute with expected type: string
-     * The HTTP referer header.
-     * Example:
-     */
-    public static final String request_referer = "request.referer";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_referer, new AttributeInfo(request_referer, "string", "The HTTP referer header.", ""));
-    }
-
-    /**
-     * request.scheme attribute with expected type: string
-     * URI Scheme of the request
-     * Example:
-     */
-    public static final String request_scheme = "request.scheme";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_scheme, new AttributeInfo(request_scheme, "string", "URI Scheme of the request", ""));
-    }
-
-    /**
-     * request.size attribute with expected type: int64
-     * Size of the request in bytes. For HTTP requests this is equivalent to the Content-Length header.
-     * Example:
-     */
-    public static final String request_size = "request.size";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_size, new AttributeInfo(request_size, "int64", "Size of the request in bytes. For HTTP requests this is equivalent to the Content-Length header.", ""));
-    }
-
-    /**
-     * request.time attribute with expected type: timestamp
-     * The timestamp when the destination receives the request. This should be equivalent to Firebase "now".
-     * Example:
-     */
-    public static final String request_time = "request.time";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_time, new AttributeInfo(request_time, "timestamp", "The timestamp when the destination receives the request. This should be equivalent to Firebase \"now\".", ""));
-    }
-
-    /**
-     * request.useragent attribute with expected type: string
-     * The HTTP User-Agent header.
-     * Example:
-     */
-    public static final String request_useragent = "request.useragent";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_useragent, new AttributeInfo(request_useragent, "string", "The HTTP User-Agent header.", ""));
-    }
-
-    /**
-     * response.headers attribute with expected type: map[string, string]
-     * HTTP response headers.
-     * Example:
-     */
-    public static final String response_headers = "response.headers";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(response_headers, new AttributeInfo(response_headers, ValueType.STRING_MAP.name(), "HTTP response headers.", ""));
-    }
-
-    /**
-     * response.size attribute with expected type: int64
-     * Size of the response body in bytes
-     * Example:
-     */
-    public static final String response_size = "response.size";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(response_size, new AttributeInfo(response_size, "int64", "Size of the response body in bytes", ""));
-    }
-
-    /**
-     * response.time attribute with expected type: timestamp
-     * The timestamp when the destination produced the response.
-     * Example:
-     */
-    public static final String response_time = "response.time";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(response_time, new AttributeInfo(response_time, "timestamp", "The timestamp when the destination produced the response.", ""));
-    }
-
-    /**
-     * response.duration attribute with expected type: duration
-     * The amount of time the response took to generate.
-     * Example:
-     */
-    public static final String response_duration = "response.duration";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(response_duration, new AttributeInfo(response_duration, "duration", "The amount of time the response took to generate.", ""));
-    }
-
-    /**
-     * response.code attribute with expected type: int64
-     * The response's HTTP status code.
-     * Example:
-     */
-    public static final String response_code = "response.code";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(response_code, new AttributeInfo(response_code, "int64", "The response's HTTP status code.", ""));
-    }
-
-    /**
-     * connection.id attribute with expected type: string
-     * An ID for a TCP connection with statistically low probability of collision.
-     * Example:
-     */
-    public static final String connection_id = "connection.id";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(connection_id, new AttributeInfo(connection_id, "string", "An ID for a TCP connection with statistically low probability of collision.", ""));
-    }
-
-    /**
-     * connection.received.bytes attribute with expected type: int64
-     * Number of bytes received by a destination service on a connection since the last Report() for a connection.
-     * Example:
-     */
-    public static final String connection_received_bytes = "connection.received.bytes";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(connection_received_bytes, new AttributeInfo(connection_received_bytes, "int64", "Number of bytes received by a destination service on a connection since the last Report() for a connection.", ""));
-    }
-
-    /**
-     * connection.received.bytes_total attribute with expected type: int64
-     * Total number of bytes received by a destination service during the lifetime of a connection.
-     * Example:
-     */
-    public static final String connection_received_bytes_total = "connection.received.bytes_total";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(connection_received_bytes_total, new AttributeInfo(connection_received_bytes_total, "int64", "Total number of bytes received by a destination service during the lifetime of a connection.", ""));
-    }
-
-    /**
-     * connection.sent.bytes attribute with expected type: int64
-     * Number of bytes sent by a destination service on a connection since the last Report() for a connection.
-     * Example:
-     */
-    public static final String connection_sent_bytes = "connection.sent.bytes";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(connection_sent_bytes, new AttributeInfo(connection_sent_bytes, "int64", "Number of bytes sent by a destination service on a connection since the last Report() for a connection.", ""));
-    }
-
-    /**
-     * connection.sent.bytes_total attribute with expected type: int64
-     * Total number of bytes sent by a destination service during the lifetime of a connection.
-     * Example:
-     */
-    public static final String connection_sent_bytes_total = "connection.sent.bytes_total";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(connection_sent_bytes_total, new AttributeInfo(connection_sent_bytes_total, "int64", "Total number of bytes sent by a destination service during the lifetime of a connection.", ""));
-    }
-
-    /**
-     * connection.duration attribute with expected type: duration
-     * The total amount of time a connection has been open.
-     * Example:
-     */
-    public static final String connection_duration = "connection.duration";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(connection_duration, new AttributeInfo(connection_duration, "duration", "The total amount of time a connection has been open.", ""));
-    }
-
-    /**
-     * context.protocol attribute with expected type: string
-     * Protocol of the request or connection being proxied.
-     * Example: tcp
-     */
-    public static final String context_protocol = "context.protocol";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(context_protocol, new AttributeInfo(context_protocol, "string", "Protocol of the request or connection being proxied.", "tcp"));
-    }
-
-    /**
-     * context.time attribute with expected type: timestamp
-     * The timestamp of Mixer operation.
-     * Example:
-     */
-    public static final String context_time = "context.time";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(context_time, new AttributeInfo(context_time, "timestamp", "The timestamp of Mixer operation.", ""));
-    }
-
-    /**
-     * api.service attribute with expected type: string
-     * The public service name. This is different than the in-mesh service identity and reflects the name of the service exposed to the client.
-     * Example: my-svc.com
-     */
-    public static final String api_service = "api.service";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(api_service, new AttributeInfo(api_service, "string", "The public service name. This is different than the in-mesh service identity and reflects the name of the service exposed to the client.", "my-svc.com"));
-    }
-
-    /**
-     * api.version attribute with expected type: string
-     * The API version.
-     * Example: v1alpha1
-     */
-    public static final String api_version = "api.version";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(api_version, new AttributeInfo(api_version, "string", "The API version.", "v1alpha1"));
-    }
-
-    /**
-     * api.operation attribute with expected type: string
-     * Unique string used to identify the operation. The id is unique among all operations described in a specific
-     * &lt;service, version&gt;.
-     * Example: getPetsById
-     */
-    public static final String api_operation = "api.operation";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(api_operation, new AttributeInfo(api_operation, "string", "Unique string used to identify the operation. The id is unique among all operations described in a specific <service, version>.", "getPetsById"));
-    }
-
-    /**
-     * api.protocol attribute with expected type: string
-     * The protocol type of the API call. Mainly for monitoring/analytics. Note that this is the frontend protocol exposed to the client, not the protocol implemented by the backend service.
-     * Example: "http", "https", or "grpc"
-     */
-    public static final String api_protocol = "api.protocol";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(api_protocol, new AttributeInfo(api_protocol, "string", "The protocol type of the API call. Mainly for monitoring/analytics. Note that this is the frontend protocol exposed to the client, not the protocol implemented by the backend service.", "\"http\", \"https\", or \"grpc\""));
-    }
-
-    /**
-     * request.auth.principal attribute with expected type: string
-     * The authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) claims within a JWT concatenated with "/" with a percent-encoded subject value.
-     * Example: accounts.my-svc.com/104958560606
-     */
-    public static final String request_auth_principal = "request.auth.principal";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_auth_principal, new AttributeInfo(request_auth_principal, "string", "The authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) claims within a JWT concatenated with \"/\" with a percent-encoded subject value.", "accounts.my-svc.com/104958560606"));
-    }
-
-    /**
-     * request.auth.audiences attribute with expected type: string
-     * The intended audience(s) for this authentication information. This should reflect the audience (`aud`) claim within a JWT.
-     * Example: ['my-svc.com', 'scopes/read']
-     */
-    public static final String request_auth_audiences = "request.auth.audiences";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_auth_audiences, new AttributeInfo(request_auth_audiences, "string", "The intended audience(s) for this authentication information. This should reflect the audience (`aud`) claim within a JWT.", "['my-svc.com', 'scopes/read']"));
-    }
-
-    /**
-     * request.auth.presenter attribute with expected type: string
-     * The authorized presenter of the credential. This value should reflect the optional Authorized Presenter (`azp`) claim within a JWT or the OAuth2 client id.
-     * Example: 123456789012.my-svc.com
-     */
-    public static final String request_auth_presenter = "request.auth.presenter";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_auth_presenter, new AttributeInfo(request_auth_presenter, "string", "The authorized presenter of the credential. This value should reflect the optional Authorized Presenter (`azp`) claim within a JWT or the OAuth2 client id.", "123456789012.my-svc.com"));
-    }
-
-    /**
-     * request.api_key attribute with expected type: string
-     * The API key used for the request.
-     * Example: abcde12345
-     */
-    public static final String request_api_key = "request.api_key";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(request_api_key, new AttributeInfo(request_api_key, "string", "The API key used for the request.", "abcde12345"));
-    }
-
-    /**
-     * check.error_code attribute with expected type: int64
-     * The error [code](https://github.com/google/protobuf/blob/master/src/google/protobuf/stubs/status.h#L44) for Mixer Check call.
-     * Example: 5
-     */
-    public static final String check_error_code = "check.error_code";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(check_error_code, new AttributeInfo(check_error_code, "int64", "The error [code](https://github.com/google/protobuf/blob/master/src/google/protobuf/stubs/status.h#L44) for Mixer Check call.", "5"));
-    }
-
-    /**
-     * check.error_message attribute with expected type: string
-     * The error message for Mixer Check call.
-     * Example: Could not find the resource
-     */
-    public static final String check_error_message = "check.error_message";
-
-    static {
-        ATTRIBUTE_INFO_MAP.put(check_error_message, new AttributeInfo(check_error_message, "string", "The error message for Mixer Check call.", "Could not find the resource"));
-    }
-
-
-    private AttributeVocabulary() {
-    }
+	private static final Map<String, AttributeInfo> ATTRIBUTE_INFO_MAP = new ConcurrentHashMap<>();
+
+	public static Optional<AttributeInfo> getInfoFor(String attributeName) {
+		return Optional.ofNullable(ATTRIBUTE_INFO_MAP.get(attributeName));
+	}
+
+	public static class AttributeInfo {
+		public final String name;
+		public final ValueType type;
+		public final String description;
+		public final String example;
+
+		private AttributeInfo(String name, String istioType, String description, String example) {
+			this.name = name;
+			this.type = ValueType.valueOf(istioType.toUpperCase());
+			this.description = description;
+			this.example = example;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			AttributeInfo info = (AttributeInfo) o;
+
+			if (!name.equals(info.name)) return false;
+			return type == info.type;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = name.hashCode();
+			result = 31 * result + type.hashCode();
+			return result;
+		}
+	}
+
+	public static Set<String> getKnownAttributes() {
+		return Collections.unmodifiableSet(ATTRIBUTE_INFO_MAP.keySet());
+	}
+
+	// generated from https://github.com/istio/istio.io/blob/master/content/en/docs/reference/config/policy-and-telemetry/attribute-vocabulary/index.md
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.uid", new AttributeInfo("source.uid", "string", "Platform-specific unique identifier for the source workload instance.", "`kubernetes://redis-master-2353460263-1ecey.my-namespace` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.ip", new AttributeInfo("source.ip", "ip_address", "Source workload instance IP address.", "`10.0.0.117` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.labels", new AttributeInfo("source.labels", ValueType.STRING_MAP.name()
+				, "A map of key-value pairs attached to the source instance.", "version => v1 "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.name", new AttributeInfo("source.name", "string", "Source workload instance name.", "`redis-master-2353460263-1ecey` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.namespace", new AttributeInfo("source.namespace", "string", "Source workload instance namespace.", "`my-namespace` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.principal", new AttributeInfo("source.principal", "string", "Authority under which the source workload instance is running.", "`service-account-foo` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.owner", new AttributeInfo("source.owner", "string", "Reference to the workload controlling the source workload instance.", "`kubernetes://apis/apps/v1/namespaces/istio-system/deployments/istio-policy` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.workload.uid", new AttributeInfo("source.workload.uid", "string", "Unique identifier of the source workload.", "`istio://istio-system/workloads/istio-policy` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.workload.name", new AttributeInfo("source.workload.name", "string", "Source workload name.", "`istio-policy` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("source.workload.namespace", new AttributeInfo("source.workload.namespace", "string", "Source workload namespace. ", "`istio-system` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.uid", new AttributeInfo("destination.uid", "string", "Platform-specific unique identifier for the server instance.", "`kubernetes://my-svc-234443-5sffe.my-namespace` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.ip", new AttributeInfo("destination.ip", "ip_address", "Server IP address.", "`10.0.0.104` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.port", new AttributeInfo("destination.port", "int64", "The recipient port on the server IP address.", "`8080` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.labels", new AttributeInfo("destination.labels", ValueType.STRING_MAP.name()
+				, "A map of key-value pairs attached to the server instance.", "version => v2 "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.name", new AttributeInfo("destination.name", "string", "Destination workload instance name.", "`istio-telemetry-2359333` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.namespace", new AttributeInfo("destination.namespace", "string", "Destination workload instance namespace.", "`istio-system` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.principal", new AttributeInfo("destination.principal", "string", "Authority under which the destination workload instance is running.", "`service-account` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.workload.uid", new AttributeInfo("destination.workload.uid", "string", "Unique identifier of the destination workload.", "`istio://istio-system/workloads/istio-telemetry` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.workload.name", new AttributeInfo("destination.workload.name", "string", "Destination workload name.", "`istio-telemetry` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.workload.namespace", new AttributeInfo("destination.workload.namespace", "string", "Destination workload namespace.", "`istio-system` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.container.name", new AttributeInfo("destination.container.name", "string", "Name of the destination workload instance's container.", "`mixer` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.container.image", new AttributeInfo("destination.container.image", "string", "Image of the destination workload instance's container.", "`gcr.io/istio-testing/mixer:0.8.0` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.service.host", new AttributeInfo("destination.service.host", "string", "Destination host address.", "`istio-telemetry.istio-system.svc.cluster.local` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.service.uid", new AttributeInfo("destination.service.uid", "string", "Unique identifier of the destination service.", "`istio://istio-system/services/istio-telemetry` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.service.name", new AttributeInfo("destination.service.name", "string", "Destination service name.", "`istio-telemetry` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.service.namespace", new AttributeInfo("destination.service.namespace", "string", "Destination service namespace.", "`istio-system` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("origin.ip", new AttributeInfo("origin.ip", "ip_address", "IP address of the proxy client, e.g. origin for the ingress proxies.", "`127.0.0.1` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.headers", new AttributeInfo("request.headers", ValueType.STRING_MAP.name()
+				, "HTTP request headers with lowercase keys. For gRPC, its metadata will be here.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.id", new AttributeInfo("request.id", "string", "An ID for the request with statistically low probability of collision.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.path", new AttributeInfo("request.path", "string", "The HTTP URL path including query string", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.url_path", new AttributeInfo("request.url_path", "string", "The path part of HTTP URL, with query string being stripped", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.query_params", new AttributeInfo("request.query_params", ValueType.STRING_MAP.name()
+				, "A map of query parameters extracted from the HTTP URL.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.host", new AttributeInfo("request.host", "string", "HTTP/1.x host header or HTTP/2 authority header.", "`redis-master:3337` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.method", new AttributeInfo("request.method", "string", "The HTTP method.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.reason", new AttributeInfo("request.reason", "string", "The request reason used by auditing systems.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.referer", new AttributeInfo("request.referer", "string", "The HTTP referer header.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.scheme", new AttributeInfo("request.scheme", "string", "URI Scheme of the request", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.size", new AttributeInfo("request.size", "int64", "Size of the request in bytes. For HTTP requests this is equivalent to the Content-Length header.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.total_size", new AttributeInfo("request.total_size", "int64", "Total size of HTTP request in bytes, including request headers, body and trailers.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.time", new AttributeInfo("request.time", "timestamp", "The timestamp when the " +
+				"destination receives the request. This should be equivalent to Firebase \"now\").", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.useragent", new AttributeInfo("request.useragent", "string", "The HTTP User-Agent header.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.headers", new AttributeInfo("response.headers", ValueType.STRING_MAP.name()
+				, "HTTP response headers with lowercase keys.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.size", new AttributeInfo("response.size", "int64", "Size of the response body in bytes", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.total_size", new AttributeInfo("response.total_size", "int64", "Total size of HTTP response in bytes, including response headers and body.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.time", new AttributeInfo("response.time", "timestamp", "The timestamp when the destination produced the response.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.duration", new AttributeInfo("response.duration", "duration", "The amount of time the response took to generate.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.code", new AttributeInfo("response.code", "int64", "The response's HTTP status code.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.grpc_status", new AttributeInfo("response.grpc_status", "string", "The response's gRPC status.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("response.grpc_message", new AttributeInfo("response.grpc_message", "string", "The response's gRPC status message.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.id", new AttributeInfo("connection.id", "string", "An ID for a TCP connection with statistically low probability of collision.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.event", new AttributeInfo("connection.event", "string", "Status of a TCP connection, its value is one of \"open\", \"continue\" and \"close\".", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.received.bytes", new AttributeInfo("connection.received.bytes", "int64", "Number of bytes received by a destination service on a connection since the last Report() for a connection.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.received.bytes_total", new AttributeInfo("connection.received.bytes_total", "int64", "Total number of bytes received by a destination service during the lifetime of a connection.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.sent.bytes", new AttributeInfo("connection.sent.bytes", "int64", "Number of bytes sent by a destination service on a connection since the last Report() for a connection.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.sent.bytes_total", new AttributeInfo("connection.sent.bytes_total", "int64", "Total number of bytes sent by a destination service during the lifetime of a connection.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.duration", new AttributeInfo("connection.duration", "duration", "The total amount of time a connection has been open.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.mtls", new AttributeInfo("connection.mtls", "bool", "Indicates whether a " +
+				"request is received over a mutual TLS enabled downstream connection.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("connection.requested_server_name", new AttributeInfo("connection.requested_server_name", "string", "The requested server name (SNI) of the connection", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("context.protocol", new AttributeInfo("context.protocol", "string", "Protocol of the request or connection being proxied.", "`tcp` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("context.time", new AttributeInfo("context.time", "timestamp", "The timestamp of Mixer operation.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("context.reporter.kind", new AttributeInfo("context.reporter.kind", "string", "Contextualizes the reported attribute set. Set to `inbound` for the server-side calls from sidecars and `outbound` for the client-side calls from sidecars and gateways", "`inbound` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("context.reporter.uid", new AttributeInfo("context.reporter.uid", "string", "Platform-specific identifier of the attribute reporter.", "`kubernetes://my-svc-234443-5sffe.my-namespace` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("context.proxy_error_code", new AttributeInfo("context.proxy_error_code", "string", "Additional details about the response or connection from proxy. In case of Envoy, see `%RESPONSE_FLAGS%` in [Envoy Access Log](https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#config-access-log-format-response-flags) for more detail", "`UH` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("api.service", new AttributeInfo("api.service", "string", "The public service name. This is different than the in-mesh service identity and reflects the name of the service exposed to the client.", "`my-svc.com` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("api.version", new AttributeInfo("api.version", "string", "The API version.", "`v1alpha1` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("api.operation", new AttributeInfo("api.operation", "string", "Unique string used to identify the operation. The id is unique among all operations described in a specific &lt;service, version&gt;.", "`getPetsById` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("api.protocol", new AttributeInfo("api.protocol", "string", "The protocol type of the API call. Mainly for monitoring/analytics. Note that this is the frontend protocol exposed to the client, not the protocol implemented by the backend service.", "`http`, `https`, or `grpc` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.auth.principal", new AttributeInfo("request.auth.principal", "string", "The " +
+				"authenticated principal of the request. This is a string of the issuer (`iss`) and subject (`sub`) " +
+				"claims within a JWT concatenated with \"/\" with a percent - encoded subject value.This attribute may " +
+				"come from the peer or the origin in the Istio authentication policy, depending on the binding rule defined in the Istio authentication policy.", "`issuer@foo.com/sub @foo.com`"));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.auth.audiences", new AttributeInfo("request.auth.audiences", "string", "The intended audience(s) for this authentication information. This should reflect the audience (`aud`) claim within a JWT.", "`aud1` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.auth.presenter", new AttributeInfo("request.auth.presenter", "string", "The authorized presenter of the credential. This value should reflect the optional Authorized Presenter (`azp`) claim within a JWT or the OAuth2 client id.", "123456789012.my-svc.com "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.auth.claims", new AttributeInfo("request.auth.claims", ValueType.STRING_MAP.name()
+				, "all raw string claims from the `origin` JWT", "`iss`: `issuer@foo.com`, `sub`: `sub@foo.com`, `aud`: `aud1` "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("request.api_key", new AttributeInfo("request.api_key", "string", "The API key used for the request.", "abcde12345 "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("check.error_code", new AttributeInfo("check.error_code", "int64", "The error [code](https://github.com/google/protobuf/blob/master/src/google/protobuf/stubs/status.h) for Mixer Check call.", "5 "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("check.error_message", new AttributeInfo("check.error_message", "string", "The error message for Mixer Check call.", "Could not find the resource "));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("check.cache_hit", new AttributeInfo("check.cache_hit", "bool", "Indicates whether Mixer check call hits local cache.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("quota.cache_hit", new AttributeInfo("quota.cache_hit", "bool", "Indicates whether Mixer" +
+				" quota call hits local cache.", ""));
+	}
+
+	static {
+		ATTRIBUTE_INFO_MAP.put("destination.owner", new AttributeInfo("destination.owner", "string", "Reference to the workload controlling the destination workload instance.", "`kubernetes://apis/apps/v1/namespaces/istio-system/deployments/istio-telemetry`"));
+	}
+
+	private AttributeVocabulary() {
+	}
 }
