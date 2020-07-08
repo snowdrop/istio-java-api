@@ -212,6 +212,10 @@ public class IstioSpecRegistry {
         if (simpleClassName.endsWith("Spec")) {
             key = simpleClassName.substring(0, simpleClassName.indexOf("Spec"));
         }
+        // for some reason, instance and handler don't have the same version as their package
+        if (key.equals("Instance") || key.equals("Handler")) {
+            version = "v1alpha2";
+        }
         key = version + key;
         return key.toLowerCase();
     }
