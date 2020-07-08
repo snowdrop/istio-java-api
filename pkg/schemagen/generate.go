@@ -315,7 +315,7 @@ func transformTemplateName(original string, path string) (string, bool) {
 	var name = original
 	result := false
 	kindIndex := strings.Index(path, kind)
-	if kindIndex >= 0 && strings.Compare("InstanceMsg", name) == 0 {
+	if kindIndex >= 0 && "InstanceMsg" == name {
 		// extract specific type name from path
 		extractedTypeName := path[kindIndex+len(kind)+1:]
 		name = strings.Title(extractedTypeName)
@@ -343,7 +343,7 @@ func transformAdapterName(original string, path string) (string, bool) {
 	var name = original
 	result := false
 	kindIndex := strings.Index(path, kind)
-	if kindIndex >= 0 && strings.Compare("Params", name) == 0 {
+	if kindIndex >= 0 && "Params" == name {
 		// extract specific type name from path
 		extractedTypeName := path[kindIndex+len(kind)+1:]
 		slashIndex := strings.IndexRune(extractedTypeName, '/')
@@ -375,35 +375,6 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 		},
 	}
 	s.JSONObjectDescriptor = g.generateObjectDescriptor(t)
-
-	adapterInfos := metadata.InfoMap()
-	adaptersEnum := JSONPropertyDescriptor{
-		JSONDescriptor: &JSONDescriptor{Type: "string"},
-		JavaTypeDescriptor: &JavaTypeDescriptor{
-			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedAdapters",
-		},
-	}
-	for name, info := range adapterInfos {
-		// todo: the Params we previously enumerated are recorded under the DefaultConfig field which we should be able to introspect
-		config := info.DefaultConfig
-		property := g.getPropertyDescriptor(reflect.TypeOf(config), name, name)
-		s.JSONObjectDescriptor.Properties[name] = property
-		adaptersEnum.Enum = append(adaptersEnum.Enum, name)
-	}
-	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedAdapters"] = adaptersEnum
-
-	templateInfos := template.SupportedTmplInfo
-	templatesEnum := JSONPropertyDescriptor{
-		JSONDescriptor: &JSONDescriptor{Type: "string"},
-		JavaTypeDescriptor: &JavaTypeDescriptor{
-			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates",
-		},
-	}
-	for name := range templateInfos {
-		templatesEnum.Enum = append(templatesEnum.Enum, name)
-	}
-	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedTemplates"] = templatesEnum
-
 	if len(g.types) > 0 {
 		s.Definitions = make(map[string]JSONPropertyDescriptor)
 
@@ -426,13 +397,45 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 					JavaType: g.javaType(k),
 				},
 			}
-			s.Definitions[name] = value
-
-			if _, ok = s.JSONObjectDescriptor.Properties[name]; !ok {
-				s.JSONObjectDescriptor.Properties[name] = g.getPropertyDescriptor(k, name, name)
+			if _, isTemplate := transformTemplateName(k.Name(), pkgPath(k)); isTemplate {
+				value.IsTemplate = isTemplate
 			}
+			if _, isParams := transformAdapterName(k.Name(), pkgPath(k)); isParams {
+				value.IsAdapter = isParams
+			}
+			s.Definitions[name] = value
 		}
 	}
+
+	// supported mixer adapters enum generation
+	adapterInfos := metadata.InfoMap()
+	adaptersEnum := JSONPropertyDescriptor{
+		JSONDescriptor: &JSONDescriptor{Type: "string"},
+		JavaTypeDescriptor: &JavaTypeDescriptor{
+			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedAdapters",
+		},
+	}
+	for name, _ := range adapterInfos {
+		// todo: the Params we previously enumerated are recorded under the DefaultConfig field which we should be able to introspect
+		/*config := info.DefaultConfig
+		property := g.getPropertyDescriptor(reflect.TypeOf(config), name, name)
+		s.JSONObjectDescriptor.Properties[name] = property*/
+		adaptersEnum.Enum = append(adaptersEnum.Enum, name)
+	}
+	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedAdapters"] = adaptersEnum
+
+	// supported mixer templates enum generation
+	templateInfos := template.SupportedTmplInfo
+	templatesEnum := JSONPropertyDescriptor{
+		JSONDescriptor: &JSONDescriptor{Type: "string"},
+		JavaTypeDescriptor: &JavaTypeDescriptor{
+			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates",
+		},
+	}
+	for name := range templateInfos {
+		templatesEnum.Enum = append(templatesEnum.Enum, name)
+	}
+	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedTemplates"] = templatesEnum
 
 	if strict {
 		// check if there are API packages that weren't visited, which would indicate classes that were missed
