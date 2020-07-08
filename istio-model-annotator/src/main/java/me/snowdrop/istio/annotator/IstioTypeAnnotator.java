@@ -74,6 +74,19 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
     }
 
     @Override
+    public void typeInfo(JDefinedClass clazz, JsonNode node) {
+        super.typeInfo(clazz, node);
+        final JsonNode template = node.get("template");
+        if (template != null) {
+            clazz.annotate(MixerTemplate.class);
+        }
+        final JsonNode adapter = node.get("adapter");
+        if (adapter != null) {
+            clazz.annotate(MixerAdapter.class);
+        }
+    }
+
+    @Override
     public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
         JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
         annotationValue.param("apiVersion");
