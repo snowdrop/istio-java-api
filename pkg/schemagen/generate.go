@@ -430,6 +430,9 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 		s.JSONObjectDescriptor.Properties[name] = property*/
 		adaptersEnum.Enum = append(adaptersEnum.Enum, name)
 	}
+	sort.SliceStable(adaptersEnum.Enum, func(i, j int) bool {
+		return adaptersEnum.Enum[i].(string) < adaptersEnum.Enum[j].(string)
+	})
 	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedAdapters"] = adaptersEnum
 
 	// supported mixer templates enum generation
@@ -443,6 +446,9 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	for name := range templateInfos {
 		templatesEnum.Enum = append(templatesEnum.Enum, name)
 	}
+	sort.SliceStable(templatesEnum.Enum, func(i, j int) bool {
+		return templatesEnum.Enum[i].(string) < templatesEnum.Enum[j].(string)
+	})
 	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedTemplates"] = templatesEnum
 
 	if strict {
