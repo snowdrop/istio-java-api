@@ -57,6 +57,8 @@ type JavaTypeDescriptor struct {
 	JavaType         string `json:"javaType,omitempty"`
 	ExistingJavaType string `json:"existingJavaType,omitempty"`
 	IsInterface      bool   `json:"isInterface,omitempty"`
+	IsTemplate       bool   `json:"template,omitempty"`
+	IsAdapter        bool   `json:"adapter,omitempty"`
 }
 
 type JSONPropertyDescriptor struct {
