@@ -19,10 +19,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.IstioSpec;
-import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
-import me.snowdrop.istio.api.internal.IstioApiVersion;
-import me.snowdrop.istio.api.internal.IstioKind;
-import me.snowdrop.istio.api.internal.IstioSpecRegistry;
+import me.snowdrop.istio.api.internal.*;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
@@ -109,7 +106,8 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             }
         }
 
-        final String pkgName = clazz.getPackage().name();
+        final JPackage pkg = clazz.getPackage();
+        final String pkgName = pkg.name();
         final int i = pkgName.lastIndexOf('.');
         final String version = pkgName.substring(i + 1);
         if (version.startsWith("v")) {
@@ -136,9 +134,28 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
         buildable.paramArray("refs").annotate(BuildableReference.class)
               .param("value", objectMetaClass);
 
-        if (clazz.name().endsWith("Spec")) {
-            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
-                  .paramArray("value");
+
+        // if we're dealing with InstanceSpec class, change the 'params' field to be of type 'InstanceParams' instead
+        //of Struct to be able to have polymorphic params and modify accessors as well
+        final JClass instanceParamsClass = clazz.owner().directClass("me.snowdrop.istio.api.policy.v1beta1.InstanceParams");
+        if (clazz.name().contains("InstanceSpec")) {
+            changeFieldType(clazz, "params", instanceParamsClass);
+
+            // use enum for compiledTemplate field
+            final JClass supportedTemplates = clazz.owner().ref("me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates");
+            changeFieldType(clazz, "compiledTemplate", supportedTemplates);
+        }
+
+        final boolean isAdapter = isMixerRelated(clazz, pkgName, "mixer.adapter", "MixerAdapter");
+        final boolean isTemplate = isMixerRelated(clazz, pkgName, "mixer.template", "MixerTemplate");
+        if (isAdapter || isTemplate) {
+            if (isTemplate) {
+                // if we're dealing with a template class, we need it to implement the 'InstanceParams' interface
+                clazz._implements(instanceParamsClass);
+            }
+
+        } else if (clazz.name().endsWith("Spec")) {
+            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class).paramArray("value");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
             arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm")
@@ -148,6 +165,27 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
                         "IstioResourceMappingsProvider.java").toString())
                   .param("gather", true);
         }
+    }
+
+    private void changeFieldType(JDefinedClass clazz, String field, JClass newType) {
+        // change params to be of type InstanceParams for polymorphic support
+        final JFieldVar params = clazz.fields().get(field);
+        clazz.removeField(params);
+        clazz.field(params.mods().getValue(), newType, params.name());
+
+        // also change accessors
+        final String capitalizedField = field.substring(0, 1).toUpperCase() + field.substring(1);
+        final String getter = "get" + capitalizedField;
+        final String setter = "set" + capitalizedField;
+        clazz.methods().removeIf(m -> m.name().equals(getter) || m.name().equals(setter));
+        clazz.method(JMod.PUBLIC, newType, getter).body()._return(JExpr.refthis(field));
+        final JMethod setParams = clazz.method(JMod.PUBLIC, clazz.owner().VOID, setter);
+        setParams.param(newType, field);
+        setParams.body().assign(JExpr.refthis(field), JExpr.direct(field));
+    }
+
+    private boolean isMixerRelated(JDefinedClass clazz, String pkgName, String relevantPkgSubPath, String markerAnnotationName) {
+        return pkgName.contains(relevantPkgSubPath) && clazz.annotations().stream().anyMatch(a -> a.getAnnotationClass().name().contains(markerAnnotationName));
     }
 
     @Override
