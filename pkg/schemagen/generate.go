@@ -237,7 +237,15 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			// attempt to retrieve the version from the path
 			version := filepath.Base(path)
 			if strings.HasPrefix(version, "v") {
-				lower := version + "." + strings.ToLower(name)
+				lower := strings.ToLower(name)
+				switch lower {
+				case "instance", "handler":
+					// for some reason, instance and handler don't have the same version as their package
+					version = "v1alpha2"
+				default:
+				}
+				lower = version + "." + lower
+
 				crdDesc, ok := g.crds[lower]
 				if ok {
 					name += "Spec"
