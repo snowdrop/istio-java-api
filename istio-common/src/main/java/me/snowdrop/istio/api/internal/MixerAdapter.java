@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.FIELD})
 public @interface MixerAdapter {
+	String compiledAdapter() default "unknown";
 }
