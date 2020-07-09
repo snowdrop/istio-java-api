@@ -480,11 +480,30 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 			}
 		}
 		sort.Strings(unvisitedCRDs)
+
+		// check that we have handled all the known mixer templates / adapters
+		unvisitedAdapters := make([]string, 0)
+		for _, adapter := range adaptersEnum.Enum {
+			adapterName := adapter.(string)
+			if _, ok := g.adapters[adapterName]; !ok {
+				unvisitedAdapters = append(unvisitedAdapters, adapterName)
+			}
+		}
+		unvisitedTemplates := make([]string, 0)
+		for _, template := range adaptersEnum.Enum {
+			templateName := template.(string)
+			if _, ok := g.adapters[templateName]; !ok {
+				unvisitedTemplates = append(unvisitedTemplates, templateName)
+			}
+		}
+
 		hasUnvisitedCRDs := len(unvisitedCRDs) > 0
 		hasUnvisitedPkgs := len(unvisitedPkgs) > 0
 		hasUnknownEnums := len(g.unknownEnums) > 0
 		hasUnknownInterfaces := len(g.unknownInterfaces) > 0
-		if hasUnknownEnums || hasUnvisitedPkgs || hasUnknownInterfaces || hasUnvisitedCRDs {
+		hasUnvisitedAdapters := len(unvisitedAdapters) > 0
+		hasUnvisitedTemplates := len(unvisitedTemplates) > 0
+		if hasUnknownEnums || hasUnvisitedPkgs || hasUnknownInterfaces || hasUnvisitedCRDs || hasUnvisitedAdapters || hasUnvisitedTemplates {
 			var msg string
 			if hasUnknownEnums {
 				msg = msg + "\n\nUnknown enums:\n" + strings.Join(g.unknownEnums, "\n")
@@ -497,6 +516,12 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 			}
 			if hasUnvisitedCRDs {
 				msg = msg + "\n\nUnvisited CRDs:\n" + strings.Join(unvisitedCRDs, "\n")
+			}
+			if hasUnvisitedAdapters {
+				msg = msg + "\n\nUnvisited adapters:\n" + strings.Join(unvisitedAdapters, "\n")
+			}
+			if hasUnvisitedTemplates {
+				msg = msg + "\n\nUnvisited templates:\n" + strings.Join(unvisitedTemplates, "\n")
 			}
 
 			return &s, errors.New(msg)
