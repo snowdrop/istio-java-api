@@ -533,12 +533,13 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 }
 
 func (g *schemaGenerator) asProperties(elements map[string]string, fileName string) {
-	props := &strings.Builder{}
+	props := make([]string, 0, len(elements))
 	for key, impl := range elements {
-		props.WriteString(fmt.Sprintf("%s=%s\n", key, impl))
+		props = append(props, fmt.Sprintf("%s=%s", key, impl))
 	}
+	sort.Strings(props)
 	err := ioutil.WriteFile(filepath.Join("istio-common", "src", "main", "resources", fileName+".properties"),
-		[]byte(props.String()), 0644)
+		[]byte(strings.Join(props, "\n")), 0644)
 	if err != nil {
 		panic(err)
 	}
