@@ -18,7 +18,6 @@ package schemagen
 import (
 	"errors"
 	"fmt"
-	"github.com/ghodss/yaml"
 	"io/ioutil"
 	"istio.io/istio/mixer/adapter/metadata"
 	"istio.io/istio/mixer/template"
@@ -461,8 +460,8 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedTemplates"] = templatesEnum
 
 	// output templates/adapters information
-	g.outputAsYAML(g.adapters, "adapters.yml")
-	g.outputAsYAML(g.templates, "templates.yml")
+	g.asProperties(g.adapters, "adapters")
+	g.asProperties(g.templates, "templates")
 
 	if strict {
 		// check if there are API packages that weren't visited, which would indicate classes that were missed
@@ -531,12 +530,13 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	return &s, nil
 }
 
-func (g *schemaGenerator) outputAsYAML(elements map[string]string, fileName string) {
-	adaptersYAML, err := yaml.Marshal(elements)
-	if err != nil {
-		panic(err)
+func (g *schemaGenerator) asProperties(elements map[string]string, fileName string) {
+	props := &strings.Builder{}
+	for key, impl := range elements {
+		props.WriteString(fmt.Sprintf("%s=%s\n", key, impl))
 	}
-	err = ioutil.WriteFile(filepath.Join("istio-common", "src", "main", "resources", fileName), adaptersYAML, 0644)
+	err := ioutil.WriteFile(filepath.Join("istio-common", "src", "main", "resources", fileName+".properties"),
+		[]byte(props.String()), 0644)
 	if err != nil {
 		panic(err)
 	}
