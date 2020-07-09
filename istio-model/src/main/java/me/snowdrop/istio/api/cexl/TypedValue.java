@@ -95,7 +95,13 @@ public class TypedValue {
     static class TypedValueDeserializer extends JsonDeserializer<TypedValue> {
         @Override
         public TypedValue deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            return TypedValue.from(p.getText());
+            final String text = p.getText();
+            try {
+                return TypedValue.from(text);
+            } catch (IllegalArgumentException e) {
+                // fallback to unparsed
+                return TypedValue.unparsed(text);
+            }
         }
     }
 
