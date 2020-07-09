@@ -16,7 +16,6 @@ package me.snowdrop.istio.api.policy.v1beta1;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.api.cexl.TypedValue;
-import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 
@@ -50,8 +49,7 @@ spec:
 				.withNewMetadata().withName("doublerequestcount").withNamespace("istio-system").endMetadata()
 				.withNewSpec().withCompiledTemplate(SupportedTemplates.METRIC)
 				.withNewMetricParams().withValue(TypedValue.from("2"))
-				.addToDimensions("reporter", new TypedValue(ValueType.STRING, "conditional((context.reporter.kind | " +
-						"\"inbound\") == \"outbound\", \"client\", \"server\")"))
+				.addToDimensions("reporter", TypedValue.unparsed("conditional((context.reporter.kind | \"inbound\") == \"outbound\", \"client\", \"server\")"))
 				.addToDimensions("source", TypedValue.from("source.workload.name | \"unknown\""))
 				.addToDimensions("destination", TypedValue.from("destination.workload.name | \"unknown\""))
 				.addToDimensions("message", TypedValue.from("\"twice the fun!\""))

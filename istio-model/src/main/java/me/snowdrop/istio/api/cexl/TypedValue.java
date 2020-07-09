@@ -6,8 +6,6 @@
  */
 package me.snowdrop.istio.api.cexl;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -28,6 +26,8 @@ import me.snowdrop.istio.api.mixer.config.descriptor.ValueType;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+
+import java.io.IOException;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -78,6 +78,10 @@ public class TypedValue {
         walker.walk(resolver, context);
 
         return new TypedValue(resolver.getExpressionType(), value);
+    }
+
+    public static TypedValue unparsed(String value) {
+        return new TypedValue(ValueType.STRING, value);
     }
 
     static class TypedValueSerializer extends JsonSerializer<TypedValue> {
