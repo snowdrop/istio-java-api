@@ -412,12 +412,14 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				},
 			}
 			if name, isTemplate := transformTemplateName(k.Name(), pkgPath(k)); isTemplate {
-				value.IsTemplate = isTemplate
-				g.templates[strings.ToLower(name)] = javaType
+				lower := strings.ToLower(name)
+				value.Template = lower
+				g.templates[lower] = javaType
 			}
 			if name, isParams := transformAdapterName(k.Name(), pkgPath(k)); isParams {
-				value.IsAdapter = isParams
-				g.adapters[strings.ToLower(name)] = javaType
+				lower := strings.ToLower(name)
+				value.Adapter = lower
+				g.adapters[lower] = javaType
 			}
 			s.Definitions[name] = value
 		}
