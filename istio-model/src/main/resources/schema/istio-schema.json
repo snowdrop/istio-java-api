@@ -21,7 +21,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.bypass.Bypass",
-      "adapter": true
+      "adapter": "bypass"
     },
     "istio_adapter_circonus_Params": {
       "type": "object",
@@ -47,7 +47,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.circonus.Circonus",
-      "adapter": true
+      "adapter": "circonus"
     },
     "istio_adapter_circonus_Params_MetricInfo": {
       "type": "object",
@@ -101,7 +101,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.cloudwatch.Cloudwatch",
-      "adapter": true
+      "adapter": "cloudwatch"
     },
     "istio_adapter_cloudwatch_Params_LogInfo": {
       "type": "object",
@@ -146,7 +146,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.denier.Denier",
-      "adapter": true
+      "adapter": "denier"
     },
     "istio_adapter_dogstatsd_Params": {
       "type": "object",
@@ -189,7 +189,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.dogstatsd.Dogstatsd",
-      "adapter": true
+      "adapter": "dogstatsd"
     },
     "istio_adapter_dogstatsd_Params_MetricInfo": {
       "type": "object",
@@ -250,7 +250,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.fluentd.Fluentd",
-      "adapter": true
+      "adapter": "fluentd"
     },
     "istio_adapter_kubernetesenv_Params": {
       "type": "object",
@@ -272,7 +272,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.kubernetesenv.Kubernetesenv",
-      "adapter": true
+      "adapter": "kubernetesenv"
     },
     "istio_adapter_list_Params": {
       "type": "object",
@@ -319,7 +319,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.list.BaseKubernetesList",
-      "adapter": true
+      "adapter": "list"
     },
     "istio_adapter_memquota_Params": {
       "type": "object",
@@ -341,7 +341,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.memquota.Memquota",
-      "adapter": true
+      "adapter": "memquota"
     },
     "istio_adapter_memquota_Params_Override": {
       "type": "object",
@@ -423,7 +423,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.opa.Opa",
-      "adapter": true
+      "adapter": "opa"
     },
     "istio_adapter_prometheus_Params": {
       "type": "object",
@@ -444,7 +444,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.prometheus.Prometheus",
-      "adapter": true
+      "adapter": "prometheus"
     },
     "istio_adapter_prometheus_Params_MetricInfo": {
       "type": "object",
@@ -640,7 +640,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.redisquota.Redisquota",
-      "adapter": true
+      "adapter": "redisquota"
     },
     "istio_adapter_redisquota_Params_Override": {
       "type": "object",
@@ -744,7 +744,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.solarwinds.Solarwinds",
-      "adapter": true
+      "adapter": "solarwinds"
     },
     "istio_adapter_solarwinds_Params_LogInfo": {
       "type": "object",
@@ -824,7 +824,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.stackdriver.Stackdriver",
-      "adapter": true
+      "adapter": "stackdriver"
     },
     "istio_adapter_stackdriver_Params_ApiKey": {
       "type": "object",
@@ -1066,7 +1066,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.statsd.Statsd",
-      "adapter": true
+      "adapter": "statsd"
     },
     "istio_adapter_statsd_Params_MetricInfo": {
       "type": "object",
@@ -1128,7 +1128,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.stdio.Stdio",
-      "adapter": true
+      "adapter": "stdio"
     },
     "istio_adapter_zipkin_Params": {
       "type": "object",
@@ -1145,7 +1145,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.adapter.zipkin.Zipkin",
-      "adapter": true
+      "adapter": "zipkin"
     },
     "istio_io_gogo_genproto_googleapis_google_rpc_Status": {
       "type": "object",
@@ -1836,7 +1836,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.apikey.ApiKey",
-      "template": true
+      "template": "apikey"
     },
     "istio_mixer_authorization_ActionMsg": {
       "type": "object",
@@ -1890,7 +1890,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.authorization.Authorization",
-      "template": true
+      "template": "authorization"
     },
     "istio_mixer_authorization_SubjectMsg": {
       "type": "object",
@@ -1928,7 +1928,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.checknothing.CheckNothing",
-      "template": true
+      "template": "checknothing"
     },
     "istio_mixer_edge_InstanceMsg": {
       "type": "object",
@@ -1993,7 +1993,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.edge.Edge",
-      "template": true
+      "template": "edge"
     },
     "istio_mixer_listentry_InstanceMsg": {
       "type": "object",
@@ -2010,7 +2010,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.listentry.ListEntry",
-      "template": true
+      "template": "listentry"
     },
     "istio_mixer_logentry_InstanceMsg": {
       "type": "object",
@@ -2053,7 +2053,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.logentry.LogEntry",
-      "template": true
+      "template": "logentry"
     },
     "istio_mixer_metric_InstanceMsg": {
       "type": "object",
@@ -2092,7 +2092,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.metric.Metric",
-      "template": true
+      "template": "metric"
     },
     "istio_mixer_quota_InstanceMsg": {
       "type": "object",
@@ -2114,7 +2114,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.quota.Quota",
-      "template": true
+      "template": "quota"
     },
     "istio_mixer_reportnothing_InstanceMsg": {
       "type": "object",
@@ -2127,7 +2127,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.reportnothing.ReportNothing",
-      "template": true
+      "template": "reportnothing"
     },
     "istio_mixer_tracespan_InstanceMsg": {
       "type": "object",
@@ -2226,7 +2226,7 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.mixer.template.tracespan.TraceSpan",
-      "template": true
+      "template": "tracespan"
     },
     "istio_mixer_v1_Attributes": {
       "type": "object",
