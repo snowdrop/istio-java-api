@@ -1,0 +1,17 @@
+bypass: me.snowdrop.istio.mixer.adapter.bypass.Bypass
+circonus: me.snowdrop.istio.mixer.adapter.circonus.Circonus
+cloudwatch: me.snowdrop.istio.mixer.adapter.cloudwatch.Cloudwatch
+denier: me.snowdrop.istio.mixer.adapter.denier.Denier
+dogstatsd: me.snowdrop.istio.mixer.adapter.dogstatsd.Dogstatsd
+fluentd: me.snowdrop.istio.mixer.adapter.fluentd.Fluentd
+kubernetesenv: me.snowdrop.istio.mixer.adapter.kubernetesenv.Kubernetesenv
+list: me.snowdrop.istio.mixer.adapter.list.BaseKubernetesList
+memquota: me.snowdrop.istio.mixer.adapter.memquota.Memquota
+opa: me.snowdrop.istio.mixer.adapter.opa.Opa
+prometheus: me.snowdrop.istio.mixer.adapter.prometheus.Prometheus
+redisquota: me.snowdrop.istio.mixer.adapter.redisquota.Redisquota
+solarwinds: me.snowdrop.istio.mixer.adapter.solarwinds.Solarwinds
+stackdriver: me.snowdrop.istio.mixer.adapter.stackdriver.Stackdriver
+statsd: me.snowdrop.istio.mixer.adapter.statsd.Statsd
+stdio: me.snowdrop.istio.mixer.adapter.stdio.Stdio
+zipkin: me.snowdrop.istio.mixer.adapter.zipkin.Zipkin

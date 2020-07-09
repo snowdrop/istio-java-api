@@ -18,6 +18,8 @@ package schemagen
 import (
 	"errors"
 	"fmt"
+	"github.com/ghodss/yaml"
+	"io/ioutil"
 	"istio.io/istio/mixer/adapter/metadata"
 	"istio.io/istio/mixer/template"
 	"path/filepath"
@@ -49,6 +51,8 @@ type schemaGenerator struct {
 	unknownEnums      []string
 	unknownInterfaces []string
 	crds              map[string]CrdDescriptor
+	templates         map[string]string
+	adapters          map[string]string
 }
 
 func (g *schemaGenerator) getPackage(name string) (PackageDescriptor, bool) {
@@ -79,6 +83,8 @@ func newSchemaGenerator(packages []PackageDescriptor, enumMap map[string]string,
 		interfacesMap:   interfacesMap,
 		interfacesImpls: interfacesImpl,
 		crds:            crds,
+		adapters:        make(map[string]string),
+		templates:       make(map[string]string),
 	}
 	return &g
 }
@@ -398,18 +404,21 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				descriptor.JavaInterfaces = []string{i}
 			}
 
+			javaType := g.javaType(k)
 			value := JSONPropertyDescriptor{
 				JSONDescriptor:       descriptor,
 				JSONObjectDescriptor: v,
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(k),
+					JavaType: javaType,
 				},
 			}
-			if _, isTemplate := transformTemplateName(k.Name(), pkgPath(k)); isTemplate {
+			if name, isTemplate := transformTemplateName(k.Name(), pkgPath(k)); isTemplate {
 				value.IsTemplate = isTemplate
+				g.templates[strings.ToLower(name)] = javaType
 			}
-			if _, isParams := transformAdapterName(k.Name(), pkgPath(k)); isParams {
+			if name, isParams := transformAdapterName(k.Name(), pkgPath(k)); isParams {
 				value.IsAdapter = isParams
+				g.adapters[strings.ToLower(name)] = javaType
 			}
 			s.Definitions[name] = value
 		}
@@ -423,7 +432,7 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 			JavaType: "me.snowdrop.istio.api.policy.v1beta1.SupportedAdapters",
 		},
 	}
-	for name, _ := range adapterInfos {
+	for name := range adapterInfos {
 		// todo: the Params we previously enumerated are recorded under the DefaultConfig field which we should be able to introspect
 		/*config := info.DefaultConfig
 		property := g.getPropertyDescriptor(reflect.TypeOf(config), name, name)
@@ -451,6 +460,10 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	})
 	s.JSONObjectDescriptor.Properties["policy_v1beta1_SupportedTemplates"] = templatesEnum
 
+	// output templates/adapters information
+	g.outputAsYAML(g.adapters, "adapters.yml")
+	g.outputAsYAML(g.templates, "templates.yml")
+
 	if strict {
 		// check if there are API packages that weren't visited, which would indicate classes that were missed
 		unvisitedPkgs := make([]string, 0)
@@ -459,6 +472,7 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 				unvisitedPkgs = append(unvisitedPkgs, pkgDesc.GoPackage)
 			}
 		}
+
 		unvisitedCRDs := make([]string, 0)
 		for crd, crdDesc := range g.crds {
 			if !crdDesc.Visited {
@@ -490,6 +504,17 @@ func (g *schemaGenerator) generate(t reflect.Type, strict bool) (*JSONSchema, er
 	}
 
 	return &s, nil
+}
+
+func (g *schemaGenerator) outputAsYAML(elements map[string]string, fileName string) {
+	adaptersYAML, err := yaml.Marshal(elements)
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile(filepath.Join("istio-common", "src", "main", "resources", fileName), adaptersYAML, 0644)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Compute a qualified name formatted as expected by interface maps to check for candidate interfaces
