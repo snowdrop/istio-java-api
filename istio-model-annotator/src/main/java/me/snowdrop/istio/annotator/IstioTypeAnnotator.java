@@ -32,197 +32,205 @@ import java.util.*;
  */
 public class IstioTypeAnnotator extends Jackson2Annotator {
 
-    private static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
+	private static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
 
-    private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
+	private static final String DONEABLE_CLASS_NAME = "io.fabric8.kubernetes.api.model.Doneable";
 
-    private static final String OBJECT_META_CLASS_NAME = "io.fabric8.kubernetes.api.model.ObjectMeta";
+	private static final String OBJECT_META_CLASS_NAME = "io.fabric8.kubernetes.api.model.ObjectMeta";
 
-    private static final String IS_INTERFACE_FIELD = "isInterface";
+	private static final String IS_INTERFACE_FIELD = "isInterface";
 
-    private static final String EXISTING_JAVA_TYPE_FIELD = "existingJavaType";
+	private static final String EXISTING_JAVA_TYPE_FIELD = "existingJavaType";
 
-    private final JDefinedClass doneableClass;
+	private final JDefinedClass doneableClass;
 
-    private final JDefinedClass objectMetaClass;
+	private final JDefinedClass objectMetaClass;
 
-    static {
-        final String strict = System.getenv("ISTIO_STRICT");
-        if ("true".equals(strict)) {
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                final String unvisitedCRDs = IstioSpecRegistry.unvisitedCRDNames();
-                if (!unvisitedCRDs.isEmpty()) {
-                    throw new IllegalStateException("The following CRDs were not visited:\n" + unvisitedCRDs);
-                }
-            }));
-        }
-    }
+	static {
+		final String strict = System.getenv("ISTIO_STRICT");
+		if ("true".equals(strict)) {
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				final String unvisitedCRDs = IstioSpecRegistry.unvisitedCRDNames();
+				if (!unvisitedCRDs.isEmpty()) {
+					throw new IllegalStateException("The following CRDs were not visited:\n" + unvisitedCRDs);
+				}
+			}));
+		}
+	}
 
-    public IstioTypeAnnotator(GenerationConfig generationConfig) {
-        super(generationConfig);
-        String className = DONEABLE_CLASS_NAME;
-        try {
-            doneableClass = new JCodeModel()._class(className);
-            className = OBJECT_META_CLASS_NAME;
-            objectMetaClass = new JCodeModel()._class(className);
-        } catch (JClassAlreadyExistsException e) {
-            throw new IllegalStateException("Couldn't load " + className);
-        }
-    }
+	public IstioTypeAnnotator(GenerationConfig generationConfig) {
+		super(generationConfig);
+		String className = DONEABLE_CLASS_NAME;
+		try {
+			doneableClass = new JCodeModel()._class(className);
+			className = OBJECT_META_CLASS_NAME;
+			objectMetaClass = new JCodeModel()._class(className);
+		} catch (JClassAlreadyExistsException e) {
+			throw new IllegalStateException("Couldn't load " + className);
+		}
+	}
 
-    @Override
-    public void typeInfo(JDefinedClass clazz, JsonNode node) {
-        super.typeInfo(clazz, node);
-        final JsonNode template = node.get("template");
-        if (template != null) {
-            clazz.annotate(MixerTemplate.class);
-        }
-        final JsonNode adapter = node.get("adapter");
-        if (adapter != null) {
-            clazz.annotate(MixerAdapter.class);
-        }
-    }
+	@Override
+	public void typeInfo(JDefinedClass clazz, JsonNode node) {
+		super.typeInfo(clazz, node);
+		final JsonNode template = node.get("template");
+		if (template != null) {
+			clazz.annotate(MixerTemplate.class).param("compiledTemplate", template.textValue());
+		}
+		final JsonNode adapter = node.get("adapter");
+		if (adapter != null) {
+			clazz.annotate(MixerAdapter.class).param("compiledAdapter", adapter.textValue());
+		}
+	}
 
-    @Override
-    public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
-        JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
-        annotationValue.param("apiVersion");
-        annotationValue.param("kind");
-        annotationValue.param("metadata");
+	@Override
+	public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
+		JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
+		annotationValue.param("apiVersion");
+		annotationValue.param("kind");
+		annotationValue.param("metadata");
 
-        final Iterator<Map.Entry<String, JsonNode>> fields = propertiesNode.fields();
-        while (fields.hasNext()) {
-            final Map.Entry<String, JsonNode> entry = fields.next();
-            String key = entry.getKey();
-            switch (key) {
-                case "kind":
-                case "metadata":
-                case "apiVersion":
-                    break;
-                case "deprecatedAllowOrigin":
-                    key = "allowOrigin";
-                default:
-                    annotationValue.param(key);
-            }
-        }
+		final Iterator<Map.Entry<String, JsonNode>> fields = propertiesNode.fields();
+		while (fields.hasNext()) {
+			final Map.Entry<String, JsonNode> entry = fields.next();
+			String key = entry.getKey();
+			switch (key) {
+				case "kind":
+				case "metadata":
+				case "apiVersion":
+					break;
+				case "deprecatedAllowOrigin":
+					key = "allowOrigin";
+				default:
+					annotationValue.param(key);
+			}
+		}
 
-        final JPackage pkg = clazz.getPackage();
-        final String pkgName = pkg.name();
-        final int i = pkgName.lastIndexOf('.');
-        final String version = pkgName.substring(i + 1);
-        if (version.startsWith("v")) {
-            final Optional<IstioSpecRegistry.CRDInfo> kind = IstioSpecRegistry.getCRDInfo(clazz.name(), version);
-            kind.ifPresent(k -> {
-                clazz._implements(IstioSpec.class);
-                clazz.annotate(IstioKind.class).param("name", k.getKind()).param("plural", k.getPlural());
-                clazz.annotate(IstioApiVersion.class).param("value", k.getAPIVersion());
-            });
-        }
+		final JPackage pkg = clazz.getPackage();
+		final String pkgName = pkg.name();
+		final int i = pkgName.lastIndexOf('.');
+		final String version = pkgName.substring(i + 1);
+		if (version.startsWith("v")) {
+			final Optional<IstioSpecRegistry.CRDInfo> kind = IstioSpecRegistry.getCRDInfo(clazz.name(), version);
+			kind.ifPresent(k -> {
+				clazz._implements(IstioSpec.class);
+				clazz.annotate(IstioKind.class).param("name", k.getKind()).param("plural", k.getPlural());
+				clazz.annotate(IstioApiVersion.class).param("value", k.getAPIVersion());
+			});
+		}
 
-        clazz.annotate(ToString.class);
-        clazz.annotate(EqualsAndHashCode.class);
-        JAnnotationUse buildable = clazz.annotate(Buildable.class)
-              .param("editableEnabled", false)
-              .param("generateBuilderPackage", true)
-              .param("builderPackage", BUILDER_PACKAGE);
+		clazz.annotate(ToString.class);
+		clazz.annotate(EqualsAndHashCode.class);
+		JAnnotationUse buildable = clazz.annotate(Buildable.class)
+				.param("editableEnabled", false)
+				.param("generateBuilderPackage", true)
+				.param("builderPackage", BUILDER_PACKAGE);
 
-        buildable.paramArray("inline").annotate(Inline.class)
-              .param("type", doneableClass)
-              .param("prefix", "Doneable")
-              .param("value", "done");
+		buildable.paramArray("inline").annotate(Inline.class)
+				.param("type", doneableClass)
+				.param("prefix", "Doneable")
+				.param("value", "done");
 
-        buildable.paramArray("refs").annotate(BuildableReference.class)
-              .param("value", objectMetaClass);
+		buildable.paramArray("refs").annotate(BuildableReference.class)
+				.param("value", objectMetaClass);
 
 
-        // if we're dealing with InstanceSpec class, change the 'params' field to be of type 'InstanceParams' instead
-        //of Struct to be able to have polymorphic params and modify accessors as well
-        final JClass instanceParamsClass = clazz.owner().directClass("me.snowdrop.istio.api.policy.v1beta1.InstanceParams");
-        if (clazz.name().contains("InstanceSpec")) {
-            changeFieldType(clazz, "params", instanceParamsClass);
+		// if we're dealing with InstanceSpec class,  and modify accessors as well
+		final JClass instanceParamsClass = clazz.owner().directClass("me.snowdrop.istio.api.policy.v1beta1.InstanceParams");
+		final JClass instanceParamsDeserializer = clazz.owner().directClass("me.snowdrop.istio.api.policy.v1beta1" +
+				".InstanceSpecDeserializer");
+		if (clazz.name().contains("InstanceSpec")) {
+			// change the 'params' field to be of type 'InstanceParams' instead of Struct to be able to have
+			// polymorphic params
+			changeFieldType(clazz, "params", instanceParamsClass);
 
-            // use enum for compiledTemplate field
-            final JClass supportedTemplates = clazz.owner().ref("me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates");
-            changeFieldType(clazz, "compiledTemplate", supportedTemplates);
-        }
+			// annotate class with custom deserializer
+			clazz.annotate(JsonDeserialize.class).param("using", instanceParamsDeserializer);
 
-        final boolean isAdapter = isMixerRelated(clazz, pkgName, "mixer.adapter", "MixerAdapter");
-        final boolean isTemplate = isMixerRelated(clazz, pkgName, "mixer.template", "MixerTemplate");
-        if (isAdapter || isTemplate) {
-            if (isTemplate) {
-                // if we're dealing with a template class, we need it to implement the 'InstanceParams' interface
-                clazz._implements(instanceParamsClass);
-            }
+			// use enum for compiledTemplate field
+			final JClass supportedTemplates = clazz.owner().ref("me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates");
+			changeFieldType(clazz, "compiledTemplate", supportedTemplates);
+		}
 
-        } else if (clazz.name().endsWith("Spec")) {
-            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class).paramArray("value");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm")
-                  .param("outputPath", "crd.properties").param("gather", true);
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm")
-                  .param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
-                        "IstioResourceMappingsProvider.java").toString())
-                  .param("gather", true);
-        }
-    }
+		final boolean isAdapter = isMixerRelated(clazz, pkgName, "mixer.adapter", "MixerAdapter");
+		final boolean isTemplate = isMixerRelated(clazz, pkgName, "mixer.template", "MixerTemplate");
+		if (isAdapter || isTemplate) {
+			if (isTemplate) {
+				// if we're dealing with a template class, we need it to implement the 'InstanceParams' interface
+				clazz._implements(instanceParamsClass);
+			}
 
-    private void changeFieldType(JDefinedClass clazz, String field, JClass newType) {
-        // change params to be of type InstanceParams for polymorphic support
-        final JFieldVar params = clazz.fields().get(field);
-        clazz.removeField(params);
-        clazz.field(params.mods().getValue(), newType, params.name());
+		} else if (clazz.name().endsWith("Spec")) {
+			JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class).paramArray("value");
+			arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
+			arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
+			arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm")
+					.param("outputPath", "crd.properties").param("gather", true);
+			arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm")
+					.param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
+							"IstioResourceMappingsProvider.java").toString())
+					.param("gather", true);
+		}
+	}
 
-        // also change accessors
-        final String capitalizedField = field.substring(0, 1).toUpperCase() + field.substring(1);
-        final String getter = "get" + capitalizedField;
-        final String setter = "set" + capitalizedField;
-        clazz.methods().removeIf(m -> m.name().equals(getter) || m.name().equals(setter));
-        clazz.method(JMod.PUBLIC, newType, getter).body()._return(JExpr.refthis(field));
-        final JMethod setParams = clazz.method(JMod.PUBLIC, clazz.owner().VOID, setter);
-        setParams.param(newType, field);
-        setParams.body().assign(JExpr.refthis(field), JExpr.direct(field));
-    }
+	private JFieldVar changeFieldType(JDefinedClass clazz, String field, JClass newType) {
+		// change params to be of type InstanceParams for polymorphic support
+		final JFieldVar params = clazz.fields().get(field);
+		clazz.removeField(params);
+		final JFieldVar newField = clazz.field(params.mods().getValue(), newType, params.name());
 
-    private boolean isMixerRelated(JDefinedClass clazz, String pkgName, String relevantPkgSubPath, String markerAnnotationName) {
-        return pkgName.contains(relevantPkgSubPath) && clazz.annotations().stream().anyMatch(a -> a.getAnnotationClass().name().contains(markerAnnotationName));
-    }
+		// also change accessors
+		final String capitalizedField = field.substring(0, 1).toUpperCase() + field.substring(1);
+		final String getter = "get" + capitalizedField;
+		final String setter = "set" + capitalizedField;
+		clazz.methods().removeIf(m -> m.name().equals(getter) || m.name().equals(setter));
+		clazz.method(JMod.PUBLIC, newType, getter).body()._return(JExpr.refthis(field));
+		final JMethod setParams = clazz.method(JMod.PUBLIC, clazz.owner().VOID, setter);
+		setParams.param(newType, field);
+		setParams.body().assign(JExpr.refthis(field), JExpr.direct(field));
 
-    @Override
-    public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
-        propertyName = propertyName.equals("deprecatedAllowOrigin") ? "allowOrigin" : propertyName;
-        super.propertyField(field, clazz, propertyName, propertyNode);
-        if (propertyNode.hasNonNull(IS_INTERFACE_FIELD)) {
-            field.annotate(JsonUnwrapped.class);
+		return newField;
+	}
 
-            // todo: fix me, this won't work if a type has several fields using interfaces
-            String interfaceFQN = propertyNode.get(EXISTING_JAVA_TYPE_FIELD).asText();
+	private boolean isMixerRelated(JDefinedClass clazz, String pkgName, String relevantPkgSubPath, String markerAnnotationName) {
+		return pkgName.contains(relevantPkgSubPath) && clazz.annotations().stream().anyMatch(a -> a.getAnnotationClass().name().contains(markerAnnotationName));
+	}
 
-            // create interface if we haven't done it yet
-            try {
-                final JDefinedClass fieldInterface = clazz._interface(interfaceFQN.substring(interfaceFQN.lastIndexOf('.') + 1));
-                fieldInterface._extends(Serializable.class);
-            } catch (JClassAlreadyExistsException e) {
-                throw new RuntimeException(e);
-            }
-            annotateIfNotDone(clazz, ClassWithInterfaceFieldsDeserializer.class);
-        }
-    }
+	@Override
+	public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
+		propertyName = propertyName.equals("deprecatedAllowOrigin") ? "allowOrigin" : propertyName;
+		super.propertyField(field, clazz, propertyName, propertyNode);
+		if (propertyNode.hasNonNull(IS_INTERFACE_FIELD)) {
+			field.annotate(JsonUnwrapped.class);
 
-    public void propertyGetter(JMethod getter, JDefinedClass clazz, String propertyName) {
-        // overridden to avoid annotating the getter
-    }
+			// todo: fix me, this won't work if a type has several fields using interfaces
+			String interfaceFQN = propertyNode.get(EXISTING_JAVA_TYPE_FIELD).asText();
 
-    public void propertySetter(JMethod setter, JDefinedClass clazz, String propertyName) {
-        // overridden to avoid annotating the setter
-    }
+			// create interface if we haven't done it yet
+			try {
+				final JDefinedClass fieldInterface = clazz._interface(interfaceFQN.substring(interfaceFQN.lastIndexOf('.') + 1));
+				fieldInterface._extends(Serializable.class);
+			} catch (JClassAlreadyExistsException e) {
+				throw new RuntimeException(e);
+			}
+			annotateIfNotDone(clazz, ClassWithInterfaceFieldsDeserializer.class);
+		}
+	}
 
-    private Set<JDefinedClass> annotated = new HashSet<>();
+	public void propertyGetter(JMethod getter, JDefinedClass clazz, String propertyName) {
+		// overridden to avoid annotating the getter
+	}
 
-    private void annotateIfNotDone(JDefinedClass clazz, Class<? extends JsonDeserializer> deserializerClass) {
-        if (!annotated.contains(clazz)) {
-            clazz.annotate(JsonDeserialize.class).param("using", deserializerClass);
-            annotated.add(clazz);
-        }
-    }
+	public void propertySetter(JMethod setter, JDefinedClass clazz, String propertyName) {
+		// overridden to avoid annotating the setter
+	}
+
+	private Set<JDefinedClass> annotated = new HashSet<>();
+
+	private void annotateIfNotDone(JDefinedClass clazz, Class<? extends JsonDeserializer> deserializerClass) {
+		if (!annotated.contains(clazz)) {
+			clazz.annotate(JsonDeserialize.class).param("using", deserializerClass);
+			annotated.add(clazz);
+		}
+	}
 }
