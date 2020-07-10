@@ -42,8 +42,11 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 
 	private static final String EXISTING_JAVA_TYPE_FIELD = "existingJavaType";
 	public static final String INSTANCE_PARAMS_FQN = "me.snowdrop.istio.api.policy.v1beta1.InstanceParams";
+	public static final String HANDLER_PARAMS_FQN = "me.snowdrop.istio.api.policy.v1beta1.HandlerParams";
 	public static final String INSTANCE_SPEC_DESERIALIZER_FQN = "me.snowdrop.istio.api.policy.v1beta1.InstanceSpecDeserializer";
+	public static final String HANDLER_SPEC_DESERIALIZER_FQN = "me.snowdrop.istio.api.policy.v1beta1.HandlerSpecDeserializer";
 	public static final String SUPPORTED_TEMPLATES_FQN = "me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates";
+	public static final String SUPPORTED_ADAPTERS_FQN = "me.snowdrop.istio.api.policy.v1beta1.SupportedAdapters";
 
 	private final JDefinedClass doneableClass;
 
@@ -137,12 +140,14 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 		buildable.paramArray("refs").annotate(BuildableReference.class)
 				.param("value", objectMetaClass);
 
-
-		// if we're dealing with InstanceSpec class
 		final JClass instanceParamsClass = clazz.owner().directClass(INSTANCE_PARAMS_FQN);
 		final JClass instanceParamsDeserializer = clazz.owner().directClass(INSTANCE_SPEC_DESERIALIZER_FQN);
-		handleMixerResourceSpec(clazz, instanceParamsClass, instanceParamsDeserializer, "InstanceSpec");
+		handleMixerResourceSpec(clazz, instanceParamsClass, instanceParamsDeserializer, "InstanceSpec", SUPPORTED_TEMPLATES_FQN, MixerResourceDeserializer.INSTANCE_TYPE_FIELD);
 
+		final JClass handlerParamsClass = clazz.owner().directClass(HANDLER_PARAMS_FQN);
+		final JClass handlerParamsDeserializer = clazz.owner().directClass(HANDLER_SPEC_DESERIALIZER_FQN);
+		handleMixerResourceSpec(clazz, handlerParamsClass, handlerParamsDeserializer, "HandlerSpec", SUPPORTED_ADAPTERS_FQN,
+				MixerResourceDeserializer.HANDLER_TYPE_FIELD);
 
 		final boolean isAdapter = isMixerRelated(clazz, pkgName, "mixer.adapter", "MixerAdapter");
 		final boolean isTemplate = isMixerRelated(clazz, pkgName, "mixer.template", "MixerTemplate");
@@ -150,6 +155,9 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 			if (isTemplate) {
 				// if we're dealing with a template class, we need it to implement the 'InstanceParams' interface
 				clazz._implements(instanceParamsClass);
+			}
+			if (isAdapter) {
+				clazz._implements(handlerParamsClass);
 			}
 
 		} else if (clazz.name().endsWith("Spec")) {
@@ -165,7 +173,7 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 		}
 	}
 
-	public void handleMixerResourceSpec(JDefinedClass clazz, JClass paramsClass, JClass specDeserializerClass, String specClassName) {
+	public void handleMixerResourceSpec(JDefinedClass clazz, JClass paramsClass, JClass specDeserializerClass, String specClassName, String supportedResourcesEnumClass, String polymorphicTypeField) {
 		if (clazz.name().contains(specClassName)) {
 			// change the 'params' field to be of type 'InstanceParams' instead of Struct to be able to have
 			// polymorphic params
@@ -175,8 +183,8 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 			clazz.annotate(JsonDeserialize.class).param("using", specDeserializerClass);
 
 			// use enum for compiledTemplate field
-			final JClass supportedTemplates = clazz.owner().directClass(SUPPORTED_TEMPLATES_FQN);
-			changeFieldType(clazz, MixerResourceDeserializer.INSTANCE_TYPE_FIELD, supportedTemplates);
+			final JClass supported = clazz.owner().directClass(supportedResourcesEnumClass);
+			changeFieldType(clazz, polymorphicTypeField, supported);
 		}
 	}
 
