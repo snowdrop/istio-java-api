@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public interface MixerResourceDeserializer {
+public interface MixerResourceDeserializer<Spec, Params> {
 
 	String POLYMORPHIC_PARAMS_FIELD = "params";
 	String INSTANCE_TYPE_FIELD = "compiledTemplate";
@@ -37,7 +37,7 @@ public interface MixerResourceDeserializer {
 		ObjectCodec codec = parser.getCodec();
 		final ObjectNode node = codec.readTree(parser);
 
-		final Object newInstance = newInstance();
+		final Spec newInstance = newInstance();
 		final Class<?> instanceClass = newInstance.getClass();
 		final Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
 		while (fields.hasNext()) {
@@ -65,7 +65,7 @@ public interface MixerResourceDeserializer {
 		return newInstance;
 	}
 
-	Object newInstance();
+	Spec newInstance();
 
-	Class<?> getImplementationClass(String resourceType);
+	Class<? extends Params> getImplementationClass(String resourceType);
 }

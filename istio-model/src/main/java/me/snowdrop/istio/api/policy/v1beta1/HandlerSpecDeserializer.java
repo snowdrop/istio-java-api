@@ -14,7 +14,6 @@
 package me.snowdrop.istio.api.policy.v1beta1;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import me.snowdrop.istio.api.internal.MixerResourceDeserializer;
@@ -25,7 +24,7 @@ import java.io.IOException;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class HandlerSpecDeserializer extends JsonDeserializer<HandlerSpec> implements MixerResourceDeserializer {
+public class HandlerSpecDeserializer extends JsonDeserializer<HandlerSpec> implements MixerResourceDeserializer<HandlerSpec, HandlerParams> {
 	private static final MixerSupportRegistry registry = new MixerSupportRegistry();
 
 	static {
@@ -36,18 +35,17 @@ public class HandlerSpecDeserializer extends JsonDeserializer<HandlerSpec> imple
 	}
 
 	@Override
-	public HandlerSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException,
-			JsonProcessingException {
+	public HandlerSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 		return (HandlerSpec) deserialize(jsonParser, "compiledAdapter");
 	}
 
 
 	@Override
-	public Object newInstance() {
+	public HandlerSpec newInstance() {
 		return new HandlerSpec();
 	}
 
-	public Class<? extends InstanceParams> getImplementationClass(String compiledTemplate) {
-		return registry.getImplementationClass(compiledTemplate).asSubclass(InstanceParams.class);
+	public Class<? extends HandlerParams> getImplementationClass(String compiledTemplate) {
+		return registry.getImplementationClass(compiledTemplate).asSubclass(HandlerParams.class);
 	}
 }
