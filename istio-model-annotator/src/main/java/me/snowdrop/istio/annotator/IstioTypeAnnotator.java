@@ -41,6 +41,9 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 	private static final String IS_INTERFACE_FIELD = "isInterface";
 
 	private static final String EXISTING_JAVA_TYPE_FIELD = "existingJavaType";
+	public static final String INSTANCE_PARAMS_FQN = "me.snowdrop.istio.api.policy.v1beta1.InstanceParams";
+	public static final String INSTANCE_SPEC_DESERIALIZER_FQN = "me.snowdrop.istio.api.policy.v1beta1.InstanceSpecDeserializer";
+	public static final String SUPPORTED_TEMPLATES_FQN = "me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates";
 
 	private final JDefinedClass doneableClass;
 
@@ -75,11 +78,11 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 		super.typeInfo(clazz, node);
 		final JsonNode template = node.get("template");
 		if (template != null) {
-			clazz.annotate(MixerTemplate.class).param("compiledTemplate", template.textValue());
+			clazz.annotate(MixerTemplate.class).param(MixerResourceDeserializer.INSTANCE_TYPE_FIELD, template.textValue());
 		}
 		final JsonNode adapter = node.get("adapter");
 		if (adapter != null) {
-			clazz.annotate(MixerAdapter.class).param("compiledAdapter", adapter.textValue());
+			clazz.annotate(MixerAdapter.class).param(MixerResourceDeserializer.HANDLER_TYPE_FIELD, adapter.textValue());
 		}
 	}
 
@@ -135,22 +138,11 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 				.param("value", objectMetaClass);
 
 
-		// if we're dealing with InstanceSpec class,  and modify accessors as well
-		final JClass instanceParamsClass = clazz.owner().directClass("me.snowdrop.istio.api.policy.v1beta1.InstanceParams");
-		final JClass instanceParamsDeserializer = clazz.owner().directClass("me.snowdrop.istio.api.policy.v1beta1" +
-				".InstanceSpecDeserializer");
-		if (clazz.name().contains("InstanceSpec")) {
-			// change the 'params' field to be of type 'InstanceParams' instead of Struct to be able to have
-			// polymorphic params
-			changeFieldType(clazz, "params", instanceParamsClass);
+		// if we're dealing with InstanceSpec class
+		final JClass instanceParamsClass = clazz.owner().directClass(INSTANCE_PARAMS_FQN);
+		final JClass instanceParamsDeserializer = clazz.owner().directClass(INSTANCE_SPEC_DESERIALIZER_FQN);
+		handleMixerResourceSpec(clazz, instanceParamsClass, instanceParamsDeserializer, "InstanceSpec");
 
-			// annotate class with custom deserializer
-			clazz.annotate(JsonDeserialize.class).param("using", instanceParamsDeserializer);
-
-			// use enum for compiledTemplate field
-			final JClass supportedTemplates = clazz.owner().ref("me.snowdrop.istio.api.policy.v1beta1.SupportedTemplates");
-			changeFieldType(clazz, "compiledTemplate", supportedTemplates);
-		}
 
 		final boolean isAdapter = isMixerRelated(clazz, pkgName, "mixer.adapter", "MixerAdapter");
 		final boolean isTemplate = isMixerRelated(clazz, pkgName, "mixer.template", "MixerTemplate");
@@ -170,6 +162,21 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
 					.param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
 							"IstioResourceMappingsProvider.java").toString())
 					.param("gather", true);
+		}
+	}
+
+	public void handleMixerResourceSpec(JDefinedClass clazz, JClass paramsClass, JClass specDeserializerClass, String specClassName) {
+		if (clazz.name().contains(specClassName)) {
+			// change the 'params' field to be of type 'InstanceParams' instead of Struct to be able to have
+			// polymorphic params
+			changeFieldType(clazz, MixerResourceDeserializer.POLYMORPHIC_PARAMS_FIELD, paramsClass);
+
+			// annotate class with custom deserializer
+			clazz.annotate(JsonDeserialize.class).param("using", specDeserializerClass);
+
+			// use enum for compiledTemplate field
+			final JClass supportedTemplates = clazz.owner().directClass(SUPPORTED_TEMPLATES_FQN);
+			changeFieldType(clazz, MixerResourceDeserializer.INSTANCE_TYPE_FIELD, supportedTemplates);
 		}
 	}
 

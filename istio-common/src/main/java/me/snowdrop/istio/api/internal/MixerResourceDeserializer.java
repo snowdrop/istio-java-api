@@ -29,7 +29,9 @@ import java.util.Map;
  */
 public interface MixerResourceDeserializer {
 
-	String PARAMS = "params";
+	String POLYMORPHIC_PARAMS_FIELD = "params";
+	String INSTANCE_TYPE_FIELD = "compiledTemplate";
+	String HANDLER_TYPE_FIELD = "compiledAdapter";
 
 	default Object deserialize(JsonParser parser, String resourceType) throws IOException {
 		ObjectCodec codec = parser.getCodec();
@@ -45,7 +47,7 @@ public interface MixerResourceDeserializer {
 			try {
 				final Field targetClassField = instanceClass.getDeclaredField(fieldName);
 				final Class<?> targetClass;
-				if (fieldName.equals(PARAMS)) {
+				if (fieldName.equals(POLYMORPHIC_PARAMS_FIELD)) {
 					final String resourceName = node.findValue(resourceType).textValue();
 					targetClass = getImplementationClass(resourceName);
 				} else {
