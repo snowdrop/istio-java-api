@@ -37,7 +37,7 @@ public class InstanceSpecDeserializer extends JsonDeserializer<InstanceSpec> imp
 
 	@Override
 	public InstanceSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-		return (InstanceSpec) deserialize(jsonParser, "compiledTemplate");
+		return (InstanceSpec) deserialize(jsonParser, MixerResourceDeserializer.INSTANCE_TYPE_FIELD);
 	}
 
 
