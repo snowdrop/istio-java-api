@@ -24,25 +24,26 @@ import java.io.IOException;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class InstanceSpecDeserializer extends JsonDeserializer<InstanceSpec> implements MixerResourceDeserializer {
+public class HandlerSpecDeserializer extends JsonDeserializer<HandlerSpec> implements MixerResourceDeserializer {
 	private static final MixerSupportRegistry registry = new MixerSupportRegistry();
 
 	static {
-		registry.loadFromProperties("templates");
+		registry.loadFromProperties("adapters");
 	}
 
-	public InstanceSpecDeserializer() {
+	public HandlerSpecDeserializer() {
 	}
 
 	@Override
-	public InstanceSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-		return (InstanceSpec) deserialize(jsonParser, "compiledTemplate");
+	public HandlerSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException,
+			JsonProcessingException {
+		return (HandlerSpec) deserialize(jsonParser, "compiledAdapter");
 	}
 
 
 	@Override
 	public Object newInstance() {
-		return new InstanceSpec();
+		return new HandlerSpec();
 	}
 
 	public Class<? extends InstanceParams> getImplementationClass(String compiledTemplate) {
