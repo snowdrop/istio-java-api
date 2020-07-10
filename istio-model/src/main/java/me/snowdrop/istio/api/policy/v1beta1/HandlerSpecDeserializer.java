@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import me.snowdrop.istio.api.internal.MixerResourceDeserializer;
 import me.snowdrop.istio.api.internal.MixerSupportRegistry;
 
 import java.io.IOException;
