@@ -14,7 +14,6 @@
 package me.snowdrop.istio.api.policy.v1beta1;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import me.snowdrop.istio.api.internal.MixerResourceDeserializer;
@@ -25,7 +24,7 @@ import java.io.IOException;
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class InstanceSpecDeserializer extends JsonDeserializer<InstanceSpec> implements MixerResourceDeserializer {
+public class InstanceSpecDeserializer extends JsonDeserializer<InstanceSpec> implements MixerResourceDeserializer<InstanceSpec, InstanceParams> {
 	private static final MixerSupportRegistry registry = new MixerSupportRegistry();
 
 	static {
@@ -36,13 +35,13 @@ public class InstanceSpecDeserializer extends JsonDeserializer<InstanceSpec> imp
 	}
 
 	@Override
-	public InstanceSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+	public InstanceSpec deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 		return (InstanceSpec) deserialize(jsonParser, MixerResourceDeserializer.INSTANCE_TYPE_FIELD);
 	}
 
 
 	@Override
-	public Object newInstance() {
+	public InstanceSpec newInstance() {
 		return new InstanceSpec();
 	}
 
