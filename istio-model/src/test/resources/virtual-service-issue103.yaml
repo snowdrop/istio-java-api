@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: test-vs
+  namespace: ts
+spec:
+  hosts:
+    - search-planner
+  http:
+    - fault:
+        delay:
+          fixedDelay: 6s
+          percentage:
+            value: 90.0
+      match:
+        - uri:
+            exact: /search
+      route:
+        - destination:
+            host: search-planner
+            port:
+              number: 8080
+          headers: {}
+          weight: 100

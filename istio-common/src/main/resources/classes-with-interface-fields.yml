@@ -21,11 +21,13 @@ classes:
       percent: integer
       exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
       fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
+      percentage: me.snowdrop.istio.api.networking.v1alpha3.Percent
   - class: me.snowdrop.istio.api.networking.v1beta1.Delay
     fields:
       percent: integer
       exponentialDelay: isHTTPFaultInjection_Delay_HttpDelayType
       fixedDelay: isHTTPFaultInjection_Delay_HttpDelayType
+      percentage: me.snowdrop.istio.api.networking.v1beta1.Percent
   - class: me.snowdrop.istio.api.networking.v1alpha3.LoadBalancerSettings
     fields:
       simple: isLoadBalancerSettings_LbPolicy
