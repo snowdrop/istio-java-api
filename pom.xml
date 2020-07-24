@@ -155,8 +155,8 @@
     <compiler.plugin.version>3.7.0</compiler.plugin.version>
     <maven.compiler.argument.target>${maven.compiler.target}</maven.compiler.argument.target>
     <maven.compiler.argument.source>${maven.compiler.source}</maven.compiler.argument.source>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
 
     <jackson.majorVersion>2</jackson.majorVersion>
     <jackson.minorVersion>10</jackson.minorVersion>
