@@ -664,6 +664,14 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 			},
 		}
 	case reflect.Struct:
+		// if Istio Struct type
+		if g.qualifiedName(t) == "protobuf_types_Struct" {
+			return JSONPropertyDescriptor{
+				JavaTypeDescriptor: &JavaTypeDescriptor{
+					ExistingJavaType: "java.util.Map<String,Object>",
+				},
+			}
+		}
 		definedType, ok := g.types[t]
 		if !ok {
 			definedType = g.generateObjectDescriptor(t)

@@ -3082,8 +3082,7 @@
           "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.Operation"
         },
         "value": {
-          "$ref": "#/definitions/protobuf_types_Struct",
-          "javaType": "me.snowdrop.istio.api.Struct"
+          "existingJavaType": "java.util.Map\u003cString,Object\u003e"
         }
       },
       "additionalProperties": false,
@@ -6311,8 +6310,7 @@
           "description": ""
         },
         "params": {
-          "$ref": "#/definitions/protobuf_types_Struct",
-          "javaType": "me.snowdrop.istio.api.Struct"
+          "existingJavaType": "java.util.Map\u003cString,Object\u003e"
         }
       },
       "additionalProperties": false,
@@ -6352,8 +6350,7 @@
           "description": ""
         },
         "params": {
-          "$ref": "#/definitions/protobuf_types_Struct",
-          "javaType": "me.snowdrop.istio.api.Struct"
+          "existingJavaType": "java.util.Map\u003cString,Object\u003e"
         },
         "template": {
           "type": "string",
@@ -7142,23 +7139,6 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.ListValue"
     },
-    "protobuf_types_Struct": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "fields": {
-          "type": "object",
-          "description": "",
-          "additionalProperties": {
-            "$ref": "#/definitions/protobuf_types_Value",
-            "javaType": "me.snowdrop.istio.api.Value"
-          },
-          "existingJavaType": "java.util.Map\u003cString,me.snowdrop.istio.api.Value\u003e"
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.Struct"
-    },
     "protobuf_types_Timestamp": {
       "type": "object",
       "description": "",
@@ -7282,8 +7262,7 @@
       "description": "",
       "properties": {
         "structValue": {
-          "$ref": "#/definitions/protobuf_types_Struct",
-          "javaType": "me.snowdrop.istio.api.Struct"
+          "existingJavaType": "java.util.Map\u003cString,Object\u003e"
         }
       },
       "additionalProperties": false,
@@ -7692,8 +7671,7 @@
       "javaType": "me.snowdrop.istio.api.StringValueKind"
     },
     "struct": {
-      "$ref": "#/definitions/protobuf_types_Struct",
-      "javaType": "me.snowdrop.istio.api.Struct"
+      "existingJavaType": "java.util.Map\u003cString,Object\u003e"
     },
     "structValue": {
       "$ref": "#/definitions/protobuf_types_Value_StructValue",
