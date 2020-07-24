@@ -1,0 +1,21 @@
+patch:
+  operation: INSERT_BEFORE
+  value:
+    name: istio.stats
+    typed_config:
+      '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+      type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+      value:
+        config:
+          configuration: |
+            {
+              "debug": "false",
+              "stat_prefix": "istio"
+            }
+          root_id: stats_outbound
+          vm_config:
+            code:
+              local:
+                inline_string: envoy.wasm.stats
+            runtime: envoy.wasm.runtime.null
+            vm_id: stats_outbound
