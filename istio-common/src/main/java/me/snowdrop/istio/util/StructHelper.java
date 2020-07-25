@@ -51,7 +51,7 @@ public class StructHelper {
 
 	private static Object handleNullOrEmptyPath(Map struct, String[] parts, List<String> processed) {
 		final String part = parts[0];
-		if (part.isBlank()) {
+		if (part.trim().isEmpty()) {
 			return struct;
 		}
 		// only add part to processed if we're not looking for the last element of our path
