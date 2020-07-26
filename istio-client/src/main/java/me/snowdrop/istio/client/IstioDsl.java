@@ -6,6 +6,7 @@ import me.snowdrop.istio.api.networking.v1alpha3.DoneableEnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilterList;
 import me.snowdrop.istio.api.networking.v1beta1.*;
+import me.snowdrop.istio.api.policy.v1beta1.*;
 import me.snowdrop.istio.api.rbac.v1alpha1.*;
 
 public interface IstioDsl {
@@ -30,4 +31,8 @@ public interface IstioDsl {
 	MixedOperation<ServiceRoleBinding, ServiceRoleBindingList, DoneableServiceRoleBinding, Resource<ServiceRoleBinding, DoneableServiceRoleBinding>> v1alpha1ServiceRoleBinding();
 
 	MixedOperation<ServiceRole, ServiceRoleList, DoneableServiceRole, Resource<ServiceRole, DoneableServiceRole>> v1alpha1ServiceRole();
+
+	MixedOperation<Handler, HandlerList, DoneableHandler, Resource<Handler, DoneableHandler>> v1beta1Handler();
+
+	MixedOperation<Instance, InstanceList, DoneableInstance, Resource<Instance, DoneableInstance>> v1beta1Instance();
 }

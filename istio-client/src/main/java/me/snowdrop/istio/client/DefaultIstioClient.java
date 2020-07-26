@@ -13,12 +13,15 @@ import me.snowdrop.istio.api.networking.v1alpha3.DoneableEnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilterList;
 import me.snowdrop.istio.api.networking.v1beta1.*;
+import me.snowdrop.istio.api.policy.v1beta1.*;
 import me.snowdrop.istio.api.rbac.v1alpha1.*;
 import me.snowdrop.istio.client.internal.operation.networking.v1alpha3.EnvoyFilterOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.DestinationRuleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.GatewayOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.ServiceEntryOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.VirtualServiceOperationImpl;
+import me.snowdrop.istio.client.internal.operation.policy.v1beta1.HandlerOperationImpl;
+import me.snowdrop.istio.client.internal.operation.policy.v1beta1.InstanceOperationImpl;
 import me.snowdrop.istio.client.internal.operation.rbac.v1alpha1.ServiceRoleBindingOperationImpl;
 import me.snowdrop.istio.client.internal.operation.rbac.v1alpha1.ServiceRoleOperationImpl;
 import okhttp3.OkHttpClient;
@@ -116,6 +119,16 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     @Override
     public MixedOperation<ServiceRole, ServiceRoleList, DoneableServiceRole, Resource<ServiceRole, DoneableServiceRole>> v1alpha1ServiceRole() {
         return new ServiceRoleOperationImpl(getHttpClient(), getConfiguration());
+    }
+
+    @Override
+    public MixedOperation<Handler, HandlerList, DoneableHandler, Resource<Handler, DoneableHandler>> v1beta1Handler() {
+        return new HandlerOperationImpl(getHttpClient(), getConfiguration());
+    }
+
+    @Override
+    public MixedOperation<Instance, InstanceList, DoneableInstance, Resource<Instance, DoneableInstance>> v1beta1Instance() {
+        return new InstanceOperationImpl(getHttpClient(), getConfiguration());
     }
 
     //Generic methods for handling resources
