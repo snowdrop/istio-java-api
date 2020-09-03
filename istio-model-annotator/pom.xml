@@ -5,12 +5,12 @@
     <parent>
         <groupId>me.snowdrop</groupId>
         <artifactId>istio-java-api</artifactId>
-      <version>1.6.5-Beta7-SNAPSHOT</version>
+      <version>1.7.0-Alpha1-SNAPSHOT</version>
     </parent>
 
     <name>Snowdrop :: Istio Java API :: Model Annotator</name>
     <artifactId>istio-model-annotator</artifactId>
-  <version>1.6.5-Beta7-SNAPSHOT</version>
+  <version>1.7.0-Alpha1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
