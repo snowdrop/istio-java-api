@@ -1514,8 +1514,8 @@
           "description": ""
         },
         "concurrency": {
-          "type": "integer",
-          "description": ""
+          "$ref": "#/definitions/protobuf_types_Int32Value",
+          "javaType": "me.snowdrop.istio.api.Int32Value"
         },
         "configPath": {
           "type": "string",
@@ -1567,6 +1567,10 @@
         "interceptionMode": {
           "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.InboundInterceptionMode"
         },
+        "meshId": {
+          "type": "integer",
+          "description": ""
+        },
         "parentShutdownDuration": {
           "$ref": "#/definitions/protobuf_types_Duration",
           "javaType": "me.snowdrop.istio.api.Duration"
@@ -1607,6 +1611,10 @@
         "statusPort": {
           "type": "integer",
           "description": ""
+        },
+        "terminationDrainDuration": {
+          "$ref": "#/definitions/protobuf_types_Duration",
+          "javaType": "me.snowdrop.istio.api.Duration"
         },
         "tracing": {
           "$ref": "#/definitions/istio_mesh_v1alpha1_Tracing",
@@ -2633,6 +2641,10 @@
           "type": "string",
           "description": ""
         },
+        "credentialName": {
+          "type": "string",
+          "description": ""
+        },
         "mode": {
           "existingJavaType": "me.snowdrop.istio.api.networking.v1alpha3.ClientTLSSettingsMode"
         },
@@ -3625,10 +3637,6 @@
             "description": ""
           }
         },
-        "localhostServerTls": {
-          "$ref": "#/definitions/istio_networking_v1alpha3_ServerTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServerTLSSettings"
-        },
         "port": {
           "$ref": "#/definitions/istio_networking_v1alpha3_Port",
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Port"
@@ -3651,10 +3659,6 @@
         "defaultEndpoint": {
           "type": "string",
           "description": ""
-        },
-        "localhostClientTls": {
-          "$ref": "#/definitions/istio_networking_v1alpha3_ClientTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ClientTLSSettings"
         },
         "port": {
           "$ref": "#/definitions/istio_networking_v1alpha3_Port",
@@ -3836,22 +3840,6 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1alpha3.SimpleLbPolicy"
     },
-    "istio_networking_v1alpha3_Localhost": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "clientTls": {
-          "$ref": "#/definitions/istio_networking_v1alpha3_ClientTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ClientTLSSettings"
-        },
-        "serverTls": {
-          "$ref": "#/definitions/istio_networking_v1alpha3_ServerTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.ServerTLSSettings"
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Localhost"
-    },
     "istio_networking_v1alpha3_LocalityLoadBalancerSetting": {
       "type": "object",
       "description": "",
@@ -3995,6 +3983,10 @@
         "protocol": {
           "type": "string",
           "description": ""
+        },
+        "targetPort": {
+          "type": "integer",
+          "description": ""
         }
       },
       "additionalProperties": false,
@@ -4047,6 +4039,10 @@
             "type": "string",
             "description": ""
           }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
         },
         "port": {
           "$ref": "#/definitions/istio_networking_v1alpha3_Port",
@@ -4214,10 +4210,6 @@
             "$ref": "#/definitions/istio_networking_v1alpha3_IstioIngressListener",
             "javaType": "me.snowdrop.istio.api.networking.v1alpha3.IstioIngressListener"
           }
-        },
-        "localhost": {
-          "$ref": "#/definitions/istio_networking_v1alpha3_Localhost",
-          "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Localhost"
         },
         "outboundTrafficPolicy": {
           "$ref": "#/definitions/istio_networking_v1alpha3_OutboundTrafficPolicy",
@@ -4598,6 +4590,10 @@
           "description": ""
         },
         "clientCertificate": {
+          "type": "string",
+          "description": ""
+        },
+        "credentialName": {
           "type": "string",
           "description": ""
         },
@@ -5292,10 +5288,6 @@
             "description": ""
           }
         },
-        "localhostServerTls": {
-          "$ref": "#/definitions/istio_networking_v1beta1_ServerTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1beta1.ServerTLSSettings"
-        },
         "port": {
           "$ref": "#/definitions/istio_networking_v1beta1_Port",
           "javaType": "me.snowdrop.istio.api.networking.v1beta1.Port"
@@ -5318,10 +5310,6 @@
         "defaultEndpoint": {
           "type": "string",
           "description": ""
-        },
-        "localhostClientTls": {
-          "$ref": "#/definitions/istio_networking_v1beta1_ClientTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1beta1.ClientTLSSettings"
         },
         "port": {
           "$ref": "#/definitions/istio_networking_v1beta1_Port",
@@ -5503,22 +5491,6 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.SimpleLbPolicy"
     },
-    "istio_networking_v1beta1_Localhost": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "clientTls": {
-          "$ref": "#/definitions/istio_networking_v1beta1_ClientTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1beta1.ClientTLSSettings"
-        },
-        "serverTls": {
-          "$ref": "#/definitions/istio_networking_v1beta1_ServerTLSSettings",
-          "javaType": "me.snowdrop.istio.api.networking.v1beta1.ServerTLSSettings"
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.networking.v1beta1.Localhost"
-    },
     "istio_networking_v1beta1_LocalityLoadBalancerSetting": {
       "type": "object",
       "description": "",
@@ -5662,6 +5634,10 @@
         "protocol": {
           "type": "string",
           "description": ""
+        },
+        "targetPort": {
+          "type": "integer",
+          "description": ""
         }
       },
       "additionalProperties": false,
@@ -5714,6 +5690,10 @@
             "type": "string",
             "description": ""
           }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
         },
         "port": {
           "$ref": "#/definitions/istio_networking_v1beta1_Port",
@@ -5881,10 +5861,6 @@
             "$ref": "#/definitions/istio_networking_v1beta1_IstioIngressListener",
             "javaType": "me.snowdrop.istio.api.networking.v1beta1.IstioIngressListener"
           }
-        },
-        "localhost": {
-          "$ref": "#/definitions/istio_networking_v1beta1_Localhost",
-          "javaType": "me.snowdrop.istio.api.networking.v1beta1.Localhost"
         },
         "outboundTrafficPolicy": {
           "$ref": "#/definitions/istio_networking_v1beta1_OutboundTrafficPolicy",
@@ -6384,308 +6360,6 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.cexl.TypedValue"
     },
-    "istio_rbac_v1alpha1_AccessRule": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "constraints": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/istio_rbac_v1alpha1_AccessRule_Constraint",
-            "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Constraint"
-          }
-        },
-        "hosts": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "methods": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notHosts": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notMethods": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notPaths": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notPorts": {
-          "type": "string",
-          "description": ""
-        },
-        "paths": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "ports": {
-          "type": "string",
-          "description": ""
-        },
-        "services": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.AccessRule"
-    },
-    "istio_rbac_v1alpha1_AccessRule_Constraint": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "key": {
-          "type": "string",
-          "description": ""
-        },
-        "values": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Constraint"
-    },
-    "istio_rbac_v1alpha1_RbacConfig": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "enforcementMode": {
-          "existingJavaType": "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode"
-        },
-        "exclusion": {
-          "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig_Target",
-          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
-        },
-        "inclusion": {
-          "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig_Target",
-          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
-        },
-        "mode": {
-          "existingJavaType": "me.snowdrop.istio.api.rbac.v1alpha1.Mode"
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RbacConfigSpec"
-    },
-    "istio_rbac_v1alpha1_RbacConfig_Target": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "namespaces": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "services": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Target"
-    },
-    "istio_rbac_v1alpha1_RoleRef": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "kind": {
-          "type": "string",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RoleRef"
-    },
-    "istio_rbac_v1alpha1_ServiceRole": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "rules": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/istio_rbac_v1alpha1_AccessRule",
-            "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.AccessRule"
-          }
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleSpec"
-    },
-    "istio_rbac_v1alpha1_ServiceRoleBinding": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "actions": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/istio_rbac_v1alpha1_AccessRule",
-            "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.AccessRule"
-          }
-        },
-        "mode": {
-          "existingJavaType": "me.snowdrop.istio.api.rbac.v1alpha1.EnforcementMode"
-        },
-        "role": {
-          "type": "string",
-          "description": ""
-        },
-        "roleRef": {
-          "$ref": "#/definitions/istio_rbac_v1alpha1_RoleRef",
-          "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RoleRef"
-        },
-        "subjects": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/istio_rbac_v1alpha1_Subject",
-            "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Subject"
-          }
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBindingSpec"
-    },
-    "istio_rbac_v1alpha1_Subject": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "group": {
-          "type": "string",
-          "description": ""
-        },
-        "groups": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "ips": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "names": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "namespaces": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notGroups": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notIps": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "notNamespaces": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "properties": {
-          "type": "object",
-          "description": "",
-          "additionalProperties": {
-            "type": "string",
-            "description": ""
-          },
-          "existingJavaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "user": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.Subject"
-    },
     "istio_security_v1beta1_AuthorizationPolicy": {
       "type": "object",
       "description": "",
@@ -7123,6 +6797,18 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Duration"
     },
+    "protobuf_types_Int32Value": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "value": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": false,
+      "javaType": "me.snowdrop.istio.api.Int32Value"
+    },
     "protobuf_types_ListValue": {
       "type": "object",
       "description": "",
@@ -7558,10 +7244,6 @@
       "$ref": "#/definitions/istio_mixer_v1_CheckResponse_QuotaResult",
       "javaType": "me.snowdrop.istio.api.mixer.v1.QuotaResult"
     },
-    "rbacConfig": {
-      "$ref": "#/definitions/istio_rbac_v1alpha1_RbacConfig",
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.RbacConfigSpec"
-    },
     "redisQuota": {
       "$ref": "#/definitions/istio_adapter_redisquota_Params",
       "javaType": "me.snowdrop.istio.mixer.adapter.redisquota.Redisquota"
@@ -7625,14 +7307,6 @@
     "serviceEntry": {
       "$ref": "#/definitions/istio_networking_v1beta1_ServiceEntry",
       "javaType": "me.snowdrop.istio.api.networking.v1beta1.ServiceEntrySpec"
-    },
-    "serviceRole": {
-      "$ref": "#/definitions/istio_rbac_v1alpha1_ServiceRole",
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleSpec"
-    },
-    "serviceRoleBinding": {
-      "$ref": "#/definitions/istio_rbac_v1alpha1_ServiceRoleBinding",
-      "javaType": "me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBindingSpec"
     },
     "sidecar": {
       "$ref": "#/definitions/istio_networking_v1beta1_Sidecar",

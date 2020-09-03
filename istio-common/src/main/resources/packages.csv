@@ -5,15 +5,18 @@ github.com/gogo/googleapis/google/rpc                   ,me.snowdrop.istio.api  
 istio.io/gogo-genproto/googleapis/google/rpc            ,me.snowdrop.istio.api                         ,istio_io_gogo_genproto_googleapis_google_rpc_
 ## END MANUAL DEFINITIONS
 # api
+istio.io/api/analysis/v1alpha1,me.snowdrop.istio.api.analysis.v1alpha1,istio_analysis_v1alpha1_
 istio.io/api/authentication/v1alpha1,me.snowdrop.istio.api.authentication.v1alpha1,istio_authentication_v1alpha1_
 istio.io/api/mcp/v1alpha1,me.snowdrop.istio.api.mcp.v1alpha1,istio_mcp_v1alpha1_
 istio.io/api/mesh/v1alpha1,me.snowdrop.istio.api.mesh.v1alpha1,istio_mesh_v1alpha1_
+istio.io/api/meta/v1alpha1,me.snowdrop.istio.api.meta.v1alpha1,istio_meta_v1alpha1_
 istio.io/api/mixer/v1,me.snowdrop.istio.api.mixer.v1,istio_mixer_v1_
 istio.io/api/networking/v1alpha3,me.snowdrop.istio.api.networking.v1alpha3,istio_networking_v1alpha3_
 istio.io/api/networking/v1beta1,me.snowdrop.istio.api.networking.v1beta1,istio_networking_v1beta1_
 istio.io/api/operator/v1alpha1,me.snowdrop.istio.api.operator.v1alpha1,istio_operator_v1alpha1_
 istio.io/api/policy/v1beta1,me.snowdrop.istio.api.policy.v1beta1,istio_policy_v1beta1_
-istio.io/api/rbac/v1alpha1,me.snowdrop.istio.api.rbac.v1alpha1,istio_rbac_v1alpha1_
+istio.io/api/scripts/validate_crds.py,me.snowdrop.istio.api.scripts.validate_crds.py,istio_scripts_validate_crds_py_
+istio.io/api/security/v1alpha1,me.snowdrop.istio.api.security.v1alpha1,istio_security_v1alpha1_
 istio.io/api/security/v1beta1,me.snowdrop.istio.api.security.v1beta1,istio_security_v1beta1_
 istio.io/api/type/v1beta1,me.snowdrop.istio.api.type.v1beta1,istio_type_v1beta1_
 # adapter

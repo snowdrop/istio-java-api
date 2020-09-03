@@ -19,13 +19,13 @@
 
 package me.snowdrop.istio.api.networking.v1beta1;
 
+import java.util.List;
+import java.util.Map;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import me.snowdrop.istio.tests.BaseIstioTest;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,13 +34,14 @@ public class GatewayTest extends BaseIstioTest {
 	@Test
 	public void checkBasicGateway() throws Exception {
 		final Gateway gateway = new GatewayBuilder()
-				.withNewMetadata()
-				.withName("httpbin-gateway")
-				.endMetadata()
-				.withNewSpec()
-				.addToSelector("istio", "ingressgateway")
-				.addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-				.addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS")
+			.withNewMetadata()
+			.withName("httpbin-gateway")
+			.endMetadata()
+			.withNewSpec()
+			.addToSelector("istio", "ingressgateway")
+			.addNewServer().withNewPort().withName("http").withProtocol("HTTP").withNumber(80).endPort()
+			.withHosts("httpbin.example.com").endServer()
+			.addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS", 443)
 				.withNewTls().withMode(ServerTLSSettingsMode.PASSTHROUGH).withMinProtocolVersion(ServerTLSSettingsProtocol.TLSV1_2).endTls()
 				.endServer()
 				.endSpec()
@@ -95,13 +96,13 @@ public class GatewayTest extends BaseIstioTest {
 	@Test
 	public void roundtripBasicGatewayShouldWork() throws Exception {
 		final Gateway gateway = new GatewayBuilder()
-				.withNewMetadata()
-				.withName("httpbin-gateway")
-				.endMetadata()
-				.withNewSpec()
-				.addToSelector("istio", "ingressgateway")
-				.addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
-				.addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS")
+			.withNewMetadata()
+			.withName("httpbin-gateway")
+			.endMetadata()
+			.withNewSpec()
+			.addToSelector("istio", "ingressgateway")
+			.addNewServer().withNewPort("http", 80, "HTTP", 80).withHosts("httpbin.example.com").endServer()
+			.addNewServer().withHosts("foobar.com").withNewPort("tls-0", 443, "TLS", 443)
 				.withNewTls().withMode(ServerTLSSettingsMode.PASSTHROUGH).withMinProtocolVersion(ServerTLSSettingsProtocol.TLSV1_2).endTls()
 				.endServer()
 				.endSpec()

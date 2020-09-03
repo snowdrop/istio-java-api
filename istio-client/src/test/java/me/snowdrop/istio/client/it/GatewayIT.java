@@ -1,14 +1,15 @@
 package me.snowdrop.istio.client.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.AbstractMap.SimpleEntry;
+
 import me.snowdrop.istio.api.networking.v1beta1.Gateway;
 import me.snowdrop.istio.api.networking.v1beta1.GatewayBuilder;
 import me.snowdrop.istio.api.networking.v1beta1.GatewaySpec;
 import me.snowdrop.istio.client.DefaultIstioClient;
 import me.snowdrop.istio.client.IstioClient;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GatewayIT {
 
@@ -34,13 +35,13 @@ public class GatewayIT {
     public void checkBasicGateway() {
         //given
         final Gateway gateway = new GatewayBuilder()
-                .withApiVersion("networking.istio.io/v1beta1")
-                .withNewMetadata()
-                .withName("httpbin-gateway")
-                .endMetadata()
-                .withNewSpec()
-                .addToSelector("istio", "ingressgateway")
-                .addNewServer().withNewPort("http", 80, "HTTP").withHosts("httpbin.example.com").endServer()
+            .withApiVersion("networking.istio.io/v1beta1")
+            .withNewMetadata()
+            .withName("httpbin-gateway")
+            .endMetadata()
+            .withNewSpec()
+            .addToSelector("istio", "ingressgateway")
+            .addNewServer().withNewPort("http", 80, "HTTP", 80).withHosts("httpbin.example.com").endServer()
                 .endSpec()
                 .build();
 
