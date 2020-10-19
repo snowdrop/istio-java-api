@@ -1568,7 +1568,7 @@
           "existingJavaType": "me.snowdrop.istio.api.mesh.v1alpha1.InboundInterceptionMode"
         },
         "meshId": {
-          "type": "integer",
+          "type": "string",
           "description": ""
         },
         "parentShutdownDuration": {
