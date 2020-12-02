@@ -104,14 +104,18 @@ public class Duration implements Serializable {
             ObjectCodec oc = parser.getCodec();
             JsonNode node = oc.readTree(parser);
             final Period period = FORMATTER.parsePeriod(node.asText());
-            return new Duration(0, (long) period.toStandardSeconds().getSeconds());
+            return new Duration(period.getMillis() * 1000 * 1000, (long) period.toStandardSeconds().getSeconds());
         }
     }
 
     public static class Serializer extends JsonSerializer<Duration> {
         @Override
         public void serialize(Duration value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            gen.writeString(FORMATTER.print(Seconds.seconds(value.seconds.intValue())));
+            Integer seconds = value.seconds.intValue();
+            Integer nanos = value.nanos;
+            final Period period = new Period(0, 0, seconds, nanos / 1000 / 1000);
+            String str = FORMATTER.print(period);
+            gen.writeString(str);
         }
     }
 }
