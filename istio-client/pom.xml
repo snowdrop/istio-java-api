@@ -22,7 +22,7 @@
   <parent>
     <groupId>me.snowdrop</groupId>
     <artifactId>istio-java-api</artifactId>
-    <version>1.6.14</version>
+    <version>1.6.15-SNAPSHOT</version>
   </parent>
 
   <artifactId>istio-client</artifactId>
