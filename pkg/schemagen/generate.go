@@ -664,11 +664,26 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, hum
 			},
 		}
 	case reflect.Struct:
-		// if Istio Struct type
-		if g.qualifiedName(t) == "protobuf_types_Struct" {
+		// common protobuf types
+		name := g.qualifiedName(t)
+		if name == "protobuf_types_Struct" {
 			return JSONPropertyDescriptor{
 				JavaTypeDescriptor: &JavaTypeDescriptor{
 					ExistingJavaType: "java.util.Map<String,Object>",
+				},
+			}
+		}
+		if name == "protobuf_types_BoolValue" {
+			return JSONPropertyDescriptor{
+				JavaTypeDescriptor: &JavaTypeDescriptor{
+					ExistingJavaType: "Boolean",
+				},
+			}
+		}
+		if name == "protobuf_types_UInt32Value" {
+			return JSONPropertyDescriptor{
+				JavaTypeDescriptor: &JavaTypeDescriptor{
+					ExistingJavaType: "Integer",
 				},
 			}
 		}
