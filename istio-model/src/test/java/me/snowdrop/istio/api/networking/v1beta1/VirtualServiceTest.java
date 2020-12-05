@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -369,5 +370,14 @@ spec:
         assertEquals(RegexMatchType.class, stringMatch.getMatchType().getClass());
         RegexMatchType regex = (RegexMatchType) stringMatch.getMatchType();
         assertEquals(".*DarkLaunch.*", regex.getRegex());
+    }
+    
+    
+    @Test
+    public void allowCredentialsShouldWork() throws IOException {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("virtual-service-issue119.yaml");
+        final VirtualService virtualService = mapper.readValue(inputStream, VirtualService.class);
+        
+        assertFalse(virtualService.getSpec().getHttp().get(0).getCorsPolicy().getAllowCredentials());
     }
 }

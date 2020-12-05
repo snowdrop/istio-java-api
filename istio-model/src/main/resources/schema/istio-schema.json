@@ -1293,8 +1293,7 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         },
         "enableAutoMtls": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         },
         "enableClientSidePolicyCheck": {
           "type": "boolean",
@@ -1305,8 +1304,7 @@
           "description": ""
         },
         "enablePrometheusMerge": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         },
         "enableSdsTokenMount": {
           "type": "boolean",
@@ -2760,8 +2758,7 @@
       "description": "",
       "properties": {
         "allowCredentials": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         },
         "allowHeaders": {
           "type": "array",
@@ -3453,8 +3450,7 @@
           "description": ""
         },
         "retryRemoteLocalities": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         }
       },
       "additionalProperties": false,
@@ -3509,8 +3505,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1alpha3.Destination"
         },
         "mirrorPercent": {
-          "$ref": "#/definitions/protobuf_types_UInt32Value",
-          "javaType": "me.snowdrop.istio.api.UInt32Value"
+          "existingJavaType": "Integer"
         },
         "mirrorPercentage": {
           "$ref": "#/definitions/istio_networking_v1alpha3_Percent",
@@ -3853,8 +3848,7 @@
           }
         },
         "enabled": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         },
         "failover": {
           "type": "array",
@@ -3929,16 +3923,14 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         },
         "consecutive5xxErrors": {
-          "$ref": "#/definitions/protobuf_types_UInt32Value",
-          "javaType": "me.snowdrop.istio.api.UInt32Value"
+          "existingJavaType": "Integer"
         },
         "consecutiveErrors": {
           "type": "integer",
           "description": ""
         },
         "consecutiveGatewayErrors": {
-          "$ref": "#/definitions/protobuf_types_UInt32Value",
-          "javaType": "me.snowdrop.istio.api.UInt32Value"
+          "existingJavaType": "Integer"
         },
         "interval": {
           "$ref": "#/definitions/protobuf_types_Duration",
@@ -4712,8 +4704,7 @@
       "description": "",
       "properties": {
         "allowCredentials": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         },
         "allowHeaders": {
           "type": "array",
@@ -5104,8 +5095,7 @@
           "description": ""
         },
         "retryRemoteLocalities": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         }
       },
       "additionalProperties": false,
@@ -5160,8 +5150,7 @@
           "javaType": "me.snowdrop.istio.api.networking.v1beta1.Destination"
         },
         "mirrorPercent": {
-          "$ref": "#/definitions/protobuf_types_UInt32Value",
-          "javaType": "me.snowdrop.istio.api.UInt32Value"
+          "existingJavaType": "Integer"
         },
         "mirrorPercentage": {
           "$ref": "#/definitions/istio_networking_v1beta1_Percent",
@@ -5504,8 +5493,7 @@
           }
         },
         "enabled": {
-          "$ref": "#/definitions/protobuf_types_BoolValue",
-          "javaType": "me.snowdrop.istio.api.BoolValue"
+          "existingJavaType": "Boolean"
         },
         "failover": {
           "type": "array",
@@ -5580,16 +5568,14 @@
           "javaType": "me.snowdrop.istio.api.Duration"
         },
         "consecutive5xxErrors": {
-          "$ref": "#/definitions/protobuf_types_UInt32Value",
-          "javaType": "me.snowdrop.istio.api.UInt32Value"
+          "existingJavaType": "Integer"
         },
         "consecutiveErrors": {
           "type": "integer",
           "description": ""
         },
         "consecutiveGatewayErrors": {
-          "$ref": "#/definitions/protobuf_types_UInt32Value",
-          "javaType": "me.snowdrop.istio.api.UInt32Value"
+          "existingJavaType": "Integer"
         },
         "interval": {
           "$ref": "#/definitions/protobuf_types_Duration",
@@ -6768,18 +6754,6 @@
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.Any"
     },
-    "protobuf_types_BoolValue": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "value": {
-          "type": "boolean",
-          "description": ""
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.BoolValue"
-    },
     "protobuf_types_Duration": {
       "type": "object",
       "description": "",
@@ -6841,18 +6815,6 @@
       },
       "additionalProperties": false,
       "javaType": "me.snowdrop.istio.api.TimeStamp"
-    },
-    "protobuf_types_UInt32Value": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "value": {
-          "type": "integer",
-          "description": ""
-        }
-      },
-      "additionalProperties": false,
-      "javaType": "me.snowdrop.istio.api.UInt32Value"
     },
     "protobuf_types_Value": {
       "type": "object",
