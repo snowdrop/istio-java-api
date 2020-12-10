@@ -23,6 +23,15 @@ import me.snowdrop.istio.api.policy.v1beta1.Handler;
 import me.snowdrop.istio.api.policy.v1beta1.HandlerList;
 import me.snowdrop.istio.api.policy.v1beta1.Instance;
 import me.snowdrop.istio.api.policy.v1beta1.InstanceList;
+import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicy;
+import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicyList;
+import me.snowdrop.istio.api.security.v1beta1.DoneableAuthorizationPolicy;
+import me.snowdrop.istio.api.security.v1beta1.DoneablePeerAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.DoneableRequestAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.PeerAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.PeerAuthenticationList;
+import me.snowdrop.istio.api.security.v1beta1.RequestAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.RequestAuthenticationList;
 
 public interface IstioDsl {
 	MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule, me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList, me.snowdrop.istio.api.networking.v1alpha3.DoneableDestinationRule, Resource<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule, me.snowdrop.istio.api.networking.v1alpha3.DoneableDestinationRule>> v1alpha3DestinationRule();
@@ -36,14 +45,20 @@ public interface IstioDsl {
 	MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.Gateway, me.snowdrop.istio.api.networking.v1alpha3.GatewayList, me.snowdrop.istio.api.networking.v1alpha3.DoneableGateway, Resource<me.snowdrop.istio.api.networking.v1alpha3.Gateway, me.snowdrop.istio.api.networking.v1alpha3.DoneableGateway>> v1alpha3Gateway();
 
 	MixedOperation<ServiceEntry, ServiceEntryList, DoneableServiceEntry, Resource<ServiceEntry, DoneableServiceEntry>> v1beta1ServiceEntry();
-
+	
 	MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry, me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList, me.snowdrop.istio.api.networking.v1alpha3.DoneableServiceEntry, Resource<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry, me.snowdrop.istio.api.networking.v1alpha3.DoneableServiceEntry>> v1alpha3ServiceEntry();
-
+	
 	MixedOperation<VirtualService, VirtualServiceList, DoneableVirtualService, Resource<VirtualService, DoneableVirtualService>> v1beta1VirtualService();
-
+	
 	MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.VirtualService, me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList, me.snowdrop.istio.api.networking.v1alpha3.DoneableVirtualService, Resource<me.snowdrop.istio.api.networking.v1alpha3.VirtualService, me.snowdrop.istio.api.networking.v1alpha3.DoneableVirtualService>> v1alpha3VirtualService();
 	
 	MixedOperation<Handler, HandlerList, DoneableHandler, Resource<Handler, DoneableHandler>> v1beta1Handler();
-
+	
 	MixedOperation<Instance, InstanceList, DoneableInstance, Resource<Instance, DoneableInstance>> v1beta1Instance();
+	
+	MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, DoneableAuthorizationPolicy, Resource<AuthorizationPolicy, DoneableAuthorizationPolicy>> v1beta1AuthorizationPolicy();
+	
+	MixedOperation<RequestAuthentication, RequestAuthenticationList, DoneableRequestAuthentication, Resource<RequestAuthentication, DoneableRequestAuthentication>> v1beta1RequestAuthentication();
+	
+	MixedOperation<PeerAuthentication, PeerAuthenticationList, DoneablePeerAuthentication, Resource<PeerAuthentication, DoneablePeerAuthentication>> v1beta1PeerAuthentication();
 }

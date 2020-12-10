@@ -46,6 +46,15 @@ import me.snowdrop.istio.api.policy.v1beta1.Handler;
 import me.snowdrop.istio.api.policy.v1beta1.HandlerList;
 import me.snowdrop.istio.api.policy.v1beta1.Instance;
 import me.snowdrop.istio.api.policy.v1beta1.InstanceList;
+import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicy;
+import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicyList;
+import me.snowdrop.istio.api.security.v1beta1.DoneableAuthorizationPolicy;
+import me.snowdrop.istio.api.security.v1beta1.DoneablePeerAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.DoneableRequestAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.PeerAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.PeerAuthenticationList;
+import me.snowdrop.istio.api.security.v1beta1.RequestAuthentication;
+import me.snowdrop.istio.api.security.v1beta1.RequestAuthenticationList;
 import me.snowdrop.istio.client.internal.operation.networking.v1alpha3.EnvoyFilterOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.DestinationRuleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.GatewayOperationImpl;
@@ -53,6 +62,9 @@ import me.snowdrop.istio.client.internal.operation.networking.v1beta1.ServiceEnt
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.VirtualServiceOperationImpl;
 import me.snowdrop.istio.client.internal.operation.policy.v1beta1.HandlerOperationImpl;
 import me.snowdrop.istio.client.internal.operation.policy.v1beta1.InstanceOperationImpl;
+import me.snowdrop.istio.client.internal.operation.security.v1beta1.AuthorizationPolicyOperationImpl;
+import me.snowdrop.istio.client.internal.operation.security.v1beta1.PeerAuthenticationOperationImpl;
+import me.snowdrop.istio.client.internal.operation.security.v1beta1.RequestAuthenticationOperationImpl;
 import okhttp3.OkHttpClient;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
@@ -137,18 +149,30 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     public MixedOperation<Handler, HandlerList, DoneableHandler, Resource<Handler, DoneableHandler>> v1beta1Handler() {
         return new HandlerOperationImpl(getHttpClient(), getConfiguration());
     }
-
+    
     @Override
     public MixedOperation<Instance, InstanceList, DoneableInstance, Resource<Instance, DoneableInstance>> v1beta1Instance() {
         return new InstanceOperationImpl(getHttpClient(), getConfiguration());
     }
-
+    
+    public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, DoneableAuthorizationPolicy, Resource<AuthorizationPolicy, DoneableAuthorizationPolicy>> v1beta1AuthorizationPolicy() {
+        return new AuthorizationPolicyOperationImpl(getHttpClient(), getConfiguration());
+    }
+    
+    public MixedOperation<RequestAuthentication, RequestAuthenticationList, DoneableRequestAuthentication, Resource<RequestAuthentication, DoneableRequestAuthentication>> v1beta1RequestAuthentication() {
+        return new RequestAuthenticationOperationImpl(getHttpClient(), getConfiguration());
+    }
+    
+    public MixedOperation<PeerAuthentication, PeerAuthenticationList, DoneablePeerAuthentication, Resource<PeerAuthentication, DoneablePeerAuthentication>> v1beta1PeerAuthentication() {
+        return new PeerAuthenticationOperationImpl(getHttpClient(), getConfiguration());
+    }
+    
     //Generic methods for handling resources
     @Override
     public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), (InputStream) is, Collections.emptyMap(), false, DeletionPropagation.FOREGROUND);
     }
-
+    
     @Override
     public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
