@@ -16,10 +16,8 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 
 import okhttp3.OkHttpClient;
 
-import ${model.packageName}.Doneable${model.name};
 import ${model.packageName}.${model.name};
 import ${model.packageName}.${model.name}List;
-import ${model.packageName}.Doneable${model.name};
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,7 +34,7 @@ import java.util.TreeMap;
 #end
 #end
 
-public class ${model.name}OperationImpl extends HasMetadataOperation<${model.name}, ${model.name}List, Doneable${model.name}, Resource<${model.name}, Doneable${model.name}>> {
+public class ${model.name}OperationImpl extends HasMetadataOperation<${model.name}, ${model.name}List, Resource<${model.name}>> {
 
   public ${model.name}OperationImpl(OkHttpClient client, Config config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -48,7 +46,6 @@ public class ${model.name}OperationImpl extends HasMetadataOperation<${model.nam
       .withPlural("$plural"));
     this.type = ${model.name}.class;
     this.listType = ${model.name}List.class;
-    this.doneableType = Doneable${model.name}.class;
 }
 
   public ${model.name}OperationImpl newInstance(OperationContext context) {

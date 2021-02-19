@@ -11,3 +11,5 @@ overlays
 .DS_Store
 !/.mvn/wrapper/maven-wrapper.jar
 istio-1.5.1
+.mvn/jvm.config
+
