@@ -21,9 +21,7 @@ package me.snowdrop.istio.api;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 
-import java.io.Serializable;
-
-public interface IstioResource extends HasMetadata, Namespaced, Serializable {
+public interface IstioResource extends HasMetadata, Namespaced {
 
     IstioSpec getSpec();
 }

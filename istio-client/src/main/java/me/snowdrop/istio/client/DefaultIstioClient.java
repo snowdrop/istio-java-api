@@ -25,32 +25,22 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import me.snowdrop.istio.api.IstioResource;
-import me.snowdrop.istio.api.networking.v1alpha3.DoneableEnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilterList;
 import me.snowdrop.istio.api.networking.v1beta1.DestinationRule;
 import me.snowdrop.istio.api.networking.v1beta1.DestinationRuleList;
-import me.snowdrop.istio.api.networking.v1beta1.DoneableDestinationRule;
-import me.snowdrop.istio.api.networking.v1beta1.DoneableGateway;
-import me.snowdrop.istio.api.networking.v1beta1.DoneableServiceEntry;
-import me.snowdrop.istio.api.networking.v1beta1.DoneableVirtualService;
 import me.snowdrop.istio.api.networking.v1beta1.Gateway;
 import me.snowdrop.istio.api.networking.v1beta1.GatewayList;
 import me.snowdrop.istio.api.networking.v1beta1.ServiceEntry;
 import me.snowdrop.istio.api.networking.v1beta1.ServiceEntryList;
 import me.snowdrop.istio.api.networking.v1beta1.VirtualService;
 import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceList;
-import me.snowdrop.istio.api.policy.v1beta1.DoneableHandler;
-import me.snowdrop.istio.api.policy.v1beta1.DoneableInstance;
 import me.snowdrop.istio.api.policy.v1beta1.Handler;
 import me.snowdrop.istio.api.policy.v1beta1.HandlerList;
 import me.snowdrop.istio.api.policy.v1beta1.Instance;
 import me.snowdrop.istio.api.policy.v1beta1.InstanceList;
 import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicy;
 import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicyList;
-import me.snowdrop.istio.api.security.v1beta1.DoneableAuthorizationPolicy;
-import me.snowdrop.istio.api.security.v1beta1.DoneablePeerAuthentication;
-import me.snowdrop.istio.api.security.v1beta1.DoneableRequestAuthentication;
 import me.snowdrop.istio.api.security.v1beta1.PeerAuthentication;
 import me.snowdrop.istio.api.security.v1beta1.PeerAuthenticationList;
 import me.snowdrop.istio.api.security.v1beta1.RequestAuthentication;
@@ -101,106 +91,106 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     }
 
     @Override
-    public MixedOperation<DestinationRule, DestinationRuleList, DoneableDestinationRule, Resource<DestinationRule, DoneableDestinationRule>> v1beta1DestinationRule() {
+    public MixedOperation<DestinationRule, DestinationRuleList, Resource<DestinationRule>> v1beta1DestinationRule() {
         return new DestinationRuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule, me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList, me.snowdrop.istio.api.networking.v1alpha3.DoneableDestinationRule, Resource<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule, me.snowdrop.istio.api.networking.v1alpha3.DoneableDestinationRule>> v1alpha3DestinationRule() {
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule, me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList,  Resource<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule >> v1alpha3DestinationRule() {
         return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.DestinationRuleOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<EnvoyFilter, EnvoyFilterList, DoneableEnvoyFilter, Resource<EnvoyFilter, DoneableEnvoyFilter>> v1alpha3EnvoyFilter() {
+    public MixedOperation<EnvoyFilter, EnvoyFilterList,   Resource<EnvoyFilter>> v1alpha3EnvoyFilter() {
         return new EnvoyFilterOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<Gateway, GatewayList, DoneableGateway, Resource<Gateway, DoneableGateway>> v1beta1Gateway() {
+    public MixedOperation<Gateway, GatewayList, Resource<Gateway>> v1beta1Gateway() {
         return new GatewayOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.Gateway, me.snowdrop.istio.api.networking.v1alpha3.GatewayList, me.snowdrop.istio.api.networking.v1alpha3.DoneableGateway, Resource<me.snowdrop.istio.api.networking.v1alpha3.Gateway, me.snowdrop.istio.api.networking.v1alpha3.DoneableGateway>> v1alpha3Gateway() {
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.Gateway, me.snowdrop.istio.api.networking.v1alpha3.GatewayList , Resource<me.snowdrop.istio.api.networking.v1alpha3.Gateway >> v1alpha3Gateway() {
         return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.GatewayOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<ServiceEntry, ServiceEntryList, DoneableServiceEntry, Resource<ServiceEntry, DoneableServiceEntry>> v1beta1ServiceEntry() {
+    public MixedOperation<ServiceEntry, ServiceEntryList , Resource<ServiceEntry>> v1beta1ServiceEntry() {
         return new ServiceEntryOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry, me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList, me.snowdrop.istio.api.networking.v1alpha3.DoneableServiceEntry, Resource<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry, me.snowdrop.istio.api.networking.v1alpha3.DoneableServiceEntry>> v1alpha3ServiceEntry() {
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry, me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList , Resource<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry >> v1alpha3ServiceEntry() {
         return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.ServiceEntryOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<VirtualService, VirtualServiceList, DoneableVirtualService, Resource<VirtualService, DoneableVirtualService>> v1beta1VirtualService() {
+    public MixedOperation<VirtualService, VirtualServiceList, Resource<VirtualService>> v1beta1VirtualService() {
         return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.VirtualService, me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList, me.snowdrop.istio.api.networking.v1alpha3.DoneableVirtualService, Resource<me.snowdrop.istio.api.networking.v1alpha3.VirtualService, me.snowdrop.istio.api.networking.v1alpha3.DoneableVirtualService>> v1alpha3VirtualService() {
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.VirtualService, me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList, Resource<me.snowdrop.istio.api.networking.v1alpha3.VirtualService >> v1alpha3VirtualService() {
         return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
     }
-    
+
     @Override
-    public MixedOperation<Handler, HandlerList, DoneableHandler, Resource<Handler, DoneableHandler>> v1beta1Handler() {
+    public MixedOperation<Handler, HandlerList, Resource<Handler>> v1beta1Handler() {
         return new HandlerOperationImpl(getHttpClient(), getConfiguration());
     }
-    
+
     @Override
-    public MixedOperation<Instance, InstanceList, DoneableInstance, Resource<Instance, DoneableInstance>> v1beta1Instance() {
+    public MixedOperation<Instance, InstanceList, Resource<Instance>> v1beta1Instance() {
         return new InstanceOperationImpl(getHttpClient(), getConfiguration());
     }
-    
-    public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, DoneableAuthorizationPolicy, Resource<AuthorizationPolicy, DoneableAuthorizationPolicy>> v1beta1AuthorizationPolicy() {
+
+    public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, Resource<AuthorizationPolicy>> v1beta1AuthorizationPolicy() {
         return new AuthorizationPolicyOperationImpl(getHttpClient(), getConfiguration());
     }
-    
-    public MixedOperation<RequestAuthentication, RequestAuthenticationList, DoneableRequestAuthentication, Resource<RequestAuthentication, DoneableRequestAuthentication>> v1beta1RequestAuthentication() {
+
+    public MixedOperation<RequestAuthentication, RequestAuthenticationList, Resource<RequestAuthentication>> v1beta1RequestAuthentication() {
         return new RequestAuthenticationOperationImpl(getHttpClient(), getConfiguration());
     }
-    
-    public MixedOperation<PeerAuthentication, PeerAuthenticationList, DoneablePeerAuthentication, Resource<PeerAuthentication, DoneablePeerAuthentication>> v1beta1PeerAuthentication() {
+
+    public MixedOperation<PeerAuthentication, PeerAuthenticationList, Resource<PeerAuthentication>> v1beta1PeerAuthentication() {
         return new PeerAuthenticationOperationImpl(getHttpClient(), getConfiguration());
     }
     
     //Generic methods for handling resources
     @Override
-    public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
+    public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), (InputStream) is, Collections.emptyMap(), false, DeletionPropagation.FOREGROUND);
     }
     
     @Override
-    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item) {
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList item) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
     }
 
     @Override
-    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(HasMetadata... items) {
         return resourceList(new KubernetesListBuilder().withItems(items).build());
     }
 
     @Override
-    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items) {
         return resourceList(new KubernetesListBuilder().withItems(new ArrayList<>(items)).build());
     }
 
     @Override
-    public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s) {
+    public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), s, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
     }
 
 
     @Override
-    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata item) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, -1L, DeletionPropagation.FOREGROUND, false, 200L, 1.5d);
     }
 
     @Override
-    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), s, -1L, DeletionPropagation.FOREGROUND, false, 200L, 1.5d);
     }
 
