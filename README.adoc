@@ -11,16 +11,19 @@ Jackson is used to output JSON or YAML representation of the Java objects when n
 
 == Usage
 
-Please take a look at the tests in `istio-model/src/test/java` to see how the API can be used. You can also take a look at the
-https://github.com/metacosm/istio-test-dsl project which demonstrates an end-to-end scenario using the Fabric8 OpenShift adapter
-and this API to send Istio artifacts to a running OpenShift cluster configured on which Istio is set up.
+Please take a look at the tests in `istio-model/src/test/java` to see how the API can be used.
+You can also take a look at the
+https://github.com/metacosm/istio-test-dsl project which demonstrates an end-to-end scenario using the Fabric8 OpenShift adapter and this API to send Istio artifacts to a running OpenShift cluster configured on which Istio is set up.
+
+[Note]
+====
+Starting with the `1.7.7` of this API, the bundled version of the Fabric8 Kubernetes client has been upgraded to use the non-backwards compatible `5.x` versions.
+While this might not be an issue for most users of this API, it's still worth noting.
+====
 
 == Building instructions
 
-If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can
-build simply using `mvn clean install` as the project contains a pre-generated version of the schema.If you need to
-re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a
-Go programming environment.
+If you only want to build the current version of the API and don't intend on modifying how the JSON Schema is generated, you can build simply using `mvn clean install` as the project contains a pre-generated version of the schema.If you need to re-generate the classes from a newer version of the API, since the build relies on Go introspection, you will need to set up a Go programming environment.
 
 === Building the Java API
 
