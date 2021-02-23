@@ -156,6 +156,14 @@ public class IstioSpecRegistry {
             return kind;
         }
 
+        public String getCrdName() {
+            return crdName;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
         static String getPlural(String crdName) {
             final int endIndex = crdName.indexOf('.');
             return crdName.substring(0, endIndex);

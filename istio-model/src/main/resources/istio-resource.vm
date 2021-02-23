@@ -14,6 +14,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Version;
 
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
@@ -30,11 +33,23 @@ import me.snowdrop.istio.api.internal.IstioKind;
 #set ($resource = $spec.substring(0, $tindex))
 #set ($status = $resource + "Status")
 
+#set ($apiGroupAndVersion = "unknown")
 #set ($version = "unknown")
+#set ($group = "unknown")
+#set ($plural = "unknown")
 #set ($annotations = $model.annotations)
+
 #foreach ($annotation in $annotations)
-    #if ($annotation.getClassRef().getName().equals("IstioApiVersion"))
+    #set ($annotationName = $annotation.getClassRef().getName())
+
+    #if ($annotationName.equals("IstioApiVersion"))
+        #set ($apiGroupAndVersion = $annotation.getParameters().get("value"))
+    #end
+    #if ($annotationName.endsWith("Version"))
         #set ($version = $annotation.getParameters().get("value"))
+    #end
+    #if ($annotationName.equals("Group"))
+        #set ($group = $annotation.getParameters().get("value"))
     #end
 #end
 
@@ -51,7 +66,10 @@ import me.snowdrop.istio.api.internal.IstioKind;
  *
  */
 @IstioKind(name = "$kind", plural = "$plural")
-@IstioApiVersion("$version")
+@IstioApiVersion("$apiGroupAndVersion")
+@Group("$group")
+@Version("$version")
+@Plural("$plural")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
@@ -74,7 +92,7 @@ public class $resource implements IstioResource
      *
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "$version";
+    private String apiVersion = "$apiGroupAndVersion";
     /**
      *
      * (Required)

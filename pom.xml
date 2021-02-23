@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>me.snowdrop</groupId>
@@ -161,6 +162,7 @@
     <jackson.majorVersion>2</jackson.majorVersion>
     <jackson.minorVersion>12</jackson.minorVersion>
     <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.1</jackson.version>
+    <javax-annotations-api.version>1.3.2</javax-annotations-api.version>
     <jsonschema2pojo.version>1.0.2</jsonschema2pojo.version>
     <k8s-client.majorVersion>5</k8s-client.majorVersion>
     <k8s-client.minorVersion>1</k8s-client.minorVersion>
@@ -193,8 +195,18 @@
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model</artifactId>
+        <version>${kubernetes-client.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-common</artifactId>
         <version>${kubernetes-client.version}</version>
       </dependency>
       <dependency>
@@ -209,6 +221,11 @@
         <version>${kubernetes-client.version}</version>
         <scope>provided</scope>
         <classifier>versioned</classifier>
+      </dependency>
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>${javax-annotations-api.version}</version>
       </dependency>
       <dependency>
         <groupId>io.sundr</groupId>
