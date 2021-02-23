@@ -20,10 +20,20 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JPackage;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
+import java.io.Serializable;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.IstioSpec;
@@ -36,14 +46,6 @@ import me.snowdrop.istio.api.internal.MixerResourceDeserializer;
 import me.snowdrop.istio.api.internal.MixerTemplate;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
-
-import java.io.Serializable;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -131,8 +133,15 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             final Optional<IstioSpecRegistry.CRDInfo> kind = IstioSpecRegistry.getCRDInfo(clazz.name(), version);
             kind.ifPresent(k -> {
                 clazz._implements(IstioSpec.class);
-                clazz.annotate(IstioKind.class).param("name", k.getKind()).param("plural", k.getPlural());
-                clazz.annotate(IstioApiVersion.class).param("value", k.getAPIVersion());
+                final String plural = k.getPlural();
+                clazz.annotate(IstioKind.class).param("name", k.getKind()).param("plural",
+                    plural);
+                final String apiVersion = k.getAPIVersion();
+                clazz.annotate(IstioApiVersion.class).param("value", apiVersion);
+                clazz.annotate(Version.class).param("value", k.getVersion());
+                clazz.annotate(Group.class)
+                    .param("value", apiVersion.substring(0, apiVersion.indexOf('/')));
+                clazz.annotate(Plural.class).param("value", plural);
             });
         }
 
