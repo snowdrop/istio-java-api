@@ -34,21 +34,17 @@ import java.util.TreeMap;
 #end
 #end
 
-public class ${model.name}OperationImpl extends HasMetadataOperation<${model.name}, ${model.name}List, Resource<${model.name}>> {
+public class ${model.name}OperationImpl<L> extends HasMetadataOperation<${model.name}, ${model.name}List, Resource<${model.name}>> {
 
-  public ${model.name}OperationImpl(OkHttpClient client, Config config) {
+  public ${model.name}OperationImpl(final OkHttpClient client, final Config config, final Class<L> listClazz) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public ${model.name}OperationImpl(OperationContext context) {
-    super(context.withApiGroupName("$apiGroup")
-      .withApiGroupVersion("$apiVersion")
-      .withPlural("$plural"));
-    this.type = ${model.name}.class;
-    this.listType = ${model.name}List.class;
+  public ${model.name}OperationImpl(final OperationContext context) {
+    super(context, ${model.name}.class, ${model.name}List.class);
 }
 
-  public ${model.name}OperationImpl newInstance(OperationContext context) {
+  public ${model.name}OperationImpl newInstance(final OperationContext context) {
     return new ${model.name}OperationImpl(context);
   }
 }

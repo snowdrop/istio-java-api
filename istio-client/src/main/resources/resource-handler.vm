@@ -9,11 +9,12 @@
 package $package;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
 
@@ -36,69 +37,25 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
+
 public class ${model.name}Handler implements ResourceHandler<${model.name}, ${model.name}Builder> {
 
   @Override
-  public String getKind() {
-    return ${model.name}.class.getSimpleName();
+  public boolean hasOperation() {
+    return true;
   }
 
   @Override
-  public String getApiVersion() {
-  #if (${apiGroup} != "")
-    return "${apiGroup}/${apiVersion}";
-  #else
-    return "${apiVersion}";
-  #end
+  public <L extends KubernetesResourceList<${model.name}>> HasMetadataOperation<${model.name}, L, Resource<${model.name}>> operation(
+    final OkHttpClient okHttpClient,
+    final Config config,
+    final Class<L> listClazz) {
+    return new ${model.name}OperationImpl(okHttpClient, config, listClazz);
   }
 
+
   @Override
-public ${model.name} create(OkHttpClient client, Config config, String namespace, ${model.name} item) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).create();
-}
-
-@Override
-public ${model.name} replace(OkHttpClient client, Config config, String namespace, ${model.name} item) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).replace(item);
-}
-
-@Override
-public ${model.name} reload(OkHttpClient client, Config config, String namespace, ${model.name} item) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).fromServer().get();
-}
-
-@Override
-public ${model.name}Builder edit(${model.name} item) {
-return new ${model.name}Builder(item);
-}
-
-@Override
-public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ${model.name} item) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).delete(item);
-}
-
-@Override
-public Watch watch(OkHttpClient client, Config config, String namespace, ${model.name} item, Watcher<${model.name}> watcher) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).watch(watcher);
-}
-
-@Override
-public Watch watch(OkHttpClient client, Config config, String namespace, ${model.name} item, String resourceVersion, Watcher<${model.name}> watcher) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).watch(resourceVersion, watcher);
-}
-
-@Override
-public Watch watch(OkHttpClient client, Config config, String namespace, ${model.name} item, ListOptions listOptions, final Watcher<${model.name}> watcher) {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).watch(listOptions, watcher);
-}
-
-@Override
-public ${model.name} waitUntilReady(OkHttpClient client, Config config, String namespace, ${model.name} item, long amount, TimeUnit timeUnit) throws InterruptedException {
-return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).waitUntilReady(amount, timeUnit);
-}
-
-@Override
-public ${model.name} waitUntilCondition(OkHttpClient client, Config config, String namespace, ${model.name} item, Predicate<${model.name}> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
-    return new ${model.name}OperationImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).waitUntilCondition(condition, amount, timeUnit);
+  public ${model.name}Builder edit(final ${model.name} resource) {
+    return new ${model.name}Builder(resource);
   }
 }

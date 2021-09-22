@@ -22,8 +22,10 @@ import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRec
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilterList;
@@ -92,80 +94,95 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
 
     @Override
     public MixedOperation<DestinationRule, DestinationRuleList, Resource<DestinationRule>> v1beta1DestinationRule() {
-        return new DestinationRuleOperationImpl(getHttpClient(), getConfiguration());
+        return new DestinationRuleOperationImpl<>(getHttpClient(), getConfiguration(), DestinationRuleList.class);
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule, me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList,  Resource<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule >> v1alpha3DestinationRule() {
-        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.DestinationRuleOperationImpl(getHttpClient(), getConfiguration());
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule,
+            me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList,
+            Resource<me.snowdrop.istio.api.networking.v1alpha3.DestinationRule>> v1alpha3DestinationRule() {
+        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.DestinationRuleOperationImpl<>(getHttpClient(),
+                                                                                                                  getConfiguration(),
+                                                                                                                  me.snowdrop.istio.api.networking.v1alpha3.DestinationRuleList.class);
     }
 
     @Override
-    public MixedOperation<EnvoyFilter, EnvoyFilterList,   Resource<EnvoyFilter>> v1alpha3EnvoyFilter() {
-        return new EnvoyFilterOperationImpl(getHttpClient(), getConfiguration());
+    public MixedOperation<EnvoyFilter, EnvoyFilterList, Resource<EnvoyFilter>> v1alpha3EnvoyFilter() {
+        return new EnvoyFilterOperationImpl<>(getHttpClient(), getConfiguration(), EnvoyFilterList.class);
     }
 
     @Override
     public MixedOperation<Gateway, GatewayList, Resource<Gateway>> v1beta1Gateway() {
-        return new GatewayOperationImpl(getHttpClient(), getConfiguration());
+        return new GatewayOperationImpl<>(getHttpClient(), getConfiguration(), Gateway.class);
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.Gateway, me.snowdrop.istio.api.networking.v1alpha3.GatewayList , Resource<me.snowdrop.istio.api.networking.v1alpha3.Gateway >> v1alpha3Gateway() {
-        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.GatewayOperationImpl(getHttpClient(), getConfiguration());
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.Gateway,
+            me.snowdrop.istio.api.networking.v1alpha3.GatewayList, Resource<me.snowdrop.istio.api.networking.v1alpha3.Gateway>> v1alpha3Gateway() {
+        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.GatewayOperationImpl<>(getHttpClient(),
+                                                                                                          getConfiguration(),
+                                                                                                          me.snowdrop.istio.api.networking.v1alpha3.GatewayList.class);
     }
 
     @Override
-    public MixedOperation<ServiceEntry, ServiceEntryList , Resource<ServiceEntry>> v1beta1ServiceEntry() {
-        return new ServiceEntryOperationImpl(getHttpClient(), getConfiguration());
+    public MixedOperation<ServiceEntry, ServiceEntryList, Resource<ServiceEntry>> v1beta1ServiceEntry() {
+        return new ServiceEntryOperationImpl<>(getHttpClient(), getConfiguration(), ServiceEntryList.class);
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry, me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList , Resource<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry >> v1alpha3ServiceEntry() {
-        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.ServiceEntryOperationImpl(getHttpClient(), getConfiguration());
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry,
+            me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList,
+            Resource<me.snowdrop.istio.api.networking.v1alpha3.ServiceEntry>> v1alpha3ServiceEntry() {
+        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.ServiceEntryOperationImpl<>(getHttpClient(),
+                                                                                                               getConfiguration(),
+                                                                                                               me.snowdrop.istio.api.networking.v1alpha3.ServiceEntryList.class);
     }
 
     @Override
     public MixedOperation<VirtualService, VirtualServiceList, Resource<VirtualService>> v1beta1VirtualService() {
-        return new VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
+        return new VirtualServiceOperationImpl<>(getHttpClient(), getConfiguration(), VirtualServiceList.class);
     }
 
     @Override
-    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.VirtualService, me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList, Resource<me.snowdrop.istio.api.networking.v1alpha3.VirtualService >> v1alpha3VirtualService() {
-        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.VirtualServiceOperationImpl(getHttpClient(), getConfiguration());
+    public MixedOperation<me.snowdrop.istio.api.networking.v1alpha3.VirtualService,
+            me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList,
+            Resource<me.snowdrop.istio.api.networking.v1alpha3.VirtualService>> v1alpha3VirtualService() {
+        return new me.snowdrop.istio.client.internal.operation.networking.v1alpha3.VirtualServiceOperationImpl<>(getHttpClient(),
+                                                                                                                 getConfiguration(),
+                                                                                                                 me.snowdrop.istio.api.networking.v1alpha3.VirtualServiceList.class);
     }
 
     @Override
     public MixedOperation<Handler, HandlerList, Resource<Handler>> v1beta1Handler() {
-        return new HandlerOperationImpl(getHttpClient(), getConfiguration());
+        return new HandlerOperationImpl<>(getHttpClient(), getConfiguration(), HandlerList.class);
     }
 
     @Override
     public MixedOperation<Instance, InstanceList, Resource<Instance>> v1beta1Instance() {
-        return new InstanceOperationImpl(getHttpClient(), getConfiguration());
+        return new InstanceOperationImpl<>(getHttpClient(), getConfiguration(), InstanceList.class);
     }
 
     public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, Resource<AuthorizationPolicy>> v1beta1AuthorizationPolicy() {
-        return new AuthorizationPolicyOperationImpl(getHttpClient(), getConfiguration());
+        return new AuthorizationPolicyOperationImpl<>(getHttpClient(), getConfiguration(), AuthorizationPolicyList.class);
     }
 
     public MixedOperation<RequestAuthentication, RequestAuthenticationList, Resource<RequestAuthentication>> v1beta1RequestAuthentication() {
-        return new RequestAuthenticationOperationImpl(getHttpClient(), getConfiguration());
+        return new RequestAuthenticationOperationImpl<>(getHttpClient(), getConfiguration(), RequestAuthenticationList.class);
     }
 
     public MixedOperation<PeerAuthentication, PeerAuthenticationList, Resource<PeerAuthentication>> v1beta1PeerAuthentication() {
-        return new PeerAuthenticationOperationImpl(getHttpClient(), getConfiguration());
+        return new PeerAuthenticationOperationImpl<>(getHttpClient(), getConfiguration(), PeerAuthenticationList.class);
     }
-    
+
     //Generic methods for handling resources
     @Override
     public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), (InputStream) is, Collections.emptyMap(), false, DeletionPropagation.FOREGROUND);
+        return resourceListFor(is);
     }
-    
+
     @Override
-    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList item) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
+    public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList<HasMetadata> item) {
+        return resourceListFor(item);
     }
 
     @Override
@@ -180,35 +197,38 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
 
     @Override
     public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), s, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
+        return resourceListFor(s);
     }
-
 
     @Override
     public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata item) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, -1L, DeletionPropagation.FOREGROUND, false, 200L, 1.5d);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), item);
     }
 
     @Override
     public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), s, -1L, DeletionPropagation.FOREGROUND, false, 200L, 1.5d);
+        return resource((HasMetadata) Serialization.unmarshal(s));
     }
 
+
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl resourceListFor(Object item) {
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), item);
+    }
 
     //Compatibility
     public List<IstioResource> registerCustomResources(final String specFileAsString) {
         return resourceList(specFileAsString).createOrReplace()
                 .stream()
-                .filter(r -> r instanceof IstioResource)
-                .map(r -> (IstioResource) r)
+                .filter(IstioResource.class::isInstance)
+                .map(IstioResource.class::cast)
                 .collect(Collectors.toList());
     }
 
     public List<IstioResource> registerCustomResources(final InputStream resource) {
         return load(resource).createOrReplace()
                 .stream()
-                .filter(r -> r instanceof IstioResource)
-                .map(r -> (IstioResource) r)
+                .filter(IstioResource.class::isInstance)
+                .map(IstioResource.class::cast)
                 .collect(Collectors.toList());
     }
 
