@@ -154,23 +154,23 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler.plugin.version>3.8.1</compiler.plugin.version>
     <maven.compiler.argument.target>${maven.compiler.target}</maven.compiler.argument.target>
-    <maven.compiler.argument.source>${maven.compiler.source}</maven.compiler.argument.source>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
+      <maven.compiler.argument.source>${maven.compiler.source}</maven.compiler.argument.source>
+      <maven.compiler.source>8</maven.compiler.source>
+      <maven.compiler.target>8</maven.compiler.target>
 
-    <jackson.majorVersion>2</jackson.majorVersion>
-    <jackson.minorVersion>12</jackson.minorVersion>
-    <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.1</jackson.version>
-    <javax-annotations-api.version>1.3.2</javax-annotations-api.version>
-    <jsonschema2pojo.version>1.0.2</jsonschema2pojo.version>
-    <k8s-client.majorVersion>5</k8s-client.majorVersion>
-    <k8s-client.minorVersion>1</k8s-client.minorVersion>
-    <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.0</kubernetes-client.version>
-    <junit.version>4.13.1</junit.version>
-    <mockito.version>2.13.0</mockito.version>
-    <assertj.version>3.9.0</assertj.version>
-    <sundrio.version>0.21.0</sundrio.version>
-    <lombok.version>1.18.2</lombok.version>
+      <jackson.majorVersion>2</jackson.majorVersion>
+      <jackson.minorVersion>12</jackson.minorVersion>
+      <jackson.version>${jackson.majorVersion}.${jackson.minorVersion}.1</jackson.version>
+      <javax-annotations-api.version>1.3.2</javax-annotations-api.version>
+      <jsonschema2pojo.version>1.0.2</jsonschema2pojo.version>
+      <k8s-client.majorVersion>5</k8s-client.majorVersion>
+      <k8s-client.minorVersion>7</k8s-client.minorVersion>
+      <kubernetes-client.version>${k8s-client.majorVersion}.${k8s-client.minorVersion}.3</kubernetes-client.version>
+      <junit.version>4.13.1</junit.version>
+      <mockito.version>2.13.0</mockito.version>
+      <assertj.version>3.9.0</assertj.version>
+      <sundrio.version>0.50.2</sundrio.version>
+      <lombok.version>1.18.2</lombok.version>
   </properties>
 
   <modules>
@@ -224,26 +224,31 @@
       <dependency>
         <groupId>javax.annotation</groupId>
         <artifactId>javax.annotation-api</artifactId>
-        <version>${javax-annotations-api.version}</version>
+          <version>${javax-annotations-api.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>builder-annotations</artifactId>
-        <version>${sundrio.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>transform-annotations</artifactId>
-        <version>${sundrio.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>builder-annotations</artifactId>
+            <version>${sundrio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>transform-annotations</artifactId>
+            <version>${sundrio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>sundr-codegen-velocity-nodeps</artifactId>
+            <version>${sundrio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>

@@ -9,43 +9,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JAnnotationUse;
-import com.sun.codemodel.JClass;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JFieldVar;
-import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JMod;
-import com.sun.codemodel.JPackage;
+import com.sun.codemodel.*;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.VelocityTransformation;
-import io.sundr.transform.annotations.VelocityTransformations;
-import java.io.Serializable;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.snowdrop.istio.api.IstioSpec;
-import me.snowdrop.istio.api.internal.ClassWithInterfaceFieldsDeserializer;
-import me.snowdrop.istio.api.internal.IstioApiVersion;
-import me.snowdrop.istio.api.internal.IstioKind;
-import me.snowdrop.istio.api.internal.IstioSpecRegistry;
-import me.snowdrop.istio.api.internal.MixerAdapter;
-import me.snowdrop.istio.api.internal.MixerResourceDeserializer;
-import me.snowdrop.istio.api.internal.MixerTemplate;
+import me.snowdrop.istio.api.internal.*;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
+
+import java.io.Serializable;
+import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -176,12 +157,12 @@ public class IstioTypeAnnotator extends Jackson2Annotator {
             }
 
         } else if (clazz.name().endsWith("Spec")) {
-            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class).paramArray("value");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource.vm");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-resource-list.vm");
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-manifest.vm")
+            JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class).paramArray("value");
+            arrayMember.annotate(TemplateTransformation.class).param("value", "/istio-resource.vm");
+            arrayMember.annotate(TemplateTransformation.class).param("value", "/istio-resource-list.vm");
+            arrayMember.annotate(TemplateTransformation.class).param("value", "/istio-manifest.vm")
                     .param("outputPath", "crd.properties").param("gather", true);
-            arrayMember.annotate(VelocityTransformation.class).param("value", "/istio-mappings-provider.vm")
+            arrayMember.annotate(TemplateTransformation.class).param("value", "/istio-mappings-provider.vm")
                     .param("outputPath", Paths.get("me", "snowdrop", "istio", "api", "model",
                             "IstioResourceMappingsProvider.java").toString())
                     .param("gather", true);

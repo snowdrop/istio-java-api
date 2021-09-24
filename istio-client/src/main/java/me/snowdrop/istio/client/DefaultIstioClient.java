@@ -1,50 +1,22 @@
 package me.snowdrop.istio.client;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.RequestConfig;
-import io.fabric8.kubernetes.client.WithRequestCallable;
-import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import me.snowdrop.istio.api.IstioResource;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilter;
 import me.snowdrop.istio.api.networking.v1alpha3.EnvoyFilterList;
-import me.snowdrop.istio.api.networking.v1beta1.DestinationRule;
-import me.snowdrop.istio.api.networking.v1beta1.DestinationRuleList;
-import me.snowdrop.istio.api.networking.v1beta1.Gateway;
-import me.snowdrop.istio.api.networking.v1beta1.GatewayList;
-import me.snowdrop.istio.api.networking.v1beta1.ServiceEntry;
-import me.snowdrop.istio.api.networking.v1beta1.ServiceEntryList;
-import me.snowdrop.istio.api.networking.v1beta1.VirtualService;
-import me.snowdrop.istio.api.networking.v1beta1.VirtualServiceList;
+import me.snowdrop.istio.api.networking.v1beta1.*;
 import me.snowdrop.istio.api.policy.v1beta1.Handler;
 import me.snowdrop.istio.api.policy.v1beta1.HandlerList;
 import me.snowdrop.istio.api.policy.v1beta1.Instance;
 import me.snowdrop.istio.api.policy.v1beta1.InstanceList;
-import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicy;
-import me.snowdrop.istio.api.security.v1beta1.AuthorizationPolicyList;
-import me.snowdrop.istio.api.security.v1beta1.PeerAuthentication;
-import me.snowdrop.istio.api.security.v1beta1.PeerAuthenticationList;
-import me.snowdrop.istio.api.security.v1beta1.RequestAuthentication;
-import me.snowdrop.istio.api.security.v1beta1.RequestAuthenticationList;
+import me.snowdrop.istio.api.security.v1beta1.*;
 import me.snowdrop.istio.client.internal.operation.networking.v1alpha3.EnvoyFilterOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.DestinationRuleOperationImpl;
 import me.snowdrop.istio.client.internal.operation.networking.v1beta1.GatewayOperationImpl;
@@ -56,6 +28,12 @@ import me.snowdrop.istio.client.internal.operation.security.v1beta1.Authorizatio
 import me.snowdrop.istio.client.internal.operation.security.v1beta1.PeerAuthenticationOperationImpl;
 import me.snowdrop.istio.client.internal.operation.security.v1beta1.RequestAuthenticationOperationImpl;
 import okhttp3.OkHttpClient;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
 
@@ -160,12 +138,12 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     //Generic methods for handling resources
     @Override
     public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), (InputStream) is, Collections.emptyMap(), false, DeletionPropagation.FOREGROUND);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(getHttpClient(), getConfiguration(), Serialization.unmarshal(is));
     }
     
     @Override
     public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList item) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(getHttpClient(), getConfiguration(), item);
     }
 
     @Override
@@ -180,18 +158,18 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
 
     @Override
     public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), s, Collections.emptyMap(), DeletionPropagation.FOREGROUND, false);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(getHttpClient(), getConfiguration(), Serialization.unmarshal(s));
     }
 
 
     @Override
     public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata item) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), item, -1L, DeletionPropagation.FOREGROUND, false, 200L, 1.5d);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(getHttpClient(), getConfiguration(), item);
     }
 
     @Override
     public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, Collections.emptyList(), s, -1L, DeletionPropagation.FOREGROUND, false, 200L, 1.5d);
+        return resource((HasMetadata) Serialization.unmarshal(s));
     }
 
 

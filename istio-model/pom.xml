@@ -68,26 +68,31 @@
       <exclusions>
         <exclusion>
           <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
+            <artifactId>tools</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>transform-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-yaml</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
+      <dependency>
+          <groupId>io.sundr</groupId>
+          <artifactId>transform-annotations</artifactId>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>io.sundr</groupId>
+          <artifactId>sundr-codegen-velocity-nodeps</artifactId>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-yaml</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
