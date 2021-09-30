@@ -3,19 +3,6 @@ package me.snowdrop.istio.client.internal;
 
 import io.fabric8.kubernetes.client.Handlers;
 
-
-#foreach ($m in ${model.values()})
-    #set ($pkg = $m.packageName)
-    #set ($pkgParts = $pkg.split("\."))
-    #set ($pkgVersionIndex = $pkgParts.size() - 1)
-    #set ($pkgGroupIndex = $pkgParts.size() - 2)
-    #set ($pkgVersion = $pkgParts[$pkgVersionIndex])
-    #set ($pkgGroup = $pkgParts[$pkgGroupIndex])
-    #set ($package = "me.snowdrop.istio.client.internal.operation.${pkgGroup}.${pkgVersion}")
-import ${pkg}.${m.name};
-import ${package}.${m.name}OperationsImpl;
-#end
-
 public class HandlersRegistration {
   static {
 #foreach ($m in ${model.values()})
@@ -26,7 +13,7 @@ public class HandlersRegistration {
     #set ($pkgVersion = $pkgParts[$pkgVersionIndex])
     #set ($pkgGroup = $pkgParts[$pkgGroupIndex])
     #set ($package = "me.snowdrop.istio.client.internal.operation.${pkgGroup}.${pkgVersion}")
-    Handlers.register(${m.name}.class, ${m.name}OperationsImpl::new);
+    Handlers.register(${pkg}.${m.name}.class, ${package}.${m.name}OperationImpl::new);
 #end
   }
 }
