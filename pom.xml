@@ -170,7 +170,7 @@
       <mockito.version>2.13.0</mockito.version>
       <assertj.version>3.9.0</assertj.version>
       <sundrio.version>0.50.2</sundrio.version>
-      <lombok.version>1.18.2</lombok.version>
+      <lombok.version>1.18.20</lombok.version>
   </properties>
 
   <modules>
@@ -201,6 +201,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model</artifactId>
+        <version>${kubernetes-client.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-core</artifactId>
         <version>${kubernetes-client.version}</version>
       </dependency>
       <dependency>
