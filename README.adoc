@@ -1,3 +1,16 @@
+**Note**
+
+= This project is now deprecated. Please use the Istio client in the https://github.com/fabric8io/kubernetes-client project starting with version 5.11.0.
+
+
+
+
+
+
+
+
+
+
 = istio-java-api
 
 A project to generate a Java API for https://istio.io[Istio]'s domain allowing, in particular, the generation of Istio deployment
