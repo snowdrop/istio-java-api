@@ -83,8 +83,7 @@ import me.snowdrop.istio.api.internal.IstioKind;
 @ToString
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder" )
-public class $resource implements IstioResource
-{
+public class $resource implements IstioResource {
 
     /**
      *

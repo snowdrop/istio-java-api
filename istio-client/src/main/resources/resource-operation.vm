@@ -43,9 +43,7 @@ public class ${model.name}OperationImpl extends HasMetadataOperation<${model.nam
   public ${model.name}OperationImpl(OperationContext context) {
     super(context.withApiGroupName("$apiGroup")
       .withApiGroupVersion("$apiVersion")
-      .withPlural("$plural"));
-    this.type = ${model.name}.class;
-    this.listType = ${model.name}List.class;
+      .withPlural("$plural"), ${model.name}.class, ${model.name}List.class);
 }
 
   public ${model.name}OperationImpl newInstance(OperationContext context) {

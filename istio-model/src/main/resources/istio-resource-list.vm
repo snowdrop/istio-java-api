@@ -51,8 +51,7 @@ import io.fabric8.kubernetes.api.model.ListMeta;
 @ToString
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class ${resource}List implements KubernetesResource, KubernetesResourceList<${resource}>
-{
+public class ${resource}List implements KubernetesResource, KubernetesResourceList<${resource}> {
 
     /**
      *
